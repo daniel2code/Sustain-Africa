@@ -1,0 +1,10 @@
+@import "~antd/dist/antd.css";
+
+.App {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.ant-btn-primary {
+  background: #ed1450;
+}
