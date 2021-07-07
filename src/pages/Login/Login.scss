@@ -1,0 +1,89 @@
+.form-container {
+  width: 100%;
+  .form-wrapper {
+    width: 95%;
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    .form {
+      margin: auto;
+      align-items: center;
+      max-width: 500px;
+      padding: 10px 3vw;
+      background-color: white;
+      border-radius: 4px;
+      margin-bottom: 30px;
+      .image-wrapper {
+        text-align: center;
+      }
+      .title {
+        padding-top: 30px;
+        text-align: center;
+        font-weight: 700;
+        font-size: 25px;
+        color: rgb(88, 88, 88);
+        margin-bottom: 20px;
+      }
+
+      .desc {
+        margin-bottom: 20px;
+        font-size: 12px;
+        color: rgb(87, 87, 87);
+        .desc-link {
+          color: #ed1450;
+          font-weight: 500;
+          text-decoration: underline;
+          cursor: pointer;
+          &:active {
+            opacity: 0.7;
+          }
+        }
+      }
+
+      .referral {
+        color: #ed1450;
+        cursor: pointer;
+        margin-bottom: 7px;
+        &:active {
+          opacity: 0.7;
+        }
+      }
+
+      .forgot {
+        text-align: end;
+        margin-top: -20px;
+        color: #ed1450;
+      }
+
+      .login-form-button {
+        width: 100%;
+        margin-top: 20px;
+        border-color: #ed1450;
+        background: #ed1450;
+      }
+    }
+    .already {
+      margin-top: 20px;
+    }
+  }
+}
+
+a {
+  color: #ed1450;
+  &:hover {
+    color: #ed1450;
+  }
+  &:active {
+    opacity: 0.7;
+  }
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  border-color: #ed1450;
+  box-shadow: 0 0 0 2px #eec4d0;
+}
+
+.ant-input:hover {
+  border-color: #ed1450;
+}
