@@ -25,7 +25,8 @@ export default function Navbar() {
             alternative ways to move funds around the world.
           </div>
         </div>
-        <div className="row-three">Support: help@sustain.africa</div>
+        <div className="row-three">support: help@sustain.africa</div>
+        <div className="row-three">twitter: @sustainafrica</div>
       </div>
     </div>
   );

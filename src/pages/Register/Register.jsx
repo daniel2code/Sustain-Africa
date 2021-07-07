@@ -40,7 +40,7 @@ export default function Register() {
               name="password"
               rules={[
                 { required: true, message: "password required!" },
-                { min: 6, message: "Minimum: 6 characters." },
+                { min: 6, message: "minimum: 6 characters." },
               ]}
             >
               <Input type="password" placeholder="create a password" />
@@ -52,7 +52,7 @@ export default function Register() {
                 setHasReferral(!hasReferral);
               }}
             >
-              {!hasReferral ? "I have a referral code" : "cancel referral code"}
+              {!hasReferral ? "i have a referral code" : "no referral code"}
             </div>
 
             {hasReferral && (
@@ -79,7 +79,7 @@ export default function Register() {
           <div className="already">
             already on Sustain?
             <span>
-              <Link to="/login"> Login</Link>
+              <Link to="/login"> login</Link>
             </span>
           </div>
 

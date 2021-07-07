@@ -34,13 +34,13 @@ export default function Login() {
               name="password"
               rules={[
                 { required: true, message: "password required!" },
-                { min: 6, message: "Minimum: 6 characters." },
+                { min: 6, message: "minimum: 6 characters." },
               ]}
             >
               <Input type="password" placeholder="password" />
             </Form.Item>
             <div className="forgot">
-              <Link to="/forgot-password"> Forgot Password?</Link>
+              <Link to="/forgot-password"> forgot password?</Link>
             </div>
 
             <Form.Item>
@@ -56,7 +56,7 @@ export default function Login() {
           <div className="already">
             new to Sustain?
             <span>
-              <Link to="/register"> Register</Link>
+              <Link to="/register"> register</Link>
             </span>
           </div>
         </div>
