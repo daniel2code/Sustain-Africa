@@ -18,7 +18,9 @@ export default function Navbar() {
         </div>
 
         <div className="row-two">
-          <div className="top">sustain.africa</div>
+          <div className="top">
+            <Link to="/">sustain.africa</Link>
+          </div>
           <div className="bottom">
             alternative ways to move funds around the world.
           </div>
