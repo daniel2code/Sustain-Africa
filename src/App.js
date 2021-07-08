@@ -8,12 +8,6 @@ import DealsList from "./pages/DealsList/DealsList";
 import Register from "./pages/Register/Register";
 import Login from "./pages/Login/Login";
 
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { fab } from "@fortawesome/free-brands-svg-icons";
-import { faTwitter, faEnvelope } from "@fortawesome/free-solid-svg-icons";
-
-library.add(fab, faTwitter, faEnvelope);
-
 function App() {
   return (
     <div className="App">
