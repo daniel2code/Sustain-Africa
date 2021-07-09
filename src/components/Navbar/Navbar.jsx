@@ -28,7 +28,6 @@ export default function Navbar() {
         </div>
         <div className="row-three">
           <div className="top">
-            {" "}
             email: help@sustain.africa
           </div>
           <div className="bottom">
