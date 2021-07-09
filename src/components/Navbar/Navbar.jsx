@@ -29,7 +29,7 @@ export default function Navbar() {
         <div className="row-three">
           <div className="top">
             {" "}
-            <MessageOutlined /> help@sustain.africa
+            email: help@sustain.africa
           </div>
           <div className="bottom">
             {" "}
