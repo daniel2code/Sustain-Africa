@@ -1,21 +1,39 @@
 import React from "react";
 import { Button } from "antd";
-import { Link } from "react-router-dom";
-import { TwitterOutlined } from "@ant-design/icons";
+import { Link, useHistory, useLocation } from "react-router-dom";
+import { TwitterOutlined, ArrowLeftOutlined } from "@ant-design/icons";
 
 import "./Navbar.scss";
 
 export default function Navbar() {
+  const history = useHistory();
+  const location = useLocation();
   return (
     <div className="navbar-container">
       <div className="navbar-wrapper">
         <div className="row-one">
-          <Button size="small" type="link">
-            <Link to="/login">login</Link>
-          </Button>
-          <Button type="primary" size="small">
-            <Link to="/register">register</Link>
-          </Button>
+          <div
+            className="left"
+            onClick={() => {
+              history.goBack();
+            }}
+          >
+            {location.pathname !== "/" && (
+              <span>
+                <ArrowLeftOutlined />
+                back
+              </span>
+            )}
+          </div>
+
+          <div className="right">
+            <Button size="small" type="link">
+              <Link to="/login">login</Link>
+            </Button>
+            <Button type="primary" size="small">
+              <Link to="/register">register</Link>
+            </Button>
+          </div>
         </div>
 
         <div className="row-two">

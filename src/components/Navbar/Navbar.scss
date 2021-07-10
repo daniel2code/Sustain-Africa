@@ -11,8 +11,22 @@
     .row-one {
       display: flex;
       flex-direction: row;
-      justify-content: flex-end;
+      justify-content: space-between;
       height: 45px;
+      .left {
+        padding-left: 10px;
+        margin: auto 0;
+        color: #ed1450;
+        cursor: pointer;
+        &:active {
+          opacity: 0.7;
+        }
+      }
+      .right {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+      }
       .ant-btn {
         margin-top: auto;
         margin-bottom: auto;
