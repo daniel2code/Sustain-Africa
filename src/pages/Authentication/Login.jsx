@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 
-import "./Login.scss";
+import "./style.scss";
 
 export default function Login() {
   const onFinish = async (values) => {

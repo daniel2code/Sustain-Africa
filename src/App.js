@@ -5,8 +5,10 @@ import { Route, Switch } from "react-router-dom";
 
 import Navbar from "./components/Navbar/Navbar";
 import DealsList from "./pages/DealsList/DealsList";
-import Register from "./pages/Register/Register";
-import Login from "./pages/Login/Login";
+import Register from "./pages/Authentication/Register";
+import Login from "./pages/Authentication/Login";
+import VerifyEmail from "./pages/Authentication/VerifyEmail";
+import VerifyPhone from "./pages/Authentication/VerifyPhone";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route exact path="/" component={DealsList} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
+          <Route exact path="/verify-email" component={VerifyEmail} />
+          <Route exact path="/verify-phone" component={VerifyPhone} />
         </Switch>
       </Layout>
     </div>

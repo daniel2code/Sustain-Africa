@@ -28,6 +28,9 @@
         margin-bottom: 20px;
         font-size: 12px;
         color: rgb(87, 87, 87);
+        &.custom {
+          margin-bottom: 4px;
+        }
         .desc-link {
           color: #ed1450;
           font-weight: 500;
@@ -42,7 +45,7 @@
       .referral {
         color: #ed1450;
         cursor: pointer;
-        margin-bottom: 5px;
+        margin-bottom: 5 px;
         font-size: 12px;
         &:active {
           opacity: 0.7;
@@ -61,6 +64,18 @@
         margin-top: 20px;
         border-color: #ed1450;
         background: #ed1450;
+      }
+
+      .verify-form {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .ant-row.ant-form-item {
+          width: 17%;
+        }
+        .ant-form-item {
+          margin-bottom: 10px;
+        }
       }
     }
     .already {
@@ -88,4 +103,13 @@ a {
 
 .ant-input:hover {
   border-color: #ed1450;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.form-control {
+  width: 100% !important;
 }

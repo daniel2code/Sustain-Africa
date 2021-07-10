@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 
-import "./../Login/Login.scss";
+import "./style.scss";
 
-export default function Register() {
+export default function Register({ history }) {
   const [hasReferral, setHasReferral] = useState(false);
 
   const onFinish = async (values) => {
     console.log(values);
+    history.push("/verify-email");
   };
 
   return (
