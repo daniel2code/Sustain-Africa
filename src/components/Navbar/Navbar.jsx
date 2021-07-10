@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import { Link } from "react-router-dom";
-import { MessageOutlined, TwitterOutlined } from "@ant-design/icons";
+import { TwitterOutlined } from "@ant-design/icons";
 
 import "./Navbar.scss";
 
@@ -27,9 +27,7 @@ export default function Navbar() {
           </div>
         </div>
         <div className="row-three">
-          <div className="top">
-            email: help@sustain.africa
-          </div>
+          <div className="top">email: help@sustain.africa</div>
           <div className="bottom">
             {" "}
             <TwitterOutlined /> @sustainafrica
