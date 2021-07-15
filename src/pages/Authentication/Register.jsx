@@ -29,7 +29,14 @@ export default function Register({ history }) {
             onFinish={onFinish}
           >
             <Form.Item
-              style={{ marginBottom: "25px" }}
+              style={{ marginBottom: "20px" }}
+              name="username"
+              rules={[{ required: true, message: "username required!" }]}
+            >
+              <Input placeholder="username" />
+            </Form.Item>
+            <Form.Item
+              style={{ marginBottom: "20px" }}
               name="email"
               rules={[{ required: true, message: "email required!" }]}
             >
@@ -37,7 +44,7 @@ export default function Register({ history }) {
             </Form.Item>
 
             <Form.Item
-              style={{ marginBottom: "25px" }}
+              style={{ marginBottom: "20px" }}
               name="password"
               rules={[
                 { required: true, message: "password required!" },
@@ -45,6 +52,13 @@ export default function Register({ history }) {
               ]}
             >
               <Input type="password" placeholder="create a password" />
+            </Form.Item>
+            <Form.Item
+              style={{ marginBottom: "20px" }}
+              name="location"
+              rules={[{ required: true, message: "location required!" }]}
+            >
+              <Input placeholder="location e.g. lagos, nigeria" />
             </Form.Item>
 
             <div
