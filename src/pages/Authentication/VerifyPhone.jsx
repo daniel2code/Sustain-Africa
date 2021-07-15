@@ -22,11 +22,10 @@ export default function VerifyPhone() {
     <div className="form-container">
       <div className="form-wrapper">
         <div className="form">
-          <div className="title">verify your phone number</div>
+          <div className="title">add your phone number</div>
           <div className="desc">
-            we’ve sent a verification code to please provide your phone number
-            to complete the setup of your new Sustain account. We will send a
-            6-digit code via SMS to verify your phone number.
+            add a phone number to complete the setup of your new Sustain account. you will
+            be required to verify this number later.
           </div>
           <div className="desc custom">enter phone number:</div>
           <Form
