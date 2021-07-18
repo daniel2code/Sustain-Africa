@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-// import { Link } from "react-router-dom";
 import { Form, Button } from "antd";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -24,8 +23,8 @@ export default function VerifyPhone() {
         <div className="form">
           <div className="title">add your phone number</div>
           <div className="desc">
-            add a phone number to complete the setup of your new Sustain account. you will
-            be required to verify this number later.
+            add a phone number to complete the setup of your new Sustain
+            account. you will be required to verify this number later.
           </div>
           <div className="desc custom">enter phone number:</div>
           <Form

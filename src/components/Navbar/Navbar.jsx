@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { TwitterOutlined, ArrowLeftOutlined } from "@ant-design/icons";
+import { TwitterOutlined, LeftOutlined } from "@ant-design/icons";
 
 import "./Navbar.scss";
 
@@ -20,7 +20,7 @@ export default function Navbar() {
           >
             {location.pathname !== "/" && (
               <span>
-                <ArrowLeftOutlined />
+                <LeftOutlined style={{ marginRight: "2px" }} />
                 back
               </span>
             )}
