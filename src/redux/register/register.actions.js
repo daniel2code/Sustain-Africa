@@ -1,9 +1,4 @@
-export const setUserType = (type) => ({
-  type: "SET_USER_TYPE",
-  payload: { type },
-});
-
-export const setUserID = (id) => ({
-  type: "GET_USER_ID",
-  payload: { id },
+export const setUserInfo = (userInfo) => ({
+  type: "SET_USER_INFO",
+  payload: { userInfo },
 });

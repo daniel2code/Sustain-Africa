@@ -1,5 +1,5 @@
 const INITIAL_STATE = {
-  userInfo: "",
+  userInfo: {},
 };
 
 const registerReducer = (state = INITIAL_STATE, action) => {
@@ -7,7 +7,7 @@ const registerReducer = (state = INITIAL_STATE, action) => {
     case "SET_USER_INFO":
       return {
         ...state,
-        userInfo: action.payload.type,
+        userInfo: action.payload.userInfo,
       };
     default:
       return state;

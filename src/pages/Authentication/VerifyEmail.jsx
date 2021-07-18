@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 // import { Link } from "react-router-dom";
 import { Form, Input, Button } from "antd";
+import { useSelector } from "react-redux";
 
 import "./style.scss";
 
@@ -12,6 +13,8 @@ export default function VerifyEmail({ history }) {
   const input5 = useRef(null);
 
   const [inputValues, setInputValues] = useState(["", "", "", "", ""]);
+
+  const registerInfo = useSelector((state) => state.register);
 
   const onFinish = async () => {
     console.log(inputValues);
@@ -49,8 +52,12 @@ export default function VerifyEmail({ history }) {
           <div className="title">verify your email</div>
           <div className="desc">
             we’ve sent a verification code to{" "}
-            <span className="desc-link">test@gmail.com</span>. please enter that
-            code below to verify your email address.
+            <span className="desc-link">
+              {registerInfo?.userInfo?.email
+                ? registerInfo?.userInfo?.email
+                : "your email"}
+            </span>
+            . please enter that code below to verify your email address.
           </div>
           <div className="desc custom">enter code:</div>
           <div className="verify-form">

@@ -1,16 +1,71 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Form, Input, Button } from "antd";
+import { Form, Input, Button, message } from "antd";
+import { useDispatch } from "react-redux";
 
 import "./style.scss";
 import { instance } from "./../../utils/API";
+import { setUserInfo } from "./../../redux/register/register.actions";
 
 export default function Register({ history }) {
   const [hasReferral, setHasReferral] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const onFinish = async (values) => {
-    console.log(values);
-    // history.push("/verify-email");
+    setButtonLoading(true);
+
+    const { username, email, password, location, referrer } = values;
+
+    const data = new FormData();
+
+    data.append("user_email", email);
+    data.append("user_password", password);
+    data.append("user_name", username);
+    data.append("user_name_front", "godisgood");
+    data.append("user_location", location);
+    data.append("referrer", referrer);
+
+    instance
+      .post("/register", data)
+      .then(function (response) {
+        if (response?.data?.status) {
+          requestVerificationCode(
+            response?.data?.data?.email,
+            response?.data?.data?.user_name
+          );
+          dispatch(setUserInfo(response?.data?.data));
+        } else {
+          message.error(response?.data?.message);
+          setButtonLoading(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const requestVerificationCode = async (email, username) => {
+    const data = new FormData();
+    data.append("send_verification", 1);
+    data.append("verify_email", email);
+    data.append("verify_username", username);
+
+    instance
+      .post("/register", data)
+      .then(function (response) {
+        if (response?.data?.status) {
+          message.success(response?.data?.message);
+          setButtonLoading(false);
+          history.push("/verify-email");
+        } else {
+          message.error(response?.data?.message);
+          setButtonLoading(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -90,16 +145,16 @@ export default function Register({ history }) {
                 setHasReferral(!hasReferral);
               }}
             >
-              {!hasReferral ? "i have a referral code" : "no referral code"}
+              {!hasReferral ? "i have a referrer" : "no referrer"}
             </div>
 
             {hasReferral && (
               <Form.Item
                 style={{ marginBottom: "25px" }}
-                name="referral"
-                rules={[{ required: true, message: "referral code required!" }]}
+                name="referrer"
+                rules={[{ required: true, message: "referrer required!" }]}
               >
-                <Input placeholder="enter referral code" />
+                <Input placeholder="enter referrer username" />
               </Form.Item>
             )}
 
@@ -108,6 +163,7 @@ export default function Register({ history }) {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                loading={buttonLoading}
               >
                 Continue
               </Button>
