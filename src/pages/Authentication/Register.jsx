@@ -3,13 +3,14 @@ import { Link } from "react-router-dom";
 import { Form, Input, Button } from "antd";
 
 import "./style.scss";
+import { instance } from "./../../utils/API";
 
 export default function Register({ history }) {
   const [hasReferral, setHasReferral] = useState(false);
 
   const onFinish = async (values) => {
     console.log(values);
-    history.push("/verify-email");
+    // history.push("/verify-email");
   };
 
   return (
@@ -46,12 +47,34 @@ export default function Register({ history }) {
             <Form.Item
               style={{ marginBottom: "20px" }}
               name="password"
+              hasFeedback
               rules={[
                 { required: true, message: "password required!" },
                 { min: 6, message: "minimum: 6 characters." },
               ]}
             >
-              <Input type="password" placeholder="create a password" />
+              <Input.Password placeholder="create a password" />
+            </Form.Item>
+            <Form.Item
+              name="confirm"
+              dependencies={["password"]}
+              hasFeedback
+              rules={[
+                {
+                  required: true,
+                  message: "please confirm your password!",
+                },
+                ({ getFieldValue }) => ({
+                  validator(rule, value) {
+                    if (!value || getFieldValue("password") === value) {
+                      return Promise.resolve();
+                    }
+                    return Promise.reject("passwords do not match!");
+                  },
+                }),
+              ]}
+            >
+              <Input.Password placeholder="confirm password" />
             </Form.Item>
             <Form.Item
               style={{ marginBottom: "20px" }}

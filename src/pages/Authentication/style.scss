@@ -104,12 +104,15 @@ a {
 }
 
 .ant-input:focus,
-.ant-input-focused {
+.ant-input-focused,
+.ant-input-affix-wrapper:focus,
+.ant-input-affix-wrapper-focused {
   border-color: #ed1450;
   box-shadow: 0 0 0 2px #eec4d0;
 }
 
-.ant-input:hover {
+.ant-input:hover,
+.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
   border-color: #ed1450;
 }
 
