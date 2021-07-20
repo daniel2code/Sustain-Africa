@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/verify-email" component={VerifyEmail} />
-          <Route exact path="/verify-phone" component={VerifyPhone} />
+          <Route exact path="/add-phone" component={VerifyPhone} />
         </Switch>
       </Layout>
     </div>

@@ -8,9 +8,15 @@ import { instance } from "./../../utils/API";
 
 export default function VerifyEmail({ history }) {
   useEffect(() => {
-    if (!registerInfo?.userInfo?.email) {
-      history.push("register");
+    if (!userState?.profile && !registerState?.userInfo?.email) {
+      history.push("/register");
+    } else if (
+      userState?.profile?.is_phone_no_verification_skipped === "1" ||
+      userState?.profile?.is_phone_no_verified === "1"
+    ) {
+      setHasPhone(true);
     }
+
     //eslint-disable-next-line
   }, []);
 
@@ -23,8 +29,10 @@ export default function VerifyEmail({ history }) {
 
   const [inputValues, setInputValues] = useState(["", "", "", "", "", ""]);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [hasPhone, setHasPhone] = useState(false);
 
-  const registerInfo = useSelector((state) => state.register);
+  const registerState = useSelector((state) => state.register);
+  const userState = useSelector((state) => state.user);
 
   const onFinish = async () => {
     const inputValuesJoined = inputValues.join("");
@@ -32,8 +40,16 @@ export default function VerifyEmail({ history }) {
 
     const data = new FormData();
     data.append("match_verification", 1);
-    data.append("verify_email", registerInfo?.userInfo?.email);
-    data.append("verify_username", registerInfo?.userInfo?.user_name);
+    data.append(
+      "verify_email",
+      hasPhone ? userState?.profile?.email : registerState?.userInfo?.email
+    );
+    data.append(
+      "verify_username",
+      hasPhone
+        ? userState?.profile?.user_name
+        : registerState?.userInfo?.user_name
+    );
     data.append("verification_code", inputValuesJoined);
 
     instance
@@ -42,7 +58,42 @@ export default function VerifyEmail({ history }) {
         if (response?.data?.status) {
           setButtonLoading(false);
           message.success(response?.data?.message);
-          history.push("/add-phone");
+          if (hasPhone) {
+            history.push("/");
+          } else {
+            history.push("/add-phone");
+          }
+        } else {
+          message.error(response?.data?.message);
+          setButtonLoading(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const requestVerificationCode = async () => {
+    const data = new FormData();
+    data.append("send_verification", 1);
+    data.append(
+      "verify_email",
+      hasPhone ? userState?.profile?.email : registerState?.userInfo?.email
+    );
+    data.append(
+      "verify_username",
+      hasPhone
+        ? userState?.profile?.user_name
+        : registerState?.userInfo?.user_name
+    );
+
+    instance
+      .post("/register", data)
+      .then(function (response) {
+        if (response?.data?.status) {
+          message.success(response?.data?.message);
+          setButtonLoading(false);
+          history.push("/verify-email");
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
@@ -77,6 +128,7 @@ export default function VerifyEmail({ history }) {
       setInputValues(dataCopy);
     }
   };
+
   return (
     <div className="form-container">
       <div className="form-wrapper">
@@ -85,8 +137,8 @@ export default function VerifyEmail({ history }) {
           <div className="desc">
             we’ve sent a verification code to{" "}
             <span className="desc-link">
-              {registerInfo?.userInfo?.email
-                ? registerInfo?.userInfo?.email
+              {registerState?.userInfo?.email
+                ? registerState?.userInfo?.email
                 : "your email"}
             </span>
             . please enter that code below to verify your email address.
@@ -157,7 +209,12 @@ export default function VerifyEmail({ history }) {
           </div>
           <div className="desc custom">code valid for 30 mins</div>
 
-          <div className="referral" onClick={() => {}}>
+          <div
+            className="referral"
+            onClick={() => {
+              requestVerificationCode();
+            }}
+          >
             resend code
           </div>
           <Button
