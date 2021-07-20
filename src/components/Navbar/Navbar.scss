@@ -91,3 +91,12 @@
   margin-right: 2px;
   transform: translateY(1px);
 }
+
+.ant-dropdown-menu {
+  min-width: 100px;
+  text-align: center;
+  .ant-dropdown-menu-item,
+  .ant-dropdown-menu-submenu-title {
+    font-size: 13px;
+  }
+}
