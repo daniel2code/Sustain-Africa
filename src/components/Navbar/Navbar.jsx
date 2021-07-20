@@ -1,11 +1,13 @@
 import React from "react";
 import { Button } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { TwitterOutlined, LeftOutlined } from "@ant-design/icons";
+import { TwitterOutlined, LeftOutlined, DownOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 import "./Navbar.scss";
 
 export default function Navbar() {
+  const userState = useSelector((state) => state.user);
   const history = useHistory();
   const location = useLocation();
   return (
@@ -27,12 +29,24 @@ export default function Navbar() {
           </div>
 
           <div className="right">
-            <Button size="small" type="link">
-              <Link to="/login">login</Link>
-            </Button>
-            <Button type="primary" size="small">
-              <Link to="/register">register</Link>
-            </Button>
+            {userState?.profile ? (
+              <>
+                <div className="balance">$10.39</div>
+                <div className="name">
+                  {userState?.profile?.user_name}{" "}
+                  <DownOutlined style={{ fontSize: "13px" }} />
+                </div>
+              </>
+            ) : (
+              <>
+                <Button size="small" type="link">
+                  <Link to="/login">login</Link>
+                </Button>
+                <Button type="primary" size="small">
+                  <Link to="/register">register</Link>
+                </Button>
+              </>
+            )}
           </div>
         </div>
 
