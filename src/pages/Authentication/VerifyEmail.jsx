@@ -138,7 +138,9 @@ export default function VerifyEmail({ history }) {
           <div className="desc">
             we’ve sent a verification code to{" "}
             <span className="desc-link">
-              {registerState?.userInfo?.email
+              {userState?.profile?.email
+                ? userState?.profile?.email
+                : registerState?.userInfo?.email
                 ? registerState?.userInfo?.email
                 : "your email"}
             </span>
