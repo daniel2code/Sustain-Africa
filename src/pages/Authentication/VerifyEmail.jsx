@@ -16,7 +16,6 @@ export default function VerifyEmail({ history }) {
     ) {
       setHasPhone(true);
     }
-
     //eslint-disable-next-line
   }, []);
 
