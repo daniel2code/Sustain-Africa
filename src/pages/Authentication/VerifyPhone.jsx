@@ -1,20 +1,74 @@
-import React, { useState } from "react";
-import { Form, Button } from "antd";
+import React, { useState, useEffect } from "react";
+import { Form, Button, message } from "antd";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
+import { useSelector } from "react-redux";
 
 import "./style.scss";
+import { instance } from "./../../utils/API";
 
-export default function VerifyPhone() {
+export default function VerifyPhone({ history }) {
+  useEffect(() => {
+    if (!registerInfo?.userInfo?.email) {
+      history.push("register");
+    }
+    //eslint-disable-next-line
+  }, []);
+
   const [input, setInput] = useState("");
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const registerInfo = useSelector((state) => state.register);
 
   const handleInputChange = (value) => {
     setInput(value);
-    console.log(value);
   };
 
-  const onFinish = async (values) => {
-    console.log(values);
+  const onFinish = async () => {
+    setButtonLoading(true);
+
+    const data = new FormData();
+    data.append("user_name", registerInfo?.userInfo?.user_name);
+    data.append("user_phone_no", input);
+
+    instance
+      .post("/register", data)
+      .then(function (response) {
+        if (response?.data?.status) {
+          setButtonLoading(false);
+          message.success(response?.data?.message);
+          history.push("/");
+        } else {
+          message.error(response?.data?.message);
+          setButtonLoading(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const skipPhoneVerification = async () => {
+    setButtonLoading(true);
+
+    const data = new FormData();
+    data.append("user_name", registerInfo?.userInfo?.user_name);
+    data.append("skip_phone_no_verification", 1);
+
+    instance
+      .post("/register", data)
+      .then(function (response) {
+        if (response?.data?.status) {
+          setButtonLoading(false);
+          message.success(response?.data?.message);
+          history.push("/");
+        } else {
+          message.error(response?.data?.message);
+          setButtonLoading(false);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   return (
@@ -45,21 +99,23 @@ export default function VerifyPhone() {
                 }}
               />
             </Form.Item>
-            {input.length > 8 ? (
-              <div style={{ marginTop: "-10px" }} className="referral">
-                send code
-              </div>
-            ) : (
-              <div style={{ marginTop: "-10px" }} className="referral">
-                skip
-              </div>
-            )}
+
+            <div
+              style={{ marginTop: "-10px" }}
+              className="referral"
+              onClick={() => {
+                skipPhoneVerification();
+              }}
+            >
+              skip
+            </div>
 
             <Form.Item>
               <Button
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                loading={buttonLoading}
               >
                 Continue
               </Button>
