@@ -1,8 +1,9 @@
 import axios from "axios";
 
 export const instance = axios.create({
-  baseURL:
-    "https://astro-cors-server.herokuapp.com/fetch/http://sustain.herogloballogistics.com/factory",
+  // baseURL:
+  //   "https://astro-cors-server.herokuapp.com/fetch/http://sustain.herogloballogistics.com/factory",
+  baseURL: "http://sustain.herogloballogistics.com/factory",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/x-www-form-urlencoded",
