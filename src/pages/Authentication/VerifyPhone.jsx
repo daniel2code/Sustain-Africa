@@ -4,7 +4,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { useSelector } from "react-redux";
 
-import "./style.scss";
+import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
 
 export default function VerifyPhone({ history }) {
@@ -44,6 +44,7 @@ export default function VerifyPhone({ history }) {
       })
       .catch(function (error) {
         console.log(error);
+        setButtonLoading(false);
       });
   };
 
@@ -68,6 +69,7 @@ export default function VerifyPhone({ history }) {
       })
       .catch(function (error) {
         console.log(error);
+        setButtonLoading(false);
       });
   };
 

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
 
-import "./style.scss";
+import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
 import { setProfileInfo } from "./../../redux/user/user.actions";
 
@@ -42,6 +42,7 @@ export default function Login({ history }) {
       })
       .catch(function (error) {
         console.log(error);
+        setButtonLoading(false);
       });
   };
 
@@ -65,6 +66,7 @@ export default function Login({ history }) {
       })
       .catch(function (error) {
         console.log(error);
+        setButtonLoading(false);
       });
   };
 

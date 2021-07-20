@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Form, Input, Button, message } from "antd";
 import { useSelector } from "react-redux";
 
-import "./style.scss";
+import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
 
 export default function VerifyEmail({ history }) {
@@ -70,6 +70,7 @@ export default function VerifyEmail({ history }) {
       })
       .catch(function (error) {
         console.log(error);
+        setButtonLoading(false);
       });
   };
 
@@ -101,6 +102,7 @@ export default function VerifyEmail({ history }) {
       })
       .catch(function (error) {
         console.log(error);
+        setButtonLoading(false);
       });
   };
 
