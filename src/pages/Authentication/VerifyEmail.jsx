@@ -30,6 +30,7 @@ export default function VerifyEmail({ history }) {
   const [inputValues, setInputValues] = useState(["", "", "", "", "", ""]);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [hasPhone, setHasPhone] = useState(false);
+  const [showResendCode, setShowResendCode] = useState(false);
 
   const registerState = useSelector((state) => state.register);
   const userState = useSelector((state) => state.user);
@@ -209,14 +210,25 @@ export default function VerifyEmail({ history }) {
           </div>
           <div className="desc custom">code valid for 30 mins</div>
 
-          <div
-            className="referral"
-            onClick={() => {
-              requestVerificationCode();
-            }}
-          >
-            resend code
-          </div>
+          {showResendCode ? (
+            <div
+              className="referral"
+              onClick={() => {
+                requestVerificationCode();
+              }}
+            >
+              resend code
+            </div>
+          ) : (
+            <div
+              className="referral"
+              onClick={() => {
+                setShowResendCode(true);
+              }}
+            >
+              i didn't receive the code
+            </div>
+          )}
           <Button
             type="primary"
             loading={buttonLoading}
