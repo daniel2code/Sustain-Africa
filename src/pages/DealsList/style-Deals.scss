@@ -1,0 +1,33 @@
+.deals-container {
+  width: 100%;
+  .deals-wrapper {
+    width: 95%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    .switch-bar {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      // margin: 10px 0;
+      border-left: 1px solid rgb(235, 235, 235);
+      border-right: 1px solid rgb(238, 238, 238);
+      border-bottom: 1px solid rgb(238, 238, 238);
+      padding: 10px;
+      .left {
+        color: #ed1450;
+        font-weight: 500;
+        margin: auto 0;
+      }
+      .right {
+        display: flex;
+        flex-direction: row;
+        margin: auto 0;
+        .arrows {
+          margin: auto 10px;
+          color: #ed1450;
+        }
+      }
+    }
+  }
+}
