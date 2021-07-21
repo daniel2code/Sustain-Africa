@@ -1,7 +1,7 @@
 import React from "react";
 import { Select } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
-
+import DealItem from "./../../components/DealItem/DealItem";
 import "./style-Deals.scss";
 
 const { Option } = Select;
@@ -51,7 +51,13 @@ export default function DealsList() {
           </div>
         </div>
 
-        <div className="deals-list"></div>
+        <div className="deals-list">
+          <DealItem />
+          <DealItem />
+          <DealItem />
+          <DealItem />
+          <DealItem />
+        </div>
       </div>
     </div>
   );
