@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
+import randomWords from "random-words";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
@@ -16,13 +17,13 @@ export default function Register({ history }) {
     setButtonLoading(true);
 
     const { username, email, password, location, referrer } = values;
+    const randomUsername = randomWords({ exactly: 2, join: "" });
 
     const data = new FormData();
-
     data.append("user_email", email);
     data.append("user_password", password);
     data.append("user_name", username);
-    data.append("user_name_front", "godisgood");
+    data.append("user_name_front", randomUsername);
     data.append("user_location", location);
     data.append("referrer", referrer);
 
