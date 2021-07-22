@@ -38,15 +38,14 @@ export default function DealItem() {
                 </div>
 
                 <div className="deal-item-row-three">
-                    <span className="username">@marion22</span> deals closed{" "}
-                    <span className="bold">92</span> <EllipsisOutlined /> not closed{" "}
-                    <span className="bold">156</span> <EllipsisOutlined /> reviews{" "}
-                    <span className="bold">14</span>
-
+                    <span className="username">@marion22</span>
                 </div>
 
                 <div className="deal-item-row-three">
-                    status{" "} <span className="status">online</span>
+                    deals closed{" "}<span className="bold">92</span> <EllipsisOutlined /> not closed{" "}
+                    <span className="bold">156</span> <EllipsisOutlined /> reviews{" "}
+                    <span className="bold">14</span> <EllipsisOutlined /> status{" "} <span className="status">online</span>
+
                 </div>
 
                 <div className="deal-item-row-four">
@@ -59,7 +58,7 @@ export default function DealItem() {
             </span>
                     </div>
                     <div className="right">
-                        <button>chat</button>
+                        <button>discuss</button>
                     </div>
                 </div>
             </div>
