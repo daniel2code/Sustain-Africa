@@ -1,5 +1,6 @@
 .deals-container {
   width: 100%;
+  margin-top: 20px;
   .deals-wrapper {
     width: 95%;
     max-width: 800px;
@@ -9,12 +10,12 @@
     .switch-bar {
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
+      justify-content: space-between;
       border-bottom: 1px solid rgb(238, 238, 238);
       padding: 10px;
       .left {
         color: #ed1450;
-        font-weight: 500;
+        font-weight: bold;
         margin: auto 0;
         font-size: 16px;
       }
@@ -22,9 +23,24 @@
         display: flex;
         flex-direction: row;
         margin: auto 0;
+        .ant-select {
+          border: 2px solid #ed1450 !important;
+          text-align: center !important;
+          font-weight: bold !important;
+          color: #ed1450 !important;
+          font-size: 16px !important;
+        }
+
+        .ant-select-item-option-content {
+          text-align: center !important;
+        }
         .arrows {
           margin: auto 10px;
           color: #ed1450;
+        }
+
+        .ant-select-arrow {
+          color: #ed1450 !important;
         }
       }
     }
