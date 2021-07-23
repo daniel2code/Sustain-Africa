@@ -1,7 +1,9 @@
 import React from "react";
 import { Select } from "antd";
+import { Divider } from 'antd';
 import { SwapOutlined } from "@ant-design/icons";
 import { DownOutlined } from "@ant-design/icons";
+
 import DealItem from "./../../components/DealItem/DealItem";
 import "./style-Deals.scss";
 
@@ -29,7 +31,9 @@ export default function DealsList() {
       <div className="deals-wrapper">
         <div className="switch-bar">
           <div className="left">deals</div>
-          <div className="instrument-select">
+            <Divider>Select an Instrument</Divider>
+
+            <div className="instrument-select">
               <Select
                 showSearch
                 suffixIcon={
