@@ -48,7 +48,7 @@
           margin: auto 0;
           color: #ed1450;
           font-weight: 500;
-          font-size: 13px;
+          // font-size: 13px;
           cursor: pointer;
 
           &:active {
@@ -113,9 +113,4 @@
 .ant-dropdown-menu {
   min-width: 100px;
   text-align: center;
-
-  .ant-dropdown-menu-item,
-  .ant-dropdown-menu-submenu-title {
-    font-size: 13px;
-  }
 }
