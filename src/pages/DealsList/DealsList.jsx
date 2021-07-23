@@ -35,7 +35,6 @@ export default function DealsList() {
                         <div className="right">
                             <div className="filter-by">
                                 <Select
-                                    showSearch
                                     suffixIcon={
                                         <DownOutlined
                                             style={{
@@ -49,11 +48,6 @@ export default function DealsList() {
                                     onChange={onChange}
                                     onFocus={onFocus}
                                     onBlur={onBlur}
-                                    onSearch={onSearch}
-                                    filterOption={(input, option) =>
-                                        option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                                        0
-                                    }
                                 >
                                     <Option value="newest">newest</Option>
                                     <Option value="lowToHigh">score: low to high</Option>
