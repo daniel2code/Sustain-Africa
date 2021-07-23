@@ -7,13 +7,10 @@
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
+    padding: 10px;
 
     .switch-bar {
-      display: flex;
-      flex-direction: row;
-      justify-content: space-between;
       border-bottom: 1px solid rgb(238, 238, 238);
-      padding: 10px 3px;
       padding-bottom: 20px;
 
       .left {
@@ -21,17 +18,22 @@
         font-weight: bold;
         margin: auto 0;
         font-size: 24px;
+        margin-bottom: 20px;
+
       }
 
-      .right {
+      .instrument-select {
         display: flex;
         flex-direction: row;
         margin: auto 0;
+        border-top: 1px solid #eeeeee;
+        padding-top: 20px;
 
         .ant-select {
           font-weight: 500;
           color: #ed1450;
           font-size: 16px;
+          width: 48%;
         }
 
         .ant-select:not(.ant-select-customize-input) .ant-select-selector {
@@ -41,6 +43,8 @@
         .arrows {
           margin: auto 8px;
           color: #ed1450;
+          width: 4%;
+          text-align: center;
         }
 
         .ant-select-arrow {

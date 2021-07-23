@@ -29,8 +29,7 @@ export default function DealsList() {
       <div className="deals-wrapper">
         <div className="switch-bar">
           <div className="left">deals</div>
-          <div className="right">
-            <div>
+          <div className="instrument-select">
               <Select
                 showSearch
                 suffixIcon={
@@ -41,7 +40,6 @@ export default function DealsList() {
                     }}
                   />
                 }
-                style={{ width: 110 }}
                 placeholder="Select an instrument"
                 defaultValue="paypal"
                 optionFilterProp="children"
@@ -65,7 +63,7 @@ export default function DealsList() {
                 <Option value="greendot">greendot</Option>
                 <Option value="ethereum">ethereum</Option>
               </Select>
-            </div>
+
             <div className="arrows">
               <SwapOutlined
                 style={{
@@ -75,7 +73,7 @@ export default function DealsList() {
                 }}
               />
             </div>
-            <div>
+
               <Select
                 showSearch
                 suffixIcon={
@@ -86,7 +84,6 @@ export default function DealsList() {
                     }}
                   />
                 }
-                style={{ width: 110 }}
                 placeholder="Select an instrument"
                 defaultValue="bitcoin"
                 optionFilterProp="children"
@@ -110,7 +107,7 @@ export default function DealsList() {
                 <Option value="greendot">greendot</Option>
                 <Option value="ethereum">ethereum</Option>
               </Select>
-            </div>
+
           </div>
         </div>
 
