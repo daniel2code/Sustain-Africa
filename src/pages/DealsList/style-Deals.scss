@@ -13,7 +13,7 @@
       flex-direction: row;
       justify-content: space-between;
       border-bottom: 1px solid rgb(238, 238, 238);
-      padding: 10px;
+      padding: 10px 3px;
       padding-bottom: 20px;
 
       .left {
@@ -29,10 +29,13 @@
         margin: auto 0;
 
         .ant-select {
-          border: 2px solid #ed1450;
-          font-weight: bolder;
+          font-weight: 500;
           color: #ed1450;
           font-size: 16px;
+        }
+
+        .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+          border: 2px solid #ed1450;
         }
 
         .arrows {
