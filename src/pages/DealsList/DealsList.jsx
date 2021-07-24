@@ -43,7 +43,7 @@ export default function DealsList() {
                                             }}
                                         />
                                     }
-                                    placeholder="filter by"
+                                    placeholder="filter by..."
                                     optionFilterProp="children"
                                     onChange={onChange}
                                     onFocus={onFocus}
@@ -83,7 +83,7 @@ export default function DealsList() {
                                 0
                             }
                         >
-                            <Option value="bank">bank</Option>
+                            <Option value="bank funds">bank funds</Option>
                             <Option value="paypal">paypal</Option>
                             <Option value="cash">cash</Option>
                             <Option value="skrill">skrill</Option>
@@ -132,7 +132,7 @@ export default function DealsList() {
                             <Option value="cash">cash</Option>
                             <Option value="skrill">skrill</Option>
                             <Option value="venmo">venmo</Option>
-                            <Option value="bank">bank</Option>
+                            <Option value="bank funds">bank funds</Option>
                             <Option value="cashapp">cashapp</Option>
                             <Option value="moneygram">moneygram</Option>
                             <Option value="greendot">greendot</Option>
