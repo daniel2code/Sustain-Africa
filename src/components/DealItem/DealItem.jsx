@@ -1,5 +1,5 @@
 import React from "react";
-import {Tooltip, Button} from 'antd';
+import { Tooltip } from "antd";
 
 import {
   LikeOutlined,
@@ -10,10 +10,13 @@ import {
 
 import "./deal-item.scss";
 
-
 const dealTag = <span>i am picking bank funds and will remit to bitcoin</span>;
-const dealLocationDetails = <span>we can discuss via whatsapp video call and/or voice call. chat me up for details.</span>;
-  const buttonWidth = 70;
+const dealLocationDetails = (
+  <span>
+    we can discuss via whatsapp video call and/or voice call. chat me up for
+    details.
+  </span>
+);
 
 export default function DealItem() {
   return (
@@ -28,19 +31,21 @@ export default function DealItem() {
             <EllipsisOutlined /> max <span className="bold">1m</span>{" "}
             <EllipsisOutlined /> rate <span className="bold">20%</span>{" "}
             <EllipsisOutlined /> discussion{" "}
-            <Tooltip placement="top" title={dealLocationDetails}><span className="discussion">WhatsApp</span></Tooltip>
+            <Tooltip placement="top" title={dealLocationDetails}>
+              <span className="discussion">WhatsApp</span>
+            </Tooltip>
           </div>
           <Tooltip placement="top" title={dealTag}>
-          <div className="right">
-            bank funds{" "}
-            <ArrowRightOutlined
-              style={{
-                strokeWidth: "50",
-                stroke: "white",
-              }}
-            />{" "}
-            bitcoin
-          </div>
+            <div className="right">
+              bank funds{" "}
+              <ArrowRightOutlined
+                style={{
+                  strokeWidth: "50",
+                  stroke: "white",
+                }}
+              />{" "}
+              bitcoin
+            </div>
           </Tooltip>
         </div>
 
