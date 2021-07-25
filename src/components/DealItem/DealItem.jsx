@@ -1,4 +1,6 @@
 import React from "react";
+import {Tooltip, Button} from 'antd';
+
 import {
   LikeOutlined,
   DislikeOutlined,
@@ -7,6 +9,11 @@ import {
 } from "@ant-design/icons";
 
 import "./deal-item.scss";
+
+
+const dealTag = <span>i am picking bank funds and will remit to bitcoin</span>;
+const dealLocationDetails = <span>we can discuss via whatsapp video call and/or voice call. chat me up for details.</span>;
+  const buttonWidth = 70;
 
 export default function DealItem() {
   return (
@@ -21,10 +28,11 @@ export default function DealItem() {
             <EllipsisOutlined /> max <span className="bold">1m</span>{" "}
             <EllipsisOutlined /> rate <span className="bold">20%</span>{" "}
             <EllipsisOutlined /> discussion{" "}
-            <span className="discussion">WhatsApp</span>
+            <Tooltip placement="top" title={dealLocationDetails}><span className="discussion">WhatsApp</span></Tooltip>
           </div>
+          <Tooltip placement="top" title={dealTag}>
           <div className="right">
-            bank{" "}
+            bank funds{" "}
             <ArrowRightOutlined
               style={{
                 strokeWidth: "50",
@@ -33,6 +41,7 @@ export default function DealItem() {
             />{" "}
             bitcoin
           </div>
+          </Tooltip>
         </div>
 
         <div className="deal-item-row-two">

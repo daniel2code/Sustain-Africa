@@ -43,7 +43,7 @@ export default function DealsList() {
                       }}
                     />
                   }
-                  placeholder="filter by"
+                  placeholder="filter by..."
                   optionFilterProp="children"
                   onChange={onChange}
                   onFocus={onFocus}
@@ -82,12 +82,47 @@ export default function DealsList() {
                 option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
               }
             >
-              <Option value="bank">bank</Option>
+              <Option value="bank funds">bank funds</Option>
               <Option value="paypal">paypal</Option>
               <Option value="cash">cash</Option>
               <Option value="skrill">skrill</Option>
               <Option value="venmo">venmo</Option>
               <Option value="bitcoin">bitcoin</Option>
+              <Option value="cashapp">cashapp</Option>
+              <Option value="moneygram">moneygram</Option>
+              <Option value="greendot">greendot</Option>
+              <Option value="ethereum">ethereum</Option>
+            </Select>
+
+            <Divider>select instruments</Divider>
+
+            <Select
+              showSearch
+              suffixIcon={
+                <DownOutlined
+                  style={{
+                    stroke: "#ed1450",
+                    strokeWidth: "50",
+                  }}
+                />
+              }
+              placeholder="select instruments"
+              defaultValue="bitcoin"
+              optionFilterProp="children"
+              onChange={onChange}
+              onFocus={onFocus}
+              onBlur={onBlur}
+              onSearch={onSearch}
+              filterOption={(input, option) =>
+                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+              }
+            >
+              <Option value="bitcoin">bitcoin</Option>
+              <Option value="paypal">paypal</Option>
+              <Option value="cash">cash</Option>
+              <Option value="skrill">skrill</Option>
+              <Option value="venmo">venmo</Option>
+              <Option value="bank funds">bank funds</Option>
               <Option value="cashapp">cashapp</Option>
               <Option value="moneygram">moneygram</Option>
               <Option value="greendot">greendot</Option>
