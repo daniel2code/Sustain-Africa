@@ -1,6 +1,6 @@
 .deals-container {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 15px;
 
   .deals-wrapper {
     width: 95%;
@@ -11,7 +11,7 @@
 
     .switch-bar {
       border-bottom: 1px solid rgb(238, 238, 238);
-      padding-bottom: 20px;
+      padding-bottom: 15px;
 
       .top-bar {
         display: flex;
@@ -23,10 +23,10 @@
           font-weight: bold;
           margin: auto 0;
           font-size: 24px;
-          margin-bottom: 20px;
         }
 
-        .right, .filter-by {
+        .right,
+        .filter-by {
           min-width: 160px;
 
           .ant-select {
@@ -66,13 +66,16 @@
         }
 
         .ant-select-arrow {
-          color: #ed1450 !important;
+          color: #ed1450;
         }
 
         .ant-select-selection {
-          height: 20px !important;
+          height: 20px;
         }
       }
     }
+  }
+  .ant-divider-horizontal.ant-divider-with-text {
+    margin: 1px 0 6px 0;
   }
 }
