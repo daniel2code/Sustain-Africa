@@ -14,7 +14,7 @@ import VerifyPhone from "./pages/Authentication/VerifyPhone";
 
 function App() {
   useEffect(() => {
-    if (userState?.profile?.is_email_verified === "0") {
+    if (userState?.profile?.is_email_verified === "0" && "2" === "1") {
       history.push("/verify-email");
     }
     //eslint-disable-next-line
