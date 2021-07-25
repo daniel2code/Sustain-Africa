@@ -35,14 +35,7 @@ export default function DealsList() {
             <div className="right">
               <div className="filter-by">
                 <Select
-                  suffixIcon={
-                    <DownOutlined
-                      style={{
-                        strokeWidth: "50",
-                        stroke: "#ed1450",
-                      }}
-                    />
-                  }
+                  suffixIcon={<DownOutlined />}
                   placeholder="filter by"
                   optionFilterProp="children"
                   onChange={onChange}
