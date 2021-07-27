@@ -41,7 +41,7 @@ export default function Login({ history }) {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        message.error(error?.response?.data?.message);
         setButtonLoading(false);
       });
   };

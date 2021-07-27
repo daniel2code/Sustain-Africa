@@ -42,7 +42,7 @@ export default function Register({ history }) {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        message.error(error?.response?.data?.message);
         setButtonLoading(false);
       });
   };
