@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 // import { Link } from "react-router-dom";
-import { Form, Input, Button, message } from "antd";
+import { Input, Button, message } from "antd";
 import { useSelector } from "react-redux";
 
 import "./style-Auth.scss";
@@ -8,7 +8,7 @@ import { instance } from "./../../utils/API";
 
 export default function VerifyEmail({ history }) {
   useEffect(() => {
-    if (!userState?.profile && !registerState?.userInfo?.email) {
+    if (!userState?.profile && !registerState?.userInfo?.email && 1 === 2) {
       history.push("/register");
     } else if (
       userState?.profile?.is_phone_no_verification_skipped === "1" ||
@@ -26,7 +26,13 @@ export default function VerifyEmail({ history }) {
   const input5 = useRef(null);
   const input6 = useRef(null);
 
-  const [inputValues, setInputValues] = useState(["", "", "", "", "", ""]);
+  const [inputValue1, setInputValue1] = useState("");
+  const [inputValue2, setInputValue2] = useState("");
+  const [inputValue3, setInputValue3] = useState("");
+  const [inputValue4, setInputValue4] = useState("");
+  const [inputValue5, setInputValue5] = useState("");
+  const [inputValue6, setInputValue6] = useState("");
+
   const [buttonLoading, setButtonLoading] = useState(false);
   const [hasPhone, setHasPhone] = useState(false);
   const [showResendCode, setShowResendCode] = useState(false);
@@ -35,7 +41,8 @@ export default function VerifyEmail({ history }) {
   const userState = useSelector((state) => state.user);
 
   const onFinish = async () => {
-    const inputValuesJoined = inputValues.join("");
+    const inputValuesJoined = `${inputValue1}${inputValue2}${inputValue3}${inputValue4}${inputValue5}${inputValue6}`;
+
     setButtonLoading(true);
 
     const data = new FormData();
@@ -69,7 +76,7 @@ export default function VerifyEmail({ history }) {
         }
       })
       .catch(function (error) {
-        console.log(error);
+        message.error(error?.response?.data?.message);
         setButtonLoading(false);
       });
   };
@@ -106,28 +113,56 @@ export default function VerifyEmail({ history }) {
       });
   };
 
-  const handleInputChange = (value, item) => {
-    if (value !== "" && value.length === 1) {
-      const dataCopy = inputValues;
-      if (item === 1) {
-        dataCopy[0] = value;
+  const handleInputChange1 = (value) => {
+    if (!(value.length > 1)) {
+      setInputValue1(value);
+      if (value !== "") {
         input2.current.focus();
-      } else if (item === 2) {
-        dataCopy[1] = value;
-        input3.current.focus();
-      } else if (item === 3) {
-        dataCopy[2] = value;
-        input4.current.focus();
-      } else if (item === 4) {
-        dataCopy[3] = value;
-        input5.current.focus();
-      } else if (item === 5) {
-        dataCopy[4] = value;
-        input6.current.focus();
-      } else if (item === 6) {
-        dataCopy[5] = value;
       }
-      setInputValues(dataCopy);
+    }
+  };
+
+  const handleInputChange2 = (value) => {
+    if (!(value.length > 1)) {
+      setInputValue2(value);
+      if (value !== "") {
+        input3.current.focus();
+      }
+    }
+  };
+
+  const handleInputChange3 = (value) => {
+    if (!(value.length > 1)) {
+      setInputValue3(value);
+      if (value !== "") {
+        input4.current.focus();
+      }
+    }
+  };
+
+  const handleInputChange4 = (value) => {
+    if (!(value.length > 1)) {
+      setInputValue4(value);
+      if (value !== "") {
+        input5.current.focus();
+      }
+    }
+  };
+
+  const handleInputChange5 = (value) => {
+    if (!(value.length > 1)) {
+      setInputValue5(value);
+      if (value !== "") {
+        input6.current.focus();
+      }
+    }
+  };
+
+  const handleInputChange6 = (value) => {
+    if (!(value.length > 1)) {
+      setInputValue6(value);
+      if (value !== "") {
+      }
     }
   };
 
@@ -149,67 +184,64 @@ export default function VerifyEmail({ history }) {
           </div>
           <div className="desc custom">enter code:</div>
           <div className="verify-form">
-            <Form.Item name="1">
-              <Input
-                placeholder=""
-                ref={input1}
-                value={inputValues[0]}
-                type="number"
-                onChange={(event) => {
-                  handleInputChange(event.target.value, 1);
-                }}
-              />
-            </Form.Item>
-            <Form.Item name="2">
-              <Input
-                placeholder=""
-                ref={input2}
-                type="number"
-                onChange={(event) => {
-                  handleInputChange(event.target.value, 2);
-                }}
-              />
-            </Form.Item>
-            <Form.Item name="3">
-              <Input
-                placeholder=""
-                ref={input3}
-                type="number"
-                onChange={(event) => {
-                  handleInputChange(event.target.value, 3);
-                }}
-              />
-            </Form.Item>
-            <Form.Item name="4">
-              <Input
-                placeholder=""
-                ref={input4}
-                type="number"
-                onChange={(event) => {
-                  handleInputChange(event.target.value, 4);
-                }}
-              />
-            </Form.Item>
-            <Form.Item name="5">
-              <Input
-                placeholder=""
-                ref={input5}
-                type="number"
-                onChange={(event) => {
-                  handleInputChange(event.target.value, 5);
-                }}
-              />
-            </Form.Item>
-            <Form.Item name="6">
-              <Input
-                placeholder=""
-                ref={input6}
-                type="number"
-                onChange={(event) => {
-                  handleInputChange(event.target.value, 6);
-                }}
-              />
-            </Form.Item>
+            <Input
+              placeholder=""
+              ref={input1}
+              value={inputValue1}
+              type="number"
+              onChange={(event) => {
+                handleInputChange1(event.target.value, 1);
+              }}
+            />
+            <Input
+              placeholder=""
+              ref={input2}
+              type="number"
+              value={inputValue2}
+              onChange={(event) => {
+                handleInputChange2(event.target.value, 2);
+              }}
+            />
+
+            <Input
+              placeholder=""
+              ref={input3}
+              type="number"
+              value={inputValue3}
+              onChange={(event) => {
+                handleInputChange3(event.target.value, 3);
+              }}
+            />
+
+            <Input
+              placeholder=""
+              ref={input4}
+              type="number"
+              value={inputValue4}
+              onChange={(event) => {
+                handleInputChange4(event.target.value, 4);
+              }}
+            />
+
+            <Input
+              placeholder=""
+              ref={input5}
+              type="number"
+              value={inputValue5}
+              onChange={(event) => {
+                handleInputChange5(event.target.value, 5);
+              }}
+            />
+
+            <Input
+              placeholder=""
+              ref={input6}
+              type="number"
+              value={inputValue6}
+              onChange={(event) => {
+                handleInputChange6(event.target.value, 6);
+              }}
+            />
           </div>
           <div className="desc custom">code valid for 30 mins</div>
 

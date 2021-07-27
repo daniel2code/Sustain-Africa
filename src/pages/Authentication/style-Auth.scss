@@ -77,7 +77,7 @@
         flex-direction: row;
         justify-content: space-between;
 
-        .ant-row.ant-form-item {
+        .ant-input {
           width: 14%;
         }
 
@@ -122,7 +122,7 @@ a {
 .ant-input-affix-wrapper-focused,
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector,
 .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
-.ant-select-selector {
+  .ant-select-selector {
   border-color: #eec4d0;
   box-shadow: 0 0 0 2px #eec4d0;
 }
