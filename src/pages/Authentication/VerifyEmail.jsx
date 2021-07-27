@@ -8,7 +8,7 @@ import { instance } from "./../../utils/API";
 
 export default function VerifyEmail({ history }) {
   useEffect(() => {
-    if (!userState?.profile && !registerState?.userInfo?.email && 1 === 2) {
+    if (!userState?.profile && !registerState?.userInfo?.email) {
       history.push("/register");
     } else if (
       userState?.profile?.is_phone_no_verification_skipped === "1" ||
