@@ -18,6 +18,10 @@ export default function Register({ history }) {
   const antInputRef = useRef(null);
 
   const onFinish = async (values) => {
+    if (locationInput === "") {
+      return message.warning("enter location to continue");
+    }
+
     setButtonLoading(true);
 
     const { username, email, password, referrer } = values;
@@ -29,7 +33,7 @@ export default function Register({ history }) {
     data.append("user_name", username);
     data.append("user_name_front", randomUsername);
     data.append("user_location", locationInput);
-    data.append("referrer", referrer);
+    data.append("referrer", referrer ? referrer : "");
 
     instance
       .post("/register", data)
