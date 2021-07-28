@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
 import randomWords from "random-words";
+import { usePlacesWidget } from "react-google-autocomplete";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
@@ -11,12 +12,15 @@ import { setUserInfo } from "./../../redux/register/register.actions";
 export default function Register({ history }) {
   const [hasReferral, setHasReferral] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [locationInput, setLocationInput] = useState("");
   const dispatch = useDispatch();
+
+  const antInputRef = useRef(null);
 
   const onFinish = async (values) => {
     setButtonLoading(true);
 
-    const { username, email, password, location, referrer } = values;
+    const { username, email, password, referrer } = values;
     const randomUsername = randomWords({ exactly: 2, join: "" });
 
     const data = new FormData();
@@ -24,7 +28,7 @@ export default function Register({ history }) {
     data.append("user_password", password);
     data.append("user_name", username);
     data.append("user_name_front", randomUsername);
-    data.append("user_location", location);
+    data.append("user_location", locationInput);
     data.append("referrer", referrer);
 
     instance
@@ -69,6 +73,18 @@ export default function Register({ history }) {
         console.log(error);
         setButtonLoading(false);
       });
+  };
+
+  const { ref: antRef } = usePlacesWidget({
+    apiKey: "AIzaSyA3geMmLIiRA_J0zUzFerPTKwkT5-9ocPM",
+    onPlaceSelected: (place) => {
+      antInputRef.current.setValue(place?.formatted_address);
+      setLocationInput(place?.formatted_address);
+    },
+  });
+
+  const handleLocationChange = (value) => {
+    setLocationInput(value);
   };
 
   return (
@@ -136,10 +152,18 @@ export default function Register({ history }) {
             </Form.Item>
             <Form.Item
               style={{ marginBottom: "20px" }}
-              name="location"
               rules={[{ required: true, message: "location required!" }]}
             >
-              <Input placeholder="location e.g. lagos, nigeria" />
+              <Input
+                onChange={(event) => {
+                  handleLocationChange(event.target.value);
+                }}
+                placeholder="location e.g. lagos, nigeria"
+                ref={(c) => {
+                  antInputRef.current = c;
+                  if (c) antRef.current = c.input;
+                }}
+              />
             </Form.Item>
 
             <div
