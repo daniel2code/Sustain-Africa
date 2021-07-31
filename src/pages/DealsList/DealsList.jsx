@@ -85,6 +85,7 @@ export default function DealsList() {
               <Option value="moneygram">moneygram</Option>
               <Option value="greendot">greendot</Option>
               <Option value="ethereum">ethereum</Option>
+              <Option value="gift card">gift card</Option>
             </Select>
 
             <div className="arrows">
@@ -128,6 +129,7 @@ export default function DealsList() {
               <Option value="moneygram">moneygram</Option>
               <Option value="greendot">greendot</Option>
               <Option value="ethereum">ethereum</Option>
+              <Option value="gift card">gift card</Option>
             </Select>
           </div>
         </div>
