@@ -65,13 +65,6 @@
         font-size: 12px;
       }
 
-      .login-form-button {
-        width: 100%;
-        margin-top: 20px;
-        border-color: #ed1450;
-        background: #ed1450;
-      }
-
       .verify-form {
         display: flex;
         flex-direction: row;
@@ -143,4 +136,33 @@ input::-webkit-inner-spin-button {
 
 .ant-select-item-option-selected:not(.ant-select-item-option-disabled) {
   background-color: #eec4d0;
+}
+
+.ant-btn {
+  &.ant-btn-primary {
+    border-color: #ed1450;
+    background: #ed1450;
+    &:hover {
+      color: white;
+    }
+  }
+  &.login-form-button {
+    width: 100%;
+    margin-top: 20px;
+  }
+  &.short {
+    width: unset;
+    background: white;
+    color: #ed1450;
+    &:hover {
+      border-color: #ed1450;
+    }
+  }
+}
+
+.ant-btn:active,
+.ant-btn:hover,
+.ant-btn:focus {
+  border-color: #ed1450;
+  color: #ed1450;
 }

@@ -8,7 +8,7 @@ import {
   EllipsisOutlined,
 } from "@ant-design/icons";
 
-import "./deal-item.scss";
+import "./DealItem.scss";
 
 const dealTag = <span>i am picking bank funds and will remit to bitcoin</span>;
 const dealLocationDetails = (

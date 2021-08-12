@@ -1,35 +1,53 @@
-import React from "react";
-import { Select } from "antd";
+import React, { useState } from "react";
+import { Select, Button, Modal, Input } from "antd";
 import { Divider } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import { DownOutlined } from "@ant-design/icons";
 
 import DealItem from "./../../components/DealItem/DealItem";
 import Footer from "./../../components/Footer/Footer.jsx";
-import "./style-Deals.scss";
+import "./DealsList.scss";
 
 const { Option } = Select;
 
 export default function DealsList() {
+  const [buttonLoading, setButtonLoading] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   function onChange(value) {
-    console.log(`selected ${value}`);
-  }
-
-  function onBlur() {
-    console.log("blur");
-  }
-
-  function onFocus() {
-    console.log("focus");
+    console.log(`${value}`);
+    if (value === "location") {
+      showModal();
+    }
   }
 
   function onSearch(val) {
     console.log("search:", val);
   }
 
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = () => {
+    setIsModalVisible(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
   return (
     <>
       <div className="deals-container">
+        <Modal
+          title="input desired location"
+          visible={isModalVisible}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <Input placeholder="enter location" />
+        </Modal>
         <div className="deals-wrapper">
           <div className="switch-bar">
             <div className="top-bar">
@@ -41,8 +59,6 @@ export default function DealsList() {
                     placeholder="filter by"
                     optionFilterProp="children"
                     onChange={onChange}
-                    onFocus={onFocus}
-                    onBlur={onBlur}
                   >
                     <Option value="newest">newest</Option>
                     <Option value="lowToHigh">score: low to high</Option>
@@ -70,8 +86,6 @@ export default function DealsList() {
                 defaultValue="paypal"
                 optionFilterProp="children"
                 onChange={onChange}
-                onFocus={onFocus}
-                onBlur={onBlur}
                 onSearch={onSearch}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -114,8 +128,6 @@ export default function DealsList() {
                 defaultValue="bitcoin"
                 optionFilterProp="children"
                 onChange={onChange}
-                onFocus={onFocus}
-                onBlur={onBlur}
                 onSearch={onSearch}
                 filterOption={(input, option) =>
                   option.children.toLowerCase().indexOf(input.toLowerCase()) >=
@@ -142,6 +154,19 @@ export default function DealsList() {
             <DealItem />
             <DealItem />
             <DealItem />
+          </div>
+          <div className="load-more">
+            <Button
+              loading={buttonLoading}
+              type="default"
+              className="login-form-button short"
+              onClick={() => {
+                setButtonLoading(true);
+              }}
+              style={{ fontWeight: "500" }}
+            >
+              load more
+            </Button>
           </div>
         </div>
       </div>
