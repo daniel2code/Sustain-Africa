@@ -1,11 +1,7 @@
 import React from "react";
 import { Button, Dropdown, Menu } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import {
-  TwitterOutlined,
-  LeftOutlined,
-  EllipsisOutlined,
-} from "@ant-design/icons";
+import { LeftOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./Navbar.scss";
@@ -27,16 +23,14 @@ export default function Navbar() {
                 history.goBack();
               }}
             >
-              {location.pathname !== "/" ? (
+              {location.pathname !== "/" && (
                 <span>
                   <LeftOutlined style={{ marginRight: "2px" }} />
-                  back
                 </span>
-              ) : (
-                <div className="app-name">
-                  <Link to="/">sustain.africa</Link>
-                </div>
               )}
+            </div>
+            <div className="app-name">
+              <Link to="/">sustain.africa</Link>
             </div>
           </div>
 
