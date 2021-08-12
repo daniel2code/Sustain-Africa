@@ -1,6 +1,7 @@
 .navbar-container {
   width: 100%;
-  box-shadow: 2px 8px 12px -3px rgba(3, 3, 3, 0.23);
+  // box-shadow: 2px 8px 12px -3px rgba(3, 3, 3, 0.23);
+  border-bottom: 1px solid #b4b4b4;
   position: fixed;
   z-index: 10;
   .navbar-wrapper {
