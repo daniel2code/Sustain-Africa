@@ -31,10 +31,11 @@ export default function Navbar() {
             </div>
             <div className="app-name">
               <Link to="/">sustain.africa</Link>
+              <div className="bottom">
+                buy, sell & swap funds.
+              </div>
             </div>
-            <div className="bottom">
-              buy, sell & swap funds from merchants around the world.
-            </div>
+            
           </div>
 
           <div className="right">
