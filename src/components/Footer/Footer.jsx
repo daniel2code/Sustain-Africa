@@ -32,7 +32,7 @@ export default function Footer() {
             <Link to="/">sustain.africa</Link>
           </div>
           <div className="bottom">
-            buy, sell, swap funds... from merchants around the world.
+            buy, sell & swap funds from merchants around the world.
           </div>
         </div>
         <div className="row-three">
