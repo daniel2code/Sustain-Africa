@@ -26,104 +26,104 @@ export default function DealItem({ item }) {
               stroke: "white",
             }}
           />{" "}
-          {item?.destination}
+          {item?.destination}{" "}
         </div>
       </Tooltip>
       <div className="deal-item-wrapper">
         <div className="deal-item-row-one">
           {item?.bank_name && (
-            <div>
+            <>
               {" "}
               bank name <span className="bold">{item?.bank_name}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.account_type && (
-            <div>
+            <>
               {" "}
               account type <span className="bold">
                 {item?.account_type}
               </span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.card_brand && (
-            <div>
+            <>
               {" "}
               card brand <span className="bold">{item?.card_brand}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.card_type && (
-            <div>
+            <>
               {" "}
               card type <span className="bold">{item?.card_type}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.exchange && (
-            <div>
+            <>
               {" "}
               exchange <span className="bold">{item?.exchange}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.wallet_type && (
-            <div>
+            <>
               {" "}
               wallet type <span className="bold">{item?.wallet_type}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.min && (
-            <div>
+            <>
               {" "}
               min{" "}
               <span className="bold">{`${
                 item?.min
               }${item?.currency.toUpperCase()}`}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.max && (
-            <div>
+            <>
               {" "}
               max{" "}
               <span className="bold">{`${
                 item?.max
               }${item?.currency.toUpperCase()}`}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.rate && (
-            <div>
+            <>
               {" "}
               rate <span className="bold">{item?.rate}%</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.state && (
-            <div>
+            <>
               {" "}
               state <span className="bold">{item?.state}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.country && (
-            <div>
+            <>
               {" "}
               country <span className="bold">{item?.country}</span>{" "}
               <EllipsisOutlined />{" "}
-            </div>
+            </>
           )}
           {item?.discussion && (
-            <div>
+            <>
               {" "}
               discussion{" "}
               <Tooltip placement="top" title={item?.discussion_details}>
                 <span className="discussion">{item?.discussion}</span>
               </Tooltip>
-            </div>
+            </>
           )}
         </div>
 
