@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import { Select, Button, Modal, Input } from "antd";
+import React, { useState, useEffect } from "react";
+import { Select, Button, Modal, Input, message } from "antd";
 import { Divider } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import { DownOutlined } from "@ant-design/icons";
 
+import Loader from "./../../components/Loader/Loader";
+import { instance } from "./../../utils/API";
 import DealItem from "./../../components/DealItem/DealItem";
 import Footer from "./../../components/Footer/Footer.jsx";
 import "./DealsList.scss";
@@ -11,19 +13,78 @@ import "./DealsList.scss";
 const { Option } = Select;
 
 export default function DealsList() {
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [dealsData, setDealsData] = useState(null);
+  const [locationInput, setLocationInput] = useState("");
 
-  function onChange(value) {
-    console.log(`${value}`);
-    if (value === "location") {
+  useEffect(() => {
+    fetchDeals();
+    //eslint-disable-next-line
+  }, []);
+
+  const fetchDeals = async (
+    page = 1,
+    newest = 1,
+    low2high = 0,
+    high2low = 0,
+    location = "",
+    loadMore = null
+  ) => {
+    instance
+      .get(
+        `/deals?page=${page}&newest=${newest}&low2high=${low2high}&high2low=${high2low}&location=${location}`
+      )
+      .then(function (response) {
+        if (response?.data?.status) {
+          if (loadMore) {
+            handleLoadMore(response.data);
+          } else {
+            setDealsData(response?.data);
+          }
+        } else {
+          message.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        message.error(error?.response?.data?.message);
+        setLoadingMore(false);
+      });
+  };
+
+  const handleLoadMore = (fetchedData) => {
+    let fetchedDataCopy = fetchedData;
+
+    const oldDataArray = dealsData?.data;
+    const fetchedDataArray = fetchedData?.data;
+
+    const updatedArray = oldDataArray.concat(fetchedDataArray);
+
+    fetchedDataCopy.data = updatedArray;
+
+    setDealsData(fetchedDataCopy);
+    setLoadingMore(false);
+  };
+
+  const onFilterChange = (value) => {
+    if (value === "newest") {
+      setDealsData(null);
+      fetchDeals(1, 1, 0, 0, "");
+    } else if (value === "highToLow") {
+      setDealsData(null);
+      fetchDeals(1, 0, 0, 1, "");
+    } else if (value === "lowToHigh") {
+      setDealsData(null);
+      fetchDeals(1, 0, 1, 0, "");
+    } else if (value === "location") {
       showModal();
+    } else {
     }
-  }
+  };
 
-  function onSearch(val) {
-    console.log("search:", val);
-  }
+  const onLocationInputChange = (value) => {
+    setLocationInput(value);
+  };
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -31,6 +92,8 @@ export default function DealsList() {
 
   const handleOk = () => {
     setIsModalVisible(false);
+    setDealsData(null);
+    fetchDeals(1, 1, 0, 0, locationInput);
   };
 
   const handleCancel = () => {
@@ -39,17 +102,22 @@ export default function DealsList() {
 
   return (
     <>
+      <Modal
+        title="filter by location"
+        visible={isModalVisible}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        okText="ok"
+        cancelText="cancel"
+      >
+        <Input
+          placeholder="enter location"
+          onChange={(event) => {
+            onLocationInputChange(event.target.value);
+          }}
+        />
+      </Modal>
       <div className="deals-container">
-        <Modal
-          title="filter by location"
-          visible={isModalVisible}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          okText="ok"
-          cancelText="cancel"
-        >
-          <Input placeholder="enter location" />
-        </Modal>
         <div className="deals-wrapper">
           <div className="switch-bar">
             <div className="top-bar">
@@ -60,7 +128,7 @@ export default function DealsList() {
                     suffixIcon={<DownOutlined />}
                     placeholder="filter by..."
                     optionFilterProp="children"
-                    onChange={onChange}
+                    onChange={onFilterChange}
                   >
                     <Option value="newest">newest</Option>
                     <Option value="lowToHigh">score: low to high</Option>
@@ -86,13 +154,7 @@ export default function DealsList() {
                 }
                 placeholder="select instruments"
                 defaultValue="paypal"
-                optionFilterProp="children"
-                onChange={onChange}
-                onSearch={onSearch}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
+                // onChange={onChange}
               >
                 <Option value="bank">bank</Option>
                 <Option value="paypal">paypal</Option>
@@ -128,13 +190,7 @@ export default function DealsList() {
                 }
                 placeholder="select instruments"
                 defaultValue="bitcoin"
-                optionFilterProp="children"
-                onChange={onChange}
-                onSearch={onSearch}
-                filterOption={(input, option) =>
-                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
-                  0
-                }
+                // onChange={onChange}
               >
                 <Option value="bitcoin">bitcoin</Option>
                 <Option value="paypal">paypal</Option>
@@ -150,26 +206,33 @@ export default function DealsList() {
             </div>
           </div>
 
-          <div className="deals-list">
-            <DealItem />
-            <DealItem />
-            <DealItem />
-            <DealItem />
-            <DealItem />
-          </div>
-          <div className="load-more">
-            <Button
-              loading={buttonLoading}
-              type="default"
-              className="login-form-button short"
-              onClick={() => {
-                setButtonLoading(true);
-              }}
-              style={{ fontWeight: "500" }}
-            >
-              load more
-            </Button>
-          </div>
+          {dealsData ? (
+            <div className="deals-list">
+              {dealsData &&
+                dealsData?.data.map((item) => (
+                  <DealItem item={item} key={`${item.id}${Math.random()}`} />
+                ))}
+            </div>
+          ) : (
+            <Loader />
+          )}
+
+          {dealsData && dealsData?.meta?.hasNext && (
+            <div className="load-more">
+              <Button
+                loading={loadingMore}
+                type="default"
+                className="login-form-button short"
+                onClick={() => {
+                  setLoadingMore(true);
+                  fetchDeals(dealsData?.meta?.page + 1, 1, 0, 0, "", true);
+                }}
+                style={{ fontWeight: "500" }}
+              >
+                load more
+              </Button>
+            </div>
+          )}
         </div>
       </div>
       <Footer />

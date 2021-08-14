@@ -1,5 +1,6 @@
 import React from "react";
 import { Tooltip } from "antd";
+import { format } from "timeago.js";
 
 import {
   LikeOutlined,
@@ -10,53 +11,131 @@ import {
 
 import "./DealItem.scss";
 
-const dealTag = <span>i am picking bank funds and will remit to bitcoin</span>;
-const dealLocationDetails = (
-  <span>
-    we can discuss via whatsapp video call and/or voice call. chat me up for
-    details.
-  </span>
-);
-
-export default function DealItem() {
+export default function DealItem({ item }) {
   return (
     <div className="deal-item-container">
+      <Tooltip
+        placement="top"
+        title={`i am picking ${item?.source} and will remit to ${item?.destination}`}
+      >
+        <div className="source-destination">
+          {item?.source}{" "}
+          <ArrowRightOutlined
+            style={{
+              strokeWidth: "50",
+              stroke: "white",
+            }}
+          />{" "}
+          {item?.destination}
+        </div>
+      </Tooltip>
       <div className="deal-item-wrapper">
         <div className="deal-item-row-one">
-          <div className="left">
-            bank name <span className="bold">HSBC</span> <EllipsisOutlined />{" "}
-            account type <span className="bold">corporate</span>{" "}
-            <EllipsisOutlined /> currency <span className="bold">US$</span>{" "}
-            <EllipsisOutlined /> min <span className="bold">1k</span>{" "}
-            <EllipsisOutlined /> max <span className="bold">1m</span>{" "}
-            <EllipsisOutlined /> rate <span className="bold">20%</span>{" "}
-            <EllipsisOutlined /> discussion{" "}
-            <Tooltip placement="top" title={dealLocationDetails}>
-              <span className="discussion">WhatsApp</span>
-            </Tooltip>
-          </div>
-          <Tooltip placement="top" title={dealTag}>
-            <div className="right">
-              bank funds{" "}
-              <ArrowRightOutlined
-                style={{
-                  strokeWidth: "50",
-                  stroke: "white",
-                }}
-              />{" "}
-              bitcoin
+          {item?.bank_name && (
+            <div>
+              {" "}
+              bank name <span className="bold">{item?.bank_name}</span>{" "}
+              <EllipsisOutlined />{" "}
             </div>
-          </Tooltip>
+          )}
+          {item?.account_type && (
+            <div>
+              {" "}
+              account type <span className="bold">
+                {item?.account_type}
+              </span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.card_brand && (
+            <div>
+              {" "}
+              card brand <span className="bold">{item?.card_brand}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.card_type && (
+            <div>
+              {" "}
+              card type <span className="bold">{item?.card_type}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.exchange && (
+            <div>
+              {" "}
+              exchange <span className="bold">{item?.exchange}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.wallet_type && (
+            <div>
+              {" "}
+              wallet type <span className="bold">{item?.wallet_type}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.min && (
+            <div>
+              {" "}
+              min{" "}
+              <span className="bold">{`${
+                item?.min
+              }${item?.currency.toUpperCase()}`}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.max && (
+            <div>
+              {" "}
+              max{" "}
+              <span className="bold">{`${
+                item?.max
+              }${item?.currency.toUpperCase()}`}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.rate && (
+            <div>
+              {" "}
+              rate <span className="bold">{item?.rate}%</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.state && (
+            <div>
+              {" "}
+              state <span className="bold">{item?.state}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.country && (
+            <div>
+              {" "}
+              country <span className="bold">{item?.country}</span>{" "}
+              <EllipsisOutlined />{" "}
+            </div>
+          )}
+          {item?.discussion && (
+            <div>
+              {" "}
+              discussion{" "}
+              <Tooltip placement="top" title={item?.discussion_details}>
+                <span className="discussion">{item?.discussion}</span>
+              </Tooltip>
+            </div>
+          )}
         </div>
 
         <div className="deal-item-row-two">
-          “HSBC account in West Virginia area available to pick. Send to BTC
-          wallet address within 12 hours. We can do video call on WhatsApp.
-          Serious contacts only. Don’t waste my time. Thanks.”
+          “{item?.deal_summary}”{" "}
+          <span style={{ fontSize: "11px" }}>
+            (posted {format(item?.created_at)})
+          </span>
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username">@marion22</span>
+          <span className="username">@{item?.dealer_user_name}</span>
         </div>
 
         <div className="deal-item-row-three">
