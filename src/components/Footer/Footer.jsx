@@ -38,9 +38,11 @@ export default function Footer() {
         <div className="row-three">
           <div className="top">email: help@sustain.africa</div>
           <div className="bottom">
-            {" "}
             <TwitterOutlined /> @sustainafrica
-            <div className="right"><a href="#">privacy</a> | <a href="#">terms & conditions</a></div>
+            <div className="right">
+              <Link to="/">privacy</Link> |{" "}
+              <Link to="/">terms & conditions</Link>
+            </div>
           </div>
         </div>
       </div>
