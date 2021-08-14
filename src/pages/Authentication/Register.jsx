@@ -95,11 +95,15 @@ export default function Register({ history }) {
     <div className="form-container">
       <div className="form-wrapper">
         <div className="form">
+          <div className="app-name">
+            <Link to="/">sustain.africa</Link>
+            <div className="bottom">
+              buy, sell & swap funds.
+            </div>
+          </div>
           <div className="title">create an account</div>
           <div className="desc">
-            a sustain account is the ticket to a global network of trusted
-            merchants around the world who want to help you move your funds
-            anonymously via <span className="desc-link">over 100 methods</span>
+            a sustain account is a ticket to a global network of trusted merchants around the world who want to help you buy, sell & swap funds anonymously via <span className="desc-link">over 100 methods</span>
           </div>
           <Form
             name="normal_login"

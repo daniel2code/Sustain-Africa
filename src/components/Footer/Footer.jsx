@@ -32,7 +32,7 @@ export default function Footer() {
             <Link to="/">sustain.africa</Link>
           </div>
           <div className="bottom">
-            buy, sell & swap funds from merchants around the world.
+            buy, sell & swap funds anonymously via over 100 methods.
           </div>
         </div>
         <div className="row-three">
@@ -40,6 +40,7 @@ export default function Footer() {
           <div className="bottom">
             {" "}
             <TwitterOutlined /> @sustainafrica
+            <div className="right"><a href="#">privacy</a> | <a href="#">terms & conditions</a></div>
           </div>
         </div>
       </div>

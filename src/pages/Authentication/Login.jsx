@@ -73,7 +73,14 @@ export default function Login({ history }) {
   return (
     <div className="form-container">
       <div className="form-wrapper">
+
         <div className="form">
+          <div className="app-name">
+            <Link to="/">sustain.africa</Link>
+            <div className="bottom">
+              buy, sell & swap funds.
+            </div>
+          </div>
           <div className="title">login to account</div>
           <Form
             name="normal_login"

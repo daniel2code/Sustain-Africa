@@ -41,10 +41,12 @@ export default function DealsList() {
     <>
       <div className="deals-container">
         <Modal
-          title="input desired location"
+          title="filter by location"
           visible={isModalVisible}
           onOk={handleOk}
           onCancel={handleCancel}
+          okText="ok"
+          cancelText="cancel"
         >
           <Input placeholder="enter location" />
         </Modal>
@@ -56,7 +58,7 @@ export default function DealsList() {
                 <div className="filter-by">
                   <Select
                     suffixIcon={<DownOutlined />}
-                    placeholder="filter by"
+                    placeholder="filter by..."
                     optionFilterProp="children"
                     onChange={onChange}
                   >

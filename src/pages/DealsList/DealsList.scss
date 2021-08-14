@@ -11,9 +11,10 @@
 
     .switch-bar {
       border-bottom: 1px solid rgb(238, 238, 238);
-      padding-bottom: 15px;
+      padding-bottom: 20px;
 
       .top-bar {
+        margin-bottom: 20px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -71,11 +72,10 @@
       }
     }
     .load-more {
-      border-bottom: 1px solid rgb(238, 238, 238);
       padding-bottom: 20px;
     }
   }
   .ant-divider-horizontal.ant-divider-with-text {
-    margin: 15px 0 6px 0;
+    margin: 15px 0 15px 0;
   }
 }

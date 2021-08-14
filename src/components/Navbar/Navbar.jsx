@@ -25,16 +25,21 @@ export default function Navbar() {
             >
               {location.pathname !== "/" && (
                 <span>
-                  <LeftOutlined style={{ marginRight: "2px" }} />
+                  <LeftOutlined style={{ marginRight: "2px" }} /> back
                 </span>
               )}
+
+              {location.pathname === "/" && (
+                  <div className="app-name">
+                    <Link to="/">sustain.africa</Link>
+                    <div className="bottom">
+                      buy, sell & swap funds.
+                    </div>
+                  </div>
+              )}
+
             </div>
-            <div className="app-name">
-              <Link to="/">sustain.africa</Link>
-              <div className="bottom">
-                buy, sell & swap funds.
-              </div>
-            </div>
+
             
           </div>
 
