@@ -79,9 +79,7 @@ export default function DealItem({ item }) {
             <>
               {" "}
               min{" "}
-              <span className="bold">{`${
-                item?.min
-              }${item?.currency.toUpperCase()}`}</span>{" "}
+              <span className="bold">{`${item?.min.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
@@ -89,9 +87,7 @@ export default function DealItem({ item }) {
             <>
               {" "}
               max{" "}
-              <span className="bold">{`${
-                item?.max
-              }${item?.currency.toUpperCase()}`}</span>{" "}
+              <span className="bold">{`${item?.max.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}

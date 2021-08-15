@@ -9,6 +9,7 @@ import { instance } from "./../../utils/API";
 import DealItem from "./../../components/DealItem/DealItem";
 import Footer from "./../../components/Footer/Footer.jsx";
 import "./DealsList.scss";
+import { ReactComponent as EmptyImage } from "./../../assets/empty.svg";
 
 const { Option } = Select;
 
@@ -17,6 +18,8 @@ export default function DealsList() {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [dealsData, setDealsData] = useState(null);
   const [locationInput, setLocationInput] = useState("");
+  const [source, setSource] = useState("");
+  const [destination, setDestination] = useState("");
 
   useEffect(() => {
     fetchDeals();
@@ -29,14 +32,17 @@ export default function DealsList() {
     low2high = 0,
     high2low = 0,
     location = "",
+    source = "bank fund",
+    destination = "bitcoin",
     loadMore = null
   ) => {
     instance
       .get(
-        `/deals?page=${page}&newest=${newest}&low2high=${low2high}&high2low=${high2low}&location=${location}`
+        `/deals?page=${page}&newest=${newest}&low2high=${low2high}&high2low=${high2low}&location=${location}&source=${source}&destination=${destination}`
       )
       .then(function (response) {
         if (response?.data?.status) {
+          console.log(response?.data);
           if (loadMore) {
             handleLoadMore(response.data);
           } else {
@@ -68,12 +74,15 @@ export default function DealsList() {
 
   const onFilterChange = (value) => {
     if (value === "newest") {
+      setLocationInput("");
       setDealsData(null);
       fetchDeals(1, 1, 0, 0, "");
     } else if (value === "highToLow") {
+      setLocationInput("");
       setDealsData(null);
       fetchDeals(1, 0, 0, 1, "");
     } else if (value === "lowToHigh") {
+      setLocationInput("");
       setDealsData(null);
       fetchDeals(1, 0, 1, 0, "");
     } else if (value === "location") {
@@ -93,11 +102,37 @@ export default function DealsList() {
   const handleOk = () => {
     setIsModalVisible(false);
     setDealsData(null);
-    fetchDeals(1, 1, 0, 0, locationInput);
+    fetchDeals(1, 0, 0, 0, locationInput);
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
+  };
+
+  const onInstrumentChange = (type, value) => {
+    if (type === "source") {
+      setSource(value);
+      fetchDeals(
+        1,
+        1,
+        0,
+        0,
+        locationInput,
+        value,
+        destination ? destination : "bitcoin"
+      );
+    } else {
+      fetchDeals(
+        1,
+        1,
+        0,
+        0,
+        locationInput,
+        source ? source : "bank fund",
+        value
+      );
+      setDestination(value);
+    }
   };
 
   return (
@@ -153,10 +188,12 @@ export default function DealsList() {
                   />
                 }
                 placeholder="select instruments"
-                defaultValue="paypal"
-                // onChange={onChange}
+                defaultValue="bank fund"
+                onChange={(value) => {
+                  onInstrumentChange("source", value);
+                }}
               >
-                <Option value="bank">bank</Option>
+                <Option value="bank fund">bank</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
                 <Option value="skrill">skrill</Option>
@@ -190,14 +227,16 @@ export default function DealsList() {
                 }
                 placeholder="select instruments"
                 defaultValue="bitcoin"
-                // onChange={onChange}
+                onChange={(value) => {
+                  onInstrumentChange("destination", value);
+                }}
               >
-                <Option value="bitcoin">bitcoin</Option>
+                <Option value="bank fund">bank</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
                 <Option value="skrill">skrill</Option>
                 <Option value="venmo">venmo</Option>
-                <Option value="bank">bank</Option>
+                <Option value="bitcoin">bitcoin</Option>
                 <Option value="cashapp">cashapp</Option>
                 <Option value="moneygram">moneygram</Option>
                 <Option value="greendot">greendot</Option>
@@ -206,31 +245,47 @@ export default function DealsList() {
             </div>
           </div>
 
-          {dealsData ? (
+          {!dealsData && <Loader />}
+
+          {dealsData && dealsData?.data.length === 0 && (
+            <div className="no-result">
+              <div className="svg-container">
+                <EmptyImage />
+              </div>
+
+              <div className="no-result-text">no deal found</div>
+            </div>
+          )}
+
+          {dealsData && dealsData?.data.length !== 0 && (
             <div className="deals-list">
               {dealsData &&
                 dealsData?.data.map((item) => (
                   <DealItem item={item} key={`${item.id}${Math.random()}`} />
                 ))}
             </div>
-          ) : (
-            <Loader />
           )}
 
-          {dealsData && dealsData?.meta?.hasNext && (
+          {dealsData && dealsData?.data.length !== 0 && (
             <div className="load-more">
-              <Button
-                loading={loadingMore}
-                type="default"
-                className="login-form-button short"
-                onClick={() => {
-                  setLoadingMore(true);
-                  fetchDeals(dealsData?.meta?.page + 1, 1, 0, 0, "", true);
-                }}
-                style={{ fontWeight: "500" }}
-              >
-                load more
-              </Button>
+              <div>
+                {dealsData && dealsData?.meta?.hasNext && (
+                  <Button
+                    loading={loadingMore}
+                    type="default"
+                    className="login-form-button short"
+                    onClick={() => {
+                      setLoadingMore(true);
+                      fetchDeals(dealsData?.meta?.page + 1, 1, 0, 0, "", true);
+                    }}
+                    style={{ fontWeight: "500" }}
+                  >
+                    load more
+                  </Button>
+                )}
+              </div>
+
+              <div className="results-count">showing 20 of 40 results</div>
             </div>
           )}
         </div>
