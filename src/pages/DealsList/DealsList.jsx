@@ -153,7 +153,7 @@ export default function DealsList() {
                   />
                 }
                 placeholder="select instruments"
-                defaultValue="paypal"
+                defaultValue="bitcoin"
                 // onChange={onChange}
               >
                 <Option value="bank">bank</Option>
@@ -190,7 +190,7 @@ export default function DealsList() {
                   />
                 }
                 placeholder="select instruments"
-                defaultValue="bitcoin"
+                defaultValue="bank fund"
                 // onChange={onChange}
               >
                 <Option value="bitcoin">bitcoin</Option>
