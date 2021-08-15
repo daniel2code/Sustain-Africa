@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Form, Input, Button, message } from "antd";
 import { useDispatch } from "react-redux";
 import randomWords from "random-words";
-import { usePlacesWidget } from "react-google-autocomplete";
+import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
@@ -14,8 +14,6 @@ export default function Register({ history }) {
   const [buttonLoading, setButtonLoading] = useState(false);
   const [locationInput, setLocationInput] = useState("");
   const dispatch = useDispatch();
-
-  const antInputRef = useRef(null);
 
   const onFinish = async (values) => {
     if (locationInput === "") {
@@ -79,16 +77,8 @@ export default function Register({ history }) {
       });
   };
 
-  const { ref: antRef } = usePlacesWidget({
-    apiKey: "AIzaSyA3geMmLIiRA_J0zUzFerPTKwkT5-9ocPM",
-    onPlaceSelected: (place) => {
-      antInputRef.current.setValue(place?.formatted_address);
-      setLocationInput(place?.formatted_address);
-    },
-  });
-
-  const handleLocationChange = (value) => {
-    setLocationInput(value);
+  const handleLocationChange = (data) => {
+    setLocationInput(data?.label);
   };
 
   return (
@@ -97,13 +87,14 @@ export default function Register({ history }) {
         <div className="form">
           <div className="app-name">
             <Link to="/">sustain.africa</Link>
-            <div className="bottom">
-              buy, sell & swap funds.
-            </div>
+            <div className="bottom">buy, sell & swap funds.</div>
           </div>
           <div className="title">create an account</div>
           <div className="desc">
-            a sustain account is a ticket to a global network of trusted merchants around the world who want to help you buy, sell & swap funds anonymously via <span className="desc-link">over 100 methods</span>
+            a sustain account is a ticket to a global network of trusted
+            merchants around the world who want to help you buy, sell & swap
+            funds anonymously via{" "}
+            <span className="desc-link">over 100 methods</span>
           </div>
           <Form
             name="normal_login"
@@ -162,14 +153,31 @@ export default function Register({ history }) {
               style={{ marginBottom: "20px" }}
               rules={[{ required: true, message: "location required!" }]}
             >
-              <Input
-                onChange={(event) => {
-                  handleLocationChange(event.target.value);
+              <GooglePlacesAutocomplete
+                apiKey="AIzaSyA3geMmLIiRA_J0zUzFerPTKwkT5-9ocPM"
+                apiOptions={{ language: "en", region: "ng" }}
+                autocompletionRequest={{
+                  types: ["(regions)"],
+                  componentRestrictions: { country: "ng" },
                 }}
-                placeholder="location e.g. lagos, nigeria"
-                ref={(c) => {
-                  antInputRef.current = c;
-                  if (c) antRef.current = c.input;
+                selectProps={{
+                  placeholder: "location e.g lagos, nigeria",
+                  locationInput,
+                  onChange: handleLocationChange,
+                  styles: {
+                    input: (provided) => ({
+                      ...provided,
+                      color: "black",
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      color: "black",
+                    }),
+                    singleValue: (provided) => ({
+                      ...provided,
+                      color: "black",
+                    }),
+                  },
                 }}
               />
             </Form.Item>

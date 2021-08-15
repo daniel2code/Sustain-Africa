@@ -13,14 +13,14 @@
       padding: 10px 3vw;
       border-radius: 4px;
       margin-bottom: 30px;
-      margin-top: 20px;
+      margin-top: 10px;
 
       .image-wrapper {
         text-align: center;
       }
 
       .title {
-        padding-top: 30px;
+        padding-top: 20px;
         font-weight: 700;
         font-size: 25px;
         color: rgb(88, 88, 88);
@@ -182,4 +182,23 @@ input::-webkit-inner-spin-button {
 .ant-btn:focus {
   border-color: #ed1450;
   color: #ed1450;
+}
+
+.css-yk16xz-control {
+  border-radius: 2px !important;
+  border: 1px solid #eec4d0;
+  border-color: #d9d9d9 !important;
+}
+
+.css-1pahdxg-control {
+  box-shadow: 0 0 0 2px #eec4d0 !important;
+  border: 1px solid #f387a6;
+  border-color: #f387a6 !important;
+  &:hover {
+    border-color: #f387a6 !important;
+  }
+}
+
+.css-1wa3eu0-placeholder {
+  color: #cacaca !important;
 }
