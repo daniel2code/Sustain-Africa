@@ -207,6 +207,7 @@ export default function DealsList() {
                 <Option value="skrill">skrill</Option>
                 <Option value="venmo">venmo</Option>
                 <Option value="bitcoin">bitcoin</Option>
+                <Option value="giftcard">giftcard</Option>
                 <Option value="cashapp">cashapp</Option>
                 <Option value="moneygram">moneygram</Option>
                 <Option value="greendot">greendot</Option>
