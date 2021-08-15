@@ -42,7 +42,6 @@ export default function DealsList() {
       )
       .then(function (response) {
         if (response?.data?.status) {
-          console.log(response?.data);
           if (loadMore) {
             handleLoadMore(response.data);
           } else {
@@ -294,7 +293,10 @@ export default function DealsList() {
                 )}
               </div>
 
-              <div className="results-count">showing 20 of 40 results</div>
+              <div className="results-count">
+                showing {dealsData?.meta?.start} - {dealsData?.meta?.end} of{" "}
+                {dealsData?.meta?.total} deals.
+              </div>
             </div>
           )}
         </div>
