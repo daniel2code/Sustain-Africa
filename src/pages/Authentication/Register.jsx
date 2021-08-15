@@ -155,7 +155,7 @@ export default function Register({ history }) {
             >
               <GooglePlacesAutocomplete
                 apiKey="AIzaSyA3geMmLIiRA_J0zUzFerPTKwkT5-9ocPM"
-                apiOptions={{ language: "en", region: "ng" }}
+                apiOptions={{ language: "en", region: "us" }}
                 autocompletionRequest={{
                   types: ["(regions)"],
                   componentRestrictions: { country: "ng" },

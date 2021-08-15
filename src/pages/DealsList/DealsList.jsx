@@ -102,7 +102,15 @@ export default function DealsList() {
   const handleOk = () => {
     setIsModalVisible(false);
     setDealsData(null);
-    fetchDeals(1, 0, 0, 0, locationInput);
+    fetchDeals(
+      1,
+      0,
+      0,
+      0,
+      locationInput,
+      source ? source : "bank fund",
+      destination ? destination : "bitcoin"
+    );
   };
 
   const handleCancel = () => {
