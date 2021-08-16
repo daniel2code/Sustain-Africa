@@ -200,7 +200,8 @@ export default function DealsList() {
                   onInstrumentChange("source", value);
                 }}
               >
-                <Option value="bank fund">bank</Option>
+                <Option value="all">all</Option>
+                <Option value="bank fund">bank fund</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
                 <Option value="skrill">skrill</Option>
@@ -239,7 +240,8 @@ export default function DealsList() {
                   onInstrumentChange("destination", value);
                 }}
               >
-                <Option value="bank fund">bank</Option>
+                <Option value="all">all</Option>
+                <Option value="bank fund">bank fund</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
                 <Option value="skrill">skrill</Option>
