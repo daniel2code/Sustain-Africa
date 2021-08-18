@@ -125,7 +125,7 @@ export default function DealItem({ item }) {
 
         <div className="deal-item-row-two">
           “{item?.deal_summary}” <br />
-          <span style={{ fontSize: "11px", color: "#d9d9d9" }}>
+          <span style={{ fontSize: "11px", color: "#999" }}>
             {format(item?.created_at)}
           </span>
         </div>

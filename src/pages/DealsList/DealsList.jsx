@@ -222,7 +222,7 @@ export default function DealsList() {
                 }}
               >
                 <Option value="all">all deals</Option>
-                <Option value="bank fund">bank</Option>
+                <Option value="bank fund">bank fund</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
                 <Option value="skrill">skrill</Option>
@@ -263,7 +263,7 @@ export default function DealsList() {
                 }}
               >
                 <Option value="all">all deals</Option>
-                <Option value="bank fund">bank</Option>
+                <Option value="bank fund">bank fund</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
                 <Option value="skrill">skrill</Option>
