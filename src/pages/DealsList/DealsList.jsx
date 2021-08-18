@@ -3,6 +3,7 @@ import { Select, Button, Modal, Input, message } from "antd";
 import { Divider } from "antd";
 import { SwapOutlined } from "@ant-design/icons";
 import { DownOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
 
 import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
@@ -10,16 +11,18 @@ import DealItem from "./../../components/DealItem/DealItem";
 import Footer from "./../../components/Footer/Footer.jsx";
 import "./DealsList.scss";
 import { ReactComponent as EmptyImage } from "./../../assets/empty.svg";
+import { setDealsList } from "./../../redux/data/data.actions";
 
 const { Option } = Select;
 
 export default function DealsList() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dealsData, setDealsData] = useState(null);
   const [locationInput, setLocationInput] = useState("");
-  const [source, setSource] = useState("");
-  const [destination, setDestination] = useState("");
+  const [source, setSource] = useState("all");
+  const [destination, setDestination] = useState("all");
+  const dispatch = useDispatch();
+  const dealsData = useSelector((state) => state.data);
 
   useEffect(() => {
     fetchDeals();
@@ -32,8 +35,8 @@ export default function DealsList() {
     low2high = 0,
     high2low = 0,
     location = "",
-    source = "bank fund",
-    destination = "bitcoin",
+    source = "all",
+    destination = "all",
     loadMore = null
   ) => {
     instance
@@ -41,14 +44,10 @@ export default function DealsList() {
         `/deals?page=${page}&newest=${newest}&low2high=${low2high}&high2low=${high2low}&location=${location}&source=${source}&destination=${destination}`
       )
       .then(function (response) {
-        if (response?.data?.status) {
-          if (loadMore) {
-            handleLoadMore(response.data);
-          } else {
-            setDealsData(response?.data);
-          }
+        if (loadMore) {
+          handleLoadMore(response.data);
         } else {
-          message.error(response?.data?.message);
+          dispatch(setDealsList(response?.data));
         }
       })
       .catch(function (error) {
@@ -60,30 +59,54 @@ export default function DealsList() {
   const handleLoadMore = (fetchedData) => {
     let fetchedDataCopy = fetchedData;
 
-    const oldDataArray = dealsData?.data;
+    const oldDataArray = dealsData?.dealsList?.data;
     const fetchedDataArray = fetchedData?.data;
 
     const updatedArray = oldDataArray.concat(fetchedDataArray);
 
     fetchedDataCopy.data = updatedArray;
 
-    setDealsData(fetchedDataCopy);
+    dispatch(setDealsList(fetchedDataCopy));
     setLoadingMore(false);
   };
 
   const onFilterChange = (value) => {
     if (value === "newest") {
       setLocationInput("");
-      setDealsData(null);
-      fetchDeals(1, 1, 0, 0, "");
+      dispatch(setDealsList(null));
+      fetchDeals(
+        1,
+        1,
+        0,
+        0,
+        locationInput,
+        source ? source : "all",
+        destination ? destination : "all"
+      );
     } else if (value === "highToLow") {
       setLocationInput("");
-      setDealsData(null);
-      fetchDeals(1, 0, 0, 1, "");
+      dispatch(setDealsList(null));
+      fetchDeals(
+        1,
+        0,
+        0,
+        1,
+        locationInput,
+        source ? source : "all",
+        destination ? destination : "all"
+      );
     } else if (value === "lowToHigh") {
       setLocationInput("");
-      setDealsData(null);
-      fetchDeals(1, 0, 1, 0, "");
+      dispatch(setDealsList(null));
+      fetchDeals(
+        1,
+        0,
+        1,
+        0,
+        locationInput,
+        source ? source : "all",
+        destination ? destination : "all"
+      );
     } else if (value === "location") {
       showModal();
     } else {
@@ -100,15 +123,15 @@ export default function DealsList() {
 
   const handleOk = () => {
     setIsModalVisible(false);
-    setDealsData(null);
+    dispatch(setDealsList(null));
     fetchDeals(
       1,
       0,
       0,
       0,
       locationInput,
-      source ? source : "bank fund",
-      destination ? destination : "bitcoin"
+      source ? source : "all",
+      destination ? destination : "all"
     );
   };
 
@@ -117,7 +140,12 @@ export default function DealsList() {
   };
 
   const onInstrumentChange = (type, value) => {
-    if (type === "source") {
+    dispatch(setDealsList(null));
+    if (value === "all") {
+      fetchDeals();
+      setSource("all");
+      setDestination("all");
+    } else if (type === "source") {
       setSource(value);
       fetchDeals(
         1,
@@ -126,18 +154,10 @@ export default function DealsList() {
         0,
         locationInput,
         value,
-        destination ? destination : "bitcoin"
+        destination ? destination : "all"
       );
     } else {
-      fetchDeals(
-        1,
-        1,
-        0,
-        0,
-        locationInput,
-        source ? source : "bank fund",
-        value
-      );
+      fetchDeals(1, 1, 0, 0, locationInput, source ? source : "all", value);
       setDestination(value);
     }
   };
@@ -195,11 +215,13 @@ export default function DealsList() {
                   />
                 }
                 placeholder="select instruments"
-                defaultValue="bank fund"
+                defaultValue="all"
+                value={source}
                 onChange={(value) => {
                   onInstrumentChange("source", value);
                 }}
               >
+                <Option value="all">all deals</Option>
                 <Option value="bank fund">bank</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
@@ -234,11 +256,13 @@ export default function DealsList() {
                   />
                 }
                 placeholder="select instruments"
-                defaultValue="bitcoin"
+                defaultValue="all"
+                value={destination}
                 onChange={(value) => {
                   onInstrumentChange("destination", value);
                 }}
               >
+                <Option value="all">all deals</Option>
                 <Option value="bank fund">bank</Option>
                 <Option value="paypal">paypal</Option>
                 <Option value="cash">cash</Option>
@@ -253,9 +277,9 @@ export default function DealsList() {
             </div>
           </div>
 
-          {!dealsData && <Loader />}
+          {!dealsData?.dealsList && <Loader />}
 
-          {dealsData && dealsData?.data.length === 0 && (
+          {dealsData?.dealsList && dealsData?.dealsList?.data.length === 0 && (
             <div className="no-result">
               <div className="svg-container">
                 <EmptyImage />
@@ -265,40 +289,57 @@ export default function DealsList() {
             </div>
           )}
 
-          {dealsData && dealsData?.data.length !== 0 && (
+          {dealsData?.dealsList && dealsData?.dealsList?.data.length !== 0 && (
             <div className="deals-list">
-              {dealsData &&
-                dealsData?.data.map((item) => (
+              {dealsData?.dealsList &&
+                dealsData?.dealsList?.data.map((item) => (
                   <DealItem item={item} key={`${item.id}${Math.random()}`} />
                 ))}
             </div>
           )}
 
-          {dealsData && dealsData?.data.length !== 0 && (
-            <div className="load-more">
-              <div>
-                {dealsData && dealsData?.meta?.hasNext && (
-                  <Button
-                    loading={loadingMore}
-                    type="default"
-                    className="login-form-button short"
-                    onClick={() => {
-                      setLoadingMore(true);
-                      fetchDeals(dealsData?.meta?.page + 1, 1, 0, 0, "", true);
-                    }}
-                    style={{ fontWeight: "500" }}
-                  >
-                    load more
-                  </Button>
-                )}
-              </div>
+          {dealsData?.dealsList &&
+            dealsData?.dealsList?.data.length !== 0 &&
+            dealsData?.dealsList?.meta?.hasNext && (
+              <div className="load-more">
+                <div>
+                  {dealsData?.dealsList && dealsData?.dealsList?.meta?.hasNext && (
+                    <Button
+                      loading={loadingMore}
+                      type="default"
+                      className="login-form-button short"
+                      onClick={() => {
+                        setLoadingMore(true);
+                        fetchDeals(
+                          dealsData?.dealsList?.meta?.page + 1,
+                          1,
+                          0,
+                          0,
+                          locationInput,
+                          source ? source : "all",
+                          destination ? destination : "all",
+                          true
+                        );
+                      }}
+                      style={{ fontWeight: "500" }}
+                    >
+                      load more
+                    </Button>
+                  )}
+                </div>
 
-              <div className="results-count">
-                showing {dealsData?.meta?.start} - {dealsData?.meta?.end} of{" "}
-                {dealsData?.meta?.total} deals.
+                <div className="results-count">
+                  {`showing ${dealsData?.dealsList?.meta?.start} - ${dealsData?.dealsList?.meta?.end} of 
+                ${dealsData?.dealsList?.meta?.total} deals.`}
+                </div>
               </div>
-            </div>
-          )}
+            )}
+
+          {dealsData?.dealsList &&
+            dealsData?.dealsList?.data.length !== 0 &&
+            !dealsData?.dealsList?.meta?.hasNext && (
+              <div className="list-end">looks like you've reached the end</div>
+            )}
         </div>
       </div>
       <Footer />

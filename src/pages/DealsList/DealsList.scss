@@ -102,10 +102,19 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
       .results-count {
         margin: auto 0;
         font-size: 12px;
       }
+    }
+
+    .list-end {
+      padding: 20px 0;
+      border-top: 1px solid rgb(238, 238, 238);
+      text-align: center;
+      margin: auto 0;
+      font-size: 12px;
     }
   }
   .ant-divider-horizontal.ant-divider-with-text {
