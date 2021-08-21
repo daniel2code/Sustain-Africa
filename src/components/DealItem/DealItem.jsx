@@ -124,30 +124,32 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-two">
-          “{item?.deal_summary}”{" "}
-          <br /><span style={{ fontSize: "11px", color: "#999" }}>
+          “{item?.deal_summary}” <br />
+          <span style={{ fontSize: "11px", color: "#999" }}>
             {format(item?.created_at)}
           </span>
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username">@{item?.dealer_user_name}</span>
+          <span className="username">@{item?.user_name_front}</span>
         </div>
 
         <div className="deal-item-row-three">
-          deals closed <span className="bold">92</span> <EllipsisOutlined /> not
-          closed <span className="bold">156</span> <EllipsisOutlined /> reviews{" "}
-          <span className="bold">14</span> <EllipsisOutlined /> status{" "}
-          <span className="status">online</span>
+          deals closed <span className="bold">{item?.total_deals_closed}</span>{" "}
+          <EllipsisOutlined /> not closed{" "}
+          <span className="bold">{item?.total_deals_not_closed}</span>{" "}
+          <EllipsisOutlined /> reviews{" "}
+          <span className="bold">{item?.total_reviews}</span>{" "}
+          <EllipsisOutlined /> status <span className="status">online</span>
         </div>
 
         <div className="deal-item-row-four">
           <div className="left">
             <span className="like">
-              <LikeOutlined /> 201
+              <LikeOutlined /> {item?.total_positive_reviews}
             </span>
             <span className="dislike">
-              <DislikeOutlined /> 56
+              <DislikeOutlined /> {item?.total_negative_reviews}
             </span>
           </div>
           <div className="right">
