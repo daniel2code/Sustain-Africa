@@ -33,6 +33,19 @@
       border-radius: 4px;
       margin-bottom: 30px;
       margin-top: 10px;
+
+      .ant-form-item-label>label {
+        font-size: 13px;
+        color: #999;
+      }
+
+      .ant-input-number {
+        border: 1px solid #ed1450;
+      }
+
+      .ant-select:not(.ant-select-customize-input) .ant-select-selector, .ant-input-number, .ant-form-item-control-input-content textarea {
+        border-color: #ed1450 !important;
+      }
     }
 
     .ant-form-item {

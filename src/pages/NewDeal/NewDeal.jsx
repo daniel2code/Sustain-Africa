@@ -113,12 +113,12 @@ export default function NewDeal() {
   return (
     <div className="new-deal-container">
       <div className="new-deal-wrapper">
-        <div className="top-bar">
-          <div className="left">new deal</div>
-          <div className="right">history</div>
-        </div>
 
         <div className="deal-form-container">
+          <div className="top-bar">
+            <a href={}><div className="left">new deal</div></a>
+            <a href={}><div className="right">history</div></a>
+          </div>
           <Form
             {...formItemLayout}
             form={form}
