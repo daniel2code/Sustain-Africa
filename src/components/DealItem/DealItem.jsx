@@ -153,7 +153,7 @@ export default function DealItem({ item }) {
             </span>
           </div>
           <div className="right">
-            <button>discuss</button>
+            <button className="green-button">discuss</button>
           </div>
         </div>
       </div>

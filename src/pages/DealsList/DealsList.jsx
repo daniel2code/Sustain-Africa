@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Select, Button, Modal, Input, message } from "antd";
 import { Divider } from "antd";
-import { SwapOutlined } from "@ant-design/icons";
-import { DownOutlined } from "@ant-design/icons";
+import { SwapOutlined, DownOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import Loader from "./../../components/Loader/Loader";

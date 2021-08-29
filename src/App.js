@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 import Navbar from "./components/Navbar/Navbar";
 import DealsList from "./pages/DealsList/DealsList";
+import NewDeal from "./pages/NewDeal/NewDeal";
 import Register from "./pages/Authentication/Register";
 import Login from "./pages/Authentication/Login";
 import VerifyEmail from "./pages/Authentication/VerifyEmail";
@@ -38,7 +39,8 @@ function App() {
         </div>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={DealsList} />
+        <Route exact path="/" component={DealsList} />
+        <Route exact path="/new-deal" component={NewDeal} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/verify-email" component={VerifyEmail} />
