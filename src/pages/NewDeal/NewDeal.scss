@@ -40,12 +40,30 @@
         color: #999;
       }
 
-      .ant-input, .ant-select-selector, .ant-input-number {
+      .ant-input,
+      .ant-select-selector,
+      .ant-input-number {
         border: 1.5px solid #ed1450;
       }
 
-      .ant-select-selection-placeholder, .ant-input-selection-placeholder {
+      .ant-select-selection-placeholder,
+      .ant-input-selection-placeholder {
         color: #ed1450;
+      }
+
+      .ant-form-item-required {
+        &::before {
+          content: "";
+        }
+        &::after {
+          display: inline-block;
+          margin-left: 4px;
+          color: #ff4d4f;
+          font-size: 14px;
+          font-family: SimSun, sans-serif;
+          line-height: 1;
+          content: "*";
+        }
       }
     }
 
