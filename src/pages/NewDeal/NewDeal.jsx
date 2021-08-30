@@ -828,7 +828,7 @@ export default function NewDeal() {
                 ]}
             >
               <Select
-                  placeholder="select"
+                  placeholder="select discussion medium"
                   // value={destination}
                   // onChange={(value) => {
                   //   onInstrumentChange("destination", value);
