@@ -16,6 +16,7 @@
       justify-content: space-between;
       border-bottom: 1px solid #eeeeee;
       padding-bottom: 10px;
+
       .left,
       .right {
         color: #ed1450;
@@ -34,17 +35,17 @@
       margin-bottom: 30px;
       margin-top: 10px;
 
-      .ant-form-item-label>label {
+      .ant-form-item-label > label {
         font-size: 13px;
         color: #999;
       }
 
-      .ant-input-number {
-        border: 1px solid #ed1450;
+      .ant-input, .ant-select-selector, .ant-input-number {
+        border-color: #ed1450;
       }
 
-      .ant-select:not(.ant-select-customize-input) .ant-select-selector, .ant-input-number, .ant-form-item-control-input-content textarea {
-        border-color: #ed1450 !important;
+      .ant-select-selection-placeholder, .ant-input-selection-placeholder {
+        color: #ed1450;
       }
     }
 

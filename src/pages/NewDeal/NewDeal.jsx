@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Divider } from "antd";
 import { Form, Input, InputNumber, Select } from "antd";
 import {
   wallet_types,
@@ -116,8 +117,8 @@ export default function NewDeal() {
 
         <div className="deal-form-container">
           <div className="top-bar">
-            <a href={}><div className="left">new deal</div></a>
-            <a href={}><div className="right">history</div></a>
+            <a href={'#'}><div className="left">new deal</div></a>
+            <a href={'#'}><div className="right">history</div></a>
           </div>
           <Form
             {...formItemLayout}
@@ -697,7 +698,10 @@ export default function NewDeal() {
               </>
             )}
 
+            <Divider style={{fontSize: "14px", color: "#999"}}>range & remittance</Divider>
+
             <Form.Item style={{ marginBottom: 0 }}>
+
               <Form.Item
                 label="min."
                 name="min"
@@ -707,7 +711,7 @@ export default function NewDeal() {
                     message: "input min!",
                   },
                 ]}
-                style={{ display: "inline-block", width: "32%" }}
+                style={{ display: "inline-block", width: "49%" }}
               >
                 <InputNumber
                   style={{ width: "100%" }}
@@ -740,7 +744,7 @@ export default function NewDeal() {
                 ]}
                 style={{
                   display: "inline-block",
-                  width: "32%",
+                  width: "49%",
                   marginLeft: "2%",
                 }}
               >
@@ -754,37 +758,13 @@ export default function NewDeal() {
                   // onChange={onChange}
                 />
               </Form.Item>
-              <Form.Item
-                name="rate"
-                label="rate"
-                style={{
-                  display: "inline-block",
-                  width: "32%",
-                  marginLeft: "2%",
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "input rate!",
-                  },
-                ]}
-              >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  defaultValue={0}
-                  min={0}
-                  max={100}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                  // onChange={onChange}
-                />
-              </Form.Item>
+
             </Form.Item>
             <Form.Item style={{ marginBottom: 0 }}>
               <Form.Item
                 label="currency"
                 name="currency"
-                style={{ display: "inline-block", width: "39%" }}
+                style={{ display: "inline-block", width: "49%" }}
                 rules={[
                   {
                     required: true,
@@ -805,14 +785,40 @@ export default function NewDeal() {
                   <Option value="gbp">GBP</Option>
                 </Select>
               </Form.Item>
-
               <Form.Item
+                  name="rate"
+                  label="remittance rate"
+                  style={{
+                    display: "inline-block",
+                    width: "49%",
+                    marginLeft: "2%"
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "input rate!",
+                    },
+                  ]}
+              >
+                <InputNumber
+                    style={{ width: "100%" }}
+                    defaultValue={0}
+                    min={0}
+                    max={100}
+                    formatter={(value) => `${value}%`}
+                    parser={(value) => value.replace("%", "")}
+                    // onChange={onChange}
+                />
+              </Form.Item>
+            </Form.Item>
+            <Divider style={{fontSize: "14px", color: "#999"}}>discussion & linkup</Divider>
+
+            <Form.Item
                 name="discussion"
-                label="discussion"
+                label="medium"
                 style={{
                   display: "inline-block",
-                  width: "59%",
-                  marginLeft: "2%",
+                  width: "100%"
                 }}
                 rules={[
                   {
@@ -820,18 +826,21 @@ export default function NewDeal() {
                     message: "input rate!",
                   },
                 ]}
-              >
-                <Select
+            >
+              <Select
                   placeholder="select"
                   // value={destination}
                   // onChange={(value) => {
                   //   onInstrumentChange("destination", value);
                   // }}
-                >
-                  <Option value="whatsapp">whatsapp</Option>
-                  <Option value="meet in person">meet in person</Option>
-                </Select>
-              </Form.Item>
+              >
+                <Option value="whatsapp">whatsapp</Option>
+                <Option value="telegram">telegram</Option>
+                <Option value="zoom">zoom</Option>
+                <Option value="ICQ">ICQ</Option>
+                <Option value="google meet">google meet</Option>
+                <Option value="meet in person">meet in person</Option>
+              </Select>
             </Form.Item>
             <Form.Item
               label="deal summary"
@@ -844,7 +853,7 @@ export default function NewDeal() {
               ]}
             >
               <TextArea
-                placeholder="provide useful information regarding this deal."
+                placeholder="please provide more information regarding this deal, like the range, remittance rate and details on how discussions will happen."
                 autoSize={{ minRows: 4, maxRows: 7 }}
               />
             </Form.Item>
@@ -862,7 +871,7 @@ export default function NewDeal() {
                 style={{ width: "100%" }}
                 min={1}
                 max={5}
-                placeholder="enter minimum score"
+                placeholder="minimum relevance score to accept"
                 // onChange={onChange}
               />
             </Form.Item>
