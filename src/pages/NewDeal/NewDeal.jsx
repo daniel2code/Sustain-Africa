@@ -834,6 +834,7 @@ export default function NewDeal() {
                   //   onInstrumentChange("destination", value);
                   // }}
               >
+                <Option value="any">any</Option>
                 <Option value="whatsapp">whatsapp</Option>
                 <Option value="telegram">telegram</Option>
                 <Option value="zoom">zoom</Option>
