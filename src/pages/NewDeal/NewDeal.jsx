@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Divider } from "antd";
 import { Form, Input, InputNumber, Select } from "antd";
+import { Link } from "react-router-dom";
+
 import {
   wallet_types,
   exchanges,
@@ -114,11 +116,15 @@ export default function NewDeal() {
   return (
     <div className="new-deal-container">
       <div className="new-deal-wrapper">
-
         <div className="deal-form-container">
           <div className="top-bar">
-            <a href={'#'}><div className="left">new deal</div></a>
-            <a href={'#'}><div className="right">history</div></a>
+            <div className="left">
+              <Link to="#">new deal</Link>
+            </div>
+
+            <div className="right">
+              <Link to="#">history</Link>
+            </div>
           </div>
           <Form
             {...formItemLayout}
@@ -698,10 +704,11 @@ export default function NewDeal() {
               </>
             )}
 
-            <Divider style={{fontSize: "14px", color: "#999"}}>range & remittance</Divider>
+            <Divider style={{ fontSize: "14px", color: "#999" }}>
+              range & remittance
+            </Divider>
 
             <Form.Item style={{ marginBottom: 0 }}>
-
               <Form.Item
                 label="min."
                 name="min"
@@ -758,7 +765,6 @@ export default function NewDeal() {
                   // onChange={onChange}
                 />
               </Form.Item>
-
             </Form.Item>
             <Form.Item style={{ marginBottom: 0 }}>
               <Form.Item
@@ -786,39 +792,12 @@ export default function NewDeal() {
                 </Select>
               </Form.Item>
               <Form.Item
-                  name="rate"
-                  label="remittance rate"
-                  style={{
-                    display: "inline-block",
-                    width: "49%",
-                    marginLeft: "2%"
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: "input rate!",
-                    },
-                  ]}
-              >
-                <InputNumber
-                    style={{ width: "100%" }}
-                    defaultValue={0}
-                    min={0}
-                    max={100}
-                    formatter={(value) => `${value}%`}
-                    parser={(value) => value.replace("%", "")}
-                    // onChange={onChange}
-                />
-              </Form.Item>
-            </Form.Item>
-            <Divider style={{fontSize: "14px", color: "#999"}}>discussion & linkup</Divider>
-
-            <Form.Item
-                name="discussion"
-                label="medium"
+                name="rate"
+                label="remittance rate"
                 style={{
                   display: "inline-block",
-                  width: "100%"
+                  width: "49%",
+                  marginLeft: "2%",
                 }}
                 rules={[
                   {
@@ -826,13 +805,42 @@ export default function NewDeal() {
                     message: "input rate!",
                   },
                 ]}
+              >
+                <InputNumber
+                  style={{ width: "100%" }}
+                  defaultValue={0}
+                  min={0}
+                  max={100}
+                  formatter={(value) => `${value}%`}
+                  parser={(value) => value.replace("%", "")}
+                  // onChange={onChange}
+                />
+              </Form.Item>
+            </Form.Item>
+            <Divider style={{ fontSize: "14px", color: "#999" }}>
+              discussion & linkup
+            </Divider>
+
+            <Form.Item
+              name="discussion"
+              label="medium"
+              style={{
+                display: "inline-block",
+                width: "100%",
+              }}
+              rules={[
+                {
+                  required: true,
+                  message: "input rate!",
+                },
+              ]}
             >
               <Select
-                  placeholder="select discussion medium"
-                  // value={destination}
-                  // onChange={(value) => {
-                  //   onInstrumentChange("destination", value);
-                  // }}
+                placeholder="select discussion medium"
+                // value={destination}
+                // onChange={(value) => {
+                //   onInstrumentChange("destination", value);
+                // }}
               >
                 <Option value="any">any</Option>
                 <Option value="whatsapp">whatsapp</Option>
