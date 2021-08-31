@@ -31,47 +31,58 @@ export default function DealItem({ item }) {
       </Tooltip>
       <div className="deal-item-wrapper">
         <div className="deal-item-row-one">
-          {item?.bank_name && (
+          {item?.s_bank_name && (
             <>
               {" "}
-              bank name <span className="bold">{item?.bank_name}</span>{" "}
+              bank name <span className="bold">{item?.s_bank_name}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.account_type && (
+          {item?.s_account_type && (
             <>
               {" "}
               account type <span className="bold">
-                {item?.account_type}
+                {item?.s_account_type}
               </span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.card_brand && (
+          {item?.s_account_age && item?.s_account_age !== 0 ? (
             <>
               {" "}
-              card brand <span className="bold">{item?.card_brand}</span>{" "}
+              account age <span className="bold">
+                {item?.s_account_age}
+              </span>{" "}
+              <EllipsisOutlined />{" "}
+            </>
+          ) : null}
+          {item?.s_card_brand && (
+            <>
+              {" "}
+              card brand <span className="bold">{item?.s_card_brand}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.card_type && (
+          {item?.s_card_type && (
             <>
               {" "}
-              card type <span className="bold">{item?.card_type}</span>{" "}
+              card type <span className="bold">{item?.s_card_type}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.exchange && (
+          {item?.s_exchange && (
             <>
               {" "}
-              exchange <span className="bold">{item?.exchange}</span>{" "}
+              exchange <span className="bold">{item?.s_exchange}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.wallet_type && (
+          {item?.s_wallet_type && (
             <>
               {" "}
-              wallet type <span className="bold">{item?.wallet_type}</span>{" "}
+              wallet type <span className="bold">
+                {item?.s_wallet_type}
+              </span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
@@ -98,17 +109,17 @@ export default function DealItem({ item }) {
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.state && (
+          {item?.s_state && (
             <>
               {" "}
-              state <span className="bold">{item?.state}</span>{" "}
+              state <span className="bold">{item?.s_state}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
-          {item?.country && (
+          {item?.s_country && (
             <>
               {" "}
-              country <span className="bold">{item?.country}</span>{" "}
+              country <span className="bold">{item?.s_country}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}

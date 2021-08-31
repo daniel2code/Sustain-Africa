@@ -813,7 +813,7 @@ export default function NewDeal() {
             )}
 
             <Divider style={{ fontSize: "14px", color: "#999" }}>
-              range & remittance
+              range & rate
             </Divider>
 
             <Form.Item style={{ marginBottom: 0 }}>
@@ -829,10 +829,10 @@ export default function NewDeal() {
                 style={{ display: "inline-block", width: "49%" }}
               >
                 <InputNumber
+                  placeholder="min. amount"
                   style={{ width: "100%" }}
-                  defaultValue={0}
                   formatter={(value) =>
-                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 />
@@ -863,10 +863,10 @@ export default function NewDeal() {
                 }}
               >
                 <InputNumber
+                  placeholder="max. amount"
                   style={{ width: "100%" }}
-                  defaultValue={0}
                   formatter={(value) =>
-                    `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 />
@@ -893,7 +893,7 @@ export default function NewDeal() {
               </Form.Item>
               <Form.Item
                 name="rate"
-                label="remittance rate"
+                label="rate"
                 style={{
                   display: "inline-block",
                   width: "49%",
