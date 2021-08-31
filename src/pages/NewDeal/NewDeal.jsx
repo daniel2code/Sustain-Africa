@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { Divider } from "antd";
-import { Form, Input, InputNumber, Select } from "antd";
-import { Link } from "react-router-dom";
+import { Form, Input, InputNumber, Select, message, Button } from "antd";
+import { Link, useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import { instance } from "./../../utils/API";
 
 import {
   wallet_types,
@@ -46,6 +49,9 @@ const { TextArea } = Input;
 
 export default function NewDeal() {
   const [form] = Form.useForm();
+  const history = useHistory();
+  const userState = useSelector((state) => state.user);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [selectedSource, setSelectedSource] = useState("");
   const [sourceStatesToRender, setSourceStatesToRender] = useState([]);
   const [sourceBanksToRender, setSourceBanksToRender] = useState([]);
@@ -64,9 +70,111 @@ export default function NewDeal() {
   const [destinationAccountInput, setDestinationAccountInput] = useState(null);
   const [destinationAccountAgeInput, setDestinationAccountAgeInput] =
     useState(null);
+  const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
 
   const onFinish = async (values) => {
-    console.log(values);
+    setButtonLoading(true);
+
+    const data = new FormData();
+    data.append("dealer_id", userState?.profile?.id);
+    data.append("dealer_user_name", userState?.profile?.user_name);
+    data.append("source", values?.source);
+    data.append("destination", values?.destination);
+    data.append("range_min", values?.min);
+    data.append("range_max", values?.max);
+    data.append("remit_rate", values?.rate);
+    data.append("currency", values?.currency);
+    data.append("discussion_title", values?.discussion);
+    data.append("discussion_details", values?.discussion_detail);
+    data.append("deal_summary", values?.summary);
+    data.append("min_score_to_accept", values?.score);
+    data.append("s_bank_name", sourceBankInput ? sourceBankInput : "");
+    data.append("s_account_type", sourceAccountInput ? sourceAccountInput : "");
+    data.append(
+      "s_account_age",
+      sourceAccountAgeInput ? sourceAccountAgeInput : ""
+    );
+    data.append(
+      "s_account_country",
+      values?.source_country ? values?.source_country : ""
+    );
+    data.append("s_account_state", sourceStateInput ? sourceStateInput : "");
+    data.append(
+      "s_wallet_type",
+      values?.source_wallet_type ? values?.source_wallet_type : ""
+    );
+    data.append(
+      "s_wallet_age",
+      values?.source_wallet_age ? values?.source_wallet_age : ""
+    );
+    data.append(
+      "s_exchange",
+      values?.source_exchange ? values?.source_exchange : ""
+    );
+    data.append(
+      "s_card_type",
+      values?.source_card_type ? values?.source_card_type : ""
+    );
+    data.append(
+      "s_card_brand",
+      values?.source_card_brand ? values?.source_card_brand : ""
+    );
+    data.append(
+      "d_bank_name",
+      destinationBankInput ? destinationBankInput : ""
+    );
+    data.append(
+      "d_account_type",
+      destinationAccountInput ? destinationAccountInput : ""
+    );
+    data.append(
+      "d_account_age",
+      destinationAccountAgeInput ? destinationAccountAgeInput : ""
+    );
+    data.append(
+      "d_account_country",
+      values?.destination_country ? values?.destination_country : ""
+    );
+    data.append(
+      "d_account_state",
+      destinationStateInput ? destinationStateInput : ""
+    );
+    data.append(
+      "d_wallet_type",
+      values?.destination_wallet_type ? values?.destination_wallet_type : ""
+    );
+    data.append(
+      "d_wallet_age",
+      values?.destination_wallet_age ? values?.destination_wallet_age : ""
+    );
+    data.append(
+      "d_exchange",
+      values?.destination_exchange ? values?.destination_exchange : ""
+    );
+    data.append(
+      "d_card_type",
+      values?.destination_card_type ? values?.destination_card_type : ""
+    );
+    data.append(
+      "d_card_brand",
+      values?.destination_card_brand ? values?.destination_card_brand : ""
+    );
+
+    instance
+      .post("/new_deal", data)
+      .then(function (response) {
+        setButtonLoading(false);
+        if (response?.data?.status) {
+          message.success(response?.data?.message);
+          history.push("/");
+        } else {
+          message.error(response?.data?.message);
+        }
+      })
+      .catch(function (error) {
+        message.error(error?.response?.data?.message);
+        setButtonLoading(false);
+      });
   };
 
   const handleSourceSelect = async (value) => {
@@ -177,7 +285,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="wallet type">
                     {wallet_types &&
@@ -196,7 +304,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="exchange">
                     {exchanges &&
@@ -217,7 +325,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="wallet age">
                     {wallet_age &&
@@ -239,7 +347,7 @@ export default function NewDeal() {
                 <Form.Item style={{ marginBottom: 0 }}>
                   <Form.Item
                     name="source_country"
-                    style={{ display: "inline-block", width: "34%" }}
+                    style={{ display: "inline-block", width: "39%" }}
                     rules={[
                       {
                         required: true,
@@ -263,7 +371,7 @@ export default function NewDeal() {
                   <Form.Item
                     style={{
                       display: "inline-block",
-                      width: "34%",
+                      width: "39%",
                       marginLeft: "2%",
                     }}
                     rules={[
@@ -297,7 +405,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select
                     placeholder="bank name"
@@ -323,7 +431,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select
                     placeholder="account type"
@@ -348,7 +456,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select
                     placeholder="account age"
@@ -382,7 +490,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="giftcard type">
                     {card_types &&
@@ -403,7 +511,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="giftcard brand">
                     {card_brands &&
@@ -462,7 +570,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="wallet type">
                     {wallet_types &&
@@ -483,7 +591,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="exchange">
                     {exchanges &&
@@ -504,7 +612,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="wallet age">
                     {wallet_age &&
@@ -526,7 +634,7 @@ export default function NewDeal() {
                 <Form.Item style={{ marginBottom: 0 }}>
                   <Form.Item
                     name="destination_country"
-                    style={{ display: "inline-block", width: "34%" }}
+                    style={{ display: "inline-block", width: "39%" }}
                     rules={[
                       {
                         required: true,
@@ -550,7 +658,7 @@ export default function NewDeal() {
                   <Form.Item
                     style={{
                       display: "inline-block",
-                      width: "34%",
+                      width: "39%",
                       marginLeft: "2%",
                     }}
                     rules={[
@@ -584,7 +692,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select
                     placeholder="bank name"
@@ -610,7 +718,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select
                     placeholder="account type"
@@ -635,7 +743,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select
                     placeholder="account age"
@@ -669,7 +777,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="giftcard type">
                     {card_types &&
@@ -690,7 +798,7 @@ export default function NewDeal() {
                       whitespace: true,
                     },
                   ]}
-                  style={{ width: "70%" }}
+                  style={{ width: "80%" }}
                 >
                   <Select placeholder="giftcard brand">
                     {card_brands &&
@@ -727,7 +835,6 @@ export default function NewDeal() {
                     `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  // onChange={onChange}
                 />
               </Form.Item>
               {/* <span
@@ -762,7 +869,6 @@ export default function NewDeal() {
                     `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
                   parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                  // onChange={onChange}
                 />
               </Form.Item>
             </Form.Item>
@@ -778,13 +884,7 @@ export default function NewDeal() {
                   },
                 ]}
               >
-                <Select
-                  placeholder="select"
-                  // value={destination}
-                  // onChange={(value) => {
-                  //   onInstrumentChange("destination", value);
-                  // }}
-                >
+                <Select placeholder="select">
                   <Option value="usd">USD</Option>
                   <Option value="ngn">NGN</Option>
                   <Option value="cad">CAD</Option>
@@ -813,7 +913,6 @@ export default function NewDeal() {
                   max={100}
                   formatter={(value) => `${value}%`}
                   parser={(value) => value.replace("%", "")}
-                  // onChange={onChange}
                 />
               </Form.Item>
             </Form.Item>
@@ -837,10 +936,9 @@ export default function NewDeal() {
             >
               <Select
                 placeholder="select discussion medium"
-                // value={destination}
-                // onChange={(value) => {
-                //   onInstrumentChange("destination", value);
-                // }}
+                onChange={() => {
+                  setShowDiscussionDetail(true);
+                }}
               >
                 <Option value="whatsapp">whatsapp</Option>
                 <Option value="telegram">telegram</Option>
@@ -850,6 +948,25 @@ export default function NewDeal() {
                 <Option value="meet in person">meet in person</Option>
               </Select>
             </Form.Item>
+
+            {showDiscussionDetail && (
+              <Form.Item
+                label="discussion detail"
+                name="discussion_detail"
+                rules={[
+                  {
+                    required: true,
+                    message: "please provide discussion detail!",
+                  },
+                ]}
+              >
+                <TextArea
+                  placeholder="kindly share details on how discussion will be done."
+                  autoSize={{ minRows: 3, maxRows: 5 }}
+                />
+              </Form.Item>
+            )}
+
             <Form.Item
               label="deal summary"
               name="summary"
@@ -861,7 +978,7 @@ export default function NewDeal() {
               ]}
             >
               <TextArea
-                placeholder="please provide more information regarding this deal, like the range, remittance rate and details on how discussions will happen."
+                placeholder="please provide more information regarding this deal, like the range and remittance rate."
                 autoSize={{ minRows: 4, maxRows: 7 }}
               />
             </Form.Item>
@@ -884,9 +1001,9 @@ export default function NewDeal() {
               />
             </Form.Item>
             <Form.Item>
-              <button htmlType="submit" className="green-button">
+              <Button loading={buttonLoading} type="primary" htmlType="submit">
                 post deal
-              </button>
+              </Button>
             </Form.Item>
           </Form>
         </div>

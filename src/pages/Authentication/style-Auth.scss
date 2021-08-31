@@ -147,9 +147,13 @@ a {
   box-shadow: 0 0 0 2px #eec4d0;
 }
 
-.ant-input:hover,
+// .ant-input:hover,
+// .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
+//   box-shadow: 0 0 0 2px #eec4d0;
+// }
+
 .ant-input-affix-wrapper:not(.ant-input-affix-wrapper-disabled):hover {
-  box-shadow: 0 0 0 2px #eec4d0;
+  border-color: #f387a6;
 }
 
 .ant-input:hover {
