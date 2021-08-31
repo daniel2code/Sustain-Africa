@@ -940,6 +940,7 @@ export default function NewDeal() {
                   setShowDiscussionDetail(true);
                 }}
               >
+                <Option value="any">any</Option>
                 <Option value="whatsapp">whatsapp</Option>
                 <Option value="telegram">telegram</Option>
                 <Option value="zoom">zoom</Option>
