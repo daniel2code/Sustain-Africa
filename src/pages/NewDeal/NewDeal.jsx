@@ -1,7 +1,16 @@
 import React, { useState } from "react";
 import { Divider } from "antd";
-import { Form, Input, InputNumber, Select, message, Button } from "antd";
+import {
+  Form,
+  Input,
+  InputNumber,
+  Select,
+  message,
+  Button,
+  Tooltip,
+} from "antd";
 import { Link, useHistory } from "react-router-dom";
+import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 import { instance } from "./../../utils/API";
@@ -248,11 +257,22 @@ export default function NewDeal() {
               rules={[
                 {
                   required: true,
-                  message: "Please select deal source!",
+                  message: "please select deal source!",
                 },
               ]}
             >
               <Select
+                style={{
+                  width: "calc(100% - 30px)",
+                }}
+                suffixIcon={
+                  <DownOutlined
+                    style={{
+                      strokeWidth: "50",
+                      color: "#ed1450",
+                    }}
+                  />
+                }
                 placeholder="select source"
                 onChange={(value) => {
                   handleSourceSelect(value);
@@ -272,6 +292,9 @@ export default function NewDeal() {
                 <Option value="litecoin">litecoin</Option>
                 <Option value="dogecoin">dogecoin</Option>
               </Select>
+              <Tooltip placement="top" title="hello">
+                <div className="question-tooltip">?</div>
+              </Tooltip>
             </Form.Item>
             {(selectedSource === "bitcoin" ||
               selectedSource === "ethereum" ||
@@ -287,7 +310,17 @@ export default function NewDeal() {
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="wallet type">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="wallet type"
+                  >
                     {wallet_types &&
                       wallet_types.map((wallet) => (
                         <Option key={wallet} value={wallet}>
@@ -306,7 +339,17 @@ export default function NewDeal() {
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="exchange">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="exchange"
+                  >
                     {exchanges &&
                       exchanges.map((exchange) => (
                         <Option key={exchange} value={exchange}>
@@ -321,13 +364,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select wallet age!",
+                      message: "please select wallet age!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="wallet age">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="wallet age"
+                  >
                     {wallet_age &&
                       wallet_age.map((age) => (
                         <Option key={age} value={age}>
@@ -356,6 +409,14 @@ export default function NewDeal() {
                     ]}
                   >
                     <Select
+                      suffixIcon={
+                        <DownOutlined
+                          style={{
+                            strokeWidth: "50",
+                            color: "#ed1450",
+                          }}
+                        />
+                      }
                       placeholder="country"
                       onChange={onSourceBankCountryChange}
                     >
@@ -382,6 +443,14 @@ export default function NewDeal() {
                     ]}
                   >
                     <Select
+                      suffixIcon={
+                        <DownOutlined
+                          style={{
+                            strokeWidth: "50",
+                            color: "#ed1450",
+                          }}
+                        />
+                      }
                       placeholder="state"
                       value={sourceStateInput}
                       onChange={(value) => {
@@ -401,13 +470,21 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select bank name!",
+                      message: "please select bank name!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
                   <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
                     placeholder="bank name"
                     value={sourceBankInput}
                     onChange={(value) => {
@@ -427,13 +504,21 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select account type!",
+                      message: "please select account type!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
                   <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
                     placeholder="account type"
                     value={sourceAccountInput}
                     onChange={(value) => {
@@ -452,13 +537,21 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select account age!",
+                      message: "please select account age!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
                   <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
                     placeholder="account age"
                     value={sourceAccountAgeInput}
                     onChange={(value) => {
@@ -486,13 +579,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select giftcard type!",
+                      message: "please select giftcard type!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="giftcard type">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="giftcard type"
+                  >
                     {card_types &&
                       card_types.map((card) => (
                         <Option key={card} value={card}>
@@ -507,13 +610,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select giftcard brand!",
+                      message: "please select giftcard brand!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="giftcard brand">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="giftcard brand"
+                  >
                     {card_brands &&
                       card_brands.map((brand) => (
                         <Option key={brand} value={brand}>
@@ -531,11 +644,22 @@ export default function NewDeal() {
               rules={[
                 {
                   required: true,
-                  message: "Please select deal destination!",
+                  message: "please select deal destination!",
                 },
               ]}
             >
               <Select
+                style={{
+                  width: "calc(100% - 30px)",
+                }}
+                suffixIcon={
+                  <DownOutlined
+                    style={{
+                      strokeWidth: "50",
+                      color: "#ed1450",
+                    }}
+                  />
+                }
                 placeholder="select destination"
                 onChange={(value) => {
                   handleDestinationSelect(value);
@@ -555,6 +679,9 @@ export default function NewDeal() {
                 <Option value="litecoin">litecoin</Option>
                 <Option value="dogecoin">dogecoin</Option>
               </Select>
+              <Tooltip placement="top" title="hello">
+                <div className="question-tooltip">?</div>
+              </Tooltip>
             </Form.Item>
             {(selectedDestination === "bitcoin" ||
               selectedDestination === "ethereum" ||
@@ -566,13 +693,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select wallet type!",
+                      message: "please select wallet type!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="wallet type">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="wallet type"
+                  >
                     {wallet_types &&
                       wallet_types.map((wallet) => (
                         <Option key={wallet} value={wallet}>
@@ -587,13 +724,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select exchange!",
+                      message: "please select exchange!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="exchange">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="exchange"
+                  >
                     {exchanges &&
                       exchanges.map((exchange) => (
                         <Option key={exchange} value={exchange}>
@@ -608,13 +755,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select wallet age!",
+                      message: "please select wallet age!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="wallet age">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="wallet age"
+                  >
                     {wallet_age &&
                       wallet_age.map((age) => (
                         <Option key={age} value={age}>
@@ -643,6 +800,14 @@ export default function NewDeal() {
                     ]}
                   >
                     <Select
+                      suffixIcon={
+                        <DownOutlined
+                          style={{
+                            strokeWidth: "50",
+                            color: "#ed1450",
+                          }}
+                        />
+                      }
                       placeholder="country"
                       onChange={onDestinationBankCountryChange}
                     >
@@ -669,6 +834,14 @@ export default function NewDeal() {
                     ]}
                   >
                     <Select
+                      suffixIcon={
+                        <DownOutlined
+                          style={{
+                            strokeWidth: "50",
+                            color: "#ed1450",
+                          }}
+                        />
+                      }
                       placeholder="state"
                       value={destinationStateInput}
                       onChange={(value) => {
@@ -688,13 +861,21 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select bank name!",
+                      message: "please select bank name!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
                   <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
                     placeholder="bank name"
                     value={destinationBankInput}
                     onChange={(value) => {
@@ -714,13 +895,21 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select account type!",
+                      message: "please select account type!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
                   <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
                     placeholder="account type"
                     value={destinationAccountInput}
                     onChange={(value) => {
@@ -739,13 +928,21 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select account age!",
+                      message: "please select account age!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
                   <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
                     placeholder="account age"
                     value={destinationAccountAgeInput}
                     onChange={(value) => {
@@ -773,13 +970,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select giftcard type!",
+                      message: "please select giftcard type!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="giftcard type">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="giftcard type"
+                  >
                     {card_types &&
                       card_types.map((card) => (
                         <Option key={card} value={card}>
@@ -794,13 +1001,23 @@ export default function NewDeal() {
                   rules={[
                     {
                       required: true,
-                      message: "Please select giftcard brand!",
+                      message: "please select giftcard brand!",
                       whitespace: true,
                     },
                   ]}
                   style={{ width: "80%" }}
                 >
-                  <Select placeholder="giftcard brand">
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="giftcard brand"
+                  >
                     {card_brands &&
                       card_brands.map((brand) => (
                         <Option key={brand} value={brand}>
@@ -816,7 +1033,7 @@ export default function NewDeal() {
               range & rate
             </Divider>
 
-            <Form.Item style={{ marginBottom: 0 }}>
+            <Form.Item style={{ marginBottom: 0, width: "calc(100% - 30px)" }}>
               <Form.Item
                 label="min."
                 name="min"
@@ -876,15 +1093,28 @@ export default function NewDeal() {
               <Form.Item
                 label="currency"
                 name="currency"
-                style={{ display: "inline-block", width: "49%" }}
+                style={{
+                  display: "inline-block",
+                  width: "calc(49% - 15px)",
+                }}
                 rules={[
                   {
                     required: true,
-                    message: "Please specify currency!",
+                    message: "please specify currency!",
                   },
                 ]}
               >
-                <Select placeholder="select">
+                <Select
+                  suffixIcon={
+                    <DownOutlined
+                      style={{
+                        strokeWidth: "50",
+                        color: "#ed1450",
+                      }}
+                    />
+                  }
+                  placeholder="select"
+                >
                   <Option value="usd">USD</Option>
                   <Option value="ngn">NGN</Option>
                   <Option value="cad">CAD</Option>
@@ -896,7 +1126,7 @@ export default function NewDeal() {
                 label="rate"
                 style={{
                   display: "inline-block",
-                  width: "49%",
+                  width: "calc(49% - 15px)",
                   marginLeft: "2%",
                 }}
                 rules={[
@@ -915,6 +1145,11 @@ export default function NewDeal() {
                   parser={(value) => value.replace("%", "")}
                 />
               </Form.Item>
+              <Tooltip placement="top" title="hello">
+                <div className="question-tooltip" style={{ marginTop: "40px" }}>
+                  ?
+                </div>
+              </Tooltip>
             </Form.Item>
             <Divider style={{ fontSize: "14px", color: "#999" }}>
               discussion & linkup
@@ -925,16 +1160,24 @@ export default function NewDeal() {
               label="medium"
               style={{
                 display: "inline-block",
-                width: "100%",
+                width: "calc(100% - 30px)",
               }}
               rules={[
                 {
                   required: true,
-                  message: "input rate!",
+                  message: "please specify discussion medium!",
                 },
               ]}
             >
               <Select
+                suffixIcon={
+                  <DownOutlined
+                    style={{
+                      strokeWidth: "50",
+                      color: "#ed1450",
+                    }}
+                  />
+                }
                 placeholder="select discussion medium"
                 onChange={() => {
                   setShowDiscussionDetail(true);
@@ -952,6 +1195,9 @@ export default function NewDeal() {
 
             {showDiscussionDetail && (
               <Form.Item
+                style={{
+                  width: "calc(100% - 30px)",
+                }}
                 label="discussion detail"
                 name="discussion_detail"
                 rules={[
@@ -969,6 +1215,9 @@ export default function NewDeal() {
             )}
 
             <Form.Item
+              style={{
+                width: "calc(100% - 30px)",
+              }}
               label="deal summary"
               name="summary"
               rules={[
@@ -984,6 +1233,9 @@ export default function NewDeal() {
               />
             </Form.Item>
             <Form.Item
+              style={{
+                width: "calc(100% - 30px)",
+              }}
               label="min. relevance score"
               name="score"
               rules={[

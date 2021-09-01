@@ -333,7 +333,7 @@ export default function DealsList() {
                 </div>
 
                 <div className="results-count">
-                  {`showing ${dealsData?.dealsList?.meta?.start} - ${dealsData?.dealsList?.meta?.end} of 
+                  {`showing 1 - ${dealsData?.dealsList?.meta?.end} of 
                 ${dealsData?.dealsList?.meta?.total} deals.`}
                 </div>
               </div>

@@ -65,6 +65,19 @@
           content: "*";
         }
       }
+
+      .question-tooltip {
+        height: 20px;
+        width: 20px;
+        margin-left: 10px;
+        display: inline-block;
+        color: #ed1450;
+        text-align: center;
+        border-radius: 50%;
+        border: 1.5px solid #ed1450;
+        font-weight: 600;
+        font-size: 12px;
+      }
     }
 
     .ant-form-item {
