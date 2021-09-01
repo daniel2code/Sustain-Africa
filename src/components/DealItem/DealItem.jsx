@@ -51,7 +51,7 @@ export default function DealItem({ item }) {
             <>
               {" "}
               account age <span className="bold">
-                {item?.s_account_age} years
+                {item?.s_account_age} years old
               </span>{" "}
               <EllipsisOutlined />{" "}
             </>
@@ -112,14 +112,14 @@ export default function DealItem({ item }) {
           {item?.s_state && (
             <>
               {" "}
-              state <span className="bold">{item?.s_state}</span>{" "}
+              bank state <span className="bold">{item?.s_state}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
           {item?.s_country && (
             <>
               {" "}
-              country <span className="bold">{item?.s_country}</span>{" "}
+              bank country <span className="bold">{item?.s_country}</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           )}
