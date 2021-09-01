@@ -51,7 +51,7 @@ export default function DealItem({ item }) {
             <>
               {" "}
               account age <span className="bold">
-                {item?.s_account_age}
+                {item?.s_account_age} years
               </span>{" "}
               <EllipsisOutlined />{" "}
             </>
