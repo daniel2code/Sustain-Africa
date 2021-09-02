@@ -1161,8 +1161,7 @@ export default function NewDeal() {
                             name="discussion"
                             label="medium"
                             style={{
-                                display: "inline-block",
-                                width: "calc(100% - 30px)",
+                                display: "inline-block"
                             }}
                             rules={[
                                 {
@@ -1206,9 +1205,6 @@ export default function NewDeal() {
 
                         {showDiscussionDetail && (
                             <Form.Item
-                                style={{
-                                    width: "calc(100% - 30px)",
-                                }}
                                 label="discussion detail"
                                 name="discussion_detail"
                                 rules={[
@@ -1235,9 +1231,6 @@ export default function NewDeal() {
                         )}
 
                         <Form.Item
-                            style={{
-                                width: "calc(100% - 30px)",
-                            }}
                             label="deal summary"
                             name="summary"
                             rules={[
@@ -1262,9 +1255,6 @@ export default function NewDeal() {
                           </Tooltip>
                         </Form.Item>
                         <Form.Item
-                            style={{
-                                width: "calc(100% - 30px)",
-                            }}
                             label="min. relevance score"
                             name="score"
                             rules={[
