@@ -292,7 +292,7 @@ export default function NewDeal() {
                 <Option value="litecoin">litecoin</Option>
                 <Option value="dogecoin">dogecoin</Option>
               </Select>
-              <Tooltip placement="top" title="hello">
+              <Tooltip placement="top" title="select the source instrument. this is where the fund being bought, sold or swapped originates from. you can select from over 100 instruments">
                 <div className="question-tooltip">?</div>
               </Tooltip>
             </Form.Item>
@@ -679,7 +679,7 @@ export default function NewDeal() {
                 <Option value="litecoin">litecoin</Option>
                 <Option value="dogecoin">dogecoin</Option>
               </Select>
-              <Tooltip placement="top" title="hello">
+              <Tooltip placement="top" title="select the destination instrument. this is where the fund being bought, sold or swapped will be remitted to. you can select from over 100 instruments.">
                 <div className="question-tooltip">?</div>
               </Tooltip>
             </Form.Item>
@@ -1145,7 +1145,7 @@ export default function NewDeal() {
                   parser={(value) => value.replace("%", "")}
                 />
               </Form.Item>
-              <Tooltip placement="top" title="hello">
+              <Tooltip placement="top" title="specify your cut or remittance rate in %">
                 <div className="question-tooltip" style={{ marginTop: "40px" }}>
                   ?
                 </div>
@@ -1191,6 +1191,11 @@ export default function NewDeal() {
                 <Option value="google meet">google meet</Option>
                 <Option value="meet in person">meet in person</Option>
               </Select>
+              <Tooltip placement="top" title="discussions will first happen here via the live chat. discussions can be moved off the platform if both parties wish, but the live chat must be ended here to the satisfaction of both parties with no issues raised, reviews dropped, before the chat window can close and the user can continue to deal on sustain. both user accounts will be temporarily deactivated together with the accounts of anyone they are connected with, until deal is completed to the satisfaction of both parties.">
+                <div className="question-tooltip" style={{ marginTop: "40px" }}>
+                  ?
+                </div>
+              </Tooltip>
             </Form.Item>
 
             {showDiscussionDetail && (
@@ -1252,6 +1257,11 @@ export default function NewDeal() {
                 placeholder="minimum relevance score to accept"
                 // onChange={onChange}
               />
+              <Tooltip placement="top" title="users on sustain are ranked based on relevance score metric. the algorithm is biased to the users with higher scores. choose the minimum score that a user should have to be eligible to open a discussion with you.">
+                <div className="question-tooltip" style={{ marginTop: "40px" }}>
+                  ?
+                </div>
+              </Tooltip>
             </Form.Item>
             <Form.Item>
               <Button loading={buttonLoading} type="primary" htmlType="submit">
