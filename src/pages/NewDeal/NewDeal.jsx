@@ -1170,6 +1170,9 @@ export default function NewDeal() {
               ]}
             >
               <Select
+                  style={{
+                    width: "calc(100% - 30px)",
+                  }}
                 suffixIcon={
                   <DownOutlined
                     style={{
@@ -1251,7 +1254,9 @@ export default function NewDeal() {
               ]}
             >
               <InputNumber
-                style={{ width: "100%" }}
+                  style={{
+                    width: "calc(100% - 30px)",
+                  }}
                 min={1}
                 max={5}
                 placeholder="minimum relevance score to accept"
