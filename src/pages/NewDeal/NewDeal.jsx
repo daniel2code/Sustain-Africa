@@ -1160,9 +1160,6 @@ export default function NewDeal() {
                         <Form.Item
                             name="discussion"
                             label="medium"
-                            style={{
-                                display: "inline-block"
-                            }}
                             rules={[
                                 {
                                     required: true,
@@ -1172,7 +1169,7 @@ export default function NewDeal() {
                         >
                             <Select
                                 style={{
-                                    width: "calc(100% - 30px)",
+                                    width: "calc(100% - 30px)"
                                 }}
                                 suffixIcon={
                                     <DownOutlined
