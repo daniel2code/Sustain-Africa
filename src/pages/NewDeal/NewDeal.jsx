@@ -1195,7 +1195,7 @@ export default function NewDeal() {
                 <Option value="meet in person">meet in person</Option>
               </Select>
               <Tooltip placement="top" title="discussions will first happen here via the live chat. discussions can be moved off the platform if both parties wish, but the live chat must be ended here to the satisfaction of both parties with no issues raised, reviews dropped, before the chat window can close and the user can continue to deal on sustain. both user accounts will be temporarily deactivated together with the accounts of anyone they are connected with, until deal is completed to the satisfaction of both parties.">
-                <div className="question-tooltip" style={{ marginTop: "40px" }}>
+                <div className="question-tooltip">
                   ?
                 </div>
               </Tooltip>
@@ -1216,9 +1216,17 @@ export default function NewDeal() {
                 ]}
               >
                 <TextArea
+                    style={{
+                      width: "calc(100% - 30px)",
+                    }}
                   placeholder="kindly share details on how discussion will be done."
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
+                <Tooltip placement="top" title="summarise the details of your offer in simple terms. please try to be as concise as possible.">
+                  <div className="question-tooltip">
+                    ?
+                  </div>
+                </Tooltip>
               </Form.Item>
             )}
 
@@ -1263,7 +1271,7 @@ export default function NewDeal() {
                 // onChange={onChange}
               />
               <Tooltip placement="top" title="users on sustain are ranked based on relevance score metric. the algorithm is biased to the users with higher scores. choose the minimum score that a user should have to be eligible to open a discussion with you.">
-                <div className="question-tooltip" style={{ marginTop: "40px" }}>
+                <div className="question-tooltip">
                   ?
                 </div>
               </Tooltip>
