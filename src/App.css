@@ -23,3 +23,7 @@ body {
 .ant-input {
   line-height: 2.1;
 }
+
+.ant-tooltip-inner {
+  font-size: 12px;
+}
