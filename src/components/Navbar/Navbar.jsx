@@ -1,7 +1,7 @@
 import React from "react";
-import { Button, Dropdown, Menu } from "antd";
+import { Button, Dropdown, Menu, Avatar } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { LeftOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { LeftOutlined, UserOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./Navbar.scss";
@@ -30,17 +30,12 @@ export default function Navbar() {
               )}
 
               {location.pathname === "/" && (
-                  <div className="app-name">
-                    <Link to="/">sustain.africa</Link>
-                    <div className="bottom">
-                      buy, sell & swap funds.
-                    </div>
-                  </div>
+                <div className="app-name">
+                  <Link to="/">sustain.africa</Link>
+                  <div className="bottom">buy, sell & swap funds.</div>
+                </div>
               )}
-
             </div>
-
-            
           </div>
 
           <div className="right">
@@ -58,7 +53,9 @@ export default function Navbar() {
                         key="3"
                         onClick={() => {
                           dispatch({ type: "DESTROY_SESSION" });
-                          history.push("/");
+                          setTimeout(() => {
+                            window.location.reload();
+                          }, 1000);
                         }}
                         style={{ color: "#ed1450" }}
                       >
@@ -71,10 +68,7 @@ export default function Navbar() {
                 >
                   <div className="name">
                     {userState?.profile?.user_name}{" "}
-                    <EllipsisOutlined
-                      rotate="90"
-                      style={{ fontSize: "13px" }}
-                    />
+                    <Avatar icon={<UserOutlined />}></Avatar>
                   </div>
                 </Dropdown>
               </>
