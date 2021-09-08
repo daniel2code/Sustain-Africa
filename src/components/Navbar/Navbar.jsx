@@ -79,10 +79,10 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <Button size="small" type="link">
+                <Button size="normal" type="link">
                   <Link to="/login">login</Link>
                 </Button>
-                <Button type="primary" size="small">
+                <Button type="primary" size="normal">
                   <Link to="/register">register</Link>
                 </Button>
               </>

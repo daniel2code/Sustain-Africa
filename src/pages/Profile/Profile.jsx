@@ -20,7 +20,7 @@ export default function Profile() {
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    if (!userState) {
+    if (!userState.profile) {
       history.push("/login");
       message.warning("please login to continue");
     }
@@ -33,7 +33,7 @@ export default function Profile() {
           {/* <Button size="small" type="link">
             <Link to="/login">history</Link>
           </Button> */}
-          <Button type="primary" size="small">
+          <Button type="primary" size="normal">
             <Link to="/new-deal">new deal</Link>
           </Button>
         </div>
