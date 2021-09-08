@@ -1,6 +1,5 @@
 .navbar-container {
   width: 100%;
-  // box-shadow: 2px 8px 12px -3px rgba(3, 3, 3, 0.23);
   border-bottom: 1px solid #cecece;
   background-color: white;
   position: fixed;
@@ -30,7 +29,7 @@
           }
           .bottom {
             font-size: 12px;
-            font-weight: normal;
+            font-weight: 500;
             color: #575757;
             margin-top: -5px;
           }
@@ -59,14 +58,14 @@
           padding: 0px 10px;
           border-radius: 4px;
           font-weight: 500;
-          font-size: 15px;
+          font-size: 16px;
         }
 
         .name {
           margin: auto 0;
           color: #ed1450;
           font-weight: 500;
-          // font-size: 13px;
+          font-size: 16px;
           cursor: pointer;
 
           &:active {
@@ -131,4 +130,11 @@
 .ant-dropdown-menu {
   min-width: 100px;
   text-align: center;
+}
+
+.ant-dropdown-menu-item {
+  font-size: 15px;
+  padding: 9px 34px;
+  font-weight: 500;
+  color: #575757;
 }
