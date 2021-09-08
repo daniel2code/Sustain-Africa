@@ -14,10 +14,6 @@ const { TabPane } = Tabs;
 export default function Profile() {
   const userState = useSelector((state) => state.user);
 
-  function callback(key) {
-    console.log(key);
-  }
-
   return (
     <div className="profile-container">
       <div className="profile-wrapper">
@@ -59,7 +55,7 @@ export default function Profile() {
 
         <div className="reviews">
           <div className="profile-section-title">reviews (245)</div>
-          <Tabs defaultActiveKey="1" onChange={callback}>
+          <Tabs defaultActiveKey="1">
             <TabPane tab="from merchants (90)" key="1">
               <ProfileReviewsItem />
               <ProfileReviewsItem />
