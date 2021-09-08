@@ -48,7 +48,9 @@ export default function Register({ history }) {
         }
       })
       .catch(function (error) {
-        message.error(error?.response?.data?.message);
+        if (error?.response?.data?.message) {
+          message.error(error?.response?.data?.message);
+        }
         setButtonLoading(false);
       });
   };

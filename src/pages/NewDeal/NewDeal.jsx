@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Divider } from "antd";
 import {
   Form,
@@ -7,13 +7,13 @@ import {
   Select,
   message,
   Button,
-  Tooltip,
+  // Tooltip,
 } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
-import { instance } from "./../../utils/API";
+import { bearerInstance } from "./../../utils/API";
 
 import {
   wallet_types,
@@ -57,6 +57,13 @@ const { Option } = Select;
 const { TextArea } = Input;
 
 export default function NewDeal() {
+  useEffect(() => {
+    if (!userState) {
+      history.push("/login");
+      message.warning("please login to continue");
+    }
+  });
+
   const [form] = Form.useForm();
   const history = useHistory();
   const userState = useSelector((state) => state.user);
@@ -85,8 +92,6 @@ export default function NewDeal() {
     setButtonLoading(true);
 
     const data = new FormData();
-    data.append("dealer_id", userState?.profile?.id);
-    data.append("dealer_user_name", userState?.profile?.user_name);
     data.append("source", values?.source);
     data.append("destination", values?.destination);
     data.append("range_min", values?.min);
@@ -169,7 +174,7 @@ export default function NewDeal() {
       values?.destination_card_brand ? values?.destination_card_brand : ""
     );
 
-    instance
+    bearerInstance
       .post("/new_deal", data)
       .then(function (response) {
         setButtonLoading(false);
@@ -181,7 +186,9 @@ export default function NewDeal() {
         }
       })
       .catch(function (error) {
-        message.error(error?.response?.data?.message);
+        if (error?.response?.data?.message) {
+          message.error(error?.response?.data?.message);
+        }
         setButtonLoading(false);
       });
   };
@@ -292,12 +299,12 @@ export default function NewDeal() {
                 <Option value="litecoin">litecoin</Option>
                 <Option value="dogecoin">dogecoin</Option>
               </Select>
-              <Tooltip
+              {/* <Tooltip
                 placement="top"
                 title="select the source instrument. this is where the fund being bought, sold or swapped originates from. you can select from over 100 instruments"
               >
                 <div className="question-tooltip">?</div>
-              </Tooltip>
+              </Tooltip> */}
             </Form.Item>
             {(selectedSource === "bitcoin" ||
               selectedSource === "ethereum" ||
@@ -682,12 +689,12 @@ export default function NewDeal() {
                 <Option value="litecoin">litecoin</Option>
                 <Option value="dogecoin">dogecoin</Option>
               </Select>
-              <Tooltip
+              {/* <Tooltip
                 placement="top"
                 title="select the destination instrument. this is where the fund being bought, sold or swapped will be remitted to. you can select from over 100 instruments."
               >
                 <div className="question-tooltip">?</div>
-              </Tooltip>
+              </Tooltip> */}
             </Form.Item>
             {(selectedDestination === "bitcoin" ||
               selectedDestination === "ethereum" ||
@@ -1039,53 +1046,6 @@ export default function NewDeal() {
               range & rate
             </Divider>
 
-            <Form.Item style={{ marginBottom: 0, width: "calc(100% - 30px)" }}>
-              <Form.Item
-                label="min."
-                name="min"
-                rules={[
-                  {
-                    required: true,
-                    message: "input min!",
-                  },
-                ]}
-                style={{ display: "inline-block", width: "49%" }}
-              >
-                <InputNumber
-                  placeholder="min. amount"
-                  style={{ width: "100%" }}
-                  formatter={(value) =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                />
-              </Form.Item>
-
-              <Form.Item
-                label="max."
-                name="max"
-                rules={[
-                  {
-                    required: true,
-                    message: "input max!",
-                  },
-                ]}
-                style={{
-                  display: "inline-block",
-                  width: "49%",
-                  marginLeft: "2%",
-                }}
-              >
-                <InputNumber
-                  placeholder="max. amount"
-                  style={{ width: "100%" }}
-                  formatter={(value) =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                  }
-                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-                />
-              </Form.Item>
-            </Form.Item>
             <Form.Item style={{ marginBottom: 0 }}>
               <Form.Item
                 label="currency"
@@ -1142,14 +1102,61 @@ export default function NewDeal() {
                   parser={(value) => value.replace("%", "")}
                 />
               </Form.Item>
-              <Tooltip
+              {/* <Tooltip
                 placement="top"
                 title="specify your cut or remittance rate in %"
               >
                 <div className="question-tooltip" style={{ marginTop: "40px" }}>
                   ?
                 </div>
-              </Tooltip>
+              </Tooltip> */}
+            </Form.Item>
+            <Form.Item style={{ marginBottom: 0, width: "calc(100% - 30px)" }}>
+              <Form.Item
+                label="min."
+                name="min"
+                rules={[
+                  {
+                    required: true,
+                    message: "input min!",
+                  },
+                ]}
+                style={{ display: "inline-block", width: "49%" }}
+              >
+                <InputNumber
+                  placeholder="min. amount"
+                  style={{ width: "100%" }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                />
+              </Form.Item>
+
+              <Form.Item
+                label="max."
+                name="max"
+                rules={[
+                  {
+                    required: true,
+                    message: "input max!",
+                  },
+                ]}
+                style={{
+                  display: "inline-block",
+                  width: "49%",
+                  marginLeft: "2%",
+                }}
+              >
+                <InputNumber
+                  placeholder="max. amount"
+                  style={{ width: "100%" }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                  }
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                />
+              </Form.Item>
             </Form.Item>
             <Divider style={{ fontSize: "14px", color: "#999" }}>
               discussion & linkup
@@ -1190,12 +1197,12 @@ export default function NewDeal() {
                 <Option value="google meet">google meet</Option>
                 <Option value="meet in person">meet in person</Option>
               </Select>
-              <Tooltip
+              {/* <Tooltip
                 placement="top"
                 title="discussions will first happen here via the live chat. discussions can be moved off the platform if both parties wish, but the live chat must be ended here to the satisfaction of both parties with no issues raised, reviews dropped, before the chat window can close and the user can continue to deal on sustain. both user accounts will be temporarily deactivated together with the accounts of anyone they are connected with, until deal is completed to the satisfaction of both parties."
               >
                 <div className="question-tooltip">?</div>
-              </Tooltip>
+              </Tooltip> */}
             </Form.Item>
 
             {showDiscussionDetail && (
@@ -1216,12 +1223,6 @@ export default function NewDeal() {
                   placeholder="kindly share details on how discussion will be done."
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
-                <Tooltip
-                  placement="top"
-                  title="kindly share details on how discussion will be done, where and how it will happen and what mediums will be used. please try to be as concise as possible."
-                >
-                  <div className="question-tooltip">?</div>
-                </Tooltip>
               </Form.Item>
             )}
 
@@ -1262,12 +1263,12 @@ export default function NewDeal() {
                 placeholder="minimum relevance score to accept"
                 // onChange={onChange}
               />
-              <Tooltip
+              {/* <Tooltip
                 placement="top"
                 title="users on sustain are ranked based on relevance score metric. the algorithm is biased to the users with higher scores. choose the minimum score that a user should have to be eligible to open a discussion with you."
               >
                 <div className="question-tooltip">?</div>
-              </Tooltip>
+              </Tooltip> */}
             </Form.Item>
             <Form.Item>
               <Button loading={buttonLoading} type="primary" htmlType="submit">

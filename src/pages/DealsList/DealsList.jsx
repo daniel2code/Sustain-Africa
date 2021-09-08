@@ -50,7 +50,9 @@ export default function DealsList() {
         }
       })
       .catch(function (error) {
-        message.error(error?.response?.data?.message);
+        if (error?.response?.data?.message) {
+          message.error(error?.response?.data?.message);
+        }
         setLoadingMore(false);
       });
   };

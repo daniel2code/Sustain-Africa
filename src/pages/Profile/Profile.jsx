@@ -1,5 +1,7 @@
-import React from "react";
-import { Avatar, Tabs } from "antd";
+import React, { useEffect } from "react";
+import { Avatar, Tabs, Button, message } from "antd";
+import { Link, useHistory } from "react-router-dom";
+
 import { UserOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { LikeOutlined, DislikeOutlined } from "@ant-design/icons";
@@ -12,11 +14,29 @@ import "./profile.scss";
 const { TabPane } = Tabs;
 
 export default function Profile() {
+  const history = useHistory();
   const userState = useSelector((state) => state.user);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    if (!userState) {
+      history.push("/login");
+      message.warning("please login to continue");
+    }
+  });
 
   return (
     <div className="profile-container">
       <div className="profile-wrapper">
+        <div className="quick-actions">
+          {/* <Button size="small" type="link">
+            <Link to="/login">history</Link>
+          </Button> */}
+          <Button type="primary" size="small">
+            <Link to="/new-deal">new deal</Link>
+          </Button>
+        </div>
         <div className="user-info">
           <div className="avatar">
             <Avatar size={74} icon={<UserOutlined />} />

@@ -2,13 +2,13 @@
   width: 100%;
   // box-shadow: 2px 8px 12px -3px rgba(3, 3, 3, 0.23);
   border-bottom: 1px solid #cecece;
+  background-color: white;
   position: fixed;
   z-index: 10;
   .navbar-wrapper {
     width: 95%;
     max-width: 800px;
     margin: 0 auto;
-    background-color: white;
     .row-one {
       display: flex;
       flex-direction: row;

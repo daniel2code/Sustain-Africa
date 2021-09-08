@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import "./App.css";
-import { Layout } from "antd";
+import { Layout, message } from "antd";
 // import LoadingBar from "react-redux-loading-bar";
 import { Route, Switch, useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import Navbar from "./components/Navbar/Navbar";
 import DealsList from "./pages/DealsList/DealsList";
@@ -13,6 +13,8 @@ import Login from "./pages/Authentication/Login";
 import VerifyEmail from "./pages/Authentication/VerifyEmail";
 import VerifyPhone from "./pages/Authentication/VerifyPhone";
 import Profile from "./pages/Profile/Profile";
+
+import { bearerInstance } from "./utils/API";
 
 function App() {
   useEffect(() => {
@@ -24,6 +26,47 @@ function App() {
 
   const userState = useSelector((state) => state.user);
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  const logout = () => {
+    dispatch({ type: "DESTROY_SESSION" });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  bearerInstance.interceptors.request.use(
+    function (config) {
+      if (userState?.token) {
+        config.headers.Authorization = `Bearer ${userState?.token}`;
+      }
+      return config;
+    },
+    (err) => {
+      console.log(err);
+      return Promise.reject(err);
+    }
+  );
+
+  bearerInstance.interceptors.response.use(
+    (response) => {
+      return response;
+    },
+
+    function (error) {
+      if (error?.response?.status === 500) {
+        return message.warning("Server is down, please try later!");
+      }
+
+      if (error?.response?.status === 401) {
+        logout();
+        setTimeout(function () {
+          window.location.href = "/login";
+        }, 1000);
+      }
+      return Promise.reject(error);
+    }
+  );
 
   return (
     <div className="App">

@@ -46,7 +46,10 @@ export default function Navbar() {
                 <Dropdown
                   overlay={
                     <Menu>
-                      <Menu.Item key="0">
+                      <Menu.Item
+                        key="0"
+                        disabled={location.pathname === "/profile"}
+                      >
                         <Link to="/profile">Profile</Link>
                       </Menu.Item>
                       <Menu.Item key="1">Settings</Menu.Item>

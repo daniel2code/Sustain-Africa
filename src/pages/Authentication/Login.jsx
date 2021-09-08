@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
-import { setProfileInfo } from "./../../redux/user/user.actions";
+import { setProfileInfo, setToken } from "./../../redux/user/user.actions";
 
 export default function Login({ history }) {
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -24,8 +24,10 @@ export default function Login({ history }) {
     instance
       .post("/login", data)
       .then(function (response) {
+        setButtonLoading(false);
         if (response?.data?.status) {
           dispatch(setProfileInfo(response?.data?.data));
+          dispatch(setToken(response?.data?.token));
           if (response?.data?.data?.is_email_verified === "0") {
             requestVerificationCode(
               response?.data?.data?.email,
@@ -34,14 +36,15 @@ export default function Login({ history }) {
           } else {
             history.push("/");
           }
-          setButtonLoading(false);
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
         }
       })
       .catch(function (error) {
-        message.error(error?.response?.data?.message);
+        if (error?.response?.data?.message) {
+          message.error(error?.response?.data?.message);
+        }
         setButtonLoading(false);
       });
   };

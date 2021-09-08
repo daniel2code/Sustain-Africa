@@ -9,9 +9,10 @@ export const instance = axios.create({
 });
 
 export const bearerInstance = axios.create({
-  baseURL: "https://sustain.herogloballogistics.com/factory",
+  baseURL:
+    "https://astro-cors-server.herokuapp.com/fetch/https://sustain.herogloballogistics.com/factory",
   headers: {
     Accept: "application/json",
-    "Content-Type": "multipart/form-data",
+    "Content-Type": "application/x-www-form-urlencoded",
   },
 });
