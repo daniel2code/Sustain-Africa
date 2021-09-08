@@ -50,9 +50,8 @@ export default function DealItem({ item }) {
           {item?.s_account_age && item?.s_account_age !== 0 ? (
             <>
               {" "}
-              account age <span className="bold">
-                {item?.s_account_age} years old
-              </span>{" "}
+              account age{" "}
+              <span className="bold">{item?.s_account_age} years old</span>{" "}
               <EllipsisOutlined />{" "}
             </>
           ) : null}
@@ -142,7 +141,7 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username">@{item?.user_name_front}</span>
+          <span className="username-green">@{item?.user_name_front}</span>
         </div>
 
         <div className="deal-item-row-three">
@@ -155,7 +154,7 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-four">
-          <div className="left">
+          <div className="like-dislike">
             <span className="like">
               <LikeOutlined /> {item?.total_positive_reviews}
             </span>

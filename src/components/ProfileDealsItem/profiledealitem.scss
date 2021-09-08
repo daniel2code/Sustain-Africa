@@ -1,0 +1,39 @@
+.profile-deal-item-container {
+  padding: 15px 0;
+  border-bottom: 1px solid #eeeeee;
+
+  .top {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    .right {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+    }
+  }
+
+  .bottom {
+    margin-top: 10px;
+    .info {
+      margin: auto 10px auto 0;
+      color: grey;
+      font-size: 12px;
+    }
+  }
+}
+
+.white-background-button {
+  color: grey;
+  border: 1px solid grey;
+  padding: 0px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  width: fit-content;
+  &:active {
+    opacity: 0.7;
+  }
+  &:last-of-type {
+    margin-left: 8px;
+  }
+}

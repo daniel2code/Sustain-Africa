@@ -46,7 +46,9 @@ export default function Navbar() {
                 <Dropdown
                   overlay={
                     <Menu>
-                      <Menu.Item key="0">Profile</Menu.Item>
+                      <Menu.Item key="0">
+                        <Link to="/profile">Profile</Link>
+                      </Menu.Item>
                       <Menu.Item key="1">Settings</Menu.Item>
                       <Menu.Divider />
                       <Menu.Item

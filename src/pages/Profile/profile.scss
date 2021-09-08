@@ -1,0 +1,76 @@
+.profile-container {
+  width: 100%;
+  margin-top: 65px;
+  padding-bottom: 40px;
+  .profile-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 10px;
+
+    .user-info {
+      text-align: center;
+      margin-top: 20px;
+      font-weight: 500;
+
+      .username {
+        margin-top: 10px;
+        color: #ed1450;
+        font-weight: 500;
+        font-size: 18px;
+        cursor: default;
+      }
+
+      .rate {
+        font-size: 14px;
+        color: #5e5e5e;
+        margin-top: 5px;
+      }
+
+      .like,
+      .dislike {
+        cursor: default;
+      }
+
+      .connect {
+        font-size: 14px;
+        color: #5e5e5e;
+        margin-top: 5px;
+
+        span {
+          color: rgb(20, 160, 20);
+          cursor: pointer;
+          &:active {
+            opacity: 0.7;
+          }
+        }
+      }
+    }
+  }
+}
+
+.profile-section-title {
+  color: #ed1450;
+  font-weight: 500;
+  font-size: 17px;
+  padding-bottom: 5px;
+  margin-top: 30px;
+  text-decoration: underline;
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
+.ant-tabs-tab:hover {
+  color: grey;
+}
+
+.ant-tabs {
+  color: grey;
+}
+
+.ant-tabs-tab-btn:active {
+  color: #ed1450;
+}
+
+.ant-tabs-ink-bar {
+  background: #ed1450;
+}

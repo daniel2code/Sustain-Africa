@@ -12,6 +12,7 @@ import Register from "./pages/Authentication/Register";
 import Login from "./pages/Authentication/Login";
 import VerifyEmail from "./pages/Authentication/VerifyEmail";
 import VerifyPhone from "./pages/Authentication/VerifyPhone";
+import Profile from "./pages/Profile/Profile";
 
 function App() {
   useEffect(() => {
@@ -39,12 +40,13 @@ function App() {
         </div>
         <Navbar />
         <Switch>
-        <Route exact path="/" component={DealsList} />
-        <Route exact path="/new-deal" component={NewDeal} />
+          <Route exact path="/" component={DealsList} />
+          <Route exact path="/new-deal" component={NewDeal} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/verify-email" component={VerifyEmail} />
           <Route exact path="/add-phone" component={VerifyPhone} />
+          <Route exact path="/profile" component={Profile} />
         </Switch>
       </Layout>
     </div>

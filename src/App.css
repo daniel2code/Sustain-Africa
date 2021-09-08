@@ -27,3 +27,10 @@ body {
 .ant-tooltip-inner {
   font-size: 12px;
 }
+
+::selection {
+  background: black; /* WebKit/Blink Browsers */
+}
+::-moz-selection {
+  background: black; /* Gecko Browsers */
+}
