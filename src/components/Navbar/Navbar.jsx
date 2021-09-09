@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Dropdown, Menu, Avatar } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { LeftOutlined, UserOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./Navbar.scss";
@@ -74,10 +74,10 @@ export default function Navbar() {
                   <div className="name">
                     {userState?.profile?.user_name}{" "}
                     <Avatar
-                        style={{
-                          color: '#14a014',
-                          backgroundColor: '#a9fca9'
-                        }}
+                      style={{
+                        color: "#14a014",
+                        backgroundColor: "#a9fca9",
+                      }}
                     >
                       {userState?.profile?.user_name.charAt(0).toUpperCase()}
                     </Avatar>
