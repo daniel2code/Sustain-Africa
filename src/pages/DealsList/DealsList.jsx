@@ -206,7 +206,6 @@ export default function DealsList() {
 
             <div className="instrument-select">
               <Select
-                showSearch
                 suffixIcon={
                   <DownOutlined
                     style={{
@@ -249,7 +248,6 @@ export default function DealsList() {
               </div>
 
               <Select
-                showSearch
                 suffixIcon={
                   <DownOutlined
                     style={{
