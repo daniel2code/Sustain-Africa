@@ -194,8 +194,8 @@ export default function DealsList() {
                     onChange={onFilterChange}
                   >
                     <Option value="newest">newest</Option>
-                    <Option value="lowToHigh">score: low to high</Option>
-                    <Option value="highToLow">score: high to low</Option>
+                    <Option value="lowToHigh">auth: low to high</Option>
+                    <Option value="highToLow">auth: high to low</Option>
                     <Option value="location">location</Option>
                   </Select>
                 </div>

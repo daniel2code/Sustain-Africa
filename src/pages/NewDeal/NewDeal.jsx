@@ -243,11 +243,13 @@ export default function NewDeal() {
         <div className="deal-form-container">
           <div className="top-bar">
             <div className="left">
-              <Link to="#">new deal</Link>
+             create new deal
             </div>
 
             <div className="right">
-              <Link to="#">history</Link>
+              <Button type="primary" size="normal" style={{marginLeft: "10px"}}>
+                <Link to="#">view history</Link>
+              </Button>
             </div>
           </div>
           <Form
@@ -1245,12 +1247,12 @@ export default function NewDeal() {
               />
             </Form.Item>
             <Form.Item
-              label="min. relevance score"
+              label="min. profile authority"
               name="score"
               rules={[
                 {
                   required: true,
-                  message: "input min score!",
+                  message: "input min authority!",
                 },
               ]}
             >
@@ -1260,12 +1262,12 @@ export default function NewDeal() {
                 }}
                 min={1}
                 max={5}
-                placeholder="minimum relevance score to accept"
+                placeholder="minimum profile authority to accept"
                 // onChange={onChange}
               />
               {/* <Tooltip
                 placement="top"
-                title="users on sustain are ranked based on relevance score metric. the algorithm is biased to the users with higher scores. choose the minimum score that a user should have to be eligible to open a discussion with you."
+                title="users on sustain are ranked based on profile authority metric. the algorithm is biased to the users with higher authority scores. choose the minimum authority score that a user should have to be eligible to open a discussion with you."
               >
                 <div className="question-tooltip">?</div>
               </Tooltip> */}

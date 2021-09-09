@@ -50,9 +50,9 @@ export default function Navbar() {
                         key="0"
                         disabled={location.pathname === "/profile"}
                       >
-                        <Link to="/profile">Profile</Link>
+                        <Link to="/profile">profile</Link>
                       </Menu.Item>
-                      <Menu.Item key="1">Settings</Menu.Item>
+                      <Menu.Item key="1">settings</Menu.Item>
                       <Menu.Divider />
                       <Menu.Item
                         key="3"
@@ -64,16 +64,23 @@ export default function Navbar() {
                         }}
                         style={{ color: "#ed1450" }}
                       >
-                        Logout
+                        logout
                       </Menu.Item>
                     </Menu>
                   }
                   trigger={["click"]}
-                  placement="bottomRight"
+                  placement="bottomLeft"
                 >
                   <div className="name">
                     {userState?.profile?.user_name}{" "}
-                    <Avatar icon={<UserOutlined />}></Avatar>
+                    <Avatar
+                        style={{
+                          color: '#14a014',
+                          backgroundColor: '#a9fca9'
+                        }}
+                    >
+                      {userState?.profile?.user_name.charAt(0).toUpperCase()}
+                    </Avatar>
                   </div>
                 </Dropdown>
               </>

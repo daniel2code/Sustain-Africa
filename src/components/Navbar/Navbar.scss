@@ -37,9 +37,7 @@
 
         .nav {
           margin: auto 0;
-          margin-right: 10px;
           font-size: 16px;
-          margin-left: 10px;
           &:active {
             opacity: 0.7;
           }
@@ -54,11 +52,11 @@
         .balance {
           margin: auto 0;
           margin-right: 10px;
-          color: #2b9650;
+          color: #ed1450;
           padding: 0px 10px;
           border-radius: 4px;
-          font-weight: 500;
-          font-size: 16px;
+          font-weight: 600;
+          font-size: 18px;
         }
 
         .name {
@@ -129,12 +127,13 @@
 
 .ant-dropdown-menu {
   min-width: 100px;
-  text-align: center;
+  text-align: left;
 }
 
 .ant-dropdown-menu-item {
-  font-size: 15px;
-  padding: 9px 34px;
+  font-size: 14px;
+  padding: 5px;
+  padding-left: 15px;
   font-weight: 500;
   color: #575757;
 }
