@@ -9,34 +9,22 @@
     background-color: white;
     padding: 10px;
 
-    .profile-main-container {
-      margin: auto;
-      align-items: center;
-      max-width: 600px;
-      padding: 10px 3vw;
-      border-radius: 4px;
-      margin-bottom: 30px;
-      margin-top: 10px;
-    }
-
     .quick-actions {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
-
-      .username {
-        margin-top: 10px;
-        color: #ed1450;
-        font-weight: 600;
-        font-size: 22px;
-        cursor: default;
-      }
+      justify-content: flex-end;
     }
 
     .user-info {
       text-align: left;
       font-weight: 500;
 
+      .username {
+        color: #ed1450;
+        font-weight: 600;
+        font-size: 22px;
+        cursor: default;
+      }
 
       .rate {
         font-size: 14px;
@@ -72,15 +60,6 @@
       }
     }
   }
-}
-
-.profile-section-title {
-  color: #ed1450;
-  font-weight: 500;
-  font-size: 17px;
-  padding-bottom: 5px;
-  margin-top: 30px;
-  text-decoration: underline;
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
