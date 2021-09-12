@@ -1247,12 +1247,12 @@ export default function NewDeal() {
               />
             </Form.Item>
             <Form.Item
-              label="min. profile authority"
+              label="min. profile score"
               name="score"
               rules={[
                 {
                   required: true,
-                  message: "input min authority!",
+                  message: "input min score!",
                 },
               ]}
             >
@@ -1262,12 +1262,12 @@ export default function NewDeal() {
                 }}
                 min={1}
                 max={5}
-                placeholder="minimum profile authority to accept"
+                placeholder="minimum profile score to accept"
                 // onChange={onChange}
               />
               {/* <Tooltip
                 placement="top"
-                title="users on sustain are ranked based on profile authority metric. the algorithm is biased to the users with higher authority scores. choose the minimum authority score that a user should have to be eligible to open a discussion with you."
+                title="users on sustain are ranked based on profile score metric. the algorithm is biased to the users with higher authority scores. choose the minimum authority score that a user should have to be eligible to open a discussion with you."
               >
                 <div className="question-tooltip">?</div>
               </Tooltip> */}

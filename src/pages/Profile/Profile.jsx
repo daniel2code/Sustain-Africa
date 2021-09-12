@@ -52,7 +52,7 @@ export default function Profile() {
           </div>
           <div className="user-info">
             <div className="rate">
-              profile authority <span>88</span> <EllipsisOutlined /> knows{" "}
+              profile score <span>88</span> <EllipsisOutlined /> knows{" "}
               <span>25 dealers</span> <EllipsisOutlined /> from{" "}
               <span>Abuja, Nigeria</span>
             </div>
