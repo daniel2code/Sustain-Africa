@@ -141,7 +141,7 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username-green">@{item?.user_name_front}<span className="score-green">#{item?.a_score}</span></span>
+          <span className="username-green">@{item?.user_name_front}<span className="score-green"> {item?.a_score}/100</span></span>
         </div>
 
         <div className="deal-item-row-three">
