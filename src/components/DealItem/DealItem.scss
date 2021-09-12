@@ -97,6 +97,12 @@
   cursor: pointer;
   margin-right: 4px;
 
+  .score-green {
+    font-weight: normal;
+    font-size: 12px;
+    margin-right: 2px;
+  }
+
   &:active {
     opacity: 0.7;
   }

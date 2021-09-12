@@ -141,7 +141,7 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username-green">@{item?.user_name_front}</span>
+          <span className="username-green">@{item?.user_name_front}<span className="score-green">#{item?.a_score}</span></span>
         </div>
 
         <div className="deal-item-row-three">
@@ -160,9 +160,6 @@ export default function DealItem({ item }) {
             </span>
             <span className="dislike">
               <DislikeOutlined /> {item?.total_negative_reviews}
-            </span>
-            <span className="score">
-              S {item?.a_score}
             </span>
           </div>
           <div className="right">
