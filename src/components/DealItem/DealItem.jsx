@@ -161,6 +161,9 @@ export default function DealItem({ item }) {
             <span className="dislike">
               <DislikeOutlined /> {item?.total_negative_reviews}
             </span>
+            <span className="score">
+              S {item?.a_score}
+            </span>
           </div>
           <div className="right">
             <button className="green-button">discuss</button>
