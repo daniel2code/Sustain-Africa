@@ -303,7 +303,7 @@ export default function NewDeal() {
               </Form.Item>
               <div className="tooltip-container">
                 <Tooltip
-                  placement="top"
+                  placement="left"
                   title="select the source instrument. this is where the fund being bought, sold or swapped originates from. you can select from over 100 instruments"
                 >
                   <div className="question-tooltip">?</div>
@@ -697,7 +697,7 @@ export default function NewDeal() {
               </Form.Item>
               <div className="tooltip-container">
                 <Tooltip
-                  placement="top"
+                  placement="left"
                   title="select the destination instrument. this is where the fund being bought, sold or swapped will be remitted to. you can select from over 100 instruments."
                 >
                   <div className="question-tooltip">?</div>
@@ -1113,7 +1113,7 @@ export default function NewDeal() {
               </Form.Item>
               <div className="tooltip-container origin">
                 <Tooltip
-                  placement="top"
+                  placement="left"
                   title="specify your cut or remittance rate in %"
                 >
                   <div
@@ -1216,7 +1216,7 @@ export default function NewDeal() {
               </Form.Item>
               <div className="tooltip-container">
                 <Tooltip
-                  placement="top"
+                  placement="left"
                   title="discussions will first happen here via the live chat. discussions can be moved off the platform if both parties wish, but the live chat must be ended here to the satisfaction of both parties with no issues raised, reviews dropped, before the chat window can close and the user can continue to deal on sustain. both user accounts will be temporarily deactivated together with the accounts of anyone they are connected with, until deal is completed to the satisfaction of both parties."
                 >
                   <div className="question-tooltip">?</div>
@@ -1287,7 +1287,7 @@ export default function NewDeal() {
               </Form.Item>
               <div className="tooltip-container">
                 <Tooltip
-                  placement="top"
+                  placement="left"
                   title="users on sustain are ranked based on profile score metric. the algorithm is biased to the users with higher score scores. choose the minimum score score that a user should have to be eligible to open a discussion with you."
                 >
                   <div className="question-tooltip">?</div>
