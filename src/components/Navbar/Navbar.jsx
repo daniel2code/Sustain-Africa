@@ -25,7 +25,7 @@ export default function Navbar() {
             >
               {location.pathname !== "/" && (
                 <span>
-                  <LeftOutlined style={{ marginRight: "2px" }} /> back
+                  <LeftOutlined style={{ marginRight: "-4px" }} /> back
                 </span>
               )}
 
