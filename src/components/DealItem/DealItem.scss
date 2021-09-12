@@ -10,7 +10,7 @@
   .source-destination {
     position: absolute;
     top: 14px;
-    right: 0px;
+    right: 0;
   }
 
   .deal-item-wrapper {
@@ -58,7 +58,8 @@
         margin: auto 0;
 
         .like,
-        .dislike {
+        .dislike,
+        .score {
           cursor: pointer;
 
           &:active {
