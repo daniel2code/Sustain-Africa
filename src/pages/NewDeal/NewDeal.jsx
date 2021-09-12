@@ -9,7 +9,7 @@ import {
   Button,
   // Tooltip,
 } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
@@ -242,15 +242,13 @@ export default function NewDeal() {
       <div className="new-deal-wrapper">
         <div className="deal-form-container">
           <div className="top-bar">
-            <div className="left">
-             create new deal
-            </div>
+            <div className="left">create new deal</div>
 
-            <div className="right">
+            {/* <div className="right">
               <Button type="primary" size="normal" style={{marginLeft: "10px"}}>
                 <Link to="#">view history</Link>
               </Button>
-            </div>
+            </div> */}
           </div>
           <Form
             {...formItemLayout}

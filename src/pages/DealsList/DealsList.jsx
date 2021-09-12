@@ -22,11 +22,12 @@ export default function DealsList() {
   const [destination, setDestination] = useState("all");
   const dispatch = useDispatch();
   const dealsData = useSelector((state) => state.data);
+  const userState = useSelector((state) => state.user);
 
   useEffect(() => {
     fetchDeals();
     //eslint-disable-next-line
-  }, []);
+  }, [userState]);
 
   const fetchDeals = async (
     page = 1,
