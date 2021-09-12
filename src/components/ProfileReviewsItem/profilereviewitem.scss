@@ -1,6 +1,9 @@
 .profile-review-item-container {
   padding: 15px 0;
   border-bottom: 1px solid #eeeeee;
+  &:last-child {
+    border-bottom: unset;
+  }
   .row-one {
     display: flex;
     flex-direction: row;

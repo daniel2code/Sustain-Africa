@@ -1,7 +1,9 @@
 .profile-deal-item-container {
   padding: 15px 0;
   border-bottom: 1px solid #eeeeee;
-
+  &:last-child {
+    border-bottom: unset;
+  }
   .top {
     display: flex;
     flex-direction: row;

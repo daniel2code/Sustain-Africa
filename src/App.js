@@ -30,9 +30,7 @@ function App() {
 
   const logout = () => {
     dispatch({ type: "DESTROY_SESSION" });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    history.push("/login");
   };
 
   bearerInstance.interceptors.request.use(
@@ -60,9 +58,6 @@ function App() {
 
       if (error?.response?.status === 401) {
         logout();
-        setTimeout(function () {
-          window.location.href = "/login";
-        }, 1000);
       }
       return Promise.reject(error);
     }

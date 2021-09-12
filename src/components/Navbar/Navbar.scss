@@ -8,6 +8,7 @@
     width: 95%;
     max-width: 800px;
     margin: 0 auto;
+    padding: 0 10px;
     .row-one {
       display: flex;
       flex-direction: row;
@@ -29,7 +30,7 @@
           }
           .bottom {
             font-size: 12px;
-            font-weight: 500;
+            font-weight: 400;
             color: #575757;
             margin-top: -5px;
           }

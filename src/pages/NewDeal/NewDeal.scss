@@ -29,11 +29,22 @@
     .deal-form-container {
       margin: auto;
       align-items: center;
-      max-width: 600px;
-      padding: 10px 3vw;
+      max-width: 630px;
       border-radius: 4px;
       margin-bottom: 30px;
       margin-top: 10px;
+
+      .form-row {
+        position: relative;
+        .tooltip-container {
+          position: absolute;
+          top: 39px;
+          right: 0;
+          &.origin {
+            top: 0px;
+          }
+        }
+      }
 
       .ant-form-item-label > label {
         font-size: 14px;
@@ -70,7 +81,6 @@
       .question-tooltip {
         height: 20px;
         width: 20px;
-        margin-left: 10px;
         display: inline-block;
         color: #ed1450;
         text-align: center;
