@@ -7,7 +7,7 @@ import {
   Select,
   message,
   Button,
-  // Tooltip,
+  Tooltip,
 } from "antd";
 import { useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
@@ -258,54 +258,59 @@ export default function NewDeal() {
             onFinish={onFinish}
             scrollToFirstError
           >
-            <Form.Item
-              name="source"
-              label="i am picking"
-              rules={[
-                {
-                  required: true,
-                  message: "please select deal source!",
-                },
-              ]}
-            >
-              <Select
+            <div className="form-row">
+              <Form.Item
+                name="source"
+                label="i am picking"
                 style={{
                   width: "calc(100% - 30px)",
                 }}
-                suffixIcon={
-                  <DownOutlined
-                    style={{
-                      strokeWidth: "50",
-                      color: "#ed1450",
-                    }}
-                  />
-                }
-                placeholder="select source"
-                onChange={(value) => {
-                  handleSourceSelect(value);
-                }}
+                rules={[
+                  {
+                    required: true,
+                    message: "please select deal source!",
+                  },
+                ]}
               >
-                <Option value="bank fund">bank fund</Option>
-                <Option value="paypal">paypal</Option>
-                <Option value="cash">cash</Option>
-                <Option value="skrill">skrill</Option>
-                <Option value="venmo">venmo</Option>
-                <Option value="bitcoin">bitcoin</Option>
-                <Option value="giftcard">giftcard</Option>
-                <Option value="cashapp">cashapp</Option>
-                <Option value="moneygram">moneygram</Option>
-                <Option value="greendot">greendot</Option>
-                <Option value="ethereum">ethereum</Option>
-                <Option value="litecoin">litecoin</Option>
-                <Option value="dogecoin">dogecoin</Option>
-              </Select>
-              {/* <Tooltip
-                placement="top"
-                title="select the source instrument. this is where the fund being bought, sold or swapped originates from. you can select from over 100 instruments"
-              >
-                <div className="question-tooltip">?</div>
-              </Tooltip> */}
-            </Form.Item>
+                <Select
+                  suffixIcon={
+                    <DownOutlined
+                      style={{
+                        strokeWidth: "50",
+                        color: "#ed1450",
+                      }}
+                    />
+                  }
+                  placeholder="select source"
+                  onChange={(value) => {
+                    handleSourceSelect(value);
+                  }}
+                >
+                  <Option value="bank fund">bank fund</Option>
+                  <Option value="paypal">paypal</Option>
+                  <Option value="cash">cash</Option>
+                  <Option value="skrill">skrill</Option>
+                  <Option value="venmo">venmo</Option>
+                  <Option value="bitcoin">bitcoin</Option>
+                  <Option value="giftcard">giftcard</Option>
+                  <Option value="cashapp">cashapp</Option>
+                  <Option value="moneygram">moneygram</Option>
+                  <Option value="greendot">greendot</Option>
+                  <Option value="ethereum">ethereum</Option>
+                  <Option value="litecoin">litecoin</Option>
+                  <Option value="dogecoin">dogecoin</Option>
+                </Select>
+              </Form.Item>
+              <div className="tooltip-container">
+                <Tooltip
+                  placement="top"
+                  title="select the source instrument. this is where the fund being bought, sold or swapped originates from. you can select from over 100 instruments"
+                >
+                  <div className="question-tooltip">?</div>
+                </Tooltip>
+              </div>
+            </div>
+
             {(selectedSource === "bitcoin" ||
               selectedSource === "ethereum" ||
               selectedSource === "litecoin" ||
@@ -647,55 +652,59 @@ export default function NewDeal() {
                 </Form.Item>
               </>
             )}
+            <div className="form-row">
+              <Form.Item
+                name="destination"
+                label="will deposit to"
+                rules={[
+                  {
+                    required: true,
+                    message: "please select deal destination!",
+                  },
+                ]}
+              >
+                <Select
+                  style={{
+                    width: "calc(100% - 30px)",
+                  }}
+                  suffixIcon={
+                    <DownOutlined
+                      style={{
+                        strokeWidth: "50",
+                        color: "#ed1450",
+                      }}
+                    />
+                  }
+                  placeholder="select destination"
+                  onChange={(value) => {
+                    handleDestinationSelect(value);
+                  }}
+                >
+                  <Option value="bank fund">bank fund</Option>
+                  <Option value="paypal">paypal</Option>
+                  <Option value="cash">cash</Option>
+                  <Option value="skrill">skrill</Option>
+                  <Option value="venmo">venmo</Option>
+                  <Option value="bitcoin">bitcoin</Option>
+                  <Option value="giftcard">giftcard</Option>
+                  <Option value="cashapp">cashapp</Option>
+                  <Option value="moneygram">moneygram</Option>
+                  <Option value="greendot">greendot</Option>
+                  <Option value="ethereum">ethereum</Option>
+                  <Option value="litecoin">litecoin</Option>
+                  <Option value="dogecoin">dogecoin</Option>
+                </Select>
+              </Form.Item>
+              <div className="tooltip-container">
+                <Tooltip
+                  placement="top"
+                  title="select the destination instrument. this is where the fund being bought, sold or swapped will be remitted to. you can select from over 100 instruments."
+                >
+                  <div className="question-tooltip">?</div>
+                </Tooltip>
+              </div>
+            </div>
 
-            <Form.Item
-              name="destination"
-              label="will deposit to"
-              rules={[
-                {
-                  required: true,
-                  message: "please select deal destination!",
-                },
-              ]}
-            >
-              <Select
-                style={{
-                  width: "calc(100% - 30px)",
-                }}
-                suffixIcon={
-                  <DownOutlined
-                    style={{
-                      strokeWidth: "50",
-                      color: "#ed1450",
-                    }}
-                  />
-                }
-                placeholder="select destination"
-                onChange={(value) => {
-                  handleDestinationSelect(value);
-                }}
-              >
-                <Option value="bank fund">bank fund</Option>
-                <Option value="paypal">paypal</Option>
-                <Option value="cash">cash</Option>
-                <Option value="skrill">skrill</Option>
-                <Option value="venmo">venmo</Option>
-                <Option value="bitcoin">bitcoin</Option>
-                <Option value="giftcard">giftcard</Option>
-                <Option value="cashapp">cashapp</Option>
-                <Option value="moneygram">moneygram</Option>
-                <Option value="greendot">greendot</Option>
-                <Option value="ethereum">ethereum</Option>
-                <Option value="litecoin">litecoin</Option>
-                <Option value="dogecoin">dogecoin</Option>
-              </Select>
-              {/* <Tooltip
-                placement="top"
-                title="select the destination instrument. this is where the fund being bought, sold or swapped will be remitted to. you can select from over 100 instruments."
-              >
-                <div className="question-tooltip">?</div>
-              </Tooltip> */}
-            </Form.Item>
             {(selectedDestination === "bitcoin" ||
               selectedDestination === "ethereum" ||
               selectedDestination === "dogecoin" ||
@@ -1046,71 +1055,77 @@ export default function NewDeal() {
               range & rate
             </Divider>
 
-            <Form.Item style={{ marginBottom: 0 }}>
-              <Form.Item
-                label="currency"
-                name="currency"
-                style={{
-                  display: "inline-block",
-                  width: "calc(49% - 15px)",
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "please specify currency!",
-                  },
-                ]}
-              >
-                <Select
-                  suffixIcon={
-                    <DownOutlined
-                      style={{
-                        strokeWidth: "50",
-                        color: "#ed1450",
-                      }}
-                    />
-                  }
-                  placeholder="select"
+            <div className="form-row">
+              <Form.Item style={{ marginBottom: 0 }}>
+                <Form.Item
+                  label="currency"
+                  name="currency"
+                  style={{
+                    display: "inline-block",
+                    width: "calc(49% - 15px)",
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "please specify currency!",
+                    },
+                  ]}
                 >
-                  <Option value="usd">USD</Option>
-                  <Option value="ngn">NGN</Option>
-                  <Option value="cad">CAD</Option>
-                  <Option value="gbp">GBP</Option>
-                </Select>
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: "50",
+                          color: "#ed1450",
+                        }}
+                      />
+                    }
+                    placeholder="select"
+                  >
+                    <Option value="usd">USD</Option>
+                    <Option value="ngn">NGN</Option>
+                    <Option value="cad">CAD</Option>
+                    <Option value="gbp">GBP</Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  name="rate"
+                  label="rate (%)"
+                  style={{
+                    display: "inline-block",
+                    width: "calc(49% - 15px)",
+                    marginLeft: "2%",
+                  }}
+                  rules={[
+                    {
+                      required: true,
+                      message: "input rate!",
+                    },
+                  ]}
+                >
+                  <InputNumber
+                    style={{ width: "100%" }}
+                    min={0}
+                    max={100}
+                    placeholder="0"
+                  />
+                </Form.Item>
               </Form.Item>
-              <Form.Item
-                name="rate"
-                label="rate"
-                style={{
-                  display: "inline-block",
-                  width: "calc(49% - 15px)",
-                  marginLeft: "2%",
-                }}
-                rules={[
-                  {
-                    required: true,
-                    message: "input rate!",
-                  },
-                ]}
-              >
-                <InputNumber
-                  style={{ width: "100%" }}
-                  defaultValue={0}
-                  min={0}
-                  max={100}
-                  formatter={(value) => `${value}%`}
-                  parser={(value) => value.replace("%", "")}
-                />
-              </Form.Item>
-              {/* <Tooltip
-                placement="top"
-                title="specify your cut or remittance rate in %"
-              >
-                <div className="question-tooltip" style={{ marginTop: "40px" }}>
-                  ?
-                </div>
-              </Tooltip> */}
-            </Form.Item>
+              <div className="tooltip-container origin">
+                <Tooltip
+                  placement="top"
+                  title="specify your cut or remittance rate in %"
+                >
+                  <div
+                    className="question-tooltip"
+                    style={{ marginTop: "40px" }}
+                  >
+                    ?
+                  </div>
+                </Tooltip>
+              </div>
+            </div>
+
             <Form.Item style={{ marginBottom: 0, width: "calc(100% - 30px)" }}>
               <Form.Item
                 label="min."
@@ -1158,52 +1173,56 @@ export default function NewDeal() {
                 />
               </Form.Item>
             </Form.Item>
+
             <Divider style={{ fontSize: "14px", color: "#999" }}>
               discussion & linkup
             </Divider>
-
-            <Form.Item
-              name="discussion"
-              label="medium"
-              rules={[
-                {
-                  required: true,
-                  message: "please specify discussion medium!",
-                },
-              ]}
-            >
-              <Select
-                style={{
-                  width: "calc(100% - 30px)",
-                }}
-                suffixIcon={
-                  <DownOutlined
-                    style={{
-                      strokeWidth: "50",
-                      color: "#ed1450",
-                    }}
-                  />
-                }
-                placeholder="select discussion medium"
-                onChange={() => {
-                  setShowDiscussionDetail(true);
-                }}
+            <div className="form-row">
+              <Form.Item
+                name="discussion"
+                label="medium"
+                rules={[
+                  {
+                    required: true,
+                    message: "please specify discussion medium!",
+                  },
+                ]}
               >
-                <Option value="any">any</Option>
-                <Option value="whatsapp">whatsapp</Option>
-                <Option value="telegram">telegram</Option>
-                <Option value="zoom">zoom</Option>
-                <Option value="ICQ">ICQ</Option>
-                <Option value="google meet">google meet</Option>
-                <Option value="meet in person">meet in person</Option>
-              </Select>
-              {/* <Tooltip
-                placement="top"
-                title="discussions will first happen here via the live chat. discussions can be moved off the platform if both parties wish, but the live chat must be ended here to the satisfaction of both parties with no issues raised, reviews dropped, before the chat window can close and the user can continue to deal on sustain. both user accounts will be temporarily deactivated together with the accounts of anyone they are connected with, until deal is completed to the satisfaction of both parties."
-              >
-                <div className="question-tooltip">?</div>
-              </Tooltip> */}
-            </Form.Item>
+                <Select
+                  style={{
+                    width: "calc(100% - 30px)",
+                  }}
+                  suffixIcon={
+                    <DownOutlined
+                      style={{
+                        strokeWidth: "50",
+                        color: "#ed1450",
+                      }}
+                    />
+                  }
+                  placeholder="select discussion medium"
+                  onChange={() => {
+                    setShowDiscussionDetail(true);
+                  }}
+                >
+                  <Option value="any">any</Option>
+                  <Option value="whatsapp">whatsapp</Option>
+                  <Option value="telegram">telegram</Option>
+                  <Option value="zoom">zoom</Option>
+                  <Option value="ICQ">ICQ</Option>
+                  <Option value="google meet">google meet</Option>
+                  <Option value="meet in person">meet in person</Option>
+                </Select>
+              </Form.Item>
+              <div className="tooltip-container">
+                <Tooltip
+                  placement="top"
+                  title="discussions will first happen here via the live chat. discussions can be moved off the platform if both parties wish, but the live chat must be ended here to the satisfaction of both parties with no issues raised, reviews dropped, before the chat window can close and the user can continue to deal on sustain. both user accounts will be temporarily deactivated together with the accounts of anyone they are connected with, until deal is completed to the satisfaction of both parties."
+                >
+                  <div className="question-tooltip">?</div>
+                </Tooltip>
+              </div>
+            </div>
 
             {showDiscussionDetail && (
               <Form.Item
@@ -1244,32 +1263,38 @@ export default function NewDeal() {
                 autoSize={{ minRows: 4, maxRows: 7 }}
               />
             </Form.Item>
-            <Form.Item
-              label="min. profile authority"
-              name="score"
-              rules={[
-                {
-                  required: true,
-                  message: "input min authority!",
-                },
-              ]}
-            >
-              <InputNumber
-                style={{
-                  width: "calc(100% - 30px)",
-                }}
-                min={1}
-                max={5}
-                placeholder="minimum profile authority to accept"
-                // onChange={onChange}
-              />
-              {/* <Tooltip
-                placement="top"
-                title="users on sustain are ranked based on profile authority metric. the algorithm is biased to the users with higher authority scores. choose the minimum authority score that a user should have to be eligible to open a discussion with you."
+
+            <div className="form-row">
+              <Form.Item
+                label="min. profile score"
+                name="score"
+                rules={[
+                  {
+                    required: true,
+                    message: "input min score!",
+                  },
+                ]}
               >
-                <div className="question-tooltip">?</div>
-              </Tooltip> */}
-            </Form.Item>
+                <InputNumber
+                  style={{
+                    width: "calc(100% - 30px)",
+                  }}
+                  min={1}
+                  max={5}
+                  placeholder="minimum profile score to accept"
+                  // onChange={onChange}
+                />
+              </Form.Item>
+              <div className="tooltip-container">
+                <Tooltip
+                  placement="top"
+                  title="users on sustain are ranked based on profile score metric. the algorithm is biased to the users with higher score scores. choose the minimum score score that a user should have to be eligible to open a discussion with you."
+                >
+                  <div className="question-tooltip">?</div>
+                </Tooltip>
+              </div>
+            </div>
+
             <Form.Item>
               <Button loading={buttonLoading} type="primary" htmlType="submit">
                 post deal
