@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Tabs, Button, message } from "antd";
 import { Link, useHistory } from "react-router-dom";
-import { Divider, Avatar } from "antd";
+import { Divider } from "antd";
 
 import { useSelector } from "react-redux";
 import {
