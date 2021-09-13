@@ -39,14 +39,6 @@ export default function Profile() {
           </Button>
         </div>
         <div className="user-info">
-
-          <div className="avatar">
-            <Avatar size={74} style={{
-              color: "#14a014",
-              backgroundColor: "#a9fca9"
-            }}> {userState?.profile?.user_name.charAt(0).toUpperCase()} </Avatar>
-          </div>
-
           <div className="username">{userState?.profile?.user_name}</div>
           <div className="rate">
             profile score <span>88</span> <EllipsisOutlined /> knows{" "}
