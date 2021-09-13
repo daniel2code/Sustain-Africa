@@ -20,8 +20,9 @@ export default function ProfileDealItem() {
           </div>
         </div>
         <div className="right">
-          <div className="white-background-button">details</div>
+          <div className="white-background-button">view</div>
           <div className="white-background-button">edit</div>
+            <div className="white-background-button">delete</div>
         </div>
       </div>
       <div className="bottom">
