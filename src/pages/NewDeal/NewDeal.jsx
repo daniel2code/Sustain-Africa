@@ -62,7 +62,8 @@ export default function NewDeal() {
       history.push("/login");
       message.warning("please login to continue");
     }
-  });
+    //eslint-disable-next-line
+  }, []);
 
   const [form] = Form.useForm();
   const history = useHistory();
