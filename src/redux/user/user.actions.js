@@ -7,3 +7,8 @@ export const setToken = (token) => ({
   type: "SET_TOKEN",
   payload: { token },
 });
+
+export const setProfile = (profile) => ({
+  type: "SET_PROFILE",
+  payload: { profile },
+});

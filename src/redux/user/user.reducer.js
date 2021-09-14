@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   userData: null,
   token: null,
+  profile: null,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,11 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         token: action.payload.token,
+      };
+    case "SET_PROFILE":
+      return {
+        ...state,
+        profile: action.payload.profile,
       };
     default:
       return state;
