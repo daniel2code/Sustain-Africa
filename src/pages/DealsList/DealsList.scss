@@ -111,7 +111,9 @@
         font-size: 12px;
       }
 
-      .ant-btn:active {
+      .ant-btn:active,
+      .ant-btn:hover,
+      .ant-btn:focus {
         border-color: #ed1450;
       }
     }

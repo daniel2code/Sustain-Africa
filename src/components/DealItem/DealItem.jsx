@@ -141,7 +141,14 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username-green">@{item?.user_name_front}<span className="score-green"> score <span style={{fontWeight:600}}>{item?.a_score}</span></span></span>
+          <span className="username-green">
+            @{item?.user_name_front}
+            <span className="score-green">
+              {" "}
+              <EllipsisOutlined style={{ color: "grey" }} /> score{" "}
+              <span style={{ fontWeight: 600 }}>{item?.a_score}</span>
+            </span>
+          </span>
         </div>
 
         <div className="deal-item-row-three">
