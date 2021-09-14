@@ -18,7 +18,7 @@ import { bearerInstance } from "./utils/API";
 
 function App() {
   useEffect(() => {
-    if (userState?.profile?.is_email_verified === "0" && "2" === "1") {
+    if (userState?.userData?.is_email_verified === "0" && "2" === "1") {
       history.push("/verify-email");
     }
     //eslint-disable-next-line

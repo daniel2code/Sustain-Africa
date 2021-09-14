@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
-import { setProfileInfo, setToken } from "./../../redux/user/user.actions";
+import { setUserData, setToken } from "./../../redux/user/user.actions";
 
 export default function Login({ history }) {
   const [buttonLoading, setButtonLoading] = useState(false);
@@ -26,7 +26,7 @@ export default function Login({ history }) {
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
-          dispatch(setProfileInfo(response?.data?.data));
+          dispatch(setUserData(response?.data?.data));
           dispatch(setToken(response?.data?.token));
           if (response?.data?.data?.is_email_verified === "0") {
             requestVerificationCode(

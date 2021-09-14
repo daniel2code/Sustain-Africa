@@ -39,7 +39,7 @@ export default function Navbar() {
           </div>
 
           <div className="right">
-            {userState?.profile ? (
+            {userState?.userData ? (
               <>
                 <div className="balance">$10.39</div>
 
@@ -70,14 +70,14 @@ export default function Navbar() {
                   placement="bottomLeft"
                 >
                   <div className="name">
-                    {userState?.profile?.user_name}{" "}
+                    {userState?.userData?.user_name}{" "}
                     <Avatar
                       style={{
                         color: "#14a014",
                         backgroundColor: "#a9fca9",
                       }}
                     >
-                      {userState?.profile?.user_name.charAt(0).toUpperCase()}
+                      {userState?.userData?.user_name.charAt(0).toUpperCase()}
                     </Avatar>
                   </div>
                 </Dropdown>

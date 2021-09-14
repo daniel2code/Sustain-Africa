@@ -58,7 +58,7 @@ const { TextArea } = Input;
 
 export default function NewDeal() {
   useEffect(() => {
-    if (!userState.profile) {
+    if (!userState?.userData) {
       history.push("/login");
       message.warning("please login to continue");
     }

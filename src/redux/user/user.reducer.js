@@ -1,14 +1,14 @@
 const INITIAL_STATE = {
-  profile: null,
+  userData: null,
   token: null,
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "SET_PROFILE_INFO":
+    case "SET_USER_DATA":
       return {
         ...state,
-        profile: action.payload.profile,
+        userData: action.payload.userData,
       };
     case "SET_TOKEN":
       return {

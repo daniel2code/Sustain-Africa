@@ -14,6 +14,7 @@ import PrefileDiscussionItem from "../../components/ProfileDiscussionItem/Profil
 import ProfileDealItem from "./../../components/ProfileDealsItem/ProfileDealItem";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 import "./profile.scss";
+import { bearerInstance } from "./../../utils/API";
 
 const { TabPane } = Tabs;
 
@@ -23,12 +24,30 @@ export default function Profile() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    getProfileInfo();
 
-    if (!userState.profile) {
+    if (!userState?.userData) {
       history.push("/login");
       message.warning("please login to continue");
     }
   });
+
+  useEffect(() => {
+    //eslint-disable-next-line
+  }, []);
+
+  const getProfileInfo = async () => {
+    bearerInstance
+      .get("/profile")
+      .then(function (response) {
+        console.log(response.data);
+      })
+      .catch(function (error) {
+        if (error?.response?.data?.message) {
+          message.error(error?.response?.data?.message);
+        }
+      });
+  };
 
   return (
     <div className="profile-container">
@@ -39,7 +58,7 @@ export default function Profile() {
           </Button>
         </div>
         <div className="user-info">
-          <div className="username">{userState?.profile?.user_name}</div>
+          <div className="username">{userState?.userData?.user_name}</div>
           <div className="rate">
             profile score <span>88</span> <EllipsisOutlined /> knows{" "}
             <span>25 dealers</span> <EllipsisOutlined /> from{" "}

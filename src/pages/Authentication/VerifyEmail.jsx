@@ -8,11 +8,11 @@ import { instance } from "./../../utils/API";
 
 export default function VerifyEmail({ history }) {
   useEffect(() => {
-    if (!userState?.profile && !registerState?.userInfo?.email) {
+    if (!userState?.userData && !registerState?.userInfo?.email) {
       history.push("/register");
     } else if (
-      userState?.profile?.is_phone_no_verification_skipped === "1" ||
-      userState?.profile?.is_phone_no_verified === "1"
+      userState?.userData?.is_phone_no_verification_skipped === "1" ||
+      userState?.userData?.is_phone_no_verified === "1"
     ) {
       setHasPhone(true);
     }
@@ -49,12 +49,12 @@ export default function VerifyEmail({ history }) {
     data.append("match_verification", 1);
     data.append(
       "verify_email",
-      hasPhone ? userState?.profile?.email : registerState?.userInfo?.email
+      hasPhone ? userState?.userData?.email : registerState?.userInfo?.email
     );
     data.append(
       "verify_username",
       hasPhone
-        ? userState?.profile?.user_name
+        ? userState?.userData?.user_name
         : registerState?.userInfo?.user_name
     );
     data.append("verification_code", inputValuesJoined);
@@ -88,12 +88,12 @@ export default function VerifyEmail({ history }) {
     data.append("send_verification", 1);
     data.append(
       "verify_email",
-      hasPhone ? userState?.profile?.email : registerState?.userInfo?.email
+      hasPhone ? userState?.userData?.email : registerState?.userInfo?.email
     );
     data.append(
       "verify_username",
       hasPhone
-        ? userState?.profile?.user_name
+        ? userState?.userData?.user_name
         : registerState?.userInfo?.user_name
     );
 
@@ -176,8 +176,8 @@ export default function VerifyEmail({ history }) {
           <div className="desc">
             we’ve sent a verification code to{" "}
             <span className="desc-link">
-              {userState?.profile?.email
-                ? userState?.profile?.email
+              {userState?.userData?.email
+                ? userState?.userData?.email
                 : registerState?.userInfo?.email
                 ? registerState?.userInfo?.email
                 : "your email"}
