@@ -3,20 +3,20 @@ import { ArrowRightOutlined, EllipsisOutlined } from "@ant-design/icons";
 
 import "./profiledealitem.scss";
 
-export default function ProfileDealItem() {
+export default function ProfileDealItem({ item }) {
   return (
     <div className="profile-deal-item-container">
       <div className="top">
         <div className="left">
           <div className="source-destination">
-            giftcard{" "}
+            {item?.source}{" "}
             <ArrowRightOutlined
               style={{
                 strokeWidth: "50",
                 stroke: "white",
               }}
             />{" "}
-            bitcoin
+            {item?.destination}
           </div>
         </div>
         <div className="right">
@@ -26,10 +26,14 @@ export default function ProfileDealItem() {
       </div>
       <div className="bottom">
         <div className="info">
-          3 year old paypal account <EllipsisOutlined />
-          min <span className="bold">1k</span> <EllipsisOutlined /> max{" "}
-          <span className="bold">1m</span> <EllipsisOutlined /> rate{" "}
-          <span className="bold">20%</span>
+          {item?.deal_summary} <EllipsisOutlined />
+          min{" "}
+          <span className="bold">
+            {`${item?.min.toLocaleString()} ${item?.currency.toUpperCase()}`}
+          </span>{" "}
+          <EllipsisOutlined /> max{" "}
+          <span className="bold">{`${item?.max.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{" "}
+          <EllipsisOutlined /> rate <span className="bold">{item?.rate}%</span>
         </div>
       </div>
     </div>

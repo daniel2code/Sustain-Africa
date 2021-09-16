@@ -4,7 +4,7 @@ import FadeLoader from "react-spinners/FadeLoader";
 
 const override = css`
   display: block;
-  margin: 70px auto;
+  margin: 80px auto;
   border-color: red;
 `;
 
