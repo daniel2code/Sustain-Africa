@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Tabs, Button, message } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { Divider } from "antd";
@@ -22,9 +22,10 @@ const { TabPane } = Tabs;
 
 export default function Profile() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const profileData = useSelector((state) => state.data.profile);
-  const dispatch = useDispatch();
+  const [dealsCount, setDealsCount] = useState(3);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,6 +94,7 @@ export default function Profile() {
             <PrefileDiscussionItem />
             <PrefileDiscussionItem />
           </div>
+          <div className="more-items">view more</div>
 
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
@@ -102,10 +104,20 @@ export default function Profile() {
 
           <div className="deals">
             {profileData?.deals_data &&
-              profileData?.deals_data.map((item) => (
-                <ProfileDealItem item={item} key={item.id} />
-              ))}
+              profileData?.deals_data
+                .slice(0, dealsCount)
+                .map((item) => <ProfileDealItem item={item} key={item.id} />)}
           </div>
+          {!(dealsCount >= profileData?.deals_data.length) && (
+            <div
+              className="more-items"
+              onClick={() => {
+                setDealsCount(dealsCount + 5);
+              }}
+            >
+              view more
+            </div>
+          )}
 
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
@@ -127,6 +139,7 @@ export default function Profile() {
               </TabPane>
             </Tabs>
           </div>
+          <div className="more-items">view more</div>
         </div>
       )}
     </div>

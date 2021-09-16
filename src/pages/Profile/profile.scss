@@ -60,6 +60,9 @@
       }
     }
   }
+  .ant-divider-inner-text {
+    color: #ed1450;
+  }
 }
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn,
@@ -77,4 +80,14 @@
 
 .ant-tabs-ink-bar {
   background: #ed1450;
+}
+
+.more-items {
+  color: grey;
+  margin: 10px 0 70px 0;
+  text-align: center;
+  cursor: pointer;
+  &:active {
+    opacity: 0.7;
+  }
 }
