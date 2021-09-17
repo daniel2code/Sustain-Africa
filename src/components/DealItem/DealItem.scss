@@ -127,7 +127,6 @@
 
     .anticon {
       transform: translateY(-1px);
-      margin-right: -3px;
     }
   }
 
@@ -135,6 +134,10 @@
     color: #ed1450;
     margin-right: 18px;
     font-weight: bold;
+
+    .anticon {
+      transform: translateY(1px);
+    }
   }
 
   .score {
@@ -143,7 +146,7 @@
   }
 
   .anticon {
-    margin-right: -1px;
+    margin-right: unset;
   }
 }
 
