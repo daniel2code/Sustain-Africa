@@ -59,6 +59,9 @@ export default function Navbar() {
                         onClick={() => {
                           dispatch({ type: "DESTROY_SESSION" });
                           history.push("/");
+                          setTimeout(() => {
+                            window.location.reload();
+                          }, 1000);
                         }}
                         style={{ color: "#ed1450" }}
                       >

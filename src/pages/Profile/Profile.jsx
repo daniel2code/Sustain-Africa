@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, Button, message } from "antd";
+import { Tabs, Button, message, Divider } from "antd";
 import { Link, useHistory } from "react-router-dom";
-import { Divider } from "antd";
 
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -94,7 +93,6 @@ export default function Profile() {
             <PrefileDiscussionItem />
             <PrefileDiscussionItem />
           </div>
-          <div className="more-items">view more</div>
 
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
@@ -102,12 +100,16 @@ export default function Profile() {
             your deals ({profileData?.total_deals_count})
           </Divider>
 
-          <div className="deals">
-            {profileData?.deals_data &&
-              profileData?.deals_data
-                .slice(0, dealsCount)
-                .map((item) => <ProfileDealItem item={item} key={item.id} />)}
-          </div>
+          {profileData?.deals_data.length > 0 ? (
+            <div className="deals">
+              {profileData?.deals_data.slice(0, dealsCount).map((item) => (
+                <ProfileDealItem item={item} key={item.id} />
+              ))}
+            </div>
+          ) : (
+            <div className="no-item">no deal yet</div>
+          )}
+
           {!(dealsCount >= profileData?.deals_data.length) && (
             <div
               className="more-items"
@@ -139,7 +141,6 @@ export default function Profile() {
               </TabPane>
             </Tabs>
           </div>
-          <div className="more-items">view more</div>
         </div>
       )}
     </div>

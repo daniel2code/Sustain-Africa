@@ -1,0 +1,87 @@
+.deal-page-container {
+  width: 100%;
+  margin-top: 65px;
+  padding-bottom: 40px;
+  .deal-page-wrapper {
+    width: 95%;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 10px;
+    .user-info {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      .left {
+        display: flex;
+        flex-direction: row;
+        .avatar {
+          margin-right: 6px;
+          transform: translateY(4px);
+        }
+      }
+      .like-dislike {
+        margin-top: unset;
+      }
+    }
+
+    .deal-info {
+      margin-top: 15px;
+      .source-destination {
+        width: max-content;
+        margin-bottom: 10px;
+      }
+
+      .deal-item-wrapper {
+        display: block;
+        width: 100%;
+        margin: 0 auto;
+        margin-top: 20px;
+
+        .deal-item-row-one {
+          width: 100%;
+          font-size: 12px;
+          color: grey;
+          line-height: 1.5;
+
+          .discussion {
+            font-weight: 600;
+            color: rgb(20, 160, 20);
+            text-decoration: underline;
+          }
+        }
+
+        .deal-item-row-two {
+          margin: 20px 0;
+          font-size: 15px;
+          color: rgb(94, 94, 94);
+          font-style: italic;
+          line-height: 1.5;
+          font-weight: 500;
+        }
+
+        .deal-item-row-three {
+          font-size: 12px;
+          color: grey;
+        }
+
+        .deal-item-row-four {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-end;
+          margin-top: 15px;
+        }
+      }
+    }
+  }
+}
+
+.grey-button-nobg {
+  margin: auto 35px auto 0;
+  color: grey;
+  font-weight: 500;
+  cursor: pointer;
+  &:active {
+    opacity: 0.7;
+  }
+}

@@ -1,9 +1,12 @@
 import React from "react";
 import { ArrowRightOutlined, EllipsisOutlined } from "@ant-design/icons";
+import { useHistory } from "react-router-dom";
 
 import "./profiledealitem.scss";
 
 export default function ProfileDealItem({ item }) {
+  const history = useHistory();
+
   return (
     <div className="profile-deal-item-container">
       <div className="top">
@@ -20,7 +23,14 @@ export default function ProfileDealItem({ item }) {
           </div>
         </div>
         <div className="right">
-          <div className="white-background-button">view</div>
+          <div
+            className="white-background-button"
+            onClick={() => {
+              history.push(`/deal/${item?.id}`);
+            }}
+          >
+            view
+          </div>
           <div className="white-background-button">delete</div>
         </div>
       </div>

@@ -13,6 +13,7 @@ import Login from "./pages/Authentication/Login";
 import VerifyEmail from "./pages/Authentication/VerifyEmail";
 import VerifyPhone from "./pages/Authentication/VerifyPhone";
 import Profile from "./pages/Profile/Profile";
+import DealPage from "./pages/DealPage/DealPage";
 
 import { bearerInstance } from "./utils/API";
 
@@ -31,6 +32,9 @@ function App() {
   const logout = () => {
     dispatch({ type: "DESTROY_SESSION" });
     history.push("/login");
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   bearerInstance.interceptors.request.use(
@@ -85,6 +89,7 @@ function App() {
           <Route exact path="/verify-email" component={VerifyEmail} />
           <Route exact path="/add-phone" component={VerifyPhone} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/deal/:id" component={DealPage} />
         </Switch>
       </Layout>
     </div>
