@@ -8,18 +8,24 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 
+import useProfile from "../../hooks/useProfile";
 import Loader from "./../../components/Loader/Loader";
 import { bearerInstance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 
 export default function DealPage({ match }) {
+  const { getProfileInfo } = useProfile();
   const [deal, setDeal] = useState(null);
   const profileData = useSelector((state) => state.data.profile);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     getDealInfo();
+
+    if (!profileData) {
+      getProfileInfo();
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -38,9 +44,9 @@ export default function DealPage({ match }) {
 
   return (
     <div className="deal-page-container">
-      {!deal && <Loader />}
+      {(!deal || !profileData) && <Loader />}
 
-      {deal && (
+      {deal && profileData && (
         <div className="deal-page-wrapper">
           <div className="user-info">
             <div className="left">

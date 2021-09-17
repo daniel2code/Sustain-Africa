@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Tabs, Button, message, Divider } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   LikeOutlined,
   DislikeOutlined,
@@ -14,14 +14,13 @@ import PrefileDiscussionItem from "../../components/ProfileDiscussionItem/Profil
 import ProfileDealItem from "./../../components/ProfileDealsItem/ProfileDealItem";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 import "./profile.scss";
-import { bearerInstance } from "./../../utils/API";
-import { setProfile } from "./../../redux/data/data.actions";
+import useProfile from "../../hooks/useProfile";
 
 const { TabPane } = Tabs;
 
 export default function Profile() {
+  const { getProfileInfo } = useProfile();
   const history = useHistory();
-  const dispatch = useDispatch();
   const userState = useSelector((state) => state.user);
   const profileData = useSelector((state) => state.data.profile);
   const [dealsCount, setDealsCount] = useState(3);
@@ -36,19 +35,6 @@ export default function Profile() {
     }
     //eslint-disable-next-line
   }, []);
-
-  const getProfileInfo = async () => {
-    bearerInstance
-      .get("/profile")
-      .then(function (response) {
-        dispatch(setProfile(response?.data));
-      })
-      .catch(function (error) {
-        if (error?.response?.data?.message) {
-          message.error(error?.response?.data?.message);
-        }
-      });
-  };
 
   return (
     <div className="profile-container">
