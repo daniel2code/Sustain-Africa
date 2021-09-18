@@ -65,7 +65,7 @@ export default function DealPage({match}) {
                             </div>
                             <div>
                                 <div className="username-green">
-                                    @{profileData?.profile_data[0]?.user_name}{" "}
+                                    {profileData?.profile_data[0]?.user_name}{" "}
                                 </div>
                                 <div>
                                     <div className="score-green">
@@ -238,7 +238,7 @@ export default function DealPage({match}) {
                     <Divider
                         style={{fontSize: "14px", color: "#999", marginTop: "60px"}}
                     >
-                        reviews for @{profileData?.profile_data[0]?.user_name} (
+                        reviews for {profileData?.profile_data[0]?.user_name} (
                         {profileData?.profile_data[0]?.total_reviews})
                     </Divider>
 
