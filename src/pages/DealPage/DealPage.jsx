@@ -90,16 +90,6 @@ export default function DealPage({match}) {
                     </div>
 
                     <div className="deal-info">
-                        <div className="like-dislike">
-              <span className="like">
-                <LikeOutlined/>{" "}
-                  {profileData?.profile_data[0]?.total_positive_reviews}
-              </span>
-                            <span className="dislike">
-                <DislikeOutlined/>{" "}
-                                {profileData?.profile_data[0]?.total_negative_reviews}
-              </span>
-                        </div>
                         <div className="deal-item-wrapper">
                             <div className="deal-item-row-one">
                                 {deal?.s_bank_name && (
@@ -227,6 +217,17 @@ export default function DealPage({match}) {
                             </div>
 
                             <div className="deal-item-row-four">
+                                <div className="like-dislike">
+              <span className="like">
+                <LikeOutlined/>{" "}
+                  {profileData?.profile_data[0]?.total_positive_reviews}
+              </span>
+                                    <span className="dislike">
+                <DislikeOutlined/>{" "}
+                                        {profileData?.profile_data[0]?.total_negative_reviews}
+              </span>
+                                </div>
+
                                 <div className="grey-button-nobg">review</div>
                                 <div className="grey-button-nobg">share</div>
                                 <button className="green-button">discuss</button>
