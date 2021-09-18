@@ -13,6 +13,19 @@
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
+
+      .username-reviewitem-green {
+        color: rgb(20, 160, 20);
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-right: 4px;
+
+
+        &:active {
+          opacity: 0.7;
+        }
+      }
       .date {
         font-size: 12px;
         color: grey;

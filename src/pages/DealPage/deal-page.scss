@@ -49,6 +49,7 @@
             color: rgb(20, 160, 20);
             text-decoration: underline;
           }
+
         }
 
         .deal-item-row-two {
@@ -63,6 +64,11 @@
         .deal-item-row-three {
           font-size: 12px;
           color: grey;
+
+
+          .location {
+            text-decoration: underline;
+          }
         }
 
         .deal-item-row-four {

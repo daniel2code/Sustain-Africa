@@ -7,7 +7,7 @@ export default function ProfileReviewItem() {
     <div className="profile-review-item-container">
       <div className="row-one">
         <div className="left">
-          <div className="username-green">@megamind2020</div>
+          <div className="username-reviewitem-green">@megamind2020</div>
           <div className="date">June 12, 2021</div>
         </div>
 
