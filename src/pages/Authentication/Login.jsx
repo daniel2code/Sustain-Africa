@@ -11,6 +11,11 @@ export default function Login({ history }) {
   const [buttonLoading, setButtonLoading] = useState(false);
   const dispatch = useDispatch();
 
+  const dispatchActions = (response) => {
+    dispatch(setUserData(response?.data?.data));
+    dispatch(setToken(response?.data?.token));
+  };
+
   const onFinish = async (values) => {
     setButtonLoading(true);
 
@@ -26,8 +31,7 @@ export default function Login({ history }) {
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
-          dispatch(setUserData(response?.data?.data));
-          dispatch(setToken(response?.data?.token));
+          dispatchActions(response);
           if (response?.data?.data?.is_email_verified === "0") {
             requestVerificationCode(
               response?.data?.data?.email,

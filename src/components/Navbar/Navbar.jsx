@@ -58,6 +58,7 @@ export default function Navbar() {
                         key="3"
                         onClick={() => {
                           dispatch({ type: "DESTROY_SESSION" });
+                          localStorage.clear();
                           history.push("/");
                           setTimeout(() => {
                             window.location.reload();

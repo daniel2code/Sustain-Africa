@@ -31,6 +31,7 @@ function App() {
 
   const logout = () => {
     dispatch({ type: "DESTROY_SESSION" });
+    localStorage.clear();
     history.push("/login");
     setTimeout(() => {
       window.location.reload();
