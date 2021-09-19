@@ -3,6 +3,7 @@ import { Button, Dropdown, Menu, Avatar } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import { LeftOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
+import { useClearCache } from "react-clear-cache";
 
 import "./Navbar.scss";
 
@@ -11,6 +12,7 @@ export default function Navbar() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const { emptyCacheStorage } = useClearCache();
 
   return (
     <div className="navbar-container">
@@ -59,10 +61,8 @@ export default function Navbar() {
                         onClick={() => {
                           dispatch({ type: "DESTROY_SESSION" });
                           localStorage.clear();
-                          history.push("/");
-                          setTimeout(() => {
-                            window.location.reload();
-                          }, 1000);
+                          sessionStorage.clear();
+                          emptyCacheStorage();
                         }}
                         style={{ color: "#ed1450" }}
                       >

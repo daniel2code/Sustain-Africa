@@ -5,24 +5,19 @@ import { useDispatch } from "react-redux";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
-import { setUserData, setToken } from "./../../redux/user/user.actions";
+import { setUserData } from "./../../redux/user/user.actions";
 
 export default function Login({ history }) {
   const [buttonLoading, setButtonLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const dispatchActions = (response) => {
-    dispatch(setUserData(response?.data?.data));
-    dispatch(setToken(response?.data?.token));
-  };
-
   const onFinish = async (values) => {
     setButtonLoading(true);
+    let userData = {};
 
     const { email, password } = values;
 
     const data = new FormData();
-
     data.append("user_field", email);
     data.append("user_password", password);
 
@@ -31,7 +26,8 @@ export default function Login({ history }) {
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
-          dispatchActions(response);
+          userData = { ...response?.data?.data, token: response?.data?.token };
+          dispatch(setUserData(userData));
           if (response?.data?.data?.is_email_verified === "0") {
             requestVerificationCode(
               response?.data?.data?.email,
