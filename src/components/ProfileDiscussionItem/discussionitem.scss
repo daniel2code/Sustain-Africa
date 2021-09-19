@@ -12,6 +12,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+
+    .with-indicator {
+      color: gray !important;
+      font-weight: normal !important;
+      font-size: 12px !important;
+    }
     .status {
       color: white;
       background-color: tomato;

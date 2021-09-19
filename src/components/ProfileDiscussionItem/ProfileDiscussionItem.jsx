@@ -6,7 +6,7 @@ export default function PrefileDiscussionItem() {
   return (
     <div className="discussion-item-container">
       <div className="top">
-        <div className="username-green">@nightmodel</div>
+          <div className="username-green"><span className="with-indicator">with </span>@nightmodel</div>
         <div className="status">#inprogress</div>
       </div>
       <div className="bottom">

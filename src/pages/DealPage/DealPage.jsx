@@ -65,7 +65,7 @@ export default function DealPage({ match }) {
               </div>
               <div>
                 <div className="username-green">
-                  @{profileData?.profile_data[0]?.user_name}{" "}
+                  {profileData?.profile_data[0]?.user_name}{" "}
                 </div>
                 <div>
                   <div className="score-green">
