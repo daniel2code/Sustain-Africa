@@ -14,7 +14,6 @@
     "node-sass": "5.0.0",
     "random-words": "^1.1.1",
     "react": "^17.0.2",
-    "react-clear-cache": "^1.4.12",
     "react-dom": "^17.0.2",
     "react-google-places-autocomplete": "^3.3.2-alpha.0",
     "react-phone-input-2": "^2.14.0",
