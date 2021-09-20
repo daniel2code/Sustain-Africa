@@ -8,32 +8,29 @@ import {
   ArrowRightOutlined,
 } from "@ant-design/icons";
 
-import useProfile from "../../hooks/useProfile";
 import Loader from "./../../components/Loader/Loader";
-import { bearerInstance } from "./../../utils/API";
+import { instance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 
 export default function DealPage({ match }) {
-  const { getProfileInfo } = useProfile();
   const [deal, setDeal] = useState(null);
-  const profileData = useSelector((state) => state.data.profile);
+  const [dealerData, setDealerData] = useState(null);
+  const userId = useSelector((state) => state?.user?.userData?.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     getDealInfo();
 
-    if (!profileData) {
-      getProfileInfo();
-    }
     //eslint-disable-next-line
   }, []);
 
   const getDealInfo = async () => {
-    bearerInstance
-      .get(`/return_this_deal?deal_id=${match.params.id}&type=admin`)
+    instance
+      .get(`/return_this_deal?deal_id=${match.params.id}`)
       .then(function (response) {
         setDeal(response?.data?.deal_data[0]);
+        setDealerData(response?.data?.dealer_profile_data[0]);
       })
       .catch(function (error) {
         if (error?.response?.data?.message) {
@@ -44,9 +41,9 @@ export default function DealPage({ match }) {
 
   return (
     <div className="deal-page-container">
-      {(!deal || !profileData) && <Loader />}
+      {(!deal || !dealerData) && <Loader />}
 
-      {deal && profileData && (
+      {deal && dealerData && (
         <div className="deal-page-wrapper">
           <div className="user-info">
             <div className="left">
@@ -58,20 +55,16 @@ export default function DealPage({ match }) {
                     fontWeight: "500",
                   }}
                 >
-                  {profileData?.profile_data[0]?.user_name
-                    .charAt(0)
-                    .toUpperCase()}
+                  {dealerData?.user_name.charAt(0).toUpperCase()}
                 </Avatar>
               </div>
               <div>
-                <div className="username-green">
-                  {profileData?.profile_data[0]?.user_name}{" "}
-                </div>
+                <div className="username-green">{dealerData?.user_name} </div>
                 <div>
                   <div className="score-green">
                     score{" "}
                     <span style={{ fontWeight: 600 }}>
-                      {profileData?.profile_data[0]?.a_score}
+                      {dealerData?.a_score}
                     </span>
                   </div>
                 </div>
@@ -215,23 +208,25 @@ export default function DealPage({ match }) {
                     "user posted this deal from this location and will probably arrange a meetup there if necessary."
                   }
                 >
-                  <span className="location">Lekki Phase 1</span>
+                  <span className="location">{dealerData?.user_location}</span>
                 </Tooltip>{" "}
               </div>
 
               <div className="deal-item-row-four">
                 <div className="like-dislike">
                   <span className="like">
-                    <LikeOutlined />{" "}
-                    {profileData?.profile_data[0]?.total_positive_reviews}
+                    <LikeOutlined /> {dealerData?.total_positive_reviews}
                   </span>
                   <span className="dislike">
-                    <DislikeOutlined />{" "}
-                    {profileData?.profile_data[0]?.total_negative_reviews}
+                    <DislikeOutlined /> {dealerData?.total_negative_reviews}
                   </span>
                 </div>
 
-                <div className="grey-button-nobg">review</div>
+                <div className="grey-button-nobg">
+                  {deal?.dealer_id.toString() === userId.toString()
+                    ? "edit"
+                    : "review"}
+                </div>
                 <div className="grey-button-nobg">share</div>
                 <button className="green-button">discuss</button>
               </div>
@@ -241,8 +236,7 @@ export default function DealPage({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "60px" }}
           >
-            reviews for @{profileData?.profile_data[0]?.user_name} (
-            {profileData?.profile_data[0]?.total_reviews})
+            reviews for @{dealerData?.user_name} ({dealerData?.total_reviews})
           </Divider>
 
           <div className="deal-reviews">
