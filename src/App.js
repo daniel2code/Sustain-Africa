@@ -4,7 +4,6 @@ import { Layout, message } from "antd";
 // import LoadingBar from "react-redux-loading-bar";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useClearCache } from "react-clear-cache";
 
 import Navbar from "./components/Navbar/Navbar";
 import DealsList from "./pages/DealsList/DealsList";
@@ -29,16 +28,14 @@ function App() {
   const userState = useSelector((state) => state.user);
   const history = useHistory();
   const dispatch = useDispatch();
-  const { emptyCacheStorage } = useClearCache();
 
   const logout = () => {
     dispatch({ type: "DESTROY_SESSION" });
     localStorage.clear();
     sessionStorage.clear();
-    emptyCacheStorage();
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 1500);
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
 
   bearerInstance.interceptors.request.use(
