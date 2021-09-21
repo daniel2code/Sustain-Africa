@@ -35,9 +35,9 @@ export default function Login({ history }) {
           } else {
             setTimeout(() => {
               window.location.assign("/");
+              setButtonLoading(false);
             }, 1000);
           }
-          setButtonLoading(false);
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
