@@ -290,6 +290,7 @@ export default function DealsList() {
               </div>
 
               <div className="no-result-text">no deal found</div>
+              <div className="no-result-text-bottom">try another combination</div>
             </div>
           )}
 
