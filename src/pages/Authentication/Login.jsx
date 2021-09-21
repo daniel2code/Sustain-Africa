@@ -24,7 +24,6 @@ export default function Login({ history }) {
     instance
       .post("/login", data)
       .then(function (response) {
-        setButtonLoading(false);
         if (response?.data?.status) {
           userData = { ...response?.data?.data, token: response?.data?.token };
           dispatch(setUserData(userData));
@@ -38,6 +37,7 @@ export default function Login({ history }) {
               window.location.assign("/");
             }, 1000);
           }
+          setButtonLoading(false);
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
