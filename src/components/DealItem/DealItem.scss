@@ -88,11 +88,11 @@
 .green-button {
   background: rgb(20, 160, 20);
   color: white;
-  padding: 0px 12px;
+  padding: 2px 15px;
   border: none;
   cursor: pointer;
-  font-size: 14px;
-  border-radius: 30px;
+  font-size: 16px;
+  border-radius: 2px;
 
   &:active {
     opacity: 0.8;
@@ -130,6 +130,7 @@
   margin-top: 5px;
   &.no-margin-top {
     margin-top: unset;
+    margin: auto 0;
   }
   .like {
     color: rgb(20, 160, 20);

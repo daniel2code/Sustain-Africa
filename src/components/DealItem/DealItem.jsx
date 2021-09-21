@@ -172,7 +172,7 @@ export default function DealItem({ item }) {
           </div>
           <div className="right">
             <div
-              className="white-background-button"
+              className="grey-button-nobg"
               onClick={() => {
                 history.push(`/deal/${item?.d_id}`);
               }}
