@@ -34,10 +34,7 @@ export default function Login({ history }) {
               response?.data?.data?.user_name
             );
           } else {
-            setTimeout(() => {
-              debugger;
-              window.location.assign("/");
-            }, 1000);
+            window.location.assign("/");
           }
         } else {
           message.error(response?.data?.message);

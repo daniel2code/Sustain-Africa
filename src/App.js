@@ -33,7 +33,6 @@ function App() {
     dispatch({ type: "DESTROY_SESSION" });
     localStorage.clear();
     sessionStorage.clear();
-    debugger;
     window.location.assign("/");
   };
 
