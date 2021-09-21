@@ -16,12 +16,16 @@ import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileRevie
 export default function DealPage({ match }) {
   const [deal, setDeal] = useState(null);
   const [dealerData, setDealerData] = useState(null);
-  const userId = useSelector((state) => state?.user?.userData?.id);
+  const [userId, setUserId] = useState("000111222333444");
+  const userIdState = useSelector((state) => state?.user?.userData?.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     getDealInfo();
 
+    if (userIdState) {
+      setUserId(userIdState);
+    }
     //eslint-disable-next-line
   }, []);
 
