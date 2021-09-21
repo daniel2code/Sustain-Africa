@@ -48,7 +48,7 @@ export default function Profile() {
             </Button>
           </div>
           <div className="user-info">
-            <div className="username">{userState?.userData?.user_name_front}</div>
+            <div className="username">{profileData?.profile_data[0]?.user_name_front}</div>
             <div className="rate">
               profile score <span>{profileData?.profile_data[0]?.a_score}</span>{" "}
               <EllipsisOutlined /> knows <span>25 dealers</span>{" "}
