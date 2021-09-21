@@ -1,6 +1,7 @@
 import React from "react";
 import { Tooltip } from "antd";
 import { format } from "timeago.js";
+import { useHistory } from "react-router-dom";
 
 import {
   LikeOutlined,
@@ -12,6 +13,8 @@ import {
 import "./DealItem.scss";
 
 export default function DealItem({ item }) {
+  const history = useHistory();
+
   return (
     <div className="deal-item-container">
       <Tooltip
@@ -168,6 +171,14 @@ export default function DealItem({ item }) {
             </span>
           </div>
           <div className="right">
+            <div
+              className="white-background-button"
+              onClick={() => {
+                history.push(`/deal/${item?.id}`);
+              }}
+            >
+              view
+            </div>
             <button className="green-button">discuss</button>
           </div>
         </div>

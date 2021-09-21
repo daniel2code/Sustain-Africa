@@ -33,9 +33,8 @@ function App() {
     dispatch({ type: "DESTROY_SESSION" });
     localStorage.clear();
     sessionStorage.clear();
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+    debugger;
+    window.location.assign("/");
   };
 
   bearerInstance.interceptors.request.use(

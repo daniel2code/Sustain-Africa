@@ -7,7 +7,7 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
-
+import Timestamp from "react-timestamp";
 import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
 import "./deal-page.scss";
@@ -201,7 +201,14 @@ export default function DealPage({ match }) {
               <div className="deal-item-row-two">“{deal?.deal_summary}”</div>
 
               <div className="deal-item-row-three">
-                3.13 PM · Sep 13, 2021 ·{" "}
+                <span>{deal?.last_updated_at ? "updated" : ""}</span>{" "}
+                <Timestamp
+                  date={
+                    deal?.last_updated_at
+                      ? deal?.last_updated_at
+                      : deal?.created_at
+                  }
+                />{" "}
                 <Tooltip
                   placement="top"
                   title={
@@ -213,11 +220,11 @@ export default function DealPage({ match }) {
               </div>
 
               <div className="deal-item-row-four">
-                <div className="like-dislike">
+                <div className="like-dislike no-margin-top">
                   <span className="like">
                     <LikeOutlined /> {dealerData?.total_positive_reviews}
                   </span>
-                  <span className="dislike">
+                  <span className="dislike add-margin-right">
                     <DislikeOutlined /> {dealerData?.total_negative_reviews}
                   </span>
                 </div>
@@ -227,8 +234,18 @@ export default function DealPage({ match }) {
                     ? "edit"
                     : "review"}
                 </div>
-                <div className="grey-button-nobg">share</div>
-                <button className="green-button">discuss</button>
+                <div
+                  className={`grey-button-nobg ${
+                    deal?.dealer_id.toString() === userId.toString()
+                      ? "no-margin-right"
+                      : ""
+                  }`}
+                >
+                  share
+                </div>
+                {deal?.dealer_id.toString() !== userId.toString() && (
+                  <button className="green-button">discuss</button>
+                )}
               </div>
             </div>
           </div>

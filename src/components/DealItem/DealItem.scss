@@ -50,7 +50,7 @@
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      margin-top: 5px;
+      margin-top: 10px;
 
       .like-dislike {
         font-size: 16px;
@@ -67,6 +67,15 @@
           }
         }
       }
+
+      .right {
+        display: flex;
+        flex-direction: row;
+
+        .white-background-button {
+          margin-right: 8px;
+        }
+      }
     }
   }
 
@@ -79,11 +88,11 @@
 .green-button {
   background: rgb(20, 160, 20);
   color: white;
-  padding: 2px 15px;
+  padding: 0px 12px;
   border: none;
   cursor: pointer;
-  font-size: 16px;
-  border-radius: 2px;
+  font-size: 14px;
+  border-radius: 30px;
 
   &:active {
     opacity: 0.8;
@@ -96,7 +105,6 @@
   font-weight: bold;
   cursor: pointer;
   margin-right: 4px;
-
 
   &:active {
     opacity: 0.7;
@@ -120,7 +128,9 @@
 .like-dislike {
   font-size: 15px;
   margin-top: 5px;
-
+  &.no-margin-top {
+    margin-top: unset;
+  }
   .like {
     color: rgb(20, 160, 20);
     margin-right: 18px;
@@ -135,7 +145,9 @@
     color: #ed1450;
     margin-right: 18px;
     font-weight: bold;
-
+    &.add-margin-right {
+      margin-right: 35px;
+    }
     .anticon {
       transform: translateY(1px);
     }
