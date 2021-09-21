@@ -63,7 +63,7 @@ export default function DealPage({ match }) {
                 </Avatar>
               </div>
               <div>
-                <div className="username-green">{dealerData?.user_name} </div>
+                <div className="username-green">{dealerData?.user_name_front} </div>
                 <div>
                   <div className="score-green">
                     score{" "}
