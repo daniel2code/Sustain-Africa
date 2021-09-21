@@ -26,7 +26,7 @@ export default function ProfileDealItem({ item }) {
           <div
             className="white-background-button"
             onClick={() => {
-              history.push(`/deal/${item?.id}`);
+              history.push(`/deal/${item?.d_id}`);
             }}
           >
             view
