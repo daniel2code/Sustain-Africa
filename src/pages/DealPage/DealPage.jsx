@@ -218,8 +218,7 @@ export default function DealPage({ match }) {
                   title={
                     "user posted this deal from this location and will probably arrange a meetup there if necessary."
                   }
-                >
-                  <span className="location">{dealerData?.user_location}</span>
+                > · <span className="location">{dealerData?.user_location}</span>
                 </Tooltip>{" "}
               </div>
 
