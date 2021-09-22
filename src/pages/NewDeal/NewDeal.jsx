@@ -1297,7 +1297,12 @@ export default function NewDeal() {
             </div>
 
             <Form.Item>
-              <Button loading={buttonLoading} type="primary" htmlType="submit">
+              <Button
+                style={{ marginTop: "10px" }}
+                loading={buttonLoading}
+                type="primary"
+                htmlType="submit"
+              >
                 post deal
               </Button>
             </Form.Item>
