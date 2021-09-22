@@ -256,7 +256,7 @@ export default function DealPage({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "60px" }}
           >
-            reviews for @{dealerData?.user_name} ({dealerData?.total_reviews})
+            reviews for @{dealerData?.user_name_front} ({dealerData?.total_reviews})
           </Divider>
 
           <div className="deal-reviews">
