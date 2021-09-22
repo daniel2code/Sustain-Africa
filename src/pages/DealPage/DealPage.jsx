@@ -12,8 +12,10 @@ import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
+import { useHistory } from "react-router-dom";
 
 export default function DealPage({ match }) {
+  const history = useHistory();
   const [deal, setDeal] = useState(null);
   const [dealerData, setDealerData] = useState(null);
   const [userId, setUserId] = useState("000111222333444");
@@ -63,7 +65,9 @@ export default function DealPage({ match }) {
                 </Avatar>
               </div>
               <div>
-                <div className="username-green">{dealerData?.user_name_front} </div>
+                <div className="username-green">
+                  {dealerData?.user_name_front}{" "}
+                </div>
                 <div>
                   <div className="score-green">
                     score{" "}
@@ -218,7 +222,10 @@ export default function DealPage({ match }) {
                   title={
                     "user posted this deal from this location and will probably arrange a meetup there if necessary."
                   }
-                > · <span className="location">{dealerData?.user_location}</span>
+                >
+                  {" "}
+                  ·{" "}
+                  <span className="location">{dealerData?.user_location}</span>
                 </Tooltip>{" "}
               </div>
 
@@ -232,7 +239,14 @@ export default function DealPage({ match }) {
                   </span>
                 </div>
 
-                <div className="grey-button-nobg">
+                <div
+                  className="grey-button-nobg"
+                  onClick={() => {
+                    if (deal?.dealer_id.toString() === userId.toString()) {
+                      history.push(`/edit-deal/${deal?.d_id}`);
+                    }
+                  }}
+                >
                   {deal?.dealer_id.toString() === userId.toString()
                     ? "edit"
                     : "review"}
