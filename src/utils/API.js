@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const token = localStorage.getItem("token");
+
 export const instance = axios.create({
   baseURL: "https://sustain.herogloballogistics.com/factory",
   headers: {
@@ -9,10 +11,10 @@ export const instance = axios.create({
 });
 
 export const bearerInstance = axios.create({
-  baseURL:
-    "https://astro-cors-server.herokuapp.com/fetch/https://sustain.herogloballogistics.com/factory",
+  baseURL: "https://sustain.herogloballogistics.com/factory",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/x-www-form-urlencoded",
+    Authorization: `Bearer ${token}`,
   },
 });
