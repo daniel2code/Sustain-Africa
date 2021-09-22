@@ -99,7 +99,6 @@ export default function EditDeal({ match }) {
       .get(`/return_this_deal?deal_id=${match.params.id}`)
       .then(function (response) {
         setDeal(response?.data?.deal_data[0]);
-        console.log(response?.data?.deal_data[0]);
         initializeValues(response?.data?.deal_data[0]);
       })
       .catch(function (error) {
