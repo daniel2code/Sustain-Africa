@@ -14,6 +14,7 @@ import VerifyEmail from "./pages/Authentication/VerifyEmail";
 import VerifyPhone from "./pages/Authentication/VerifyPhone";
 import Profile from "./pages/Profile/Profile";
 import DealPage from "./pages/DealPage/DealPage";
+import EditDeal from "./pages/EditDeal/EditDeal";
 
 import { bearerInstance } from "./utils/API";
 
@@ -33,7 +34,7 @@ function App() {
     dispatch({ type: "DESTROY_SESSION" });
     localStorage.clear();
     sessionStorage.clear();
-    window.location.assign("/");
+    history.push("/login");
   };
 
   bearerInstance.interceptors.request.use(
@@ -83,6 +84,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={DealsList} />
           <Route exact path="/new-deal" component={NewDeal} />
+          <Route exact path="/edit-deal/:id" component={EditDeal} />
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/verify-email" component={VerifyEmail} />
