@@ -34,7 +34,9 @@ function App() {
     dispatch({ type: "DESTROY_SESSION" });
     localStorage.clear();
     sessionStorage.clear();
-    history.push("/login");
+    setTimeout(() => {
+      window.location.assign("/login");
+    }, 500);
   };
 
   bearerInstance.interceptors.request.use(

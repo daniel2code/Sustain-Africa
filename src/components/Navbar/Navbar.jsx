@@ -60,7 +60,9 @@ export default function Navbar() {
                           dispatch({ type: "DESTROY_SESSION" });
                           localStorage.clear();
                           sessionStorage.clear();
-                          history.push("/");
+                          setTimeout(() => {
+                            window.location.assign("/");
+                          }, 500);
                         }}
                         style={{ color: "#ed1450" }}
                       >
