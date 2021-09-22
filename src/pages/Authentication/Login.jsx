@@ -33,10 +33,7 @@ export default function Login({ history }) {
               response?.data?.data?.user_name
             );
           } else {
-            setTimeout(() => {
-              window.location.assign("/");
-              setButtonLoading(false);
-            }, 1000);
+            history.push("/");
           }
         } else {
           message.error(response?.data?.message);
