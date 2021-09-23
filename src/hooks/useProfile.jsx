@@ -7,8 +7,6 @@ export default function useProfile() {
   const dispatch = useDispatch();
 
   const getProfileInfo = async () => {
-
-
     bearerInstance
       .get("/profile")
       .then(function (response) {

@@ -13,6 +13,7 @@ import Login from "./pages/Authentication/Login";
 import VerifyEmail from "./pages/Authentication/VerifyEmail";
 import VerifyPhone from "./pages/Authentication/VerifyPhone";
 import Profile from "./pages/Profile/Profile";
+import OtherProfile from "./pages/Profile/OtherProfile";
 import DealPage from "./pages/DealPage/DealPage";
 import EditDeal from "./pages/EditDeal/EditDeal";
 
@@ -92,6 +93,7 @@ function App() {
           <Route exact path="/verify-email" component={VerifyEmail} />
           <Route exact path="/add-phone" component={VerifyPhone} />
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/user/:id/profile" component={OtherProfile} />
           <Route exact path="/deal/:id" component={DealPage} />
         </Switch>
       </Layout>

@@ -2,6 +2,7 @@ import React from "react";
 import { Tooltip } from "antd";
 import { format } from "timeago.js";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
   LikeOutlined,
@@ -144,7 +145,9 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-three">
-          <span className="username-green">@{item?.user_name_front}</span>
+          <Link to={`user/${item?.dealer_id}/profile`}>
+            <span className="username-green">@{item?.user_name_front}</span>
+          </Link>
           <span className="score-green">
             {" "}
             <EllipsisOutlined style={{ color: "grey" }} /> score{" "}
