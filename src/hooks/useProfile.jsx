@@ -18,5 +18,9 @@ export default function useProfile() {
         }
       });
   };
-  return { getProfileInfo };
+
+  const setProfileToNull = () => {
+    dispatch(setProfile(null));
+  };
+  return { getProfileInfo, setProfileToNull };
 }

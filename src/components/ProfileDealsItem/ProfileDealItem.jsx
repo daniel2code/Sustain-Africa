@@ -1,11 +1,14 @@
 import React from "react";
 import { ArrowRightOutlined, EllipsisOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
+import { Popconfirm } from "antd";
 
 import "./profiledealitem.scss";
+import useDeals from "../../hooks/useDeals";
 
 export default function ProfileDealItem({ item, showDelete }) {
   const history = useHistory();
+  const { deleteDeal } = useDeals();
 
   return (
     <div className="profile-deal-item-container">
@@ -31,7 +34,19 @@ export default function ProfileDealItem({ item, showDelete }) {
           >
             view
           </div>
-          {showDelete && <div className="white-background-button">delete</div>}
+          {showDelete && (
+            <Popconfirm
+              placement="topRight"
+              title={"delete this deal?"}
+              onConfirm={() => {
+                deleteDeal(item?.d_id);
+              }}
+              okText="delete"
+              cancelText="cancel"
+            >
+              <div className="white-background-button">delete</div>
+            </Popconfirm>
+          )}
         </div>
       </div>
       <div className="bottom">

@@ -39,3 +39,15 @@
     margin-left: 8px;
   }
 }
+
+.ant-popover-buttons {
+  .ant-btn:hover,
+  .ant-btn:focus {
+    color: #ed1450;
+    border-color: #ed1450;
+  }
+
+  .ant-btn-primary {
+    color: white !important;
+  }
+}

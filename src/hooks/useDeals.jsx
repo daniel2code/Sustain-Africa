@@ -1,10 +1,15 @@
 import { useDispatch } from "react-redux";
 import { message } from "antd";
-import { instance } from "./../utils/API";
+import { useHistory } from "react-router-dom";
+
+import { instance, bearerInstance } from "./../utils/API";
 import { setDealsList } from "./../redux/data/data.actions";
+import useProfile from "./useProfile";
 
 export default function useDeals() {
   const dispatch = useDispatch();
+  const { getProfileInfo, setProfileToNull } = useProfile();
+  const history = useHistory();
 
   const fetchDealsDefault = async (
     page = 1,
@@ -29,5 +34,25 @@ export default function useDeals() {
         }
       });
   };
-  return { fetchDealsDefault };
+
+  const deleteDeal = async (dealId) => {
+    setProfileToNull();
+    const data = new FormData();
+    data.append("deal_id", dealId);
+
+    bearerInstance
+      .post(`/delete_deal`, data)
+      .then(function (response) {
+        message.success(response?.data?.message);
+        history.push("/profile");
+        getProfileInfo();
+      })
+      .catch(function (error) {
+        if (error?.response?.data?.message) {
+          message.error(error?.response?.data?.message);
+        }
+      });
+  };
+
+  return { fetchDealsDefault, deleteDeal };
 }

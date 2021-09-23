@@ -20,6 +20,7 @@ const { TabPane } = Tabs;
 
 export default function Profile() {
   const { getProfileInfo } = useProfile();
+
   const history = useHistory();
   const userState = useSelector((state) => state.user);
   const profileData = useSelector((state) => state.data.profile);

@@ -8,6 +8,7 @@ import {
   message,
   Button,
   Tooltip,
+  Popconfirm,
 } from "antd";
 import { useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
@@ -33,6 +34,7 @@ import {
 } from "./../../utils/datasource";
 import "../NewDeal/NewDeal.scss";
 import fetchDealsDefault from "../../hooks/useDeals";
+import useDeals from "../../hooks/useDeals";
 
 const formItemLayout = {
   labelCol: {
@@ -66,6 +68,7 @@ export default function EditDeal({ match }) {
     }
     //eslint-disable-next-line
   }, []);
+  const { deleteDeal } = useDeals();
   const [deal, setDeal] = useState(null);
   const [form] = Form.useForm();
   const history = useHistory();
@@ -1383,6 +1386,23 @@ export default function EditDeal({ match }) {
                 >
                   save
                 </Button>
+                <Popconfirm
+                  placement="right"
+                  title={"delete this deal?"}
+                  onConfirm={() => {
+                    setDeal(null);
+                    deleteDeal(deal?.d_id);
+                  }}
+                  okText="delete"
+                  cancelText="cancel"
+                >
+                  <div
+                    className="grey-button-nobg"
+                    style={{ display: "inline-flex", marginLeft: "15px" }}
+                  >
+                    delete
+                  </div>
+                </Popconfirm>
               </Form.Item>
             </Form>
           </div>
