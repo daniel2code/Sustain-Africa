@@ -303,7 +303,7 @@ export default function EditDeal({ match }) {
         <div className="new-deal-wrapper">
           <div className="deal-form-container">
             <div className="top-bar">
-              <div className="left">edit deal <span className="deal-id">id #{deal?.d_id}</span></div>
+              <div className="left">edit deal</div>
             </div>
             <Form
               {...formItemLayout}
