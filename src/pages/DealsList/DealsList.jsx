@@ -175,7 +175,7 @@ export default function DealsList() {
   return (
     <>
       <Modal
-        title="filter by location"
+        title="input location"
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
