@@ -16,15 +16,19 @@ const { Option } = Select;
 
 export default function DealsList() {
   const [loadingMore, setLoadingMore] = useState(false);
+  const [filterValue, setFilterValue] = useState(null);
+  const [filterText, setFilterText] = useState("sort by: newest first");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [locationInput, setLocationInput] = useState("");
   const [source, setSource] = useState("all");
   const [destination, setDestination] = useState("all");
   const dispatch = useDispatch();
-  const dealsData = useSelector((state) => state.data);
+  const dealsList = useSelector((state) => state.data.dealsList);
 
   useEffect(() => {
-    fetchDeals();
+    if (!dealsList) {
+      fetchDeals();
+    }
     //eslint-disable-next-line
   }, []);
 
@@ -60,7 +64,7 @@ export default function DealsList() {
   const handleLoadMore = (fetchedData) => {
     let fetchedDataCopy = fetchedData;
 
-    const oldDataArray = dealsData?.dealsList?.data;
+    const oldDataArray = dealsList?.data;
     const fetchedDataArray = fetchedData?.data;
 
     const updatedArray = oldDataArray.concat(fetchedDataArray);
@@ -72,8 +76,10 @@ export default function DealsList() {
   };
 
   const onFilterChange = (value) => {
+    setFilterValue(null);
     if (value === "newest") {
       setLocationInput("");
+      setFilterText("sort by: newest first");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -86,6 +92,7 @@ export default function DealsList() {
       );
     } else if (value === "highToLow") {
       setLocationInput("");
+      setFilterText("sort by score: high to low");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -98,6 +105,7 @@ export default function DealsList() {
       );
     } else if (value === "lowToHigh") {
       setLocationInput("");
+      setFilterText("sort by score: low to high");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -125,6 +133,7 @@ export default function DealsList() {
   const handleOk = () => {
     setIsModalVisible(false);
     dispatch(setDealsList(null));
+    setFilterText(`sort by location: ${locationInput}`);
     fetchDeals(
       1,
       0,
@@ -188,6 +197,7 @@ export default function DealsList() {
               <div className="right">
                 <div className="filter-by">
                   <Select
+                    value={filterValue}
                     suffixIcon={<DownOutlined />}
                     placeholder="filter by..."
                     optionFilterProp="children"
@@ -281,9 +291,9 @@ export default function DealsList() {
             </div>
           </div>
 
-          {!dealsData?.dealsList && <Loader />}
+          {!dealsList ? <Loader /> : null}
 
-          {dealsData?.dealsList && dealsData?.dealsList?.data.length === 0 && (
+          {dealsList && dealsList?.data.length === 0 ? (
             <div className="no-result">
               <div className="svg-container">
                 <EmptyImage />
@@ -294,23 +304,24 @@ export default function DealsList() {
                 try another combination
               </div>
             </div>
-          )}
+          ) : null}
 
-          {dealsData?.dealsList && dealsData?.dealsList?.data.length !== 0 && (
+          {dealsList && dealsList?.data.length !== 0 ? (
             <div className="deals-list">
-              {dealsData?.dealsList &&
-                dealsData?.dealsList?.data.map((item) => (
+              <div className="filter-text">{filterText}</div>
+              {dealsList &&
+                dealsList?.data.map((item) => (
                   <DealItem item={item} key={`${item.id}${Math.random()}`} />
                 ))}
             </div>
-          )}
+          ) : null}
 
-          {dealsData?.dealsList &&
-            dealsData?.dealsList?.data.length !== 0 &&
-            dealsData?.dealsList?.meta?.hasNext && (
+          {dealsList &&
+            dealsList?.data.length !== 0 &&
+            dealsList?.meta?.hasNext && (
               <div className="load-more">
                 <div>
-                  {dealsData?.dealsList && dealsData?.dealsList?.meta?.hasNext && (
+                  {dealsList && dealsList?.meta?.hasNext && (
                     <Button
                       loading={loadingMore}
                       type="default"
@@ -318,7 +329,7 @@ export default function DealsList() {
                       onClick={() => {
                         setLoadingMore(true);
                         fetchDeals(
-                          dealsData?.dealsList?.meta?.page + 1,
+                          dealsList?.meta?.page + 1,
                           1,
                           0,
                           0,
@@ -336,15 +347,15 @@ export default function DealsList() {
                 </div>
 
                 <div className="results-count">
-                  {`showing 1 - ${dealsData?.dealsList?.meta?.end} of 
-                ${dealsData?.dealsList?.meta?.total} deals.`}
+                  {`showing 1 - ${dealsList?.meta?.end} of 
+                ${dealsList?.meta?.total} deals.`}
                 </div>
               </div>
             )}
 
-          {dealsData?.dealsList &&
-            dealsData?.dealsList?.data.length !== 0 &&
-            !dealsData?.dealsList?.meta?.hasNext && (
+          {dealsList &&
+            dealsList?.data.length !== 0 &&
+            !dealsList?.meta?.hasNext && (
               <div className="list-end">looks like you've reached the end</div>
             )}
         </div>

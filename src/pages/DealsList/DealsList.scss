@@ -26,18 +26,19 @@
           font-size: 24px;
         }
 
-        .right,
-        .filter-by {
-          min-width: 160px;
+        .right {
+          .filter-by {
+            min-width: 160px;
 
-          .ant-select {
-            font-weight: 500;
-            color: #ed1450;
-            font-size: 14px;
-            width: 100%;
-          }
-          .ant-select:not(.ant-select-customize-input) .ant-select-selector {
-            border: 1px solid #c7c7c7;
+            .ant-select {
+              font-weight: 500;
+              color: #ed1450;
+              font-size: 14px;
+              width: 100%;
+            }
+            .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+              border: 1px solid #c7c7c7;
+            }
           }
         }
       }
@@ -102,6 +103,16 @@
         color: #585858;
         font-size: 13px;
         font-weight: 500;
+      }
+    }
+
+    .deals-list {
+      .filter-text {
+        font-size: 13px;
+        color: #3b3b3beb;
+        padding: 10px 0;
+        font-weight: 500;
+        border-bottom: 1px solid #eeeeee;
       }
     }
 
