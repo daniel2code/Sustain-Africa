@@ -238,7 +238,7 @@ export default function EditDeal({ match }) {
         if (response?.data?.status) {
           fetchDealsDefault();
           message.success(response?.data?.message);
-          history.push("/profile");
+          history.push("/");
         } else {
           message.error(response?.data?.message);
         }

@@ -72,13 +72,17 @@ export default function OtherProfile({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
           >
-            deals ({otherProfile?.total_deals_count})
+            {`${otherProfile?.profile_data[0]?.user_name_front}'s deals (${otherProfile?.total_deals_count})`}
           </Divider>
 
           {otherProfile?.deals_data.length > 0 ? (
             <div className="deals">
               {otherProfile?.deals_data.slice(0, dealsCount).map((item) => (
-                <ProfileDealItem item={item} key={item.id} />
+                <ProfileDealItem
+                  item={item}
+                  key={item?.d_id}
+                  showDelete={false}
+                />
               ))}
             </div>
           ) : (
@@ -105,14 +109,14 @@ export default function OtherProfile({ match }) {
           <div className="reviews">
             <Tabs defaultActiveKey="1">
               <TabPane tab="from merchants (90)" key="1">
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
+                <ProfileReviewsItem key="1" />
+                <ProfileReviewsItem key="2" />
+                <ProfileReviewsItem key="3" />
               </TabPane>
               <TabPane tab="from dealers (155)" key="2">
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
+                <ProfileReviewsItem key="1" />
+                <ProfileReviewsItem key="2" />
+                <ProfileReviewsItem key="3" />
               </TabPane>
             </Tabs>
           </div>

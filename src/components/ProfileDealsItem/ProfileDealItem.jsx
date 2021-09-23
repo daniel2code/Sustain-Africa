@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 
 import "./profiledealitem.scss";
 
-export default function ProfileDealItem({ item }) {
+export default function ProfileDealItem({ item, showDelete }) {
   const history = useHistory();
 
   return (
@@ -31,7 +31,7 @@ export default function ProfileDealItem({ item }) {
           >
             view
           </div>
-          <div className="white-background-button">delete</div>
+          {showDelete && <div className="white-background-button">delete</div>}
         </div>
       </div>
       <div className="bottom">

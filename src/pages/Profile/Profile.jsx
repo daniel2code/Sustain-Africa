@@ -78,9 +78,9 @@ export default function Profile() {
           </Divider>
 
           <div className="discussions">
-            <PrefileDiscussionItem />
-            <PrefileDiscussionItem />
-            <PrefileDiscussionItem />
+            <PrefileDiscussionItem key="1" />
+            <PrefileDiscussionItem key="3" />
+            <PrefileDiscussionItem key="2" />
           </div>
 
           <Divider
@@ -92,7 +92,11 @@ export default function Profile() {
           {profileData?.deals_data.length > 0 ? (
             <div className="deals">
               {profileData?.deals_data.slice(0, dealsCount).map((item) => (
-                <ProfileDealItem item={item} key={item.id} />
+                <ProfileDealItem
+                  item={item}
+                  key={item?.d_id}
+                  showDelete={true}
+                />
               ))}
             </div>
           ) : (
@@ -119,14 +123,14 @@ export default function Profile() {
           <div className="reviews">
             <Tabs defaultActiveKey="1">
               <TabPane tab="from merchants (90)" key="1">
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
+                <ProfileReviewsItem key="1" />
+                <ProfileReviewsItem key="2" />
+                <ProfileReviewsItem key="3" />
               </TabPane>
               <TabPane tab="from dealers (155)" key="2">
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
-                <ProfileReviewsItem />
+                <ProfileReviewsItem key="1" />
+                <ProfileReviewsItem key="2" />
+                <ProfileReviewsItem key="3" />
               </TabPane>
             </Tabs>
           </div>
