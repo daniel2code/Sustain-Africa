@@ -27,11 +27,12 @@ export default function Profile() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    getProfileInfo();
 
     if (!userState?.userData) {
       history.push("/login");
       message.warning("please login to continue");
+    } else {
+      getProfileInfo();
     }
     //eslint-disable-next-line
   }, []);
@@ -48,7 +49,9 @@ export default function Profile() {
             </Button>
           </div>
           <div className="user-info">
-            <div className="username">{profileData?.profile_data[0]?.user_name_front}</div>
+            <div className="username">
+              {profileData?.profile_data[0]?.user_name_front}
+            </div>
             <div className="rate">
               profile score <span>{profileData?.profile_data[0]?.a_score}</span>{" "}
               <EllipsisOutlined /> knows <span>25 dealers</span>{" "}

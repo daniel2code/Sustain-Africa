@@ -2,7 +2,7 @@ import React from "react";
 import { Tooltip } from "antd";
 import { format } from "timeago.js";
 import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import {
   LikeOutlined,
@@ -15,6 +15,7 @@ import "./DealItem.scss";
 
 export default function DealItem({ item }) {
   const history = useHistory();
+  const userIdState = useSelector((state) => state?.user?.userData?.id);
 
   return (
     <div className="deal-item-container">
@@ -145,9 +146,21 @@ export default function DealItem({ item }) {
         </div>
 
         <div className="deal-item-row-three">
-          <Link to={`user/${item?.dealer_id}/profile`}>
-            <span className="username-green">@{item?.user_name_front}</span>
-          </Link>
+          <span
+            onClick={() => {
+              if (
+                userIdState &&
+                item?.dealer_id.toString() === userIdState.toString()
+              ) {
+                history.push(`/profile`);
+              } else {
+                history.push(`/user/${item?.dealer_id}/profile`);
+              }
+            }}
+            className="username-green"
+          >
+            @{item?.user_name_front}
+          </span>
           <span className="score-green">
             {" "}
             <EllipsisOutlined style={{ color: "grey" }} /> score{" "}

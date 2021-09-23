@@ -52,7 +52,19 @@ export default function DealPage({ match }) {
       {deal && dealerData && (
         <div className="deal-page-wrapper">
           <div className="user-info">
-            <div className="left">
+            <div
+              className="left"
+              onClick={() => {
+                if (
+                  userIdState &&
+                  deal?.dealer_id.toString() === userId.toString()
+                ) {
+                  history.push(`/profile`);
+                } else {
+                  history.push(`/user/${deal?.dealer_id}/profile`);
+                }
+              }}
+            >
               <div className="avatar">
                 <Avatar
                   style={{
@@ -270,7 +282,8 @@ export default function DealPage({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "60px" }}
           >
-            reviews for @{dealerData?.user_name_front} ({dealerData?.total_reviews})
+            reviews for @{dealerData?.user_name_front} (
+            {dealerData?.total_reviews})
           </Divider>
 
           <div className="deal-reviews">

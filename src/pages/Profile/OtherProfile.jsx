@@ -22,7 +22,6 @@ export default function OtherProfile({ match }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     getOtherProfile();
-    console.log(match);
 
     //eslint-disable-next-line
   }, []);
