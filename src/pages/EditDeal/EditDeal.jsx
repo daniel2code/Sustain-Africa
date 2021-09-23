@@ -15,7 +15,6 @@ import { useSelector } from "react-redux";
 import Loader from "./../../components/Loader/Loader";
 
 import { bearerInstance, instance } from "./../../utils/API";
-
 import {
   wallet_types,
   exchanges,
@@ -32,8 +31,8 @@ import {
   card_types,
   card_brands,
 } from "./../../utils/datasource";
-
 import "../NewDeal/NewDeal.scss";
+import fetchDealsDefault from "../../hooks/useDeals";
 
 const formItemLayout = {
   labelCol: {
@@ -237,6 +236,7 @@ export default function EditDeal({ match }) {
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
+          fetchDealsDefault();
           message.success(response?.data?.message);
           history.push("/profile");
         } else {

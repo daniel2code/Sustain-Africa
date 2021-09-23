@@ -14,7 +14,6 @@ import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 import { bearerInstance } from "./../../utils/API";
-
 import {
   wallet_types,
   exchanges,
@@ -31,8 +30,8 @@ import {
   card_types,
   card_brands,
 } from "./../../utils/datasource";
-
 import "./NewDeal.scss";
+import fetchDealsDefault from "../../hooks/useDeals";
 
 const formItemLayout = {
   labelCol: {
@@ -180,6 +179,7 @@ export default function NewDeal() {
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
+          fetchDealsDefault();
           message.success(response?.data?.message);
           history.push("/");
         } else {
