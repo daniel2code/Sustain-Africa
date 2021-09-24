@@ -17,7 +17,7 @@ const { Option } = Select;
 export default function DealsList() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [filterValue, setFilterValue] = useState(null);
-  const [filterText, setFilterText] = useState("sort by: newest first");
+  const [filterText, setFilterText] = useState("by: newest first");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [locationInput, setLocationInput] = useState("");
   const [source, setSource] = useState("all");
@@ -79,7 +79,7 @@ export default function DealsList() {
     setFilterValue(null);
     if (value === "newest") {
       setLocationInput("");
-      setFilterText("sort by: newest first");
+      setFilterText("by: newest first");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -92,7 +92,7 @@ export default function DealsList() {
       );
     } else if (value === "highToLow") {
       setLocationInput("");
-      setFilterText("sort by score: high to low");
+      setFilterText("by score: high to low");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -105,7 +105,7 @@ export default function DealsList() {
       );
     } else if (value === "lowToHigh") {
       setLocationInput("");
-      setFilterText("sort by score: low to high");
+      setFilterText("by score: low to high");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -133,7 +133,7 @@ export default function DealsList() {
   const handleOk = () => {
     setIsModalVisible(false);
     dispatch(setDealsList(null));
-    setFilterText(`sort by location: ${locationInput}`);
+    setFilterText(`by location: ${locationInput}`);
     fetchDeals(
       1,
       0,
@@ -209,6 +209,8 @@ export default function DealsList() {
                     <Option value="location">location</Option>
                   </Select>
                 </div>
+                <div className="filter-text">{filterText}</div>
+
               </div>
             </div>
 
@@ -308,7 +310,6 @@ export default function DealsList() {
 
           {dealsList && dealsList?.data.length !== 0 ? (
             <div className="deals-list">
-              <div className="filter-text">{filterText}</div>
               {dealsList &&
                 dealsList?.data.map((item) => (
                   <DealItem item={item} key={`${item.id}${Math.random()}`} />
