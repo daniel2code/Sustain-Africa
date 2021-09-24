@@ -33,7 +33,6 @@ import {
   card_brands,
 } from "./../../utils/datasource";
 import "../NewDeal/NewDeal.scss";
-import fetchDealsDefault from "../../hooks/useDeals";
 import useDeals from "../../hooks/useDeals";
 
 const formItemLayout = {
@@ -68,7 +67,7 @@ export default function EditDeal({ match }) {
     }
     //eslint-disable-next-line
   }, []);
-  const { deleteDeal } = useDeals();
+  const { deleteDeal, fetchDealsDefault } = useDeals();
   const [deal, setDeal] = useState(null);
   const [form] = Form.useForm();
   const history = useHistory();
@@ -237,6 +236,7 @@ export default function EditDeal({ match }) {
     bearerInstance
       .post("/edit_deal", data)
       .then(function (response) {
+        console.log(response?.data);
         setButtonLoading(false);
         if (response?.data?.status) {
           fetchDealsDefault();
