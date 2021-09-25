@@ -241,7 +241,7 @@ export default function EditDeal({ match }) {
         if (response?.data?.status) {
           fetchDealsDefault();
           message.success(response?.data?.message);
-          history.push("/");
+          history.push(`/deal/${match.params.id}`);
         } else {
           message.error(response?.data?.message);
         }
