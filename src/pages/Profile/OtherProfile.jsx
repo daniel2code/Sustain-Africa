@@ -103,7 +103,7 @@ export default function OtherProfile({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
           >
-            reviews ({otherProfile?.profile_data[0]?.total_reviews})
+            {`reviews for ${otherProfile?.profile_data[0]?.user_name_front} (${otherProfile?.profile_data[0]?.total_reviews})`}
           </Divider>
 
           <div className="reviews">

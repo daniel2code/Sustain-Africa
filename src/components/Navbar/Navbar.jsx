@@ -47,15 +47,16 @@ export default function Navbar() {
                   overlay={
                     <Menu>
                       <Menu.Item
-                        key="0"
+                        key="1"
                         disabled={location.pathname === "/profile"}
                       >
                         <Link to="/profile">profile</Link>
                       </Menu.Item>
-                      <Menu.Item key="1">settings</Menu.Item>
+                      <Menu.Item key="2">wallet</Menu.Item>
+                      <Menu.Item key="3">settings</Menu.Item>
                       <Menu.Divider />
                       <Menu.Item
-                        key="3"
+                        key="4"
                         onClick={() => {
                           dispatch({ type: "DESTROY_SESSION" });
                           localStorage.clear();
@@ -71,7 +72,7 @@ export default function Navbar() {
                     </Menu>
                   }
                   trigger={["click"]}
-                  placement="bottomLeft"
+                  placement="bottomRight"
                 >
                   <div className="name">
                     {userState?.userData?.user_name}{" "}

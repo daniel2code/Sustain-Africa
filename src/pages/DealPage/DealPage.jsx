@@ -73,7 +73,7 @@ export default function DealPage({ match }) {
                     fontWeight: "500",
                   }}
                 >
-                  {dealerData?.user_name.charAt(0).toUpperCase()}
+                  {dealerData?.user_name_front.charAt(0).toUpperCase()}
                 </Avatar>
               </div>
               <div>
