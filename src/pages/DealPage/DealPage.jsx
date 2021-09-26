@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Tooltip, message, Avatar, Divider } from "antd";
+import { Tooltip, message, Avatar, Divider, Breadcrumb } from "antd";
+import { Link, useHistory } from "react-router-dom";
+
 import { useSelector } from "react-redux";
 import {
   LikeOutlined,
@@ -12,7 +14,6 @@ import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
-import { useHistory } from "react-router-dom";
 
 export default function DealPage({ match }) {
   const history = useHistory();
@@ -51,6 +52,24 @@ export default function DealPage({ match }) {
 
       {deal && dealerData && (
         <div className="deal-page-wrapper">
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link
+                to={
+                  userIdState &&
+                  deal?.dealer_id.toString() === userId.toString()
+                    ? "/profile"
+                    : `/user/${deal?.dealer_id}/profile`
+                }
+              >
+                {dealerData?.user_name_front}
+              </Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>deal</Breadcrumb.Item>
+          </Breadcrumb>
           <div className="user-info">
             <div
               className="left"
