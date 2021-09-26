@@ -90,10 +90,15 @@
   color: grey;
 }
 
-.ant-tabs-tab-btn:active {
+.ant-tabs-tab-btn:active,
+.ant-breadcrumb a:hover {
   color: #ed1450;
 }
 
 .ant-tabs-ink-bar {
   background: #ed1450;
+}
+
+.ant-breadcrumb {
+  margin-bottom: 20px;
 }

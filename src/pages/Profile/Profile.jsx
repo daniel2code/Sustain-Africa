@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, Button, message, Divider } from "antd";
+import { Tabs, Button, message, Divider, Breadcrumb } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
 import { useSelector } from "react-redux";
@@ -44,6 +44,12 @@ export default function Profile() {
 
       {profileData && (
         <div className="profile-wrapper">
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>profile</Breadcrumb.Item>
+          </Breadcrumb>
           <div className="quick-actions">
             <Button type="primary" size="normal">
               <Link to="/new-deal">new deal</Link>
