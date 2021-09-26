@@ -8,8 +8,9 @@ import {
   message,
   Button,
   Tooltip,
+  Breadcrumb,
 } from "antd";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
@@ -241,6 +242,15 @@ export default function NewDeal() {
   return (
     <div className="new-deal-container">
       <div className="new-deal-wrapper">
+        <Breadcrumb>
+          <Breadcrumb.Item>
+            <Link to="/">home</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>
+            <Link to="/profile">profile</Link>
+          </Breadcrumb.Item>
+          <Breadcrumb.Item>new deal</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="deal-form-container">
           <div className="top-bar">
             <div className="left">create new deal</div>
