@@ -26,6 +26,8 @@ export default function DealsList() {
   const dealsList = useSelector((state) => state.data.dealsList);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     if (!dealsList) {
       fetchDeals();
     }

@@ -60,6 +60,8 @@ const { TextArea } = Input;
 
 export default function EditDeal({ match }) {
   useEffect(() => {
+    window.scrollTo(0, 0);
+
     if (!userState?.userData) {
       history.push("/login");
       message.warning("please login to continue");
