@@ -9,8 +9,9 @@ import {
   Button,
   Tooltip,
   Popconfirm,
+  Breadcrumb,
 } from "antd";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import Loader from "./../../components/Loader/Loader";
@@ -69,6 +70,7 @@ export default function EditDeal({ match }) {
   }, []);
   const { deleteDeal, fetchDealsDefault } = useDeals();
   const [deal, setDeal] = useState(null);
+  const [dealerUsername, setDealerUsername] = useState(null);
   const [form] = Form.useForm();
   const history = useHistory();
   const userState = useSelector((state) => state.user);
@@ -99,8 +101,20 @@ export default function EditDeal({ match }) {
     instance
       .get(`/return_this_deal?deal_id=${match.params.id}`)
       .then(function (response) {
-        setDeal(response?.data?.deal_data[0]);
-        initializeValues(response?.data?.deal_data[0]);
+        if (
+          response?.data?.deal_data[0]?.dealer_id.toString() ===
+          userState?.userData?.id
+        ) {
+          setDeal(response?.data?.deal_data[0]);
+          setDealerUsername(
+            response?.data?.dealer_profile_data[0]?.user_name_front
+          );
+
+          initializeValues(response?.data?.deal_data[0]);
+        } else {
+          message.error("you don't have permission to edit this deal");
+          history.push(`/deal/${response?.data?.deal_data[0]?.d_id}`);
+        }
       })
       .catch(function (error) {
         if (error?.response?.data?.message) {
@@ -304,6 +318,18 @@ export default function EditDeal({ match }) {
 
       {deal && (
         <div className="new-deal-wrapper">
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to="/profile">{dealerUsername}</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to={`/deal/${deal?.d_id}`}>deal</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>edit</Breadcrumb.Item>
+          </Breadcrumb>
           <div className="deal-form-container">
             <div className="top-bar">
               <div className="left">edit deal</div>
