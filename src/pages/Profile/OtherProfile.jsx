@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, message, Divider } from "antd";
+import { Tabs, message, Divider, Breadcrumb } from "antd";
+import { Link } from "react-router-dom";
 
 import {
   LikeOutlined,
@@ -45,6 +46,14 @@ export default function OtherProfile({ match }) {
 
       {otherProfile && (
         <div className="profile-wrapper">
+          <Breadcrumb>
+            <Breadcrumb.Item>
+              <Link to="/">home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              {otherProfile?.profile_data[0]?.user_name_front}'s profile
+            </Breadcrumb.Item>
+          </Breadcrumb>
           <div className="user-info">
             <div className="username">
               {otherProfile?.profile_data[0]?.user_name_front}
