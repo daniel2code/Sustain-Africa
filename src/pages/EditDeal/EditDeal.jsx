@@ -1376,7 +1376,7 @@ export default function EditDeal({ match }) {
 
               <div className="form-row">
                 <Form.Item
-                  label="min. profile score"
+                  label="min. profile score (0 - 100)"
                   name="score"
                   rules={[
                     {
