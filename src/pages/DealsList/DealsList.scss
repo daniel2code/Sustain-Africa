@@ -29,7 +29,6 @@
         .right {
           .filter-by {
             min-width: 160px;
-            text-align: right;
 
             .ant-select {
               font-weight: 500;
@@ -114,6 +113,7 @@
         padding: 10px 0;
         font-weight: 500;
         border-bottom: 1px solid #eeeeee;
+        text-align: right;
       }
     }
 
