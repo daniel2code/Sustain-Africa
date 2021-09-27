@@ -51,7 +51,7 @@ export default function OtherProfile({ match }) {
               <Link to="/">home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              {otherProfile?.profile_data[0]?.user_name_front}'s profile
+              {otherProfile?.profile_data[0]?.user_name_front}
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="user-info">
