@@ -32,7 +32,7 @@ import {
   card_brands,
 } from "./../../utils/datasource";
 import "./NewDeal.scss";
-import fetchDealsDefault from "../../hooks/useDeals";
+import useDeals from "../../hooks/useDeals";
 
 const formItemLayout = {
   labelCol: {
@@ -66,7 +66,7 @@ export default function NewDeal() {
     }
     //eslint-disable-next-line
   }, []);
-
+  const { fetchDealsDefault } = useDeals();
   const [form] = Form.useForm();
   const history = useHistory();
   const userState = useSelector((state) => state.user);
