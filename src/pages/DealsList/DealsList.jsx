@@ -17,7 +17,7 @@ const { Option } = Select;
 export default function DealsList() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [filterValue, setFilterValue] = useState(null);
-  const [filterText, setFilterText] = useState("sort by: newest first");
+  const [filterText, setFilterText] = useState("sorting by: newest first");
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [locationInput, setLocationInput] = useState("");
   const [source, setSource] = useState("all");
@@ -81,7 +81,7 @@ export default function DealsList() {
     setFilterValue(null);
     if (value === "newest") {
       setLocationInput("");
-      setFilterText("sort by: newest first");
+      setFilterText("sorting by: newest first");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -94,7 +94,7 @@ export default function DealsList() {
       );
     } else if (value === "highToLow") {
       setLocationInput("");
-      setFilterText("sort by score: high to low");
+      setFilterText("sorting by score: high to low");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -107,7 +107,7 @@ export default function DealsList() {
       );
     } else if (value === "lowToHigh") {
       setLocationInput("");
-      setFilterText("sort by score: low to high");
+      setFilterText("sorting by score: low to high");
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -135,7 +135,7 @@ export default function DealsList() {
   const handleOk = () => {
     setIsModalVisible(false);
     dispatch(setDealsList(null));
-    setFilterText(`sort by location: ${locationInput}`);
+    setFilterText(`sorting by location: ${locationInput}`);
     fetchDeals(
       1,
       0,
