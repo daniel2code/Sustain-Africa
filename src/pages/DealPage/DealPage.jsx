@@ -244,13 +244,13 @@ export default function DealPage({ match }) {
               <div className="deal-item-row-two">“{deal?.deal_summary}”</div>
 
               <div className="deal-item-row-three">
-                <span>{deal?.last_updated_at ? "updated" : ""}</span>{" "}
+                <span>{deal?.d_last_updated_at ? "updated" : ""}</span>{" "}
                 <Moment
                   format="MMMM Do YYYY, h:mm a"
                   date={
-                    deal?.last_updated_at
-                      ? deal?.last_updated_at
-                      : deal?.created_at
+                    deal?.d_last_updated_at
+                      ? deal?.d_last_updated_at
+                      : deal?.d_created_at
                   }
                 />{" "}
                 <Tooltip
