@@ -13,8 +13,9 @@ import {
 } from "antd";
 import { Link, useHistory } from "react-router-dom";
 import { DownOutlined } from "@ant-design/icons";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Loader from "./../../components/Loader/Loader";
+import { setHasError } from "../../redux/data/data.actions";
 
 import { bearerInstance, instance } from "./../../utils/API";
 import {
@@ -70,6 +71,7 @@ export default function EditDeal({ match }) {
     }
     //eslint-disable-next-line
   }, []);
+  const dispatch = useDispatch();
   const { deleteDeal, fetchDealsDefault } = useDeals();
   const [deal, setDeal] = useState(null);
   const [dealerUsername, setDealerUsername] = useState(null);
@@ -121,6 +123,8 @@ export default function EditDeal({ match }) {
       .catch(function (error) {
         if (error?.response?.data?.message) {
           message.error(error?.response?.data?.message);
+        } else {
+          dispatch(setHasError(true));
         }
       });
   };

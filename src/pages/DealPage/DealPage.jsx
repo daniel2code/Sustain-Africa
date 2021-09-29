@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Tooltip, message, Avatar, Divider, Breadcrumb } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   LikeOutlined,
   DislikeOutlined,
@@ -14,8 +14,10 @@ import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
+import { setHasError } from "../../redux/data/data.actions";
 
 export default function DealPage({ match }) {
+  const dispatch = useDispatch();
   const history = useHistory();
   const [deal, setDeal] = useState(null);
   const [dealerData, setDealerData] = useState(null);
@@ -42,6 +44,8 @@ export default function DealPage({ match }) {
       .catch(function (error) {
         if (error?.response?.data?.message) {
           message.error(error?.response?.data?.message);
+        } else {
+          dispatch(setHasError(true));
         }
       });
   };

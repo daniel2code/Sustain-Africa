@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { message } from "antd";
 import { bearerInstance } from "./../utils/API";
-import { setProfile } from "./../redux/data/data.actions";
+import { setProfile, setHasError } from "./../redux/data/data.actions";
 
 export default function useProfile() {
   const dispatch = useDispatch();
@@ -15,6 +15,8 @@ export default function useProfile() {
       .catch(function (error) {
         if (error?.response?.data?.message) {
           message.error(error?.response?.data?.message);
+        } else {
+          dispatch(setHasError(true));
         }
       });
   };

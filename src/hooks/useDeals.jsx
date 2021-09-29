@@ -3,7 +3,7 @@ import { message } from "antd";
 import { useHistory } from "react-router-dom";
 
 import { instance, bearerInstance } from "./../utils/API";
-import { setDealsList } from "./../redux/data/data.actions";
+import { setDealsList, setHasError } from "./../redux/data/data.actions";
 import useProfile from "./useProfile";
 
 export default function useDeals() {
@@ -31,6 +31,8 @@ export default function useDeals() {
       .catch(function (error) {
         if (error?.response?.data?.message) {
           message.error(error?.response?.data?.message);
+        } else {
+          dispatch(setHasError(true));
         }
       });
   };
