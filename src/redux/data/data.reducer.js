@@ -1,6 +1,7 @@
 const INITIAL_STATE = {
   profile: null,
   dealsList: null,
+  hasError: false,
 };
 
 const dataReducer = (state = INITIAL_STATE, action) => {
@@ -14,6 +15,11 @@ const dataReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         dealsList: action.payload.dealsList,
+      };
+    case "SET_HAS_ERROR":
+      return {
+        ...state,
+        hasError: action.payload.hasError,
       };
     default:
       return state;

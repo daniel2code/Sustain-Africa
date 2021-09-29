@@ -16,7 +16,7 @@ import Profile from "./pages/Profile/Profile";
 import OtherProfile from "./pages/Profile/OtherProfile";
 import DealPage from "./pages/DealPage/DealPage";
 import EditDeal from "./pages/EditDeal/EditDeal";
-
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 import { bearerInstance } from "./utils/API";
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
   }, []);
 
   const userState = useSelector((state) => state.user);
+  const hasError = useSelector((state) => state.data.hasError);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -84,18 +85,22 @@ function App() {
           /> */}
         </div>
         <Navbar />
-        <Switch>
-          <Route exact path="/" component={DealsList} />
-          <Route exact path="/new-deal" component={NewDeal} />
-          <Route exact path="/edit-deal/:id" component={EditDeal} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-          <Route exact path="/verify-email" component={VerifyEmail} />
-          <Route exact path="/add-phone" component={VerifyPhone} />
-          <Route exact path="/profile" component={Profile} />
-          <Route exact path="/user/:id/profile" component={OtherProfile} />
-          <Route exact path="/deal/:id" component={DealPage} />
-        </Switch>
+        {!hasError ? (
+          <Switch>
+            <Route exact path="/" component={DealsList} />
+            <Route exact path="/new-deal" component={NewDeal} />
+            <Route exact path="/edit-deal/:id" component={EditDeal} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/verify-email" component={VerifyEmail} />
+            <Route exact path="/add-phone" component={VerifyPhone} />
+            <Route exact path="/profile" component={Profile} />
+            <Route exact path="/user/:id/profile" component={OtherProfile} />
+            <Route exact path="/deal/:id" component={DealPage} />
+          </Switch>
+        ) : (
+          <ErrorBoundary />
+        )}
       </Layout>
     </div>
   );

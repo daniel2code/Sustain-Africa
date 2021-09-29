@@ -76,36 +76,6 @@
       }
     }
 
-    .no-result {
-      display: block;
-      min-height: 300px;
-      .svg-container {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        svg {
-          padding-top: 50px;
-          min-width: 200px;
-          width: 30%;
-          height: fit-content;
-        }
-      }
-      .no-result-text {
-        padding-top: 20px;
-        text-align: center;
-        color: #585858;
-        font-size: 18px;
-        font-weight: 500;
-      }
-      .no-result-text-bottom {
-        padding-top: 5px;
-        text-align: center;
-        color: #585858;
-        font-size: 13px;
-        font-weight: 500;
-      }
-    }
-
     .deals-list {
       .filter-text {
         font-size: 13px;
@@ -152,4 +122,44 @@
 
 .ant-modal {
   width: 350px !important;
+}
+
+.no-result {
+  display: block;
+  min-height: 300px;
+  &.wrong {
+    margin-top: 100px;
+  }
+  .svg-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    svg {
+      padding-top: 50px;
+      min-width: 200px;
+      width: 30%;
+      height: fit-content;
+    }
+  }
+  .no-result-text {
+    padding-top: 20px;
+    text-align: center;
+    color: #585858;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .no-result-text-bottom {
+    padding-top: 5px;
+    text-align: center;
+    color: #585858;
+    font-size: 13px;
+    font-weight: 500;
+    &.action {
+      cursor: pointer;
+      color: #ed1450;
+      &:active {
+        opacity: 0.7;
+      }
+    }
+  }
 }

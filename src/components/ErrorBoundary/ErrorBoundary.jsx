@@ -1,27 +1,22 @@
 import React from "react";
-import errorImage from "./../../../assets/FOeYt4E.png";
-import { Icon } from "react-icons-kit";
-import { ic_refresh } from "react-icons-kit/md/ic_refresh";
+import { ReactComponent as Warning } from "../../assets/warning.svg";
 
-export default function ErrorBoundary({ message }) {
-  const refreshPage = () => {
-    // localStorage.clear();
-    window.location.reload(false);
-  };
+export default function ErrorBoundary() {
   return (
-    <div className="error-message">
-      <h3>{message}</h3>
-      <img src={errorImage} alt="error" />
-      <h3>This Page is Buried in the Sand</h3>
-      <h3
-        className="title"
+    <div className="no-result wrong">
+      <div className="svg-container">
+        <Warning />
+      </div>
+
+      <div className="no-result-text">something went wrong</div>
+      <div
+        className="no-result-text-bottom action"
         onClick={() => {
-          refreshPage();
+          window.location.reload();
         }}
       >
-        <Icon size={20} icon={ic_refresh} />
-        Refresh
-      </h3>
+        please try again
+      </div>
     </div>
   );
 }
