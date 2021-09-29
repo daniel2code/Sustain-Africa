@@ -14,7 +14,7 @@ import { instance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 import { setHasError } from "../../redux/data/data.actions";
-import Moment from "react-moment";
+import { format } from "timeago.js";
 
 export default function DealPage({ match }) {
   const dispatch = useDispatch();
@@ -245,14 +245,11 @@ export default function DealPage({ match }) {
 
               <div className="deal-item-row-three">
                 <span>{deal?.d_last_updated_at ? "updated" : ""}</span>{" "}
-                <Moment
-                  format="MMMM Do YYYY, h:mm a"
-                  date={
-                    deal?.d_last_updated_at
-                      ? deal?.d_last_updated_at
-                      : deal?.d_created_at
-                  }
-                />{" "}
+                {format(
+                  deal?.d_last_updated_at
+                    ? deal?.d_last_updated_at
+                    : deal?.d_created_at
+                )}{" "}
                 <Tooltip
                   placement="top"
                   title={
