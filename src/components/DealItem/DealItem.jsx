@@ -1,8 +1,8 @@
 import React from "react";
 import { Tooltip } from "antd";
-import { format } from "timeago.js";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Moment from "react-moment";
 
 import {
   LikeOutlined,
@@ -141,7 +141,7 @@ export default function DealItem({ item }) {
         <div className="deal-item-row-two">
           “{item?.deal_summary}” <br />
           <span style={{ fontSize: "11px", color: "#999" }}>
-            {format(item?.created_at)}
+            <Moment format="MMMM Do YYYY, h:mm a" date={item?.created_at} />
           </span>
         </div>
 

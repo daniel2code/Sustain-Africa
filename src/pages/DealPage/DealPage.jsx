@@ -9,12 +9,12 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
-import Timestamp from "react-timestamp";
 import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
 import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 import { setHasError } from "../../redux/data/data.actions";
+import Moment from "react-moment";
 
 export default function DealPage({ match }) {
   const dispatch = useDispatch();
@@ -245,7 +245,8 @@ export default function DealPage({ match }) {
 
               <div className="deal-item-row-three">
                 <span>{deal?.last_updated_at ? "updated" : ""}</span>{" "}
-                <Timestamp
+                <Moment
+                  format="MMMM Do YYYY, h:mm a"
                   date={
                     deal?.last_updated_at
                       ? deal?.last_updated_at
