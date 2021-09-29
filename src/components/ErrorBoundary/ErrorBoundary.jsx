@@ -15,7 +15,7 @@ export default function ErrorBoundary() {
           window.location.reload();
         }}
       >
-        please try again
+        click to reload
       </div>
     </div>
   );

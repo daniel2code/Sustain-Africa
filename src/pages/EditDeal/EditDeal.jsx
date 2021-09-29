@@ -72,7 +72,7 @@ export default function EditDeal({ match }) {
     //eslint-disable-next-line
   }, []);
   const dispatch = useDispatch();
-  const { deleteDeal, fetchDealsDefault } = useDeals();
+  const { deleteDeal, fetchDeals } = useDeals();
   const [deal, setDeal] = useState(null);
   const [dealerUsername, setDealerUsername] = useState(null);
   const [form] = Form.useForm();
@@ -259,7 +259,7 @@ export default function EditDeal({ match }) {
         console.log(response?.data);
         setButtonLoading(false);
         if (response?.data?.status) {
-          fetchDealsDefault();
+          fetchDeals();
           message.success(response?.data?.message);
           history.push(`/deal/${match.params.id}`);
         } else {

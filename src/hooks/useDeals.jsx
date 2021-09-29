@@ -11,15 +11,14 @@ export default function useDeals() {
   const { getProfileInfo, setProfileToNull } = useProfile();
   const history = useHistory();
 
-  const fetchDealsDefault = async (
+  const fetchDeals = async (
     page = 1,
     newest = 1,
     low2high = 0,
     high2low = 0,
     location = "",
     source = "all",
-    destination = "all",
-    loadMore = null
+    destination = "all"
   ) => {
     instance
       .get(
@@ -56,5 +55,5 @@ export default function useDeals() {
       });
   };
 
-  return { fetchDealsDefault, deleteDeal };
+  return { fetchDeals, deleteDeal };
 }

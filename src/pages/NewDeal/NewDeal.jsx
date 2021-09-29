@@ -66,7 +66,7 @@ export default function NewDeal() {
     }
     //eslint-disable-next-line
   }, []);
-  const { fetchDealsDefault } = useDeals();
+  const { fetchDeals } = useDeals();
   const [form] = Form.useForm();
   const history = useHistory();
   const userState = useSelector((state) => state.user);
@@ -182,7 +182,7 @@ export default function NewDeal() {
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
-          fetchDealsDefault();
+          fetchDeals();
           message.success(response?.data?.message);
           history.push("/");
         } else {

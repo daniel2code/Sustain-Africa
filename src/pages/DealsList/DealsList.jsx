@@ -10,7 +10,7 @@ import DealItem from "./../../components/DealItem/DealItem";
 import Footer from "./../../components/Footer/Footer.jsx";
 import "./DealsList.scss";
 import { ReactComponent as EmptyImage } from "./../../assets/empty.svg";
-import { setDealsList } from "./../../redux/data/data.actions";
+import { setDealsList, setHasError } from "./../../redux/data/data.actions";
 
 const { Option } = Select;
 
@@ -58,6 +58,8 @@ export default function DealsList() {
       .catch(function (error) {
         if (error?.response?.data?.message) {
           message.error(error?.response?.data?.message);
+        } else {
+          dispatch(setHasError(true));
         }
         setLoadingMore(false);
       });
