@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { Layout, message } from "antd";
-// import LoadingBar from "react-redux-loading-bar";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import Navbar from "./components/Navbar/Navbar";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 import DealsList from "./pages/DealsList/DealsList";
 import NewDeal from "./pages/NewDeal/NewDeal";
 import Register from "./pages/Authentication/Register";
@@ -16,7 +16,7 @@ import Profile from "./pages/Profile/Profile";
 import OtherProfile from "./pages/Profile/OtherProfile";
 import DealPage from "./pages/DealPage/DealPage";
 import EditDeal from "./pages/EditDeal/EditDeal";
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
+import Message from "./pages/Message/Message";
 import { bearerInstance } from "./utils/API";
 
 function App() {
@@ -74,16 +74,6 @@ function App() {
   return (
     <div className="App">
       <Layout className="layout">
-        <div className="loading-bar">
-          {/* <LoadingBar
-            style={{
-              backgroundColor: "#1890ff",
-              height: "2px",
-              position: "fixed",
-              top: "0",
-            }}
-          /> */}
-        </div>
         <Navbar />
         {!hasError ? (
           <Switch>
@@ -97,6 +87,7 @@ function App() {
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/user/:id/profile" component={OtherProfile} />
             <Route exact path="/deal/:id" component={DealPage} />
+            <Route exact path="/message" component={Message} />
           </Switch>
         ) : (
           <ErrorBoundary />

@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import { loadingBarReducer } from "react-redux-loading-bar";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 
@@ -15,7 +14,6 @@ const persistConfig = {
 
 const appReducer = combineReducers({
   register: registerReducer,
-  loadingBar: loadingBarReducer,
   user: userReducer,
   data: dataReducer,
 });
