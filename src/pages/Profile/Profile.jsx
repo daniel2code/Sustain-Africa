@@ -7,6 +7,7 @@ import {
   LikeOutlined,
   DislikeOutlined,
   EllipsisOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import Loader from "./../../components/Loader/Loader";
 
@@ -46,7 +47,7 @@ export default function Profile() {
         <div className="profile-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/">home</Link>
+              <Link to="/"><HomeOutlined /></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>profile</Breadcrumb.Item>
           </Breadcrumb>

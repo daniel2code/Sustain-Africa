@@ -6,6 +6,7 @@ import {
   LikeOutlined,
   DislikeOutlined,
   EllipsisOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import Loader from "./../../components/Loader/Loader";
 
@@ -48,7 +49,7 @@ export default function OtherProfile({ match }) {
         <div className="profile-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/">home</Link>
+              <Link to="/"><HomeOutlined /></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               {otherProfile?.profile_data[0]?.user_name_front}
