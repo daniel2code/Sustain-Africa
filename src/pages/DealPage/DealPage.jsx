@@ -114,6 +114,10 @@ export default function DealPage({ match }) {
                 </div>
               </div>
             </div>
+            <Tooltip
+                placement="top"
+                title={
+                  `i am picking ${deal?.source} and will remit to ${deal?.destination}`} >
             <div className="source-destination">
               {deal?.source}{" "}
               <ArrowRightOutlined
@@ -124,6 +128,7 @@ export default function DealPage({ match }) {
               />{" "}
               {deal?.destination}{" "}
             </div>
+            </Tooltip>
           </div>
 
           <div className="deal-info">
