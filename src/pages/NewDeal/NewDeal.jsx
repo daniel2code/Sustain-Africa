@@ -11,7 +11,7 @@ import {
   Breadcrumb,
 } from "antd";
 import { Link, useHistory } from "react-router-dom";
-import { DownOutlined } from "@ant-design/icons";
+import { HomeOutlined, DownOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 
 import { bearerInstance } from "./../../utils/API";
@@ -246,7 +246,7 @@ export default function NewDeal() {
       <div className="new-deal-wrapper">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <Link to="/">home</Link>
+            <Link to="/"><HomeOutlined /></Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <Link to="/profile">profile</Link>

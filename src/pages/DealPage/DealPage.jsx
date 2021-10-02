@@ -8,6 +8,7 @@ import {
   DislikeOutlined,
   EllipsisOutlined,
   ArrowRightOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
@@ -58,7 +59,7 @@ export default function DealPage({ match }) {
         <div className="deal-page-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/">home</Link>
+              <Link to="/"><HomeOutlined /></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               <Link
@@ -113,6 +114,10 @@ export default function DealPage({ match }) {
                 </div>
               </div>
             </div>
+            <Tooltip
+                placement="top"
+                title={
+                  `i am picking ${deal?.source} and will remit to ${deal?.destination}`} >
             <div className="source-destination">
               {deal?.source}{" "}
               <ArrowRightOutlined
@@ -123,6 +128,7 @@ export default function DealPage({ match }) {
               />{" "}
               {deal?.destination}{" "}
             </div>
+            </Tooltip>
           </div>
 
           <div className="deal-info">

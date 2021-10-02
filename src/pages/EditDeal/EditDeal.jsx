@@ -12,7 +12,7 @@ import {
   Breadcrumb,
 } from "antd";
 import { Link, useHistory } from "react-router-dom";
-import { DownOutlined } from "@ant-design/icons";
+import { HomeOutlined, DownOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import Loader from "./../../components/Loader/Loader";
 import { setHasError } from "../../redux/data/data.actions";
@@ -326,7 +326,7 @@ export default function EditDeal({ match }) {
         <div className="new-deal-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/">home</Link>
+              <Link to="/"><HomeOutlined /></Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               <Link to="/profile">{dealerUsername}</Link>
