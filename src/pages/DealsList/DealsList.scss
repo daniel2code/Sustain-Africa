@@ -163,3 +163,15 @@
     }
   }
 }
+
+.ant-modal-body,
+.ant-modal-header {
+  padding: 15px;
+}
+
+.ant-modal-footer {
+  .ant-btn {
+    color: #ed1450;
+    border: unset;
+  }
+}

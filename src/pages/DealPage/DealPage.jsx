@@ -59,7 +59,9 @@ export default function DealPage({ match }) {
         <div className="deal-page-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/"><HomeOutlined /></Link>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               <Link
@@ -75,6 +77,7 @@ export default function DealPage({ match }) {
             </Breadcrumb.Item>
             <Breadcrumb.Item>deal</Breadcrumb.Item>
           </Breadcrumb>
+
           <div className="user-info">
             <div
               className="left"
@@ -115,19 +118,19 @@ export default function DealPage({ match }) {
               </div>
             </div>
             <Tooltip
-                placement="top"
-                title={
-                  `i am picking ${deal?.source} and will remit to ${deal?.destination}`} >
-            <div className="source-destination">
-              {deal?.source}{" "}
-              <ArrowRightOutlined
-                style={{
-                  strokeWidth: "50",
-                  stroke: "white",
-                }}
-              />{" "}
-              {deal?.destination}{" "}
-            </div>
+              placement="top"
+              title={`i am picking ${deal?.source} and will remit to ${deal?.destination}`}
+            >
+              <div className="source-destination">
+                {deal?.source}{" "}
+                <ArrowRightOutlined
+                  style={{
+                    strokeWidth: "50",
+                    stroke: "white",
+                  }}
+                />{" "}
+                {deal?.destination}{" "}
+              </div>
             </Tooltip>
           </div>
 
