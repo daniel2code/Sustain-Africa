@@ -18,7 +18,7 @@ export default function StartDiscussion({
                 color: "#14a014",
                 backgroundColor: "#a9fca9",
                 fontWeight: "500",
-                marginRight: "10px",
+                marginRight: "7px",
               }}
             >
               {item?.user_name_front.charAt(0).toUpperCase()}

@@ -33,6 +33,7 @@ export default function Login({ history }) {
               response?.data?.data?.user_name
             );
           } else {
+            message.success("login successful");
             history.push("/");
           }
         } else {
