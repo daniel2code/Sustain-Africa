@@ -67,7 +67,7 @@ export default function Message() {
       <div className="message-footer">
         <div className="wrapper">
           <div className="row-one">
-            <TextArea rows={4} />
+            <TextArea rows={4} placeholder="type a message..." />
           </div>
 
           <div className="row-two">
