@@ -20,6 +20,7 @@ export default function DealItem({ item }) {
 
   const handleOk = () => {
     setShowStartDiscussionModal(false);
+    history.push("/message");
   };
 
   const handleCancel = () => {
