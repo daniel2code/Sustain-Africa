@@ -47,10 +47,13 @@ export default function Profile() {
         <div className="profile-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/"><HomeOutlined /></Link>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>profile</Breadcrumb.Item>
           </Breadcrumb>
+
           <div className="quick-actions">
             <Button type="primary" size="normal">
               <Link to="/new-deal">new deal</Link>

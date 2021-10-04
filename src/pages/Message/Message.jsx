@@ -1,13 +1,16 @@
 import React from "react";
-import { Avatar } from "antd";
+import { Avatar, Input, Button } from "antd";
 import {
   LikeOutlined,
   DislikeOutlined,
   CloseOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 
 import "./message.scss";
+
+const { TextArea } = Input;
 
 export default function Message() {
   const history = useHistory();
@@ -29,7 +32,9 @@ export default function Message() {
               </Avatar>
             </div>
             <div>
-              <div className="username-green">officerknow </div>
+              <div className="username-red">
+                officerknow <span style={{ color: "#14a014" }}>&#9679;</span>
+              </div>
               <div className="status">waiting to accept</div>
             </div>
           </div>
@@ -54,7 +59,34 @@ export default function Message() {
           </div>
         </div>
       </div>
-      <div className="message-page-wrapper">1</div>
+
+      <div className="message-content">
+        <div className="chat-summary">direct chat &#9679; no issues raised</div>
+      </div>
+
+      <div className="message-footer">
+        <div className="wrapper">
+          <div className="row-one">
+            <TextArea rows={4} />
+          </div>
+
+          <div className="row-two">
+            <div className="left">
+              <div className="end">
+                end chat <RightOutlined />
+              </div>
+              <div className="issue">
+                raise an issue <RightOutlined />
+              </div>
+            </div>
+            <div className="right">
+              <Button type="primary" size="normal">
+                send
+              </Button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

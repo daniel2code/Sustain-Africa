@@ -26,6 +26,7 @@ export default function StartDiscussion({
           </div>
           <div style={{ margin: "auto 0px" }} className="username-red">
             {item?.user_name_front}{" "}
+            <span style={{ color: "#14a014" }}>&#9679;</span>
           </div>
         </div>
       }
