@@ -40,8 +40,6 @@ export default function StartDiscussion({
         <div
           className="source-destination"
           style={{
-            marginBottom: "10px",
-            marginLeft: "auto",
             marginRight: "0px",
           }}
         >
@@ -55,9 +53,13 @@ export default function StartDiscussion({
           {item?.destination} @ {item?.rate}%
         </div>
 
-        <div>
+        <div
+            style={{
+                marginLeft: "10px",
+            }}
+        >
           start a discussion with{" "}
-          <span className="username-green">@{item?.user_name_front}?</span>
+          <span className="username-green">@{item?.user_name_front}</span>?
         </div>
       </div>
     </Modal>
