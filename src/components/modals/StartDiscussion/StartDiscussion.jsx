@@ -37,7 +37,8 @@ export default function StartDiscussion({
       cancelText="no"
     >
       <div>
-        <div
+        <div style={{display: 'flex', justifyContent: 'flex-start'}}>
+          <div
           className="source-destination"
           style={{
             marginRight: "0px",
@@ -50,7 +51,9 @@ export default function StartDiscussion({
               stroke: "white",
             }}
           />{" "}
-          {item?.destination} @ {item?.rate}%
+          {item?.destination}
+        </div>
+          <div className="source-destination-rate">@ {item?.rate}%</div>
         </div>
 
         <div

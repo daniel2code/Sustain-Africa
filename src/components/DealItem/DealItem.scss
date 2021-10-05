@@ -104,7 +104,6 @@
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  margin-right: 4px;
 
   &:active {
     opacity: 0.7;
@@ -125,6 +124,14 @@
   background-color: #a8a8a8;
   padding: 2px 10px;
   border-radius: 10px;
+}
+
+.source-destination-rate {
+  width: max-content;
+  height: 22px;
+  font-size: 12px;
+  color: #5e5e5e;
+  padding: 2px 5px;
 }
 
 .bold {
