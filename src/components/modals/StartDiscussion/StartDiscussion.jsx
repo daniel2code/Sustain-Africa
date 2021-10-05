@@ -1,5 +1,5 @@
 import React from "react";
-import {Avatar, Modal, Tooltip} from "antd";
+import {Modal, Tooltip} from "antd";
 import {ArrowRightOutlined} from "@ant-design/icons";
 
 export default function StartDiscussion({
