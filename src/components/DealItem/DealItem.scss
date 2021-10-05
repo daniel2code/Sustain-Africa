@@ -127,11 +127,24 @@
 }
 
 .source-destination-rate {
-  width: max-content;
-  height: 22px;
+  width: auto;
   font-size: 12px;
   color: #5e5e5e;
   padding: 2px 5px;
+  line-height: 18px;
+  margin-top: 10px;
+}
+
+.ant-modal-title {
+  color: #ed1450;
+}
+
+.discussion-tc-notice {
+  width: auto;
+  height: 22px;
+  font-size: 12px;
+  color: #5e5e5e;
+  margin-left:10px;
 }
 
 .bold {

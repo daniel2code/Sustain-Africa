@@ -32,10 +32,10 @@ export default function Message() {
               </Avatar>
             </div>
             <div>
-              <div className="username-red">
+              <div className="username-green">
                 officerknow <span style={{ color: "#14a014" }}>&#9679;</span>
               </div>
-              <div className="status">waiting to accept</div>
+              <div className="status">waiting to accept...</div>
             </div>
           </div>
 
