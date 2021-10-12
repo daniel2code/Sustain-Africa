@@ -3,18 +3,14 @@ import { Avatar, Input, Button } from "antd";
 import {
   LikeOutlined,
   DislikeOutlined,
-  CloseOutlined,
   RightOutlined,
 } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
 
 import "./message.scss";
 
 const { TextArea } = Input;
 
 export default function Message() {
-  const history = useHistory();
-
   return (
     <div className="message-page-container">
       <div className="header-container">
