@@ -185,6 +185,7 @@ export default function DealsList() {
         onCancel={handleCancel}
         okText="ok"
         cancelText="cancel"
+        width={350}
       >
         <Input
           placeholder="enter location"

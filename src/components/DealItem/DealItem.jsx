@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { message, Tooltip } from "antd";
+import React from "react";
+import { message, Tooltip, Modal } from "antd";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { format } from "timeago.js";
@@ -8,33 +8,45 @@ import {
   DislikeOutlined,
   ArrowRightOutlined,
   EllipsisOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import StartDiscussionModal from "../../components/modals/StartDiscussion/StartDiscussion";
 import "./DealItem.scss";
+
+const { confirm } = Modal;
 
 export default function DealItem({ item }) {
   const history = useHistory();
   const userIdState = useSelector((state) => state?.user?.userData?.id);
-  const [showStartDiscussionModal, setShowStartDiscussionModal] =
-    useState(false);
 
   const handleOk = () => {
-    setShowStartDiscussionModal(false);
     history.push("/message");
   };
 
-  const handleCancel = () => {
-    setShowStartDiscussionModal(false);
-  };
+  function showPromiseConfirm(user, source, destination, rate) {
+    confirm({
+      title: (
+        <div>
+          Start a discussion with{" "}
+          <span className="username-green">@{user}</span>?
+        </div>
+      ),
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <div>
+          <div>source: {source}</div>
+          <div>destination: {destination}</div>
+          <div>rate: {rate}%</div>
+        </div>
+      ),
+      onOk() {
+        handleOk();
+      },
+      onCancel() {},
+    });
+  }
 
   return (
     <>
-      <StartDiscussionModal
-        isVisible={showStartDiscussionModal}
-        handleOk={handleOk}
-        handleCancel={handleCancel}
-        item={item}
-      />
       <div className="deal-item-container">
         <Tooltip
           placement="top"
@@ -211,26 +223,39 @@ export default function DealItem({ item }) {
             </div>
             <div className="right">
               <div
-                className="grey-button-nobg"
+                className={`grey-button-nobg ${
+                  userIdState &&
+                  item?.dealer_id.toString() === userIdState.toString()
+                    ? "no-margin-right"
+                    : ""
+                }`}
                 onClick={() => {
                   history.push(`/deal/${item?.d_id}`);
                 }}
               >
                 view
               </div>
-              <button
-                className="green-button"
-                onClick={() => {
-                  if (userIdState) {
-                    setShowStartDiscussionModal(true);
-                  } else {
-                    message.error("you must login to continue");
-                    history.push("/login");
-                  }
-                }}
-              >
-                discuss
-              </button>
+              {userIdState &&
+              item?.dealer_id.toString() !== userIdState.toString() ? (
+                <button
+                  className="green-button"
+                  onClick={() => {
+                    if (userIdState) {
+                      showPromiseConfirm(
+                        item?.user_name_front,
+                        item?.source,
+                        item?.destination,
+                        item?.rate
+                      );
+                    } else {
+                      message.error("you must login to continue");
+                      history.push("/login");
+                    }
+                  }}
+                >
+                  discuss
+                </button>
+              ) : null}
             </div>
           </div>
         </div>
