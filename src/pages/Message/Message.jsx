@@ -44,17 +44,9 @@ export default function Message() {
               <span className="like">
                 <LikeOutlined /> 21
               </span>
-              <span className="dislike add-margin-right">
+              <span className="dislike no-margin-right">
                 <DislikeOutlined /> 4
               </span>
-            </div>
-            <div
-              className="close"
-              onClick={() => {
-                history.goBack();
-              }}
-            >
-              <CloseOutlined />
             </div>
           </div>
         </div>
