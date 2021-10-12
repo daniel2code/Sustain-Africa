@@ -326,7 +326,9 @@ export default function EditDeal({ match }) {
         <div className="new-deal-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/"><HomeOutlined /></Link>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
               <Link to="/profile">{dealerUsername}</Link>
@@ -1360,12 +1362,12 @@ export default function EditDeal({ match }) {
               </Form.Item>
 
               <Form.Item
-                label="deal summary"
+                label="notes"
                 name="summary"
                 rules={[
                   {
                     required: true,
-                    message: "please provide deal summary!",
+                    message: "please provide notes!",
                   },
                 ]}
               >

@@ -41,8 +41,6 @@ export default function Navbar() {
           <div className="right">
             {userState?.userData ? (
               <>
-                <div className="balance">$10.39</div>
-
                 <Dropdown
                   overlay={
                     <Menu>

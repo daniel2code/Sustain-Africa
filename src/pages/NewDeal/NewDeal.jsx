@@ -246,7 +246,9 @@ export default function NewDeal() {
       <div className="new-deal-wrapper">
         <Breadcrumb>
           <Breadcrumb.Item>
-            <Link to="/"><HomeOutlined /></Link>
+            <Link to="/">
+              <HomeOutlined />
+            </Link>
           </Breadcrumb.Item>
           <Breadcrumb.Item>
             <Link to="/profile">profile</Link>
@@ -1259,12 +1261,12 @@ export default function NewDeal() {
             )}
 
             <Form.Item
-              label="deal summary"
+              label="notes"
               name="summary"
               rules={[
                 {
                   required: true,
-                  message: "please provide deal summary!",
+                  message: "please provide notes!",
                 },
               ]}
             >
