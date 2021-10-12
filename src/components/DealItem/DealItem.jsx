@@ -26,8 +26,12 @@ export default function DealItem({ item }) {
     confirm({
       title: (
         <div>
-          Start a discussion with{" "}
-          <span className="username-green">@{user}</span>?
+          start a discussion with{" "}
+          <span
+              onClick={() => {
+                history.push(`/user/${user}/profile`);
+              }}
+              className="username-green">@{user}</span>?
         </div>
       ),
       icon: <ExclamationCircleOutlined />,
