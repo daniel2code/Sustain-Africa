@@ -27,11 +27,7 @@ export default function DealItem({ item }) {
       title: (
         <div>
           start a discussion with{" "}
-          <span
-              onClick={() => {
-                history.push(`/user/${user}/profile`);
-              }}
-              className="username-green">@{user}</span>?
+          <span className="username-green">@{user}</span>?
         </div>
       ),
       icon: <ExclamationCircleOutlined />,
