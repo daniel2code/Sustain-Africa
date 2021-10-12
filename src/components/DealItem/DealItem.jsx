@@ -223,12 +223,7 @@ export default function DealItem({ item }) {
             </div>
             <div className="right">
               <div
-                className={`grey-button-nobg ${
-                  userIdState &&
-                  item?.dealer_id.toString() === userIdState.toString()
-                    ? "no-margin-right"
-                    : ""
-                }`}
+                className="grey-button-nobg"
                 onClick={() => {
                   history.push(`/deal/${item?.d_id}`);
                 }}
@@ -255,7 +250,30 @@ export default function DealItem({ item }) {
                 >
                   discuss
                 </button>
-              ) : null}
+              ) : (
+                userIdState && (
+                  <button
+                    className="green-button disabled"
+                    onClick={() => {
+                      message.warn("this deal was posted by you");
+                    }}
+                  >
+                    discuss
+                  </button>
+                )
+              )}
+
+              {!userIdState && (
+                <button
+                  className="green-button"
+                  onClick={() => {
+                    message.error("you must login to continue");
+                    history.push("/login");
+                  }}
+                >
+                  discuss
+                </button>
+              )}
             </div>
           </div>
         </div>

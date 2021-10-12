@@ -96,3 +96,11 @@
     opacity: 0.7;
   }
 }
+
+.ant-modal-header {
+  border-bottom: unset;
+}
+
+.ant-modal-confirm .ant-modal-body {
+  padding: 18px;
+}

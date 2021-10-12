@@ -93,7 +93,13 @@
   cursor: pointer;
   font-size: 16px;
   border-radius: 2px;
-
+  &.disabled {
+    background: #dddddd;
+    cursor: not-allowed;
+    &:active {
+      opacity: 1;
+    }
+  }
   &:active {
     opacity: 0.8;
   }
