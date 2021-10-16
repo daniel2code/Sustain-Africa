@@ -20,25 +20,26 @@
     margin-top: 20px;
 
     .deal-item-row-one {
+      margin-bottom: 20px;
+      font-size: 15px;
+      color: rgb(94, 94, 94);
+      font-style: italic;
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .deal-item-row-two {
       width: 100%;
       font-size: 12px;
       color: grey;
       line-height: 1.5;
+      margin-bottom: 20px;
 
       .discussion {
         font-weight: 600;
         color: rgb(20, 160, 20);
         text-decoration: underline;
       }
-    }
-
-    .deal-item-row-two {
-      margin: 20px 0;
-      font-size: 15px;
-      color: rgb(94, 94, 94);
-      font-style: italic;
-      line-height: 1.5;
-      font-weight: 500;
     }
 
     .deal-item-row-three {

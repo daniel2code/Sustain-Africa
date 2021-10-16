@@ -65,6 +65,34 @@ export default function DealItem({ item }) {
         </Tooltip>
         <div className="deal-item-wrapper">
           <div className="deal-item-row-one">
+            “
+            {item?.s_account_age &&
+              item?.s_bank_name &&
+              `${item?.s_account_age} ${
+                item?.s_account_age !== "Any Age" ? "year" : ""
+              }${
+                item?.s_account_age !== 1 && item?.s_account_age !== "Any Age"
+                  ? "s"
+                  : ""
+              }  ${item?.s_account_age !== "Any Age" ? "old" : ""}`}
+            {item?.s_wallet_age &&
+              item?.s_wallet_type &&
+              `${item?.s_wallet_age} ${
+                item?.s_wallet_age !== "Any Age" ? "year" : ""
+              }${
+                item?.s_wallet_age !== 1 && item?.s_wallet_age !== "Any Age"
+                  ? "s"
+                  : ""
+              } ${item?.s_wallet_age !== "Any Age" ? "old" : ""}`}{" "}
+            {item?.s_bank_name &&
+              `${item?.s_bank_name} ${item?.s_account_type} account available in`}
+            {item?.s_wallet_type && `${item?.source} wallet available`}{" "}
+            {item?.s_state && `${item?.s_state},`}{" "}
+            {item?.s_country && `${item?.s_country},`} to remit to{" "}
+            {item?.destination} at {item?.rate}%”
+          </div>
+
+          <div className="deal-item-row-two">
             {item?.s_bank_name && (
               <>
                 {" "}
@@ -166,17 +194,19 @@ export default function DealItem({ item }) {
                 {" "}
                 discussion{" "}
                 <Tooltip placement="top" title={item?.discussion_details}>
-                  <span className="discussion">{item?.discussion}</span>
+                  <span className="discussion">{item?.discussion}</span>{" "}
+                </Tooltip>
+                <EllipsisOutlined />{" "}
+              </>
+            )}
+            {item?.deal_summary && (
+              <>
+                {" "}
+                <Tooltip placement="top" title={item?.deal_summary}>
+                  <span className="discussion">notes</span>
                 </Tooltip>
               </>
             )}
-          </div>
-
-          <div className="deal-item-row-two">
-            “{item?.deal_summary}” <br />
-            <span style={{ fontSize: "11px", color: "#999" }}>
-              {format(item?.d_created_at)}
-            </span>
           </div>
 
           <div className="deal-item-row-three">
@@ -199,6 +229,10 @@ export default function DealItem({ item }) {
               {" "}
               <EllipsisOutlined style={{ color: "grey" }} /> score{" "}
               <span style={{ fontWeight: 600 }}>{item?.a_score}</span>
+            </span>
+            <EllipsisOutlined style={{ color: "grey" }} />{" "}
+            <span style={{ fontSize: "11px", color: "#999" }}>
+              {format(item?.d_created_at)}
             </span>
           </div>
 
