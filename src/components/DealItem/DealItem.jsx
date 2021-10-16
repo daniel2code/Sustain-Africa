@@ -255,7 +255,7 @@ export default function DealItem({ item }) {
                   <button
                     className="green-button disabled"
                     onClick={() => {
-                      message.warn("this deal was posted by you");
+                      message.warn("you posted this deal!");
                     }}
                   >
                     discuss
