@@ -312,7 +312,7 @@ export default function DealPage({ match }) {
                   <>
                     {" "}
                     <Tooltip placement="top" title={deal?.deal_summary}>
-                      <span className="discussion">notes</span>
+                      <span className="discussion">other notes</span>
                     </Tooltip>
                   </>
                 )}
