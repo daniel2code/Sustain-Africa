@@ -41,6 +41,14 @@ export default function Navbar() {
           <div className="right">
             {userState?.userData ? (
               <>
+                <div style={{
+                  marginRight: "15px"
+                }} className="notifications name">
+                  <Link to="/notifications"><AlertOutlined style={{
+                    fontSize: "18px"
+                  }} /></Link>
+                </div>
+
                 <Dropdown
                   overlay={
                     <Menu>
@@ -84,9 +92,7 @@ export default function Navbar() {
                     </Avatar>
                   </div>
                 </Dropdown>
-                <div className="notifications name">
-                  <Link to="/notifications"><AlertOutlined /></Link>
-                </div>
+
               </>
             ) : (
               <>
