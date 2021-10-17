@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Dropdown, Menu, Avatar } from "antd";
 import { Link, useHistory, useLocation } from "react-router-dom";
-import { LeftOutlined, AlertOutlined } from "@ant-design/icons";
+import { LeftOutlined, BellOutlined } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 
 import "./Navbar.scss";
@@ -44,8 +44,8 @@ export default function Navbar() {
                 <div style={{
                   marginRight: "15px"
                 }} className="notifications name">
-                  <Link to="/notifications"><AlertOutlined style={{
-                    fontSize: "18px"
+                  <Link to="/notifications"><BellOutlined style={{
+                    fontSize: "22px"
                   }} /></Link>
                 </div>
 
