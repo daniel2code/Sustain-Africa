@@ -45,7 +45,7 @@ export default function Navbar() {
                   marginRight: "15px"
                 }} className="notifications name">
                   <Link to="/notifications"><BellOutlined style={{
-                    fontSize: "22px"
+                    fontSize: "20px"
                   }} /></Link>
                 </div>
 
