@@ -203,11 +203,15 @@ export default function DealItem({ item }) {
               <>
                 {" "}
                 <Tooltip placement="top" title={item?.deal_summary}>
-                  <span className="discussion">notes</span>
+                  <span className="discussion">other notes</span>
                 </Tooltip>
               </>
             )}
           </div>
+
+          <span style={{ fontSize: "11px", color: "#999" }}>
+              posted {format(item?.d_created_at)} by
+            </span>
 
           <div className="deal-item-row-three">
             <span
@@ -230,11 +234,8 @@ export default function DealItem({ item }) {
               <EllipsisOutlined style={{ color: "grey" }} /> score{" "}
               <span style={{ fontWeight: 600 }}>{item?.a_score}</span>
             </span>
-            <EllipsisOutlined style={{ color: "grey" }} />{" "}
-            <span style={{ fontSize: "11px", color: "#999" }}>
-              {format(item?.d_created_at)}
-            </span>
           </div>
+
 
           <div className="deal-item-row-three">
             deals closed{" "}
