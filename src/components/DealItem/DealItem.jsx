@@ -22,7 +22,7 @@ export default function DealItem({ item }) {
     history.push("/message");
   };
 
-  function showPromiseConfirm(user, source, destination, rate) {
+  function showDiscussConfirm(user, source, destination, rate) {
     confirm({
       title: (
         <div>
@@ -270,7 +270,7 @@ export default function DealItem({ item }) {
                   className="green-button"
                   onClick={() => {
                     if (userIdState) {
-                      showPromiseConfirm(
+                      showDiscussConfirm(
                         item?.user_name_front,
                         item?.source,
                         item?.destination,

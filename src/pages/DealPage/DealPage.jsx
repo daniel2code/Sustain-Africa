@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tooltip, message, Avatar, Divider, Breadcrumb } from "antd";
+import { Tooltip, message, Avatar, Divider, Breadcrumb, Modal } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -9,6 +9,7 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
   HomeOutlined,
+  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import Loader from "./../../components/Loader/Loader";
 import { instance } from "./../../utils/API";
@@ -16,6 +17,8 @@ import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 import { setHasError } from "../../redux/data/data.actions";
 import { format } from "timeago.js";
+
+const { confirm } = Modal;
 
 export default function DealPage({ match }) {
   const dispatch = useDispatch();
@@ -50,6 +53,33 @@ export default function DealPage({ match }) {
         }
       });
   };
+
+  const handleOk = () => {
+    history.push("/message");
+  };
+
+  function showDiscussConfirm(user, source, destination, rate) {
+    confirm({
+      title: (
+        <div>
+          start a discussion with{" "}
+          <span className="username-green">@{user}</span>?
+        </div>
+      ),
+      icon: <ExclamationCircleOutlined />,
+      content: (
+        <div>
+          <div>source: {source}</div>
+          <div>destination: {destination}</div>
+          <div>rate: {rate}%</div>
+        </div>
+      ),
+      onOk() {
+        handleOk();
+      },
+      onCancel() {},
+    });
+  }
 
   return (
     <div className="deal-page-container">
@@ -137,6 +167,35 @@ export default function DealPage({ match }) {
           <div className="deal-info">
             <div className="deal-item-wrapper">
               <div className="deal-item-row-one">
+                “
+                {deal?.s_account_age &&
+                  deal?.s_bank_name &&
+                  `${deal?.s_account_age} ${
+                    deal?.s_account_age !== "Any Age" ? "year" : ""
+                  }${
+                    deal?.s_account_age !== 1 &&
+                    deal?.s_account_age !== "Any Age"
+                      ? "s"
+                      : ""
+                  }  ${deal?.s_account_age !== "Any Age" ? "old" : ""}`}
+                {deal?.s_wallet_age &&
+                  deal?.s_wallet_type &&
+                  `${deal?.s_wallet_age} ${
+                    deal?.s_wallet_age !== "Any Age" ? "year" : ""
+                  }${
+                    deal?.s_wallet_age !== 1 && deal?.s_wallet_age !== "Any Age"
+                      ? "s"
+                      : ""
+                  } ${deal?.s_wallet_age !== "Any Age" ? "old" : ""}`}{" "}
+                {deal?.s_bank_name &&
+                  `${deal?.s_bank_name} ${deal?.s_account_type} account available in`}
+                {deal?.s_wallet_type && `${deal?.source} wallet available`}{" "}
+                {deal?.s_state && `${deal?.s_state},`}{" "}
+                {deal?.s_country && `${deal?.s_country},`} to remit to{" "}
+                {deal?.destination} at {deal?.rate}%”
+              </div>
+
+              <div className="deal-item-row-two">
                 {deal?.s_bank_name && (
                   <>
                     {" "}
@@ -244,13 +303,20 @@ export default function DealPage({ match }) {
                     {" "}
                     discussion{" "}
                     <Tooltip placement="top" title={deal?.discussion_details}>
-                      <span className="discussion">{deal?.discussion}</span>
+                      <span className="discussion">{deal?.discussion}</span>{" "}
+                    </Tooltip>
+                    <EllipsisOutlined />{" "}
+                  </>
+                )}
+                {deal?.deal_summary && (
+                  <>
+                    {" "}
+                    <Tooltip placement="top" title={deal?.deal_summary}>
+                      <span className="discussion">notes</span>
                     </Tooltip>
                   </>
                 )}
               </div>
-
-              <div className="deal-item-row-two">“{deal?.deal_summary}”</div>
 
               <div className="deal-item-row-three">
                 <span>{deal?.d_last_updated_at ? "updated" : ""}</span>{" "}
@@ -303,7 +369,24 @@ export default function DealPage({ match }) {
                   share
                 </div>
                 {deal?.dealer_id.toString() !== userId.toString() && (
-                  <button className="green-button">discuss</button>
+                  <button
+                    className="green-button"
+                    onClick={() => {
+                      if (userIdState) {
+                        showDiscussConfirm(
+                          dealerData?.user_name_front,
+                          deal?.source,
+                          deal?.destination,
+                          deal?.rate
+                        );
+                      } else {
+                        message.error("you must login to continue");
+                        history.push("/login");
+                      }
+                    }}
+                  >
+                    discuss
+                  </button>
                 )}
               </div>
             </div>
