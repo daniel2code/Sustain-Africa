@@ -67,29 +67,26 @@ export default function DealItem({ item }) {
           <div className="deal-item-row-one">
             “
             {item?.s_account_age &&
+              item?.s_account_age !== "Any Age" &&
               item?.s_bank_name &&
               `${item?.s_account_age} ${
                 item?.s_account_age !== "Any Age" ? "year" : ""
-              }${
-                item?.s_account_age !== 1 && item?.s_account_age !== "Any Age"
-                  ? "s"
-                  : ""
-              }  ${item?.s_account_age !== "Any Age" ? "old" : ""}`}
+              }${item?.s_account_age !== 1 ? "s" : ""} old `}
             {item?.s_wallet_age &&
+              item?.s_wallet_age !== "Any Age" &&
               item?.s_wallet_type &&
               `${item?.s_wallet_age} ${
                 item?.s_wallet_age !== "Any Age" ? "year" : ""
-              }${
-                item?.s_wallet_age !== 1 && item?.s_wallet_age !== "Any Age"
-                  ? "s"
-                  : ""
-              } ${item?.s_wallet_age !== "Any Age" ? "old" : ""}`}{" "}
+              }${item?.s_wallet_age !== 1 ? "s" : ""} old `}
             {item?.s_bank_name &&
               `${item?.s_bank_name} ${item?.s_account_type} account available in`}
             {item?.s_wallet_type && `${item?.source} wallet available`}{" "}
             {item?.s_state && `${item?.s_state},`}{" "}
             {item?.s_country && `${item?.s_country},`} to remit to{" "}
-            {item?.destination} at {item?.rate}%”
+            {item?.destination === "bank fund"
+              ? "bank account"
+              : item?.destination}{" "}
+            at {item?.rate}%”
           </div>
 
           <div className="deal-item-row-two">
@@ -210,8 +207,8 @@ export default function DealItem({ item }) {
           </div>
 
           <span style={{ fontSize: "11px", color: "#999" }}>
-              posted {format(item?.d_created_at)} by
-            </span>
+            posted {format(item?.d_created_at)} by
+          </span>
 
           <div className="deal-item-row-three">
             <span
@@ -235,7 +232,6 @@ export default function DealItem({ item }) {
               <span style={{ fontWeight: 600 }}>{item?.a_score}</span>
             </span>
           </div>
-
 
           <div className="deal-item-row-three">
             deals closed{" "}
