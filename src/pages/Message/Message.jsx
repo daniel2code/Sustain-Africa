@@ -1,35 +1,28 @@
-import React, { useState, useEffect } from "react";
-import {
-  Avatar,
-  // Input,
-  //  Button,
-} from "antd";
+import React, { useState, useEffect, useRef } from "react";
+import { Avatar, Input, Button } from "antd";
 import {
   LikeOutlined,
   DislikeOutlined,
-  // RightOutlined,
+  RightOutlined,
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { StreamChat } from "stream-chat";
-import {
-  Chat,
-  Channel,
-  ChannelHeader,
-  MessageList,
-  MessageInput,
-  Thread,
-  Window,
-} from "stream-chat-react";
-import "stream-chat-css/dist/css/index.css";
+import { format } from "timeago.js";
+
+import Loader from "./../../components/Loader/Loader";
 import "./message.scss";
 import axios from "axios";
 
-// const { TextArea } = Input;
+const { TextArea } = Input;
 
 export default function Message() {
+  const messagesEndRef = useRef(null);
   const username = useSelector((state) => state?.user?.userData?.user_name);
-
   const [chatChannel, setChatChannel] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [messagesBackup, setMessagesBackup] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [messageInput, setMessageInput] = useState("");
 
   useEffect(() => {
     initChat();
@@ -38,7 +31,11 @@ export default function Message() {
 
   const client = new StreamChat("twtrsx9dd48k");
 
-  async function initChat() {
+  const scrollToMessagesEnd = () => {
+    messagesEndRef.current?.scrollIntoView();
+  };
+
+  const initChat = async () => {
     async function generateToken() {
       const { token } = (
         await axios.get(
@@ -66,63 +63,112 @@ export default function Message() {
 
     setChatChannel(channel);
     await channel.watch();
-  }
+
+    if (loading) {
+      setMessages(channel.state.messages);
+    }
+
+    setLoading(false);
+    scrollToMessagesEnd();
+
+    channel.on("message.new", (event) => {
+      updateMessages(event.message);
+    });
+  };
+
+  const handleSendMessage = async () => {
+    setMessagesBackup(messages);
+    chatChannel.sendMessage({
+      text: messageInput,
+    });
+  };
+
+  const updateMessages = (newMessage) => {
+    let messageCopy = messages;
+    if (messages === []) {
+      messageCopy = messagesBackup;
+    }
+    messageCopy.push(newMessage);
+    setMessages(messageCopy);
+    setMessageInput("");
+    scrollToMessagesEnd();
+  };
 
   return (
     <div className="message-page-container">
-      <div className="header-container">
-        <div className="header-main">
-          <div className="left" onClick={() => {}}>
-            <div className="avatar">
-              <Avatar
-                style={{
-                  color: "#14a014",
-                  backgroundColor: "#a9fca9",
-                  fontWeight: "500",
-                }}
-              >
-                O
-              </Avatar>
-            </div>
-            <div>
-              <div className="username-green">
-                officerknow <span style={{ color: "#14a014" }}>&#9679;</span>
+      {messages && !loading && chatChannel ? (
+        <div className="header-container">
+          <div className="header-wrapper">
+            <div className="header-main">
+              <div className="left" onClick={() => {}}>
+                <div className="avatar">
+                  <Avatar
+                    style={{
+                      color: "#14a014",
+                      backgroundColor: "#a9fca9",
+                      fontWeight: "500",
+                    }}
+                  >
+                    O
+                  </Avatar>
+                </div>
+                <div>
+                  <div className="username-green">
+                    officerknow{" "}
+                    <span style={{ color: "#14a014" }}>&#9679;</span>
+                  </div>
+                  <div className="status">waiting to accept...</div>
+                </div>
               </div>
-              <div className="status">waiting to accept...</div>
-            </div>
-          </div>
 
-          <div className="right">
-            <div className="like-dislike no-margin-top">
-              <span className="like">
-                <LikeOutlined /> 21
-              </span>
-              <span className="dislike no-margin-right">
-                <DislikeOutlined /> 4
-              </span>
+              <div className="right">
+                <div className="like-dislike no-margin-top">
+                  <span className="like">
+                    <LikeOutlined /> 21
+                  </span>
+                  <span className="dislike no-margin-right">
+                    <DislikeOutlined /> 4
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="chat-summary">
+              direct chat &#9679; no issues raised
             </div>
           </div>
         </div>
-      </div>
+      ) : (
+        <Loader />
+      )}
 
-      <div className="message-content">
-        <div className="chat-summary">direct chat &#9679; no issues raised</div>
-        <Chat client={client} theme="messaging light">
-          <Channel channel={chatChannel}>
-            <Window>
-              <ChannelHeader />
-              <MessageList />
-              <MessageInput />
-            </Window>
-            <Thread />
-          </Channel>
-        </Chat>
-      </div>
+      {messages && !loading && chatChannel ? (
+        <div className="message-content">
+          <div className="message-content-container">
+            <>
+              {messages.map((message) => (
+                <MessageItem
+                  key={message?.id}
+                  message={message}
+                  username={username}
+                />
+              ))}
+              <div ref={messagesEndRef} />
+            </>
+          </div>
+        </div>
+      ) : null}
 
-      {/* <div className="message-footer">
+      <div className="message-footer">
         <div className="wrapper">
           <div className="row-one">
-            <TextArea rows={4} placeholder="type a message..." />
+            <TextArea
+              autoSize={{ minRows: 2, maxRows: 4 }}
+              placeholder="type a message..."
+              value={messageInput}
+              onChange={(e) => {
+                setMessageInput(e.target.value);
+              }}
+            />
           </div>
 
           <div className="row-two">
@@ -135,13 +181,40 @@ export default function Message() {
               </div>
             </div>
             <div className="right">
-              <Button type="primary" size="normal">
+              <Button
+                type="primary"
+                size="normal"
+                onClick={() => {
+                  handleSendMessage();
+                }}
+              >
                 send
               </Button>
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
+
+const MessageItem = ({ message, username }) => {
+  return (
+    <div className="message-item-container">
+      <div
+        className={`message-item-wrapper ${
+          message?.user?.id === username ? "right" : ""
+        }`}
+      >
+        {message.text}
+      </div>
+      <div
+        className={`message-item-info ${
+          message?.user?.id === username ? "right" : ""
+        }`}
+      >
+        {message?.user?.name} &#9679; {format(message?.created_at)}
+      </div>
+    </div>
+  );
+};

@@ -25,7 +25,6 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "stream-chat": "^4.2.0",
-    "stream-chat-react": "^6.9.0",
     "timeago.js": "^4.0.2",
     "web-vitals": "^1.0.1"
   },
