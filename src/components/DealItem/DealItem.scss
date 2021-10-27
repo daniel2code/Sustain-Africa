@@ -7,6 +7,19 @@
     border-bottom: unset;
   }
 
+  .left {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    .avatar {
+      margin-right: 6px;
+      transform: translateY(4px);
+    }
+    &:active {
+      opacity: 0.7;
+    }
+  }
+
   .source-destination {
     position: absolute;
     top: 14px;
@@ -33,7 +46,10 @@
       font-size: 12px;
       color: grey;
       line-height: 1.5;
-      margin-bottom: 20px;
+
+      .location {
+        text-decoration: underline;
+      }
 
       .discussion {
         font-weight: 600;
