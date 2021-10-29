@@ -122,7 +122,7 @@ export default function DealPage({ match }) {
                 }
               }}
             >
-              <div className="avatar">
+              {/*<div className="avatar">
                 <Avatar
                   style={{
                     color: "#14a014",
@@ -132,10 +132,10 @@ export default function DealPage({ match }) {
                 >
                   {dealerData?.user_name_front.charAt(0).toUpperCase()}
                 </Avatar>
-              </div>
+              </div>*/}
               <div>
                 <div className="username-green">
-                  {dealerData?.user_name_front}{" "}
+                  @{dealerData?.user_name_front}{" "}
                 </div>
                 <div>
                   <div className="score-green">

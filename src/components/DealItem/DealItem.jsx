@@ -62,7 +62,7 @@ export default function DealItem({item}) {
                         }
                     }}
                 >
-                    <div className="avatar">
+                    {/*<div className="avatar">
                         <Avatar
                             style={{
                                 color: "#14a014",
@@ -72,10 +72,10 @@ export default function DealItem({item}) {
                         >
                             {item?.user_name_front.charAt(0).toUpperCase()}
                         </Avatar>
-                    </div>
+                    </div>*/}
                     <div>
                         <div className="username-green">
-                            {item?.user_name_front}{" "}
+                            @{item?.user_name_front}{" "}
                         </div>
                         <div>
                             <div className="score-green">
