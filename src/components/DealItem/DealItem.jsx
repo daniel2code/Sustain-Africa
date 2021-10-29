@@ -1,5 +1,5 @@
 import React from "react";
-import {message, Tooltip, Modal, Avatar} from "antd";
+import {message, Tooltip, Modal} from "antd";
 import {useHistory} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {format} from "timeago.js";

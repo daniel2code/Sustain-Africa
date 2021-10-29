@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Tooltip, message, Avatar, Divider, Breadcrumb, Modal } from "antd";
+import { Tooltip, message, Divider, Breadcrumb, Modal } from "antd";
 import { Link, useHistory } from "react-router-dom";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -142,7 +142,8 @@ export default function DealPage({ match }) {
                     score{" "}
                     <span style={{ fontWeight: 600 }}>
                       {dealerData?.a_score}
-                    </span>
+                    </span>{" "}
+                    <EllipsisOutlined/> status <span style={{ fontWeight: 600 }}>online</span>
                   </div>
                 </div>
               </div>
