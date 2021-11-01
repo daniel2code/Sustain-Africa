@@ -7,7 +7,7 @@ import GooglePlacesAutocomplete from "react-google-places-autocomplete";
 
 import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
-import { setUserInfo } from "./../../redux/register/register.actions";
+import { setUserData } from "./../../redux/user/user.actions";
 
 export default function Register({ history }) {
   const [hasReferral, setHasReferral] = useState(false);
@@ -20,6 +20,7 @@ export default function Register({ history }) {
       return message.warning("enter location to continue");
     }
 
+    let userData = {};
     setButtonLoading(true);
 
     const { username, email, password, referrer } = values;
@@ -37,11 +38,13 @@ export default function Register({ history }) {
       .post("/register", data)
       .then(function (response) {
         if (response?.data?.status) {
+          userData = { ...response?.data?.data, token: response?.data?.token };
+          dispatch(setUserData(userData));
+
           requestVerificationCode(
             response?.data?.data?.email,
             response?.data?.data?.user_name
           );
-          dispatch(setUserInfo(response?.data?.data));
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);

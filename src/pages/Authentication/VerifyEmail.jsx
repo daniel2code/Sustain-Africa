@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect } from "react";
-// import { Link } from "react-router-dom";
 import { Input, Button, message } from "antd";
 import { useSelector } from "react-redux";
 
@@ -7,18 +6,6 @@ import "./style-Auth.scss";
 import { instance } from "./../../utils/API";
 
 export default function VerifyEmail({ history }) {
-  useEffect(() => {
-    if (!userState?.userData && !registerState?.userInfo?.email) {
-      history.push("/register");
-    } else if (
-      userState?.userData?.is_phone_no_verification_skipped === "1" ||
-      userState?.userData?.is_phone_no_verified === "1"
-    ) {
-      setHasPhone(true);
-    }
-    //eslint-disable-next-line
-  }, []);
-
   const input1 = useRef(null);
   const input2 = useRef(null);
   const input3 = useRef(null);
@@ -37,8 +24,19 @@ export default function VerifyEmail({ history }) {
   const [hasPhone, setHasPhone] = useState(false);
   const [showResendCode, setShowResendCode] = useState(false);
 
-  const registerState = useSelector((state) => state.register);
   const userState = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!userState?.userData) {
+      history.push("/register");
+    } else if (
+      userState?.userData?.is_phone_no_verification_skipped === "1" ||
+      userState?.userData?.is_phone_no_verified === "1"
+    ) {
+      setHasPhone(true);
+    }
+    //eslint-disable-next-line
+  }, []);
 
   const onFinish = async () => {
     const inputValuesJoined = `${inputValue1}${inputValue2}${inputValue3}${inputValue4}${inputValue5}${inputValue6}`;
@@ -47,16 +45,8 @@ export default function VerifyEmail({ history }) {
 
     const data = new FormData();
     data.append("match_verification", 1);
-    data.append(
-      "verify_email",
-      hasPhone ? userState?.userData?.email : registerState?.userInfo?.email
-    );
-    data.append(
-      "verify_username",
-      hasPhone
-        ? userState?.userData?.user_name
-        : registerState?.userInfo?.user_name
-    );
+    data.append("verify_email", userState?.userData?.email);
+    data.append("verify_username", userState?.userData?.user_name);
     data.append("verification_code", inputValuesJoined);
 
     instance
@@ -86,16 +76,8 @@ export default function VerifyEmail({ history }) {
   const requestVerificationCode = async () => {
     const data = new FormData();
     data.append("send_verification", 1);
-    data.append(
-      "verify_email",
-      hasPhone ? userState?.userData?.email : registerState?.userInfo?.email
-    );
-    data.append(
-      "verify_username",
-      hasPhone
-        ? userState?.userData?.user_name
-        : registerState?.userInfo?.user_name
-    );
+    data.append("verify_email", userState?.userData?.email);
+    data.append("verify_username", userState?.userData?.user_name);
 
     instance
       .post("/register", data)
@@ -178,8 +160,6 @@ export default function VerifyEmail({ history }) {
             <span className="desc-link">
               {userState?.userData?.email
                 ? userState?.userData?.email
-                : registerState?.userInfo?.email
-                ? registerState?.userInfo?.email
                 : "your email"}
             </span>
             . please enter that code below to verify your email address.
