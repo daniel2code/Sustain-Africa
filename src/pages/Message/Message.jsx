@@ -81,6 +81,7 @@ export default function Message() {
     chatChannel.sendMessage({
       text: messageInput,
     });
+    setMessageInput("");
   };
 
   const updateMessages = (newMessage) => {
@@ -90,7 +91,6 @@ export default function Message() {
     }
     messageCopy.push(newMessage);
     setMessages(messageCopy);
-    setMessageInput("");
     scrollToMessagesEnd();
   };
 
