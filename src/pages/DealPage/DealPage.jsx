@@ -143,7 +143,8 @@ export default function DealPage({ match }) {
                     <span style={{ fontWeight: 600 }}>
                       {dealerData?.a_score}
                     </span>{" "}
-                    <EllipsisOutlined/> status <span style={{ fontWeight: 600 }}>online</span>
+                    <EllipsisOutlined /> status{" "}
+                    <span style={{ fontWeight: 600 }}>online</span>
                   </div>
                 </div>
               </div>
@@ -170,30 +171,33 @@ export default function DealPage({ match }) {
               <div className="deal-item-row-one">
                 “
                 {deal?.s_account_age &&
+                  deal?.s_account_age !== "Any Age" &&
                   deal?.s_bank_name &&
                   `${deal?.s_account_age} ${
                     deal?.s_account_age !== "Any Age" ? "year" : ""
-                  }${
-                    deal?.s_account_age !== 1 &&
-                    deal?.s_account_age !== "Any Age"
-                      ? "s"
-                      : ""
-                  }  ${deal?.s_account_age !== "Any Age" ? "old" : ""}`}
+                  }${deal?.s_account_age !== 1 ? "s" : ""} old `}
                 {deal?.s_wallet_age &&
+                  deal?.s_wallet_age !== "Any Age" &&
                   deal?.s_wallet_type &&
                   `${deal?.s_wallet_age} ${
                     deal?.s_wallet_age !== "Any Age" ? "year" : ""
-                  }${
-                    deal?.s_wallet_age !== 1 && deal?.s_wallet_age !== "Any Age"
-                      ? "s"
-                      : ""
-                  } ${deal?.s_wallet_age !== "Any Age" ? "old" : ""}`}{" "}
+                  }${deal?.s_wallet_age !== 1 ? "s" : ""} old `}
                 {deal?.s_bank_name &&
-                  `${deal?.s_bank_name} ${deal?.s_account_type} account available in`}
-                {deal?.s_wallet_type && `${deal?.source} wallet available`}{" "}
-                {deal?.s_state && `${deal?.s_state},`}{" "}
+                  `${deal?.s_bank_name} ${deal?.s_account_type} account available in `}
+                {deal?.s_wallet_type && `${deal?.source} wallet available`}
+                {deal?.s_state && `${deal?.s_state},`}
+                {deal?.source !== "bank fund" &&
+                deal?.source !== "bitcoin" &&
+                deal?.source !== "ethereum" &&
+                deal?.source !== "litecoin" &&
+                deal?.source !== "dogecoin"
+                  ? deal?.source
+                  : ""}{" "}
                 {deal?.s_country && `${deal?.s_country},`} to remit to{" "}
-                {deal?.destination} at {deal?.rate}%”
+                {deal?.destination === "bank fund"
+                  ? "bank account"
+                  : deal?.destination}{" "}
+                at {deal?.rate}%”
               </div>
 
               <div className="deal-item-row-two">
