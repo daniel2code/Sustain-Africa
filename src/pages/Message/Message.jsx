@@ -117,7 +117,7 @@ export default function Message() {
                     officerknow{" "}
                     <span style={{ color: "#14a014" }}>&#9679;</span>
                   </div>
-                  <div className="status">waiting to accept...</div>
+                  <div className="status">waiting to accept..</div>
                 </div>
               </div>
 

@@ -196,8 +196,7 @@ export default function DealPage({ match }) {
                 {deal?.s_country && `${deal?.s_country},`} to remit to{" "}
                 {deal?.destination === "bank fund"
                   ? "bank account"
-                  : deal?.destination}{" "}
-                at {deal?.rate}%”
+                  : deal?.destination}{" "} at {deal?.rate}%”
               </div>
 
               <div className="deal-item-row-two">
