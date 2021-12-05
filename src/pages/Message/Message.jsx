@@ -120,7 +120,7 @@ export default function Message() {
                   <div className="status">waiting to accept..</div>
                 </div>
               </div>
-
+              
               <div className="right">
                 <div className="like-dislike no-margin-top">
                   <span className="like">
