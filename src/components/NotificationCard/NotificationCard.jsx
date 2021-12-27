@@ -1,8 +1,16 @@
 import { format } from 'timeago.js';
 
+//  d_r - discussion request
+//  d_r_r - discussion request rejected
+//  c_r - connection request
+//  c_a - connection request accepted
+//  d_c - discussion completed
+
 const NotificationCard = ({ data }) => {
   return (
     <div className="notification-card">
+      <div></div>
+
       <div style={{ display: 'flex' }}>
         {data.type === 'd_r' && (
           <div style={{ display: 'flex', gap: '10px', marginBottom: '5px' }}>
@@ -12,6 +20,13 @@ const NotificationCard = ({ data }) => {
 
             <button className="notification-card-btn notification-card-btn-out">
               reject
+            </button>
+          </div>
+        )}
+        {data.type === 'd_c' && (
+          <div style={{ display: 'flex', gap: '10px', marginBottom: '5px' }}>
+            <button className="notification-card-btn notification-card-btn-pink">
+              review
             </button>
           </div>
         )}
