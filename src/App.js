@@ -18,6 +18,7 @@ import DealPage from "./pages/DealPage/DealPage";
 import EditDeal from "./pages/EditDeal/EditDeal";
 import Message from "./pages/Message/Message";
 import { bearerInstance } from "./utils/API";
+import Notification from "./pages/Notification/Notifiaction";
 
 function App() {
   useEffect(() => {
@@ -88,6 +89,7 @@ function App() {
             <Route exact path="/user/:id/profile" component={OtherProfile} />
             <Route exact path="/deal/:id" component={DealPage} />
             <Route exact path="/message" component={Message} />
+            <Route exact path="/notifications" component={Notification} />
           </Switch>
         ) : (
           <ErrorBoundary />
