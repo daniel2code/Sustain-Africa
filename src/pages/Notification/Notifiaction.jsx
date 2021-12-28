@@ -27,7 +27,7 @@ export default function Notification() {
   return (
     <div className="notification">
       <div className="notification-wrapper">
-        <h1>Notifications</h1>
+        <div className="notification-header">notifications</div>
         {loading ? (
           <Loader />
         ) : (
