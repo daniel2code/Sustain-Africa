@@ -13,6 +13,9 @@ import { bearerInstance } from '../../utils/API';
 const NotificationCard = ({ data }) => {
   const [senderDet, setSenderDet] = useState();
   const user = useSelector(state => state.user.userData);
+  // const userNameFront = useSelector(
+  //   state => state.data.profile.profile_data[0].user_name_front
+  // );
 
   useEffect(() => {
     const userid = user.id === data.sender ? data.receiver : data.sender;
@@ -39,12 +42,15 @@ const NotificationCard = ({ data }) => {
           <p>
             <Link
               to={`/user/${data.sender}/profile`}
-              className="notification-link"
+              className="notification-link username-green"
             >
-              @{senderDet?.user}
+              @{senderDet?.userFront}
             </Link>{' '}
             wants to discuss with you regarding your{' '}
-            <Link to={`/deal/${data.deal_id}`} className="notification-link">
+            <Link
+              to={`/deal/${data.deal_id}`}
+              className="notification-link username-green"
+            >
               deal
             </Link>
           </p>
@@ -54,23 +60,27 @@ const NotificationCard = ({ data }) => {
       {data.type === 'd_c' && (
         <div>
           <p>
-            <Link to={`/deal/${data.deal_id}`} className="notification-link">
+            <Link
+              to={`/deal/${data.deal_id}`}
+              className="notification-link username-green"
+            >
               deal
             </Link>{' '}
             with{' '}
-            {data.sender === user.id ? (
+            {data.sender === user.id && (
               <Link
                 to={`/user/${data.receiver}/profile`}
-                className="notification-link"
+                className="notification-link username-green"
               >
-                @{senderDet?.user}
+                @{senderDet?.userFront}
               </Link>
-            ) : (
+            )}
+            {data.receiver === user.id && (
               <Link
                 to={`/user/${data.sender}/profile`}
-                className="notification-link"
+                className="notification-link username-green"
               >
-                @{user.user_name}
+                @{senderDet?.userFront}
               </Link>
             )}{' '}
             completed successfully
@@ -82,7 +92,7 @@ const NotificationCard = ({ data }) => {
         {data.type === 'd_r' && (
           <div style={{ display: 'flex', marginBottom: '5px' }}>
             <button
-              style={{ marginRight: '20px' }}
+              style={{ marginRight: '10px' }}
               className="notification-card-btn notification-card-btn-pink"
             >
               accept
@@ -109,7 +119,8 @@ const NotificationCard = ({ data }) => {
             marginLeft: 'auto',
           }}
         >
-          {format(data?.created_at)}
+          {format(data?.created_at).split(' ')[0]}
+          {format(data?.created_at).split(' ')[1].substring(0, 1)}
         </span>
       </div>
     </div>
