@@ -11,7 +11,8 @@
 
     & h1 {
       font-weight: 700;
-      font-size: 30px;
+      color: #585858;
+      font-size: 24px;
     }
   }
 
@@ -39,5 +40,9 @@
         border-color: #ed1450;
       }
     }
+  }
+
+  &-link {
+    font-weight: 700;
   }
 }
