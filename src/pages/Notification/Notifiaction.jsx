@@ -28,9 +28,12 @@ export default function Notification() {
   }, []);
 
   //  d_r - discussion request - only reciever sees this
+  //  n_r - new review - only reciever see this
+
   //  d_r_r - discussion request rejected - only sender see this
   //  c_r - connection request
   //  c_a - connection request accepted
+
   //  d_c - discussion completed - both parties sees this
 
   return (
@@ -43,8 +46,9 @@ export default function Notification() {
         ) : (
           <div className="notification-body">
             {notifications.map(cur =>
-              cur.type === 'd_r' && userId === cur.sender ? null : cur.type ===
-                  'd_r_r' && userId === cur.reciever ? null : (
+              (cur.type === 'd_r' || cur.type === 'n_r') &&
+              userId === cur.sender ? null : cur.type === 'd_r_r' &&
+                userId === cur.reciever ? null : (
                 <NotificationCard key={cur.id} data={cur} />
               )
             )}
