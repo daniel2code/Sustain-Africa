@@ -1,32 +1,47 @@
-import React from "react";
-import { message, Tooltip, Modal } from "antd";
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
-import { format } from "timeago.js";
+import React from 'react';
+import { message, Tooltip, Modal } from 'antd';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { format } from 'timeago.js';
 import {
   LikeOutlined,
   DislikeOutlined,
   ArrowRightOutlined,
   EllipsisOutlined,
   ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import "./DealItem.scss";
+} from '@ant-design/icons';
+import './DealItem.scss';
+import { bearerInstance } from '../../utils/API';
 
 const { confirm } = Modal;
 
 export default function DealItem({ item }) {
   const history = useHistory();
-  const userIdState = useSelector((state) => state?.user?.userData?.id);
+  const userIdState = useSelector(state => state?.user?.userData?.id);
 
   const handleOk = () => {
-    history.push("/message");
+    const data = new FormData();
+
+    data.append('sender', userIdState);
+    data.append('receiver', item.dealer_id);
+    data.append('type', 'd_r');
+    data.append('deal_id', item.d_id);
+
+    bearerInstance
+      .post(`/new_notification`, data)
+      .then(res => {
+        history.push('/message');
+      })
+      .catch(err => {
+        alert(err);
+      });
   };
 
   function showDiscussConfirm(user, source, destination, rate) {
     confirm({
       title: (
         <div>
-          start a discussion with{" "}
+          start a discussion with{' '}
           <span className="username-green">@{user}</span>?
         </div>
       ),
@@ -76,14 +91,14 @@ export default function DealItem({ item }) {
             <div className="username-green">@{item?.user_name_front} </div>
             <div>
               <div className="score-green">
-                score <span style={{ fontWeight: 600 }}>{item?.a_score}</span>{" "}
-                <EllipsisOutlined /> deals closed{" "}
-                <span className="bold">{item?.total_deals_closed}</span>{" "}
-                <EllipsisOutlined /> not closed{" "}
-                <span className="bold">{item?.total_deals_not_closed}</span>{" "}
-                <EllipsisOutlined /> reviews{" "}
-                <span className="bold">{item?.total_reviews}</span>{" "}
-                <EllipsisOutlined /> status{" "}
+                score <span style={{ fontWeight: 600 }}>{item?.a_score}</span>{' '}
+                <EllipsisOutlined /> deals closed{' '}
+                <span className="bold">{item?.total_deals_closed}</span>{' '}
+                <EllipsisOutlined /> not closed{' '}
+                <span className="bold">{item?.total_deals_not_closed}</span>{' '}
+                <EllipsisOutlined /> reviews{' '}
+                <span className="bold">{item?.total_reviews}</span>{' '}
+                <EllipsisOutlined /> status{' '}
                 <span className="status">online</span>
               </div>
             </div>
@@ -94,159 +109,159 @@ export default function DealItem({ item }) {
           title={`i am picking ${item?.source} and will remit to ${item?.destination}`}
         >
           <div className="source-destination">
-            {item?.source}{" "}
+            {item?.source}{' '}
             <ArrowRightOutlined
               style={{
-                strokeWidth: "50",
-                stroke: "white",
+                strokeWidth: '50',
+                stroke: 'white',
               }}
-            />{" "}
-            {item?.destination}{" "}
+            />{' '}
+            {item?.destination}{' '}
           </div>
         </Tooltip>
         <div className="deal-item-wrapper">
           <div className="deal-item-row-one">
             “
             {item?.s_account_age &&
-              item?.s_account_age !== "Any Age" &&
+              item?.s_account_age !== 'Any Age' &&
               item?.s_bank_name &&
               `${item?.s_account_age} ${
-                item?.s_account_age !== "Any Age" ? "year" : ""
-              }${item?.s_account_age !== 1 ? "s" : ""} old `}
+                item?.s_account_age !== 'Any Age' ? 'year' : ''
+              }${item?.s_account_age !== 1 ? 's' : ''} old `}
             {item?.s_wallet_age &&
-              item?.s_wallet_age !== "Any Age" &&
+              item?.s_wallet_age !== 'Any Age' &&
               item?.s_wallet_type &&
               `${item?.s_wallet_age} ${
-                item?.s_wallet_age !== "Any Age" ? "year" : ""
-              }${item?.s_wallet_age !== 1 ? "s" : ""} old `}
+                item?.s_wallet_age !== 'Any Age' ? 'year' : ''
+              }${item?.s_wallet_age !== 1 ? 's' : ''} old `}
             {item?.s_bank_name &&
               `${item?.s_bank_name} ${item?.s_account_type} account available in `}
             {item?.s_wallet_type && `${item?.source} wallet available`}
             {item?.s_state && `${item?.s_state},`}
-            {item?.source !== "bank fund" &&
-            item?.source !== "bitcoin" &&
-            item?.source !== "ethereum" &&
-            item?.source !== "litecoin" &&
-            item?.source !== "dogecoin"
+            {item?.source !== 'bank fund' &&
+            item?.source !== 'bitcoin' &&
+            item?.source !== 'ethereum' &&
+            item?.source !== 'litecoin' &&
+            item?.source !== 'dogecoin'
               ? item?.source
-              : ""}{" "}
-            {item?.s_country && `${item?.s_country},`} to remit to{" "}
-            {item?.destination === "bank fund"
-              ? "bank account"
-              : item?.destination}{" "}
+              : ''}{' '}
+            {item?.s_country && `${item?.s_country},`} to remit to{' '}
+            {item?.destination === 'bank fund'
+              ? 'bank account'
+              : item?.destination}{' '}
             at {item?.rate}%”
           </div>
 
           <div className="deal-item-row-two">
             {item?.s_bank_name && (
               <>
-                {" "}
-                bank name <span className="bold">{item?.s_bank_name}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                bank name <span className="bold">{item?.s_bank_name}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_account_type && (
               <>
-                {" "}
-                account type{" "}
-                <span className="bold">{item?.s_account_type}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                account type{' '}
+                <span className="bold">{item?.s_account_type}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_account_age && item?.s_account_age !== 0 ? (
               <>
-                {" "}
-                account age{" "}
+                {' '}
+                account age{' '}
                 <span className="bold">
                   {item?.s_account_age} years old
-                </span>{" "}
-                <EllipsisOutlined />{" "}
+                </span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             ) : null}
             {item?.s_card_brand && (
               <>
-                {" "}
+                {' '}
                 card brand <span className="bold">
                   {item?.s_card_brand}
-                </span>{" "}
-                <EllipsisOutlined />{" "}
+                </span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_card_type && (
               <>
-                {" "}
-                card type <span className="bold">{item?.s_card_type}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                card type <span className="bold">{item?.s_card_type}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_exchange && (
               <>
-                {" "}
-                exchange <span className="bold">{item?.s_exchange}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                exchange <span className="bold">{item?.s_exchange}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_wallet_type && (
               <>
-                {" "}
+                {' '}
                 wallet type <span className="bold">
                   {item?.s_wallet_type}
-                </span>{" "}
-                <EllipsisOutlined />{" "}
+                </span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.min && (
               <>
-                {" "}
-                min{" "}
-                <span className="bold">{`${item?.min.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                min{' '}
+                <span className="bold">{`${item?.min.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.max && (
               <>
-                {" "}
-                max{" "}
-                <span className="bold">{`${item?.max.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                max{' '}
+                <span className="bold">{`${item?.max.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.rate && (
               <>
-                {" "}
-                rate <span className="bold">{item?.rate}%</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                rate <span className="bold">{item?.rate}%</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_state && (
               <>
-                {" "}
-                bank state <span className="bold">{item?.s_state}</span>{" "}
-                <EllipsisOutlined />{" "}
+                {' '}
+                bank state <span className="bold">{item?.s_state}</span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.s_country && (
               <>
-                {" "}
+                {' '}
                 bank country <span className="bold">
                   {item?.s_country}
-                </span>{" "}
-                <EllipsisOutlined />{" "}
+                </span>{' '}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.discussion && (
               <>
-                {" "}
-                discussion{" "}
+                {' '}
+                discussion{' '}
                 <Tooltip placement="top" title={item?.discussion_details}>
-                  <span className="discussion">{item?.discussion}</span>{" "}
+                  <span className="discussion">{item?.discussion}</span>{' '}
                 </Tooltip>
-                <EllipsisOutlined />{" "}
+                <EllipsisOutlined />{' '}
               </>
             )}
             {item?.deal_summary && (
               <>
-                {" "}
+                {' '}
                 <Tooltip placement="top" title={item?.deal_summary}>
                   <span className="discussion">other notes</span>
                 </Tooltip>
@@ -255,17 +270,17 @@ export default function DealItem({ item }) {
 
             <br />
             <br />
-            <span style={{ fontSize: "11px", color: "#999" }}>
-              {format(item?.d_created_at)}{" "}
+            <span style={{ fontSize: '11px', color: '#999' }}>
+              {format(item?.d_created_at)}{' '}
               <Tooltip
                 placement="top"
                 title={
-                  "user posted this deal from this location and will probably arrange a meetup there if necessary."
+                  'user posted this deal from this location and will probably arrange a meetup there if necessary.'
                 }
               >
-                {" "}
+                {' '}
                 · <span className="location">{item?.user_location}</span>
-              </Tooltip>{" "}
+              </Tooltip>{' '}
             </span>
           </div>
 
@@ -300,8 +315,8 @@ export default function DealItem({ item }) {
                         item?.rate
                       );
                     } else {
-                      message.error("you must login to continue");
-                      history.push("/login");
+                      message.error('you must login to continue');
+                      history.push('/login');
                     }
                   }}
                 >
@@ -312,7 +327,7 @@ export default function DealItem({ item }) {
                   <button
                     className="green-button disabled"
                     onClick={() => {
-                      message.warn("you posted this deal!");
+                      message.warn('you posted this deal!');
                     }}
                   >
                     discuss
@@ -324,8 +339,8 @@ export default function DealItem({ item }) {
                 <button
                   className="green-button"
                   onClick={() => {
-                    message.error("you must login to continue");
-                    history.push("/login");
+                    message.error('you must login to continue');
+                    history.push('/login');
                   }}
                 >
                   discuss

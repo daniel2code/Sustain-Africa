@@ -1,44 +1,44 @@
-import React, { useEffect } from "react";
-import "./App.css";
-import { Layout, message } from "antd";
-import { Route, Switch, useHistory } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import './App.css';
+import { Layout, message } from 'antd';
+import { Route, Switch, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Navbar from "./components/Navbar/Navbar";
-import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
-import DealsList from "./pages/DealsList/DealsList";
-import NewDeal from "./pages/NewDeal/NewDeal";
-import Register from "./pages/Authentication/Register";
-import Login from "./pages/Authentication/Login";
-import VerifyEmail from "./pages/Authentication/VerifyEmail";
-import VerifyPhone from "./pages/Authentication/VerifyPhone";
-import Profile from "./pages/Profile/Profile";
-import OtherProfile from "./pages/Profile/OtherProfile";
-import DealPage from "./pages/DealPage/DealPage";
-import EditDeal from "./pages/EditDeal/EditDeal";
-import Message from "./pages/Message/Message";
-import { bearerInstance } from "./utils/API";
-import Notification from "./pages/Notification/Notifiaction";
+import Navbar from './components/Navbar/Navbar';
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
+import DealsList from './pages/DealsList/DealsList';
+import NewDeal from './pages/NewDeal/NewDeal';
+import Register from './pages/Authentication/Register';
+import Login from './pages/Authentication/Login';
+import VerifyEmail from './pages/Authentication/VerifyEmail';
+import VerifyPhone from './pages/Authentication/VerifyPhone';
+import Profile from './pages/Profile/Profile';
+import OtherProfile from './pages/Profile/OtherProfile';
+import DealPage from './pages/DealPage/DealPage';
+import EditDeal from './pages/EditDeal/EditDeal';
+import Message from './pages/Message/Message';
+import { bearerInstance } from './utils/API';
+import Notification from './pages/Notification/Notifiaction';
 
 function App() {
   useEffect(() => {
-    if (userState?.userData?.is_email_verified === "0" && "2" === "1") {
-      history.push("/verify-email");
+    if (userState?.userData?.is_email_verified === '0' && '2' === '1') {
+      history.push('/verify-email');
     }
     //eslint-disable-next-line
   }, []);
 
-  const userState = useSelector((state) => state.user);
-  const hasError = useSelector((state) => state.data.hasError);
+  const userState = useSelector(state => state.user);
+  const hasError = useSelector(state => state.data.hasError);
   const history = useHistory();
   const dispatch = useDispatch();
 
   const logout = () => {
-    dispatch({ type: "DESTROY_SESSION" });
+    dispatch({ type: 'DESTROY_SESSION' });
     localStorage.clear();
     sessionStorage.clear();
     setTimeout(() => {
-      window.location.assign("/login");
+      window.location.assign('/login');
     }, 500);
   };
 
@@ -49,24 +49,25 @@ function App() {
       }
       return config;
     },
-    (err) => {
+    err => {
       console.log(err);
       return Promise.reject(err);
     }
   );
 
   bearerInstance.interceptors.response.use(
-    (response) => {
+    response => {
       return response;
     },
 
     function (error) {
       if (error?.response?.status === 500) {
-        return message.warning("Server is down, please try later!");
+        return message.warning('Server is down, please try later!');
       }
 
       if (error?.response?.status === 401) {
-        logout();
+        // logout();
+        return message.warning(error?.response?.data.message);
       }
       return Promise.reject(error);
     }

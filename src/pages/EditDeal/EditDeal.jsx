@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Divider } from "antd";
+import React, { useState, useEffect } from 'react';
+import { Divider } from 'antd';
 import {
   Form,
   Input,
@@ -10,14 +10,14 @@ import {
   Tooltip,
   Popconfirm,
   Breadcrumb,
-} from "antd";
-import { Link, useHistory } from "react-router-dom";
-import { HomeOutlined, DownOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
-import Loader from "./../../components/Loader/Loader";
-import { setHasError } from "../../redux/data/data.actions";
+} from 'antd';
+import { Link, useHistory } from 'react-router-dom';
+import { HomeOutlined, DownOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from 'react-redux';
+import Loader from './../../components/Loader/Loader';
+import { setHasError } from '../../redux/data/data.actions';
 
-import { bearerInstance, instance } from "./../../utils/API";
+import { bearerInstance, instance } from './../../utils/API';
 import {
   wallet_types,
   exchanges,
@@ -33,9 +33,9 @@ import {
   wallet_age,
   card_types,
   card_brands,
-} from "./../../utils/datasource";
-import "../NewDeal/NewDeal.scss";
-import useDeals from "../../hooks/useDeals";
+} from './../../utils/datasource';
+import '../NewDeal/NewDeal.scss';
+import useDeals from '../../hooks/useDeals';
 
 const formItemLayout = {
   labelCol: {
@@ -64,8 +64,8 @@ export default function EditDeal({ match }) {
     window.scrollTo(0, 0);
 
     if (!userState?.userData) {
-      history.push("/login");
-      message.warning("please login to continue");
+      history.push('/login');
+      message.warning('please login to continue');
     } else {
       getDealInfo();
     }
@@ -77,7 +77,7 @@ export default function EditDeal({ match }) {
   const [dealerUsername, setDealerUsername] = useState(null);
   const [form] = Form.useForm();
   const history = useHistory();
-  const userState = useSelector((state) => state.user);
+  const userState = useSelector(state => state.user);
   const [buttonLoading, setButtonLoading] = useState(false);
 
   const [selectedSource, setSelectedSource] = useState(null);
@@ -101,7 +101,7 @@ export default function EditDeal({ match }) {
   const [destinationWalletAgeInput, setDestinationWalletAgeInput] =
     useState(null);
 
-  const getDealInfo = async () => {
+  const getDealInfo = () => {
     instance
       .get(`/return_this_deal?deal_id=${match.params.id}`)
       .then(function (response) {
@@ -129,7 +129,7 @@ export default function EditDeal({ match }) {
       });
   };
 
-  const initializeValues = (dealData) => {
+  const initializeValues = dealData => {
     setSelectedSource(dealData?.source);
     setSourceStateInput(dealData?.s_state);
     setSourceBankInput(dealData?.s_bank_name);
@@ -143,118 +143,118 @@ export default function EditDeal({ match }) {
     setDestinationAccountAgeInput(dealData?.d_account_age);
     setDestinationWalletAgeInput(dealData?.d_wallet_age);
 
-    if (dealData?.s_country === "United States") {
+    if (dealData?.s_country === 'United States') {
       setSourceStatesToRender(us_states);
       setSourceBanksToRender(us_banks);
-    } else if (dealData?.s_country === "United Kingdom") {
+    } else if (dealData?.s_country === 'United Kingdom') {
       setSourceStatesToRender(uk_states);
       setSourceBanksToRender(uk_banks);
-    } else if (dealData?.s_country === "Nigeria") {
+    } else if (dealData?.s_country === 'Nigeria') {
       setSourceStatesToRender(ng_states);
       setSourceBanksToRender(ng_banks);
     }
 
-    if (dealData?.d_country === "United States") {
+    if (dealData?.d_country === 'United States') {
       setDestinationStatesToRender(us_states);
       setDestinationBanksToRender(us_banks);
-    } else if (dealData?.d_country === "United Kingdom") {
+    } else if (dealData?.d_country === 'United Kingdom') {
       setDestinationStatesToRender(uk_states);
       setDestinationBanksToRender(uk_banks);
-    } else if (dealData?.d_country === "Nigeria") {
+    } else if (dealData?.d_country === 'Nigeria') {
       setDestinationStatesToRender(ng_states);
       setDestinationBanksToRender(ng_banks);
     }
   };
 
-  const onFinish = async (values) => {
+  const onFinish = values => {
     setButtonLoading(true);
 
     const data = new FormData();
-    data.append("deal_id", match.params.id);
-    data.append("source", values?.source);
-    data.append("destination", values?.destination);
-    data.append("range_min", values?.min);
-    data.append("range_max", values?.max);
-    data.append("remit_rate", values?.rate);
-    data.append("currency", values?.currency);
-    data.append("discussion_title", values?.discussion);
-    data.append("discussion_details", values?.discussion_detail);
-    data.append("deal_summary", values?.summary);
-    data.append("min_score_to_accept", values?.score);
-    data.append("s_bank_name", sourceBankInput ? sourceBankInput : "");
-    data.append("s_account_type", sourceAccountInput ? sourceAccountInput : "");
+    data.append('deal_id', match.params.id);
+    data.append('source', values?.source);
+    data.append('destination', values?.destination);
+    data.append('range_min', values?.min);
+    data.append('range_max', values?.max);
+    data.append('remit_rate', values?.rate);
+    data.append('currency', values?.currency);
+    data.append('discussion_title', values?.discussion);
+    data.append('discussion_details', values?.discussion_detail);
+    data.append('deal_summary', values?.summary);
+    data.append('min_score_to_accept', values?.score);
+    data.append('s_bank_name', sourceBankInput ? sourceBankInput : '');
+    data.append('s_account_type', sourceAccountInput ? sourceAccountInput : '');
     data.append(
-      "s_account_age",
-      sourceAccountAgeInput ? sourceAccountAgeInput : ""
+      's_account_age',
+      sourceAccountAgeInput ? sourceAccountAgeInput : ''
     );
     data.append(
-      "s_account_country",
-      values?.source_country ? values?.source_country : ""
+      's_account_country',
+      values?.source_country ? values?.source_country : ''
     );
-    data.append("s_account_state", sourceStateInput ? sourceStateInput : "");
+    data.append('s_account_state', sourceStateInput ? sourceStateInput : '');
     data.append(
-      "s_wallet_type",
-      values?.source_wallet_type ? values?.source_wallet_type : ""
-    );
-    data.append(
-      "s_wallet_age",
-      values?.source_wallet_age ? values?.source_wallet_age : ""
+      's_wallet_type',
+      values?.source_wallet_type ? values?.source_wallet_type : ''
     );
     data.append(
-      "s_exchange",
-      values?.source_exchange ? values?.source_exchange : ""
+      's_wallet_age',
+      values?.source_wallet_age ? values?.source_wallet_age : ''
     );
     data.append(
-      "s_card_type",
-      values?.source_card_type ? values?.source_card_type : ""
+      's_exchange',
+      values?.source_exchange ? values?.source_exchange : ''
     );
     data.append(
-      "s_card_brand",
-      values?.source_card_brand ? values?.source_card_brand : ""
+      's_card_type',
+      values?.source_card_type ? values?.source_card_type : ''
     );
     data.append(
-      "d_bank_name",
-      destinationBankInput ? destinationBankInput : ""
+      's_card_brand',
+      values?.source_card_brand ? values?.source_card_brand : ''
     );
     data.append(
-      "d_account_type",
-      destinationAccountInput ? destinationAccountInput : ""
+      'd_bank_name',
+      destinationBankInput ? destinationBankInput : ''
     );
     data.append(
-      "d_account_age",
-      destinationAccountAgeInput ? destinationAccountAgeInput : ""
+      'd_account_type',
+      destinationAccountInput ? destinationAccountInput : ''
     );
     data.append(
-      "d_account_country",
-      values?.destination_country ? values?.destination_country : ""
+      'd_account_age',
+      destinationAccountAgeInput ? destinationAccountAgeInput : ''
     );
     data.append(
-      "d_account_state",
-      destinationStateInput ? destinationStateInput : ""
+      'd_account_country',
+      values?.destination_country ? values?.destination_country : ''
     );
     data.append(
-      "d_wallet_type",
-      values?.destination_wallet_type ? values?.destination_wallet_type : ""
+      'd_account_state',
+      destinationStateInput ? destinationStateInput : ''
     );
     data.append(
-      "d_wallet_age",
-      values?.destination_wallet_age ? values?.destination_wallet_age : ""
+      'd_wallet_type',
+      values?.destination_wallet_type ? values?.destination_wallet_type : ''
     );
     data.append(
-      "d_exchange",
-      values?.destination_exchange ? values?.destination_exchange : ""
+      'd_wallet_age',
+      values?.destination_wallet_age ? values?.destination_wallet_age : ''
     );
     data.append(
-      "d_card_type",
-      values?.destination_card_type ? values?.destination_card_type : ""
+      'd_exchange',
+      values?.destination_exchange ? values?.destination_exchange : ''
     );
     data.append(
-      "d_card_brand",
-      values?.destination_card_brand ? values?.destination_card_brand : ""
+      'd_card_type',
+      values?.destination_card_type ? values?.destination_card_type : ''
+    );
+    data.append(
+      'd_card_brand',
+      values?.destination_card_brand ? values?.destination_card_brand : ''
     );
 
     bearerInstance
-      .post("/edit_deal", data)
+      .post('/edit_deal', data)
       .then(function (response) {
         console.log(response?.data);
         setButtonLoading(false);
@@ -274,45 +274,45 @@ export default function EditDeal({ match }) {
       });
   };
 
-  const handleSourceSelect = async (value) => {
+  const handleSourceSelect = value => {
     setSelectedSource(value);
   };
 
-  const onSourceBankCountryChange = async (value) => {
+  const onSourceBankCountryChange = value => {
     setSourceStateInput(null);
     setSourceBankInput(null);
     setSourceAccountInput(null);
     setSourceAccountAgeInput(null);
 
-    if (value === "United States") {
+    if (value === 'United States') {
       setSourceStatesToRender(us_states);
       setSourceBanksToRender(us_banks);
-    } else if (value === "United Kingdom") {
+    } else if (value === 'United Kingdom') {
       setSourceStatesToRender(uk_states);
       setSourceBanksToRender(uk_banks);
-    } else if (value === "Nigeria") {
+    } else if (value === 'Nigeria') {
       setSourceStatesToRender(ng_states);
       setSourceBanksToRender(ng_banks);
     }
   };
 
-  const handleDestinationSelect = async (value) => {
+  const handleDestinationSelect = value => {
     setSelectedDestination(value);
   };
 
-  const onDestinationBankCountryChange = async (value) => {
+  const onDestinationBankCountryChange = value => {
     setDestinationStateInput(null);
     setDestinationBankInput(null);
     setDestinationAccountInput(null);
     setDestinationAccountAgeInput(null);
 
-    if (value === "United States") {
+    if (value === 'United States') {
       setDestinationStatesToRender(us_states);
       setDestinationBanksToRender(us_banks);
-    } else if (value === "United Kingdom") {
+    } else if (value === 'United Kingdom') {
       setDestinationStatesToRender(uk_states);
       setDestinationBanksToRender(uk_banks);
-    } else if (value === "Nigeria") {
+    } else if (value === 'Nigeria') {
       setDestinationStatesToRender(ng_states);
       setDestinationBanksToRender(ng_banks);
     }
@@ -378,12 +378,12 @@ export default function EditDeal({ match }) {
                   name="source"
                   label="i am picking"
                   style={{
-                    width: "calc(100% - 30px)",
+                    width: 'calc(100% - 30px)',
                   }}
                   rules={[
                     {
                       required: true,
-                      message: "please select deal source!",
+                      message: 'please select deal source!',
                     },
                   ]}
                 >
@@ -392,13 +392,13 @@ export default function EditDeal({ match }) {
                     suffixIcon={
                       <DownOutlined
                         style={{
-                          strokeWidth: "50",
-                          color: "#ed1450",
+                          strokeWidth: '50',
+                          color: '#ed1450',
                         }}
                       />
                     }
                     placeholder="select source"
-                    onChange={(value) => {
+                    onChange={value => {
                       handleSourceSelect(value);
                     }}
                   >
@@ -427,10 +427,10 @@ export default function EditDeal({ match }) {
                 </div>
               </div>
 
-              {(selectedSource === "bitcoin" ||
-                selectedSource === "ethereum" ||
-                selectedSource === "litecoin" ||
-                selectedSource === "dogecoin") && (
+              {(selectedSource === 'bitcoin' ||
+                selectedSource === 'ethereum' ||
+                selectedSource === 'litecoin' ||
+                selectedSource === 'dogecoin') && (
                 <>
                   <Form.Item
                     name="source_wallet_type"
@@ -439,21 +439,21 @@ export default function EditDeal({ match }) {
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="wallet type"
                     >
                       {wallet_types &&
-                        wallet_types.map((wallet) => (
+                        wallet_types.map(wallet => (
                           <Option key={wallet} value={wallet}>
                             {wallet}
                           </Option>
@@ -468,21 +468,21 @@ export default function EditDeal({ match }) {
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="exchange"
                     >
                       {exchanges &&
-                        exchanges.map((exchange) => (
+                        exchanges.map(exchange => (
                           <Option key={exchange} value={exchange}>
                             {exchange}
                           </Option>
@@ -495,25 +495,25 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select wallet age!",
+                        message: 'please select wallet age!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="wallet age"
                     >
                       {wallet_age &&
-                        wallet_age.map((age) => (
+                        wallet_age.map(age => (
                           <Option key={age} value={age}>
                             {age}
                           </Option>
@@ -526,16 +526,16 @@ export default function EditDeal({ match }) {
                 </>
               )}
 
-              {selectedSource === "bank fund" && (
+              {selectedSource === 'bank fund' && (
                 <>
                   <Form.Item style={{ marginBottom: 0 }}>
                     <Form.Item
                       name="source_country"
-                      style={{ display: "inline-block", width: "39%" }}
+                      style={{ display: 'inline-block', width: '39%' }}
                       rules={[
                         {
                           required: true,
-                          message: "select bank country!",
+                          message: 'select bank country!',
                         },
                       ]}
                     >
@@ -543,8 +543,8 @@ export default function EditDeal({ match }) {
                         suffixIcon={
                           <DownOutlined
                             style={{
-                              strokeWidth: "50",
-                              color: "#ed1450",
+                              strokeWidth: '50',
+                              color: '#ed1450',
                             }}
                           />
                         }
@@ -552,7 +552,7 @@ export default function EditDeal({ match }) {
                         onChange={onSourceBankCountryChange}
                       >
                         {countries &&
-                          countries.map((country) => (
+                          countries.map(country => (
                             <Option key={country} value={country}>
                               {country}
                             </Option>
@@ -562,14 +562,14 @@ export default function EditDeal({ match }) {
 
                     <Form.Item
                       style={{
-                        display: "inline-block",
-                        width: "39%",
-                        marginLeft: "2%",
+                        display: 'inline-block',
+                        width: '39%',
+                        marginLeft: '2%',
                       }}
                       rules={[
                         {
                           required: true,
-                          message: "select bank state!",
+                          message: 'select bank state!',
                         },
                       ]}
                     >
@@ -577,19 +577,19 @@ export default function EditDeal({ match }) {
                         suffixIcon={
                           <DownOutlined
                             style={{
-                              strokeWidth: "50",
-                              color: "#ed1450",
+                              strokeWidth: '50',
+                              color: '#ed1450',
                             }}
                           />
                         }
                         placeholder="state"
                         value={sourceStateInput}
-                        onChange={(value) => {
+                        onChange={value => {
                           setSourceStateInput(value);
                         }}
                       >
                         {sourceStatesToRender &&
-                          sourceStatesToRender.map((state) => (
+                          sourceStatesToRender.map(state => (
                             <Option key={state} value={state}>
                               {state}
                             </Option>
@@ -601,29 +601,29 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select bank name!",
+                        message: 'please select bank name!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="bank name"
                       value={sourceBankInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setSourceBankInput(value);
                       }}
                     >
                       {sourceBanksToRender &&
-                        sourceBanksToRender.map((bank) => (
+                        sourceBanksToRender.map(bank => (
                           <Option key={bank} value={bank}>
                             {bank}
                           </Option>
@@ -635,29 +635,29 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select account type!",
+                        message: 'please select account type!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="account type"
                       value={sourceAccountInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setSourceAccountInput(value);
                       }}
                     >
                       {account_types &&
-                        account_types.map((account) => (
+                        account_types.map(account => (
                           <Option key={account} value={account}>
                             {account}
                           </Option>
@@ -668,29 +668,29 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select account age!",
+                        message: 'please select account age!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="account age"
                       value={sourceAccountAgeInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setSourceAccountAgeInput(value);
                       }}
                     >
                       {account_age &&
-                        account_age.map((age) => (
+                        account_age.map(age => (
                           <Option key={age} value={age}>
                             {age}
                           </Option>
@@ -703,32 +703,32 @@ export default function EditDeal({ match }) {
                 </>
               )}
 
-              {selectedSource === "giftcard" && (
+              {selectedSource === 'giftcard' && (
                 <>
                   <Form.Item
                     name="source_card_type"
                     rules={[
                       {
                         required: true,
-                        message: "please select giftcard type!",
+                        message: 'please select giftcard type!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="giftcard type"
                     >
                       {card_types &&
-                        card_types.map((card) => (
+                        card_types.map(card => (
                           <Option key={card} value={card}>
                             {card}
                           </Option>
@@ -741,25 +741,25 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select giftcard brand!",
+                        message: 'please select giftcard brand!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="giftcard brand"
                     >
                       {card_brands &&
-                        card_brands.map((brand) => (
+                        card_brands.map(brand => (
                           <Option key={brand} value={brand}>
                             {brand}
                           </Option>
@@ -775,25 +775,25 @@ export default function EditDeal({ match }) {
                   rules={[
                     {
                       required: true,
-                      message: "please select deal destination!",
+                      message: 'please select deal destination!',
                     },
                   ]}
                 >
                   <Select
                     disabled
                     style={{
-                      width: "calc(100% - 30px)",
+                      width: 'calc(100% - 30px)',
                     }}
                     suffixIcon={
                       <DownOutlined
                         style={{
-                          strokeWidth: "50",
-                          color: "#ed1450",
+                          strokeWidth: '50',
+                          color: '#ed1450',
                         }}
                       />
                     }
                     placeholder="select destination"
-                    onChange={(value) => {
+                    onChange={value => {
                       handleDestinationSelect(value);
                     }}
                   >
@@ -822,35 +822,35 @@ export default function EditDeal({ match }) {
                 </div>
               </div>
 
-              {(selectedDestination === "bitcoin" ||
-                selectedDestination === "ethereum" ||
-                selectedDestination === "dogecoin" ||
-                selectedDestination === "litecoin") && (
+              {(selectedDestination === 'bitcoin' ||
+                selectedDestination === 'ethereum' ||
+                selectedDestination === 'dogecoin' ||
+                selectedDestination === 'litecoin') && (
                 <>
                   <Form.Item
                     name="destination_wallet_type"
                     rules={[
                       {
                         required: true,
-                        message: "please select wallet type!",
+                        message: 'please select wallet type!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="wallet type"
                     >
                       {wallet_types &&
-                        wallet_types.map((wallet) => (
+                        wallet_types.map(wallet => (
                           <Option key={wallet} value={wallet}>
                             {wallet}
                           </Option>
@@ -863,25 +863,25 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select exchange!",
+                        message: 'please select exchange!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="exchange"
                     >
                       {exchanges &&
-                        exchanges.map((exchange) => (
+                        exchanges.map(exchange => (
                           <Option key={exchange} value={exchange}>
                             {exchange}
                           </Option>
@@ -892,29 +892,29 @@ export default function EditDeal({ match }) {
                   <Form.Item
                     rules={[
                       {
-                        message: "please select wallet age!",
+                        message: 'please select wallet age!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="wallet age"
                       value={destinationWalletAgeInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setDestinationWalletAgeInput(value);
                       }}
                     >
                       {wallet_age &&
-                        wallet_age.map((age) => (
+                        wallet_age.map(age => (
                           <Option key={age} value={age}>
                             {age}
                           </Option>
@@ -927,16 +927,16 @@ export default function EditDeal({ match }) {
                 </>
               )}
 
-              {selectedDestination === "bank fund" && (
+              {selectedDestination === 'bank fund' && (
                 <>
                   <Form.Item style={{ marginBottom: 0 }}>
                     <Form.Item
                       name="destination_country"
-                      style={{ display: "inline-block", width: "39%" }}
+                      style={{ display: 'inline-block', width: '39%' }}
                       rules={[
                         {
                           required: true,
-                          message: "select bank country!",
+                          message: 'select bank country!',
                         },
                       ]}
                     >
@@ -944,8 +944,8 @@ export default function EditDeal({ match }) {
                         suffixIcon={
                           <DownOutlined
                             style={{
-                              strokeWidth: "50",
-                              color: "#ed1450",
+                              strokeWidth: '50',
+                              color: '#ed1450',
                             }}
                           />
                         }
@@ -953,7 +953,7 @@ export default function EditDeal({ match }) {
                         onChange={onDestinationBankCountryChange}
                       >
                         {countries &&
-                          countries.map((country) => (
+                          countries.map(country => (
                             <Option key={country} value={country}>
                               {country}
                             </Option>
@@ -963,14 +963,14 @@ export default function EditDeal({ match }) {
 
                     <Form.Item
                       style={{
-                        display: "inline-block",
-                        width: "39%",
-                        marginLeft: "2%",
+                        display: 'inline-block',
+                        width: '39%',
+                        marginLeft: '2%',
                       }}
                       rules={[
                         {
                           required: true,
-                          message: "select bank state!",
+                          message: 'select bank state!',
                         },
                       ]}
                     >
@@ -978,19 +978,19 @@ export default function EditDeal({ match }) {
                         suffixIcon={
                           <DownOutlined
                             style={{
-                              strokeWidth: "50",
-                              color: "#ed1450",
+                              strokeWidth: '50',
+                              color: '#ed1450',
                             }}
                           />
                         }
                         placeholder="state"
                         value={destinationStateInput}
-                        onChange={(value) => {
+                        onChange={value => {
                           setDestinationStateInput(value);
                         }}
                       >
                         {destinationStatesToRender &&
-                          destinationStatesToRender.map((state) => (
+                          destinationStatesToRender.map(state => (
                             <Option key={state} value={state}>
                               {state}
                             </Option>
@@ -1002,29 +1002,29 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select bank name!",
+                        message: 'please select bank name!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="bank name"
                       value={destinationBankInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setDestinationBankInput(value);
                       }}
                     >
                       {destinationBanksToRender &&
-                        destinationBanksToRender.map((bank) => (
+                        destinationBanksToRender.map(bank => (
                           <Option key={bank} value={bank}>
                             {bank}
                           </Option>
@@ -1036,29 +1036,29 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select account type!",
+                        message: 'please select account type!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="account type"
                       value={destinationAccountInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setDestinationAccountInput(value);
                       }}
                     >
                       {account_types &&
-                        account_types.map((account) => (
+                        account_types.map(account => (
                           <Option key={account} value={account}>
                             {account}
                           </Option>
@@ -1069,29 +1069,29 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select account age!",
+                        message: 'please select account age!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="account age"
                       value={destinationAccountAgeInput}
-                      onChange={(value) => {
+                      onChange={value => {
                         setDestinationAccountAgeInput(value);
                       }}
                     >
                       {account_age &&
-                        account_age.map((age) => (
+                        account_age.map(age => (
                           <Option key={age} value={age}>
                             {age}
                           </Option>
@@ -1104,32 +1104,32 @@ export default function EditDeal({ match }) {
                 </>
               )}
 
-              {selectedDestination === "giftcard" && (
+              {selectedDestination === 'giftcard' && (
                 <>
                   <Form.Item
                     name="destination_card_type"
                     rules={[
                       {
                         required: true,
-                        message: "please select giftcard type!",
+                        message: 'please select giftcard type!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="giftcard type"
                     >
                       {card_types &&
-                        card_types.map((card) => (
+                        card_types.map(card => (
                           <Option key={card} value={card}>
                             {card}
                           </Option>
@@ -1142,25 +1142,25 @@ export default function EditDeal({ match }) {
                     rules={[
                       {
                         required: true,
-                        message: "please select giftcard brand!",
+                        message: 'please select giftcard brand!',
                         whitespace: true,
                       },
                     ]}
-                    style={{ width: "80%" }}
+                    style={{ width: '80%' }}
                   >
                     <Select
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
                       placeholder="giftcard brand"
                     >
                       {card_brands &&
-                        card_brands.map((brand) => (
+                        card_brands.map(brand => (
                           <Option key={brand} value={brand}>
                             {brand}
                           </Option>
@@ -1170,7 +1170,7 @@ export default function EditDeal({ match }) {
                 </>
               )}
 
-              <Divider style={{ fontSize: "14px", color: "#999" }}>
+              <Divider style={{ fontSize: '14px', color: '#999' }}>
                 range & rate
               </Divider>
 
@@ -1180,13 +1180,13 @@ export default function EditDeal({ match }) {
                     label="currency"
                     name="currency"
                     style={{
-                      display: "inline-block",
-                      width: "calc(49% - 15px)",
+                      display: 'inline-block',
+                      width: 'calc(49% - 15px)',
                     }}
                     rules={[
                       {
                         required: true,
-                        message: "please specify currency!",
+                        message: 'please specify currency!',
                       },
                     ]}
                   >
@@ -1194,8 +1194,8 @@ export default function EditDeal({ match }) {
                       suffixIcon={
                         <DownOutlined
                           style={{
-                            strokeWidth: "50",
-                            color: "#ed1450",
+                            strokeWidth: '50',
+                            color: '#ed1450',
                           }}
                         />
                       }
@@ -1211,19 +1211,19 @@ export default function EditDeal({ match }) {
                     name="rate"
                     label="rate (%)"
                     style={{
-                      display: "inline-block",
-                      width: "calc(49% - 15px)",
-                      marginLeft: "2%",
+                      display: 'inline-block',
+                      width: 'calc(49% - 15px)',
+                      marginLeft: '2%',
                     }}
                     rules={[
                       {
                         required: true,
-                        message: "input rate!",
+                        message: 'input rate!',
                       },
                     ]}
                   >
                     <InputNumber
-                      style={{ width: "100%" }}
+                      style={{ width: '100%' }}
                       min={0}
                       max={100}
                       placeholder="0"
@@ -1237,7 +1237,7 @@ export default function EditDeal({ match }) {
                   >
                     <div
                       className="question-tooltip"
-                      style={{ marginTop: "40px" }}
+                      style={{ marginTop: '40px' }}
                     >
                       ?
                     </div>
@@ -1246,7 +1246,7 @@ export default function EditDeal({ match }) {
               </div>
 
               <Form.Item
-                style={{ marginBottom: 0, width: "calc(100% - 30px)" }}
+                style={{ marginBottom: 0, width: 'calc(100% - 30px)' }}
               >
                 <Form.Item
                   label="min."
@@ -1254,18 +1254,18 @@ export default function EditDeal({ match }) {
                   rules={[
                     {
                       required: true,
-                      message: "input min!",
+                      message: 'input min!',
                     },
                   ]}
-                  style={{ display: "inline-block", width: "49%" }}
+                  style={{ display: 'inline-block', width: '49%' }}
                 >
                   <InputNumber
                     placeholder="min. amount"
-                    style={{ width: "100%" }}
-                    formatter={(value) =>
-                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    style={{ width: '100%' }}
+                    formatter={value =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     }
-                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />
                 </Form.Item>
 
@@ -1275,27 +1275,27 @@ export default function EditDeal({ match }) {
                   rules={[
                     {
                       required: true,
-                      message: "input max!",
+                      message: 'input max!',
                     },
                   ]}
                   style={{
-                    display: "inline-block",
-                    width: "49%",
-                    marginLeft: "2%",
+                    display: 'inline-block',
+                    width: '49%',
+                    marginLeft: '2%',
                   }}
                 >
                   <InputNumber
                     placeholder="max. amount"
-                    style={{ width: "100%" }}
-                    formatter={(value) =>
-                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                    style={{ width: '100%' }}
+                    formatter={value =>
+                      `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
                     }
-                    parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />
                 </Form.Item>
               </Form.Item>
 
-              <Divider style={{ fontSize: "14px", color: "#999" }}>
+              <Divider style={{ fontSize: '14px', color: '#999' }}>
                 discussion & linkup
               </Divider>
               <div className="form-row">
@@ -1305,19 +1305,19 @@ export default function EditDeal({ match }) {
                   rules={[
                     {
                       required: true,
-                      message: "please specify discussion medium!",
+                      message: 'please specify discussion medium!',
                     },
                   ]}
                 >
                   <Select
                     style={{
-                      width: "calc(100% - 30px)",
+                      width: 'calc(100% - 30px)',
                     }}
                     suffixIcon={
                       <DownOutlined
                         style={{
-                          strokeWidth: "50",
-                          color: "#ed1450",
+                          strokeWidth: '50',
+                          color: '#ed1450',
                         }}
                       />
                     }
@@ -1348,13 +1348,13 @@ export default function EditDeal({ match }) {
                 rules={[
                   {
                     required: true,
-                    message: "please provide discussion detail!",
+                    message: 'please provide discussion detail!',
                   },
                 ]}
               >
                 <TextArea
                   style={{
-                    width: "calc(100% - 30px)",
+                    width: 'calc(100% - 30px)',
                   }}
                   placeholder="kindly share details on how discussion will be done."
                   autoSize={{ minRows: 3, maxRows: 5 }}
@@ -1367,13 +1367,13 @@ export default function EditDeal({ match }) {
                 rules={[
                   {
                     required: true,
-                    message: "please provide notes!",
+                    message: 'please provide notes!',
                   },
                 ]}
               >
                 <TextArea
                   style={{
-                    width: "calc(100% - 30px)",
+                    width: 'calc(100% - 30px)',
                   }}
                   placeholder="please provide more information regarding this deal, like the range and remittance rate. summarise the details of your offer in simple terms. please try to be as concise as possible."
                   autoSize={{ minRows: 4, maxRows: 7 }}
@@ -1387,13 +1387,13 @@ export default function EditDeal({ match }) {
                   rules={[
                     {
                       required: true,
-                      message: "input min score!",
+                      message: 'input min score!',
                     },
                   ]}
                 >
                   <InputNumber
                     style={{
-                      width: "calc(100% - 30px)",
+                      width: 'calc(100% - 30px)',
                     }}
                     min={1}
                     max={5}
@@ -1413,7 +1413,7 @@ export default function EditDeal({ match }) {
 
               <Form.Item>
                 <Button
-                  style={{ marginTop: "10px" }}
+                  style={{ marginTop: '10px' }}
                   loading={buttonLoading}
                   type="primary"
                   htmlType="submit"
@@ -1422,7 +1422,7 @@ export default function EditDeal({ match }) {
                 </Button>
                 <Popconfirm
                   placement="right"
-                  title={"delete this deal?"}
+                  title={'delete this deal?'}
                   onConfirm={() => {
                     setDeal(null);
                     deleteDeal(deal?.d_id);
@@ -1432,7 +1432,7 @@ export default function EditDeal({ match }) {
                 >
                   <div
                     className="grey-button-nobg"
-                    style={{ display: "inline-flex", marginLeft: "15px" }}
+                    style={{ display: 'inline-flex', marginLeft: '15px' }}
                   >
                     delete
                   </div>

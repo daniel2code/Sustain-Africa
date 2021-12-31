@@ -23,6 +23,10 @@
     padding: 10px;
     margin-bottom: 20px;
 
+    &-disabed {
+      border-color: #dddddd;
+    }
+
     &-btn {
       padding: 1px 10px;
       cursor: pointer;

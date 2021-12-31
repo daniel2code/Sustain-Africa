@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from "react";
-import { Select, Button, Modal, Input, message } from "antd";
-import { Divider } from "antd";
-import { SwapOutlined, DownOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { Select, Button, Modal, Input, message } from 'antd';
+import { Divider } from 'antd';
+import { SwapOutlined, DownOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from 'react-redux';
 
-import Loader from "./../../components/Loader/Loader";
-import { instance } from "./../../utils/API";
-import DealItem from "./../../components/DealItem/DealItem";
-import Footer from "./../../components/Footer/Footer.jsx";
-import "./DealsList.scss";
-import { ReactComponent as EmptyImage } from "./../../assets/empty.svg";
-import { setDealsList, setHasError } from "./../../redux/data/data.actions";
+import Loader from './../../components/Loader/Loader';
+import { instance } from './../../utils/API';
+import DealItem from './../../components/DealItem/DealItem';
+import Footer from './../../components/Footer/Footer.jsx';
+import './DealsList.scss';
+import { ReactComponent as EmptyImage } from './../../assets/empty.svg';
+import { setDealsList, setHasError } from './../../redux/data/data.actions';
 
 const { Option } = Select;
 
 export default function DealsList() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [filterValue, setFilterValue] = useState(null);
-  const [filterText, setFilterText] = useState("filter by: newest first");
+  const [filterText, setFilterText] = useState('filter by: newest first');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [locationInput, setLocationInput] = useState("");
-  const [source, setSource] = useState("all");
-  const [destination, setDestination] = useState("all");
+  const [locationInput, setLocationInput] = useState('');
+  const [source, setSource] = useState('all');
+  const [destination, setDestination] = useState('all');
   const dispatch = useDispatch();
-  const dealsList = useSelector((state) => state.data.dealsList);
+  const dealsList = useSelector(state => state.data.dealsList);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,14 +34,14 @@ export default function DealsList() {
     //eslint-disable-next-line
   }, []);
 
-  const fetchDeals = async (
+  const fetchDeals = (
     page = 1,
     newest = 1,
     low2high = 0,
     high2low = 0,
-    location = "",
-    source = "all",
-    destination = "all",
+    location = '',
+    source = 'all',
+    destination = 'all',
     loadMore = null
   ) => {
     instance
@@ -65,8 +65,8 @@ export default function DealsList() {
       });
   };
 
-  const handleLoadMore = (fetchedData) => {
-    let fetchedDataCopy = fetchedData;
+  const handleLoadMore = fetchedData => {
+    const fetchedDataCopy = fetchedData;
 
     const oldDataArray = dealsList?.data;
     const fetchedDataArray = fetchedData?.data;
@@ -79,11 +79,11 @@ export default function DealsList() {
     setLoadingMore(false);
   };
 
-  const onFilterChange = (value) => {
+  const onFilterChange = value => {
     setFilterValue(null);
-    if (value === "newest") {
-      setLocationInput("");
-      setFilterText("filter by: newest first");
+    if (value === 'newest') {
+      setLocationInput('');
+      setFilterText('filter by: newest first');
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -91,12 +91,12 @@ export default function DealsList() {
         0,
         0,
         locationInput,
-        source ? source : "all",
-        destination ? destination : "all"
+        source ? source : 'all',
+        destination ? destination : 'all'
       );
-    } else if (value === "highToLow") {
-      setLocationInput("");
-      setFilterText("filter by score: high to low");
+    } else if (value === 'highToLow') {
+      setLocationInput('');
+      setFilterText('filter by score: high to low');
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -104,12 +104,12 @@ export default function DealsList() {
         0,
         1,
         locationInput,
-        source ? source : "all",
-        destination ? destination : "all"
+        source ? source : 'all',
+        destination ? destination : 'all'
       );
-    } else if (value === "lowToHigh") {
-      setLocationInput("");
-      setFilterText("filter by score: low to high");
+    } else if (value === 'lowToHigh') {
+      setLocationInput('');
+      setFilterText('filter by score: low to high');
       dispatch(setDealsList(null));
       fetchDeals(
         1,
@@ -117,16 +117,16 @@ export default function DealsList() {
         1,
         0,
         locationInput,
-        source ? source : "all",
-        destination ? destination : "all"
+        source ? source : 'all',
+        destination ? destination : 'all'
       );
-    } else if (value === "location") {
+    } else if (value === 'location') {
       showModal();
     } else {
     }
   };
 
-  const onLocationInputChange = (value) => {
+  const onLocationInputChange = value => {
     setLocationInput(value);
   };
 
@@ -144,8 +144,8 @@ export default function DealsList() {
       0,
       0,
       locationInput,
-      source ? source : "all",
-      destination ? destination : "all"
+      source ? source : 'all',
+      destination ? destination : 'all'
     );
   };
 
@@ -155,11 +155,11 @@ export default function DealsList() {
 
   const onInstrumentChange = (type, value) => {
     dispatch(setDealsList(null));
-    if (value === "all") {
+    if (value === 'all') {
       fetchDeals();
-      setSource("all");
-      setDestination("all");
-    } else if (type === "source") {
+      setSource('all');
+      setDestination('all');
+    } else if (type === 'source') {
       setSource(value);
       fetchDeals(
         1,
@@ -168,10 +168,10 @@ export default function DealsList() {
         0,
         locationInput,
         value,
-        destination ? destination : "all"
+        destination ? destination : 'all'
       );
     } else {
-      fetchDeals(1, 1, 0, 0, locationInput, source ? source : "all", value);
+      fetchDeals(1, 1, 0, 0, locationInput, source ? source : 'all', value);
       setDestination(value);
     }
   };
@@ -189,7 +189,7 @@ export default function DealsList() {
       >
         <Input
           placeholder="enter location"
-          onChange={(event) => {
+          onChange={event => {
             onLocationInputChange(event.target.value);
           }}
         />
@@ -224,16 +224,16 @@ export default function DealsList() {
                 suffixIcon={
                   <DownOutlined
                     style={{
-                      strokeWidth: "50",
-                      stroke: "#ed1450",
+                      strokeWidth: '50',
+                      stroke: '#ed1450',
                     }}
                   />
                 }
                 placeholder="select instruments"
                 defaultValue="all"
                 value={source}
-                onChange={(value) => {
-                  onInstrumentChange("source", value);
+                onChange={value => {
+                  onInstrumentChange('source', value);
                 }}
               >
                 <Option value="all">all</Option>
@@ -255,9 +255,9 @@ export default function DealsList() {
               <div className="arrows">
                 <SwapOutlined
                   style={{
-                    fontSize: "18px",
-                    strokeWidth: "15",
-                    stroke: "#ed1450",
+                    fontSize: '18px',
+                    strokeWidth: '15',
+                    stroke: '#ed1450',
                   }}
                 />
               </div>
@@ -266,16 +266,16 @@ export default function DealsList() {
                 suffixIcon={
                   <DownOutlined
                     style={{
-                      stroke: "#ed1450",
-                      strokeWidth: "50",
+                      stroke: '#ed1450',
+                      strokeWidth: '50',
                     }}
                   />
                 }
                 placeholder="select instruments"
                 defaultValue="all"
                 value={destination}
-                onChange={(value) => {
-                  onInstrumentChange("destination", value);
+                onChange={value => {
+                  onInstrumentChange('destination', value);
                 }}
               >
                 <Option value="all">all</Option>
@@ -316,7 +316,7 @@ export default function DealsList() {
               <div className="filter-text">{filterText}</div>
 
               {dealsList &&
-                dealsList?.data.map((item) => (
+                dealsList?.data.map(item => (
                   <DealItem item={item} key={`${item.id}${Math.random()}`} />
                 ))}
             </div>
@@ -340,12 +340,12 @@ export default function DealsList() {
                           0,
                           0,
                           locationInput,
-                          source ? source : "all",
-                          destination ? destination : "all",
+                          source ? source : 'all',
+                          destination ? destination : 'all',
                           true
                         );
                       }}
-                      style={{ fontWeight: "500" }}
+                      style={{ fontWeight: '500' }}
                     >
                       load more
                     </Button>
