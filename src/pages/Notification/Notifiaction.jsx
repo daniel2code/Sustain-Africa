@@ -22,7 +22,7 @@ export default function Notification() {
 
         // to be kept
         const notif = res.data.notification_data.filter(
-          cur => userId === cur.receiver || cur.rejected
+          cur => userId === cur.receiver || cur.rejected || cur.accepted
         );
         console.log(notif);
 

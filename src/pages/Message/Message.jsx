@@ -1,35 +1,35 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Avatar, Input, Button } from "antd";
+import React, { useState, useEffect, useRef } from 'react';
+import { Avatar, Input, Button } from 'antd';
 import {
   LikeOutlined,
   DislikeOutlined,
   RightOutlined,
-} from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import { StreamChat } from "stream-chat";
-import { format } from "timeago.js";
+} from '@ant-design/icons';
+import { useSelector } from 'react-redux';
+import { StreamChat } from 'stream-chat';
+import { format } from 'timeago.js';
 
-import Loader from "./../../components/Loader/Loader";
-import "./message.scss";
-import axios from "axios";
+import Loader from './../../components/Loader/Loader';
+import './message.scss';
+import axios from 'axios';
 
 const { TextArea } = Input;
 
 export default function Message() {
   const messagesEndRef = useRef(null);
-  const username = useSelector((state) => state?.user?.userData?.user_name);
+  const username = useSelector(state => state?.user?.userData?.user_name);
   const [chatChannel, setChatChannel] = useState(null);
   const [messages, setMessages] = useState([]);
   const [messagesBackup, setMessagesBackup] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [messageInput, setMessageInput] = useState("");
+  const [messageInput, setMessageInput] = useState('');
 
   useEffect(() => {
     initChat();
     // eslint-disable-next-line
   }, []);
 
-  const client = new StreamChat("twtrsx9dd48k");
+  const client = new StreamChat('twtrsx9dd48k');
 
   const scrollToMessagesEnd = () => {
     messagesEndRef.current?.scrollIntoView();
@@ -54,8 +54,8 @@ export default function Message() {
       token
     );
 
-    let channel = client.channel("messaging", "sustain-test-1", {
-      name: "sustain test",
+    const channel = client.channel('messaging', 'sustain-test-1', {
+      name: 'sustain test',
       members: [],
       created_by_id: username,
       session: 8,
@@ -71,20 +71,20 @@ export default function Message() {
     setLoading(false);
     scrollToMessagesEnd();
 
-    channel.on("message.new", (event) => {
+    channel.on('message.new', event => {
       updateMessages(event.message);
     });
   };
 
-  const handleSendMessage = async () => {
+  const handleSendMessage = () => {
     setMessagesBackup(messages);
     chatChannel.sendMessage({
       text: messageInput,
     });
-    setMessageInput("");
+    setMessageInput('');
   };
 
-  const updateMessages = (newMessage) => {
+  const updateMessages = newMessage => {
     let messageCopy = messages;
     if (messages === []) {
       messageCopy = messagesBackup;
@@ -104,9 +104,9 @@ export default function Message() {
                 <div className="avatar">
                   <Avatar
                     style={{
-                      color: "#14a014",
-                      backgroundColor: "#a9fca9",
-                      fontWeight: "500",
+                      color: '#14a014',
+                      backgroundColor: '#a9fca9',
+                      fontWeight: '500',
                     }}
                   >
                     O
@@ -114,13 +114,13 @@ export default function Message() {
                 </div>
                 <div>
                   <div className="username-green">
-                    officerknow{" "}
-                    <span style={{ color: "#14a014" }}>&#9679;</span>
+                    officerknow{' '}
+                    <span style={{ color: '#14a014' }}>&#9679;</span>
                   </div>
                   <div className="status">waiting to accept..</div>
                 </div>
               </div>
-              
+
               <div className="right">
                 <div className="like-dislike no-margin-top">
                   <span className="like">
@@ -145,7 +145,7 @@ export default function Message() {
         <div className="message-content">
           <div className="message-content-container">
             <>
-              {messages.map((message) => (
+              {messages.map(message => (
                 <MessageItem
                   key={message?.id}
                   message={message}
@@ -165,7 +165,7 @@ export default function Message() {
               autoSize={{ minRows: 2, maxRows: 4 }}
               placeholder="type a message..."
               value={messageInput}
-              onChange={(e) => {
+              onChange={e => {
                 setMessageInput(e.target.value);
               }}
             />
@@ -203,14 +203,14 @@ const MessageItem = ({ message, username }) => {
     <div className="message-item-container">
       <div
         className={`message-item-wrapper ${
-          message?.user?.id === username ? "right" : ""
+          message?.user?.id === username ? 'right' : ''
         }`}
       >
         {message.text}
       </div>
       <div
         className={`message-item-info ${
-          message?.user?.id === username ? "right" : ""
+          message?.user?.id === username ? 'right' : ''
         }`}
       >
         {message?.user?.name} &#9679; {format(message?.created_at)}

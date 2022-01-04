@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import './App.css';
+import './App.scss';
 import { Layout, message } from 'antd';
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';

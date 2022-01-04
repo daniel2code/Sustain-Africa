@@ -3,15 +3,13 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format, register } from 'timeago.js';
 import locale from '../../utils/timeagoLocale';
-import { /* message, Tooltip, Button, */ Modal, Avatar } from 'antd';
-// import {
-//   LikeOutlined,
-//   DislikeOutlined,
-//   ArrowRightOutlined,
-//   EllipsisOutlined,
-//   ExclamationCircleOutlined,
-// } from '@ant-design/icons';
+import { /* message, Tooltip,*/ Modal, Avatar } from 'antd';
 import { bearerInstance } from '../../utils/API';
+import { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
+import { ExclamationCircleOutlined } from '@ant-design/icons';
+
+const { confirm } = Modal;
 
 //  d_r - discussion request  - handled
 //  d_c - discussion completed - handled
@@ -25,7 +23,38 @@ register('sus-AF', locale);
 const NotificationCard = ({ data }) => {
   const user = useSelector(state => state.user.userData);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [view, setView] = useState(data.viewed === 1 ? true : false);
+  const [view, setView] = useState(false);
+  const [stamp, setStamp] = useState();
+
+  const history = useHistory();
+
+  useEffect(() => {
+    if (user.id === data.receiver) setStamp(data.created_at);
+    else if (user.id === data.sender) {
+      if (data.rejected === 1) setStamp(data.rejected_at);
+      else if (data.accepted === 1) setStamp(data.accepted_at);
+    }
+  }, [
+    data.accepted,
+    data.accepted_at,
+    data.rejected,
+    data.rejected_at,
+    data.sender,
+    data.created_at,
+    data.receiver,
+    user.id,
+  ]);
+
+  useEffect(() => {
+    if (user.id === data.receiver) setView(data.viewed_receiver === 1);
+    else if (user.id === data.sender) setView(data.viewed_sender === 1);
+  }, [
+    user.id,
+    data.receiver,
+    data.sender,
+    data.viewed_receiver,
+    data.viewed_sender,
+  ]);
 
   const dealWriteUp = useMemo(() => {
     return {
@@ -41,17 +70,17 @@ const NotificationCard = ({ data }) => {
   const viewed = () => {
     const notData = new FormData();
     notData.append('notification_id', data.id);
-    notData.append('sender_viewed', '1');
-    notData.append('receiver_viewed', '');
+    notData.append('viewed', '1');
     notData.append('accepted', '');
     notData.append('rejected', '');
     notData.append('reviewed', '');
 
-    if (!data.viewed)
+    if (!view)
       bearerInstance
         .post(`/update_notification`, notData)
         .then(res => {
           setView(true);
+          console.log('came here');
         })
         .catch(err => {
           console.log(err);
@@ -59,12 +88,53 @@ const NotificationCard = ({ data }) => {
   };
 
   const handleOk = () => {
-    setIsModalVisible(false);
+    const notData = new FormData();
+    notData.append('notification_id', data.id);
+    notData.append('viewed', '');
+    notData.append('accepted', '1');
+    notData.append('rejected', '');
+    notData.append('reviewed', '');
+
+    bearerInstance
+      .post(`/update_notification`, notData)
+      .then(res => {
+        history.push('/message');
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   const handleCancel = () => {
     setIsModalVisible(false);
   };
+
+  function showPromiseConfirm() {
+    confirm({
+      title: 'Are you sure you want to reject this discussion reuest?',
+      icon: <ExclamationCircleOutlined />,
+      // content:
+      //   'When clicked the OK button, this dialog will be closed after 1 second',
+      onOk() {
+        return new Promise((resolve, reject) => {
+          // setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+          const notData = new FormData();
+          notData.append('notification_id', data.id);
+          notData.append('viewed', '');
+          notData.append('accepted', '');
+          notData.append('rejected', '1');
+          notData.append('reviewed', '');
+
+          resolve(bearerInstance.post(`/update_notification`, notData));
+        })
+          .then(res => {
+            history.replace('/notifications');
+          })
+          .catch(() => console.log('Oops errors!'));
+      },
+      onCancel() {},
+    });
+  }
 
   return (
     <>
@@ -79,16 +149,24 @@ const NotificationCard = ({ data }) => {
               }}
             >
               {data.sender_details[0].user_name_front.charAt(0).toUpperCase()}
-            </Avatar>
+            </Avatar>{' '}
+            {data.sender_details[0].user_name_front}{' '}
+            <span style={{ color: '#14a014' }}>&#9679;</span>
           </div>
         }
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+        <p>
+          start a discussion with{' '}
+          <Link
+            to={`/user/${data.sender}/profile`}
+            className="notification-link username-green"
+          >
+            @{data.sender_details[0].user_name_front}
+          </Link>
+        </p>
       </Modal>
 
       <div
@@ -127,7 +205,7 @@ const NotificationCard = ({ data }) => {
           </div>
         )}
 
-        {data.type === 'd_r' && data.rejected && user.id === data.sender ? (
+        {data.type === 'd_r' && user.id === data.sender ? (
           <div>
             <p style={{ marginBottom: 0 }}>
               <Link
@@ -136,7 +214,8 @@ const NotificationCard = ({ data }) => {
               >
                 @{data.receiver_details[0].user_name_front}
               </Link>{' '}
-              {dealWriteUp['d_r_r']}
+              {data.rejected ? dealWriteUp['d_r_r'] : null}
+              {data.accepted ? dealWriteUp['d_r_a'] : null}
               <Link
                 to={`/deal/${data.deal_id}`}
                 className="notification-link username-green"
@@ -147,7 +226,7 @@ const NotificationCard = ({ data }) => {
           </div>
         ) : null}
 
-        {data.type === 'd_c' && (
+        {/* {data.type === 'd_c' && (
           <div>
             <p>
               <Link
@@ -176,7 +255,7 @@ const NotificationCard = ({ data }) => {
               completed successfully
             </p>
           </div>
-        )}
+        )} */}
 
         <div style={{ display: 'flex' }}>
           {((data.type === 'd_r' && data.receiver === user.id) ||
@@ -202,6 +281,7 @@ const NotificationCard = ({ data }) => {
                 }`}
                 // disabled when the deal is
                 disabled={data.accepted || data.rejected}
+                onClick={showPromiseConfirm}
               >
                 reject
               </button>
@@ -230,7 +310,7 @@ const NotificationCard = ({ data }) => {
               marginLeft: 'auto',
             }}
           >
-            {format(data?.created_at, 'sus-AF')}
+            {format(stamp, 'sus-AF')}
           </span>
         </div>
       </div>
