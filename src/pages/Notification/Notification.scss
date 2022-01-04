@@ -20,11 +20,13 @@
 
   &-card {
     border: 1px solid #ed1450;
+    background-color: #ffe3eb;
     padding: 10px;
     margin-bottom: 20px;
 
-    &-disabed {
+    &-disabled {
       border-color: #dddddd;
+      background-color: #ffffff;
     }
 
     &-btn {
@@ -54,6 +56,18 @@
 
     &:hover {
       color: #14a014;
+    }
+  }
+
+  &-disabled {
+    background: #dddddd;
+    border-color: #dddddd;
+    cursor: not-allowed;
+
+    &-rej {
+      color: #dddddd;
+      border-color: #dddddd;
+      cursor: not-allowed;
     }
   }
 }

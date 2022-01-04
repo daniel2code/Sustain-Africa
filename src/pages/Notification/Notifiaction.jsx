@@ -18,21 +18,25 @@ export default function Notification() {
     bearerInstance
       .get('/fetch_all_notifications')
       .then(res => {
-        console.log(res.data.notification_data);
+        console.log(res.data.notification_data, userId);
 
-        setNotification(res.data.notification_data);
+        // to be kept
+        const notif = res.data.notification_data.filter(
+          cur => userId === cur.receiver || cur.rejected
+        );
+        console.log(notif);
+
+        setNotification(notif);
       })
-      .catch(err => {})
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [userId]);
 
   //  d_r - discussion request - only reciever sees this
   //  n_r - new review - only reciever see this
   //  c_r - connection request  - only reciever sees this
 
-  //  d_r_r - discussion request rejected - only sender see this
   //  c_a - connection request accepted - only sender see this
 
   //  d_c - discussion completed - both parties sees this
@@ -48,23 +52,18 @@ export default function Notification() {
               <EmptyImage />
             </div>
 
-            <div className="no-result-text">nothing to show here</div>
+            <div className="no-result-text" style={{ fontSize: '16px' }}>
+              no notification here
+            </div>
             {/* <div className="no-result-text-bottom">
                 try another combination
               </div> */}
           </div>
         ) : (
           <div className="notification-body">
-            {notifications?.map(cur =>
-              (cur.type === 'd_r' ||
-                cur.type === 'n_r' ||
-                cur.type === 'c_r') &&
-              userId === cur.sender ? null : (cur.type === 'd_r_r' ||
-                  cur.type === 'c_a') &&
-                userId === cur.receiver ? null : (
-                <NotificationCard key={cur.id} data={cur} />
-              )
-            )}
+            {notifications?.map(cur => (
+              <NotificationCard key={cur.id} data={cur} />
+            ))}
           </div>
         )}
       </div>

@@ -27,14 +27,15 @@ export default function DealItem({ item }) {
     data.append('type', 'd_r');
     data.append('deal_id', item.d_id);
 
+    data.forEach(cur => console.log(cur));
+
     bearerInstance
       .post(`/new_notification`, data)
       .then(res => {
+        console.log(res);
         history.push('/message');
       })
-      .catch(err => {
-        alert(err);
-      });
+      .catch(err => {});
   };
 
   function showDiscussConfirm(user, source, destination, rate) {

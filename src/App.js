@@ -66,8 +66,8 @@ function App() {
       }
 
       if (error?.response?.status === 401) {
-        // logout();
-        return message.warning(error?.response?.data.message);
+        logout();
+        // return message.warning(error?.response?.data.message);
       }
       return Promise.reject(error);
     }
