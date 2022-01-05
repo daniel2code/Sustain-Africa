@@ -113,16 +113,44 @@ const NotificationCard = ({ data }) => {
     confirm({
       title: 'Are you sure you want to reject this discussion reuest?',
       icon: <ExclamationCircleOutlined />,
-      // content:
-      //   'When clicked the OK button, this dialog will be closed after 1 second',
+      content: <></>,
       onOk() {
         return new Promise((resolve, reject) => {
-          // setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
           const notData = new FormData();
           notData.append('notification_id', data.id);
           notData.append('viewed', '');
           notData.append('accepted', '');
           notData.append('rejected', '1');
+          notData.append('reviewed', '');
+
+          resolve(bearerInstance.post(`/update_notification`, notData));
+        })
+          .then(res => {
+            history.replace('/notifications');
+          })
+          .catch(() => console.log('Oops errors!'));
+      },
+      onCancel() {},
+    });
+  }
+
+  function showAcceptConfirm() {
+    confirm({
+      title: (
+        <>
+          {data.sender_details[0].user_name_front}{' '}
+          <span style={{ color: '#14a014' }}>&#9679;</span>
+        </>
+      ),
+      icon: <ExclamationCircleOutlined />,
+      content: <></>,
+      onOk() {
+        return new Promise((resolve, reject) => {
+          const notData = new FormData();
+          notData.append('notification_id', data.id);
+          notData.append('viewed', '');
+          notData.append('accepted', '1');
+          notData.append('rejected', '');
           notData.append('reviewed', '');
 
           resolve(bearerInstance.post(`/update_notification`, notData));
@@ -270,7 +298,7 @@ const NotificationCard = ({ data }) => {
                 disabled={data.accepted || data.rejected}
                 onClick={() => setIsModalVisible(true)}
               >
-                accept
+                {data.accepted === 1 ? 'accepted' : 'accept'}
               </button>
 
               <button
@@ -283,7 +311,7 @@ const NotificationCard = ({ data }) => {
                 disabled={data.accepted || data.rejected}
                 onClick={showPromiseConfirm}
               >
-                reject
+                {data.rejected === 1 ? 'rejected' : 'reject'}
               </button>
             </div>
           )}
