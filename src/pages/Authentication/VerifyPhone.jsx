@@ -1,42 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { Form, Button, message } from "antd";
-import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { Form, Button, message } from 'antd';
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/style.css';
+import { useSelector } from 'react-redux';
 
-import "./style-Auth.scss";
-import { instance } from "./../../utils/API";
+import './style-Auth.scss';
+import { instance } from './../../utils/API';
 
 export default function VerifyPhone({ history }) {
   useEffect(() => {
     if (!registerInfo?.userInfo?.email) {
-      history.push("register");
+      history.push('register');
     }
     //eslint-disable-next-line
   }, []);
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
   const [buttonLoading, setButtonLoading] = useState(false);
-  const registerInfo = useSelector((state) => state.register);
+  const registerInfo = useSelector(state => state.register);
 
-  const handleInputChange = (value) => {
+  const handleInputChange = value => {
     setInput(value);
   };
 
-  const onFinish = async () => {
+  const onFinish = () => {
     setButtonLoading(true);
 
     const data = new FormData();
-    data.append("user_name", registerInfo?.userInfo?.user_name);
-    data.append("user_phone_no", input);
+    data.append('user_name', registerInfo?.userInfo?.user_name);
+    data.append('user_phone_no', input);
 
     instance
-      .post("/register", data)
+      .post('/register', data)
       .then(function (response) {
         if (response?.data?.status) {
           setButtonLoading(false);
           message.success(response?.data?.message);
-          history.push("/");
+          history.push('/');
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
@@ -50,20 +50,20 @@ export default function VerifyPhone({ history }) {
       });
   };
 
-  const skipPhoneVerification = async () => {
+  const skipPhoneVerification = () => {
     setButtonLoading(true);
 
     const data = new FormData();
-    data.append("user_name", registerInfo?.userInfo?.user_name);
-    data.append("skip_phone_no_verification", 1);
+    data.append('user_name', registerInfo?.userInfo?.user_name);
+    data.append('skip_phone_no_verification', 1);
 
     instance
-      .post("/register", data)
+      .post('/register', data)
       .then(function (response) {
         if (response?.data?.status) {
           setButtonLoading(false);
           message.success(response?.data?.message);
-          history.push("/");
+          history.push('/');
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
@@ -92,20 +92,20 @@ export default function VerifyPhone({ history }) {
             onFinish={onFinish}
           >
             <Form.Item
-              style={{ marginBottom: "25px" }}
+              style={{ marginBottom: '25px' }}
               name="email"
-              rules={[{ required: true, message: "phone number required!" }]}
+              rules={[{ required: true, message: 'phone number required!' }]}
             >
               <PhoneInput
-                country={"ng"}
-                onChange={(phone) => {
+                country={'ng'}
+                onChange={phone => {
                   handleInputChange(phone);
                 }}
               />
             </Form.Item>
 
             <div
-              style={{ marginTop: "-10px" }}
+              style={{ marginTop: '-10px' }}
               className="referral"
               onClick={() => {
                 skipPhoneVerification();

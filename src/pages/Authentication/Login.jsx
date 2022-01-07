@@ -1,40 +1,40 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Form, Input, Button, message } from "antd";
-import { useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
+import { useDispatch } from 'react-redux';
 
-import "./style-Auth.scss";
-import { instance } from "./../../utils/API";
-import { setUserData } from "./../../redux/user/user.actions";
+import './style-Auth.scss';
+import { instance } from './../../utils/API';
+import { setUserData } from './../../redux/user/user.actions';
 
 export default function Login({ history }) {
   const [buttonLoading, setButtonLoading] = useState(false);
   const dispatch = useDispatch();
 
-  const onFinish = async (values) => {
+  const onFinish = values => {
     setButtonLoading(true);
     let userData = {};
 
     const { email, password } = values;
 
     const data = new FormData();
-    data.append("user_field", email);
-    data.append("user_password", password);
+    data.append('user_field', email);
+    data.append('user_password', password);
 
     instance
-      .post("/login", data)
+      .post('/login', data)
       .then(function (response) {
         if (response?.data?.status) {
           userData = { ...response?.data?.data, token: response?.data?.token };
           dispatch(setUserData(userData));
-          if (response?.data?.data?.is_email_verified === "0") {
+          if (response?.data?.data?.is_email_verified === '0') {
             requestVerificationCode(
               response?.data?.data?.email,
               response?.data?.data?.user_name
             );
           } else {
-            message.success("login successful");
-            history.push("/");
+            message.success('login successful');
+            history.push('/');
           }
         } else {
           message.error(response?.data?.message);
@@ -49,19 +49,19 @@ export default function Login({ history }) {
       });
   };
 
-  const requestVerificationCode = async (email, username) => {
+  const requestVerificationCode = (email, username) => {
     const data = new FormData();
-    data.append("send_verification", 1);
-    data.append("verify_email", email);
-    data.append("verify_username", username);
+    data.append('send_verification', 1);
+    data.append('verify_email', email);
+    data.append('verify_username', username);
 
     instance
-      .post("/register", data)
+      .post('/register', data)
       .then(function (response) {
         if (response?.data?.status) {
           message.success(response?.data?.message);
           setButtonLoading(false);
-          history.push("/verify-email");
+          history.push('/verify-email');
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
@@ -89,20 +89,20 @@ export default function Login({ history }) {
             onFinish={onFinish}
           >
             <Form.Item
-              style={{ marginBottom: "25px" }}
+              style={{ marginBottom: '25px' }}
               name="email"
               rules={[
-                { required: true, message: "email or username required!" },
+                { required: true, message: 'email or username required!' },
               ]}
             >
               <Input placeholder="username or email" />
             </Form.Item>
             <Form.Item
-              style={{ marginBottom: "25px" }}
+              style={{ marginBottom: '25px' }}
               name="password"
               rules={[
-                { required: true, message: "password required!" },
-                { min: 6, message: "minimum: 6 characters." },
+                { required: true, message: 'password required!' },
+                { min: 6, message: 'minimum: 6 characters.' },
               ]}
             >
               <Input type="password" placeholder="password" />

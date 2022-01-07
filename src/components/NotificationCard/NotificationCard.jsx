@@ -8,6 +8,7 @@ import { bearerInstance } from '../../utils/API';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+// import { showConfirm } from '../../utils/confirm';
 
 const { confirm } = Modal;
 
@@ -22,7 +23,7 @@ register('sus-AF', locale);
 
 const NotificationCard = ({ data }) => {
   const user = useSelector(state => state.user.userData);
-  const [isModalVisible, setIsModalVisible] = useState(false);
+  // const [isModalVisible, setIsModalVisible] = useState(false);
   const [view, setView] = useState(false);
   const [stamp, setStamp] = useState();
 
@@ -87,33 +88,41 @@ const NotificationCard = ({ data }) => {
         });
   };
 
-  const handleOk = () => {
-    const notData = new FormData();
-    notData.append('notification_id', data.id);
-    notData.append('viewed', '');
-    notData.append('accepted', '1');
-    notData.append('rejected', '');
-    notData.append('reviewed', '');
+  // const handleOk = () => {
+  //   const notData = new FormData();
+  //   notData.append('notification_id', data.id);
+  //   notData.append('viewed', '');
+  //   notData.append('accepted', '1');
+  //   notData.append('rejected', '');
+  //   notData.append('reviewed', '');
 
-    bearerInstance
-      .post(`/update_notification`, notData)
-      .then(res => {
-        history.push('/message');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  //   bearerInstance
+  //     .post(`/update_notification`, notData)
+  //     .then(res => {
+  //       history.push('/message');
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // };
 
-  const handleCancel = () => {
-    setIsModalVisible(false);
-  };
+  // const handleCancel = () => {
+  //   setIsModalVisible(false);
+  // };
 
   function showPromiseConfirm() {
     confirm({
-      title: 'Are you sure you want to reject this discussion reuest?',
+      title: (
+        <>
+          reject a discussion request from{' '}
+          <span className="username-green">
+            @{data.sender_details[0].user_name_front}
+          </span>
+          ?
+        </>
+      ),
       icon: <ExclamationCircleOutlined />,
-      content: <></>,
+      content: 'Are you sure you want to reject this discussion request?',
       onOk() {
         return new Promise((resolve, reject) => {
           const notData = new FormData();
@@ -138,12 +147,21 @@ const NotificationCard = ({ data }) => {
     confirm({
       title: (
         <>
-          {data.sender_details[0].user_name_front}{' '}
-          <span style={{ color: '#14a014' }}>&#9679;</span>
+          start a discussion with{' '}
+          <span className="username-green">
+            @{data.sender_details[0].user_name_front}
+          </span>
+          ?
         </>
       ),
       icon: <ExclamationCircleOutlined />,
-      content: <></>,
+      content: (
+        <div>
+          <div>source: {}</div>
+          <div>destination: {}</div>
+          <div>rate: {}%</div>
+        </div>
+      ),
       onOk() {
         return new Promise((resolve, reject) => {
           const notData = new FormData();
@@ -156,7 +174,7 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
-            history.replace('/notifications');
+            history.replace('/message');
           })
           .catch(() => console.log('Oops errors!'));
       },
@@ -166,7 +184,7 @@ const NotificationCard = ({ data }) => {
 
   return (
     <>
-      <Modal
+      {/* <Modal
         title={
           <div className="avatar">
             <Avatar
@@ -195,7 +213,7 @@ const NotificationCard = ({ data }) => {
             @{data.sender_details[0].user_name_front}
           </Link>
         </p>
-      </Modal>
+      </Modal> */}
 
       <div
         className={`notification-card${
@@ -296,7 +314,7 @@ const NotificationCard = ({ data }) => {
                 }`}
                 // disabled when the deal is
                 disabled={data.accepted || data.rejected}
-                onClick={() => setIsModalVisible(true)}
+                onClick={showAcceptConfirm}
               >
                 {data.accepted === 1 ? 'accepted' : 'accept'}
               </button>

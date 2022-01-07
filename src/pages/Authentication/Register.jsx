@@ -1,41 +1,41 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { Form, Input, Button, message } from "antd";
-import { useDispatch } from "react-redux";
-import randomWords from "random-words";
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
+import { useDispatch } from 'react-redux';
+import randomWords from 'random-words';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
-import "./style-Auth.scss";
-import { instance } from "./../../utils/API";
-import { setUserData } from "./../../redux/user/user.actions";
+import './style-Auth.scss';
+import { instance } from './../../utils/API';
+import { setUserData } from './../../redux/user/user.actions';
 
 export default function Register({ history }) {
   const [hasReferral, setHasReferral] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
-  const [locationInput, setLocationInput] = useState("");
+  const [locationInput, setLocationInput] = useState('');
   const dispatch = useDispatch();
 
-  const onFinish = async (values) => {
-    if (locationInput === "") {
-      return message.warning("enter location to continue");
+  const onFinish = values => {
+    if (locationInput === '') {
+      return message.warning('enter location to continue');
     }
 
     let userData = {};
     setButtonLoading(true);
 
     const { username, email, password, referrer } = values;
-    const randomUsername = randomWords({ exactly: 2, join: "" });
+    const randomUsername = randomWords({ exactly: 2, join: '' });
 
     const data = new FormData();
-    data.append("user_email", email);
-    data.append("user_password", password);
-    data.append("user_name", username);
-    data.append("user_name_front", randomUsername);
-    data.append("user_location", locationInput);
-    data.append("referrer", referrer ? referrer : "");
+    data.append('user_email', email);
+    data.append('user_password', password);
+    data.append('user_name', username);
+    data.append('user_name_front', randomUsername);
+    data.append('user_location', locationInput);
+    data.append('referrer', referrer ? referrer : '');
 
     instance
-      .post("/register", data)
+      .post('/register', data)
       .then(function (response) {
         if (response?.data?.status) {
           userData = { ...response?.data?.data, token: response?.data?.token };
@@ -58,19 +58,19 @@ export default function Register({ history }) {
       });
   };
 
-  const requestVerificationCode = async (email, username) => {
+  const requestVerificationCode = (email, username) => {
     const data = new FormData();
-    data.append("send_verification", 1);
-    data.append("verify_email", email);
-    data.append("verify_username", username);
+    data.append('send_verification', 1);
+    data.append('verify_email', email);
+    data.append('verify_username', username);
 
     instance
-      .post("/register", data)
+      .post('/register', data)
       .then(function (response) {
         if (response?.data?.status) {
           message.success(response?.data?.message);
           setButtonLoading(false);
-          history.push("/verify-email");
+          history.push('/verify-email');
         } else {
           message.error(response?.data?.message);
           setButtonLoading(false);
@@ -82,7 +82,7 @@ export default function Register({ history }) {
       });
   };
 
-  const handleLocationChange = (data) => {
+  const handleLocationChange = data => {
     setLocationInput(data?.label);
   };
 
@@ -98,7 +98,7 @@ export default function Register({ history }) {
           <div className="desc">
             a sustain account is a ticket to a global network of trusted
             merchants around the world who want to help you buy, sell & swap
-            funds anonymously via{" "}
+            funds anonymously via{' '}
             <span className="desc-link">over 100 methods</span>
           </div>
           <Form
@@ -108,46 +108,46 @@ export default function Register({ history }) {
             onFinish={onFinish}
           >
             <Form.Item
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
               name="username"
-              rules={[{ required: true, message: "username required!" }]}
+              rules={[{ required: true, message: 'username required!' }]}
             >
               <Input placeholder="username" />
             </Form.Item>
             <Form.Item
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
               name="email"
-              rules={[{ required: true, message: "email required!" }]}
+              rules={[{ required: true, message: 'email required!' }]}
             >
               <Input placeholder="email address" />
             </Form.Item>
 
             <Form.Item
-              style={{ marginBottom: "20px" }}
+              style={{ marginBottom: '20px' }}
               name="password"
               hasFeedback
               rules={[
-                { required: true, message: "password required!" },
-                { min: 6, message: "minimum: 6 characters." },
+                { required: true, message: 'password required!' },
+                { min: 6, message: 'minimum: 6 characters.' },
               ]}
             >
               <Input.Password placeholder="create a password" />
             </Form.Item>
             <Form.Item
               name="confirm"
-              dependencies={["password"]}
+              dependencies={['password']}
               hasFeedback
               rules={[
                 {
                   required: true,
-                  message: "please confirm your password!",
+                  message: 'please confirm your password!',
                 },
                 ({ getFieldValue }) => ({
                   validator(rule, value) {
-                    if (!value || getFieldValue("password") === value) {
+                    if (!value || getFieldValue('password') === value) {
                       return Promise.resolve();
                     }
-                    return Promise.reject("passwords do not match!");
+                    return Promise.reject('passwords do not match!');
                   },
                 }),
               ]}
@@ -155,32 +155,32 @@ export default function Register({ history }) {
               <Input.Password placeholder="confirm password" />
             </Form.Item>
             <Form.Item
-              style={{ marginBottom: "20px" }}
-              rules={[{ required: true, message: "location required!" }]}
+              style={{ marginBottom: '20px' }}
+              rules={[{ required: true, message: 'location required!' }]}
             >
               <GooglePlacesAutocomplete
                 apiKey="AIzaSyA3geMmLIiRA_J0zUzFerPTKwkT5-9ocPM"
-                apiOptions={{ language: "en", region: "us" }}
+                apiOptions={{ language: 'en', region: 'us' }}
                 autocompletionRequest={{
-                  types: ["(regions)"],
-                  componentRestrictions: { country: "ng" },
+                  types: ['(regions)'],
+                  componentRestrictions: { country: 'ng' },
                 }}
                 selectProps={{
-                  placeholder: "location e.g lagos, nigeria",
+                  placeholder: 'location e.g lagos, nigeria',
                   locationInput,
                   onChange: handleLocationChange,
                   styles: {
-                    input: (provided) => ({
+                    input: provided => ({
                       ...provided,
-                      color: "black",
+                      color: 'black',
                     }),
-                    option: (provided) => ({
+                    option: provided => ({
                       ...provided,
-                      color: "black",
+                      color: 'black',
                     }),
-                    singleValue: (provided) => ({
+                    singleValue: provided => ({
                       ...provided,
-                      color: "black",
+                      color: 'black',
                     }),
                   },
                 }}
@@ -193,14 +193,14 @@ export default function Register({ history }) {
                 setHasReferral(!hasReferral);
               }}
             >
-              {!hasReferral ? "i have a referrer" : "no referrer"}
+              {!hasReferral ? 'i have a referrer' : 'no referrer'}
             </div>
 
             {hasReferral && (
               <Form.Item
-                style={{ marginBottom: "25px" }}
+                style={{ marginBottom: '25px' }}
                 name="referrer"
-                rules={[{ required: true, message: "referrer required!" }]}
+                rules={[{ required: true, message: 'referrer required!' }]}
               >
                 <Input placeholder="enter referrer username" />
               </Form.Item>
@@ -233,7 +233,7 @@ export default function Register({ history }) {
             ,
             <span>
               <Link to="/"> Privacy Policy</Link>
-            </span>{" "}
+            </span>{' '}
             and
             <span>
               <Link to="/"> Legal Notice</Link>
