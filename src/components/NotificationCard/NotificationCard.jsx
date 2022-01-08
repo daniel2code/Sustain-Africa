@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format, register } from 'timeago.js';
 import locale from '../../utils/timeagoLocale';
-import { /* message, Tooltip,*/ Modal, Avatar } from 'antd';
+import { /* message, Tooltip,*/ Modal /* Avatar  */ } from 'antd';
 import { bearerInstance } from '../../utils/API';
 import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
