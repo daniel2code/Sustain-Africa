@@ -1,24 +1,24 @@
-import { useDispatch } from "react-redux";
-import { message } from "antd";
-import { useHistory } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { message } from 'antd';
+import { useHistory } from 'react-router-dom';
 
-import { instance, bearerInstance } from "./../utils/API";
-import { setDealsList, setHasError } from "./../redux/data/data.actions";
-import useProfile from "./useProfile";
+import { instance, bearerInstance } from './../utils/API';
+import { setDealsList, setHasError } from './../redux/data/data.actions';
+import useProfile from './useProfile';
 
 export default function useDeals() {
   const dispatch = useDispatch();
   const { getProfileInfo, setProfileToNull } = useProfile();
   const history = useHistory();
 
-  const fetchDeals = async (
+  const fetchDeals = (
     page = 1,
     newest = 1,
     low2high = 0,
     high2low = 0,
-    location = "",
-    source = "all",
-    destination = "all"
+    location = '',
+    source = 'all',
+    destination = 'all'
   ) => {
     instance
       .get(
@@ -36,16 +36,16 @@ export default function useDeals() {
       });
   };
 
-  const deleteDeal = async (dealId) => {
+  const deleteDeal = dealId => {
     setProfileToNull();
     const data = new FormData();
-    data.append("deal_id", dealId);
+    data.append('deal_id', dealId);
 
     bearerInstance
       .post(`/delete_deal`, data)
       .then(function (response) {
         message.success(response?.data?.message);
-        history.push("/profile");
+        history.push('/profile');
         getProfileInfo();
       })
       .catch(function (error) {

@@ -22,7 +22,7 @@ import Notification from './pages/Notification/Notifiaction';
 
 function App() {
   useEffect(() => {
-    if (userState?.userData?.is_email_verified === '0' && '2' === '1') {
+    if (userState?.userData?.is_email_verified === '0') {
       history.push('/verify-email');
     }
     //eslint-disable-next-line

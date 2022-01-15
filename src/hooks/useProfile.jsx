@@ -1,14 +1,14 @@
-import { useDispatch } from "react-redux";
-import { message } from "antd";
-import { bearerInstance } from "./../utils/API";
-import { setProfile, setHasError } from "./../redux/data/data.actions";
+import { useDispatch } from 'react-redux';
+import { message } from 'antd';
+import { bearerInstance } from './../utils/API';
+import { setProfile, setHasError } from './../redux/data/data.actions';
 
 export default function useProfile() {
   const dispatch = useDispatch();
 
-  const getProfileInfo = async () => {
+  const getProfileInfo = () => {
     bearerInstance
-      .get("/profile")
+      .get('/profile')
       .then(function (response) {
         dispatch(setProfile(response?.data));
       })
