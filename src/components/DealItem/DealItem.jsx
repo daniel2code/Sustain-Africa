@@ -155,6 +155,7 @@ export default function DealItem({ item }) {
 
           <div className="deal-item-row-two">
             {item?.s_bank_name && (
+                
               <>
                 {' '}
                 bank name <span className="bold">{item?.s_bank_name}</span>{' '}
@@ -167,7 +168,7 @@ export default function DealItem({ item }) {
                 account type{' '}
                 <span className="bold">{item?.s_account_type}</span>{' '}
                 <EllipsisOutlined />{' '}
-              </>
+              +</>
             )}
             {item?.s_account_age && item?.s_account_age !== 0 ? (
               <>
