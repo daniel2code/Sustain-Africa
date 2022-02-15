@@ -1,19 +1,32 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import randomWords from 'random-words';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 import './style-Auth.scss';
-import { instance } from './../../utils/API';
+import { instance,bearerInstance } from './../../utils/API';
 import { setUserData } from './../../redux/user/user.actions';
 
-export default function Register({ history }) {
+export default function Register() {
   const [hasReferral, setHasReferral] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(false);
   const [locationInput, setLocationInput] = useState('');
   const dispatch = useDispatch();
+  const history = useHistory();
+
+  useEffect(() => {
+    bearerInstance
+      .get('/check_token')
+      .then(res => {
+        console.log(res.data);
+        if (res.data.message === 'token valid') history.replace('/');
+      })
+      .catch(err => {
+        console.log('not authenticated');
+      });
+  }, [history]);
 
   const onFinish = values => {
     if (locationInput === '') {

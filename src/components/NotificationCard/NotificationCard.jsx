@@ -1,11 +1,10 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { format, register } from 'timeago.js';
 import locale from '../../utils/timeagoLocale';
 import { /* message, Tooltip,*/ Modal /* Avatar  */ } from 'antd';
 import { bearerInstance } from '../../utils/API';
-import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 // import { showConfirm } from '../../utils/confirm';
@@ -27,7 +26,7 @@ const NotificationCard = ({ data }) => {
   const [view, setView] = useState(false);
   const [stamp, setStamp] = useState();
 
-  const history = useHistory();
+  const router = useHistory();
 
   useEffect(() => {
     if (user.id === data.receiver) setStamp(data.created_at);
@@ -99,7 +98,7 @@ const NotificationCard = ({ data }) => {
   //   bearerInstance
   //     .post(`/update_notification`, notData)
   //     .then(res => {
-  //       history.push('/message');
+  //       router.push('/message');
   //     })
   //     .catch(err => {
   //       console.log(err);
@@ -135,7 +134,7 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
-            history.replace('/notifications');
+            router.replace('/notifications');
           })
           .catch(() => console.log('Oops errors!'));
       },
@@ -174,7 +173,7 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
-            history.replace('/message');
+            router.replace('/message');
           })
           .catch(() => console.log('Oops errors!'));
       },
