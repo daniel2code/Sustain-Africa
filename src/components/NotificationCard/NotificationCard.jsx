@@ -29,10 +29,11 @@ const NotificationCard = ({ data }) => {
   const router = useHistory();
 
   useEffect(() => {
-    if (user.id === data.receiver) setStamp(data.created_at);
-    else if (user.id === data.sender) {
+    if (user.id === data.sender) setStamp(data.created_at);
+    else if (user.id === data.receiver) {
       if (data.rejected === 1) setStamp(data.rejected_at);
       else if (data.accepted === 1) setStamp(data.accepted_at);
+      else setStamp(data.created_at);
     }
   }, [
     data.accepted,

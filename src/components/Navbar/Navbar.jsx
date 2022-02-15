@@ -1,13 +1,15 @@
-import React from "react";
-import { Button, Dropdown, Menu, Avatar } from "antd";
-import { Link, useHistory, useLocation } from "react-router-dom";
-import { LeftOutlined, BellOutlined } from "@ant-design/icons";
-import { useSelector, useDispatch } from "react-redux";
+import React from 'react';
+import { Button, Dropdown, Menu, Avatar, Badge } from 'antd';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+import { LeftOutlined, BellOutlined } from '@ant-design/icons';
+import { useSelector, useDispatch } from 'react-redux';
 
-import "./Navbar.scss";
+import './Navbar.scss';
 
 export default function Navbar() {
-  const userState = useSelector((state) => state.user);
+  const userState = useSelector(state => state.user);
+  const notificationCount = useSelector(state => state.user.notificationCount);
+  // const notificationCount = 3;
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -23,13 +25,13 @@ export default function Navbar() {
                 history.goBack();
               }}
             >
-              {location.pathname !== "/" && (
+              {location.pathname !== '/' && (
                 <span>
-                  <LeftOutlined style={{ marginRight: "0px" }} /> back
+                  <LeftOutlined style={{ marginRight: '0px' }} /> back
                 </span>
               )}
 
-              {location.pathname === "/" && (
+              {location.pathname === '/' && (
                 <div className="app-name">
                   <Link to="/">sustain.africa</Link>
                   <div className="bottom">buy, sell & swap funds.</div>
@@ -41,12 +43,33 @@ export default function Navbar() {
           <div className="right">
             {userState?.userData ? (
               <>
-                <div style={{
-                  marginRight: "15px"
-                }} className="notifications name">
-                  <Link to="/notifications"><BellOutlined style={{
-                    fontSize: "20px"
-                  }} /></Link>
+                <div
+                  style={{
+                    marginRight: '15px',
+                  }}
+                  className="notifications name"
+                >
+                  <Link to="/notifications">
+                    {notificationCount ? (
+                      <Badge
+                        style={{ backgroundColor: '#ed1450' }}
+                        count={notificationCount}
+                      >
+                        <BellOutlined
+                          style={{
+                            fontSize: '20px',
+                            color: '#ed1450',
+                          }}
+                        />
+                      </Badge>
+                    ) : (
+                      <BellOutlined
+                        style={{
+                          fontSize: '20px',
+                        }}
+                      />
+                    )}
+                  </Link>
                 </div>
 
                 <Dropdown
@@ -54,7 +77,7 @@ export default function Navbar() {
                     <Menu>
                       <Menu.Item
                         key="1"
-                        disabled={location.pathname === "/profile"}
+                        disabled={location.pathname === '/profile'}
                       >
                         <Link to="/profile">profile</Link>
                       </Menu.Item>
@@ -64,35 +87,34 @@ export default function Navbar() {
                       <Menu.Item
                         key="4"
                         onClick={() => {
-                          dispatch({ type: "DESTROY_SESSION" });
+                          dispatch({ type: 'DESTROY_SESSION' });
                           localStorage.clear();
                           sessionStorage.clear();
                           setTimeout(() => {
-                            window.location.assign("/");
+                            window.location.assign('/');
                           }, 500);
                         }}
-                        style={{ color: "#ed1450" }}
+                        style={{ color: '#ed1450' }}
                       >
                         logout
                       </Menu.Item>
                     </Menu>
                   }
-                  trigger={["click"]}
+                  trigger={['click']}
                   placement="bottomRight"
                 >
                   <div className="name">
-                    {userState?.userData?.user_name}{" "}
+                    {userState?.userData?.user_name}{' '}
                     <Avatar
                       style={{
-                        color: "#14a014",
-                        backgroundColor: "#a9fca9",
+                        color: '#14a014',
+                        backgroundColor: '#a9fca9',
                       }}
                     >
                       {userState?.userData?.user_name.charAt(0).toUpperCase()}
                     </Avatar>
                   </div>
                 </Dropdown>
-
               </>
             ) : (
               <>
