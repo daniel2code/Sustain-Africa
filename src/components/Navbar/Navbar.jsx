@@ -52,8 +52,8 @@ export default function Navbar() {
                   <Link to="/notifications">
                     {notificationCount ? (
                       <Badge
-                        style={{ backgroundColor: '#ed1450' }}
-                        count={notificationCount}
+                        style={{ backgroundColor: '#ed1450', transform: `translateX(${40}%) translateY(${-40}%)`, fontSize: 11 }}
+                        count={notificationCount} title={notificationCount > 1 ? notificationCount + " notifications" : notificationCount + " notification"}
                       >
                         <BellOutlined
                           style={{

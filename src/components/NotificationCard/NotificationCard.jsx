@@ -181,7 +181,7 @@ const NotificationCard = ({ data }) => {
       onCancel() {},
     });
   }
-
+  
   return (
     <>
       {/* <Modal
