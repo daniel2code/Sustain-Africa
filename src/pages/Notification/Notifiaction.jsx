@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { ReactComponent as EmptyImage } from './../../assets/empty.svg';
 import { useDispatch } from 'react-redux';
 import { setNotificationCount } from './../../redux/user/user.actions';
+import moment from 'moment';
 
 export default function Notification() {
   const [notifications, setNotification] = useState();
@@ -47,10 +48,7 @@ export default function Notification() {
               timeStamp,
             };
           })
-          .sort(
-            (a, b) =>
-              new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime()
-          );
+          .sort((a, b) => moment(b.timeStamp) - moment(a.timeStamp));
 
         console.log(sortedNotification);
         setNotification(sortedNotification);
@@ -63,9 +61,7 @@ export default function Notification() {
   //  d_r - discussion request - only reciever sees this
   //  n_r - new review - only reciever see this
   //  c_r - connection request  - only reciever sees this
-
   //  c_a - connection request accepted - only sender see this
-
   //  d_c - discussion completed - both parties sees this
 
   return (

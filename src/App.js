@@ -44,11 +44,20 @@ function App() {
       })
       .then(res => {
         // to be kept
-        const notif = res.data.notification_data.filter(
-          cur => userId === cur.receiver && !cur.viewed_receiver
-        );
-        // console.log(notif);
-        if (notif.length > 0) dispatch(setNotificationCount(notif.length));
+        const notif = res.data.notification_data.filter(cur => {
+          if (userId === cur.sender)
+            if (cur.type === 'd_r')
+              return (
+                userId === cur.sender &&
+                cur.viewed_sender === 0 &&
+                (cur.accepted_at || cur.rejected_at)
+              );
+
+          return userId === cur.receiver && cur.viewed_receiver === 0;
+        });
+        console.log(notif);
+        console.log(userId);
+        dispatch(setNotificationCount(notif.length));
       })
       .catch(err => {
         console.log('not authenticated');
