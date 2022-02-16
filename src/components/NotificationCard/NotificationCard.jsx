@@ -29,10 +29,11 @@ const NotificationCard = ({ data }) => {
   const router = useHistory();
 
   useEffect(() => {
-    if (user.id === data.receiver) setStamp(data.created_at);
-    else if (user.id === data.sender) {
+    if (user.id === data.sender) setStamp(data.created_at);
+    else if (user.id === data.receiver) {
       if (data.rejected === 1) setStamp(data.rejected_at);
       else if (data.accepted === 1) setStamp(data.accepted_at);
+      else setStamp(data.created_at);
     }
   }, [
     data.accepted,
@@ -222,14 +223,25 @@ const NotificationCard = ({ data }) => {
       >
         {data.type === 'd_r' && user.id === data.receiver && (
           <div>
-            <p>
+            <p
+              style={{
+                marginBottom: data.accepted || data.rejected ? 0 : '1em',
+              }}
+            >
+              {data.accepted
+                ? 'you accepted '
+                : data.rejected
+                ? 'you rejected '
+                : null}
               <Link
                 to={`/user/${data.sender}/profile`}
                 className="notification-link username-green"
               >
                 @{data.sender_details[0].user_name_front}
               </Link>{' '}
-              {dealWriteUp[data.type]}
+              {data.accepted || data.rejected
+                ? ' discussion request regarding his '
+                : dealWriteUp[data.type]}
               {data.type === 'c_r' || data.type === 'c_a' ? null : (
                 <Link
                   to={`/deal/${data.deal_id}`}
@@ -303,7 +315,10 @@ const NotificationCard = ({ data }) => {
         )} */}
 
         <div style={{ display: 'flex' }}>
-          {((data.type === 'd_r' && data.receiver === user.id) ||
+          {((data.type === 'd_r' &&
+            data.receiver === user.id &&
+            data.accepted === 0 &&
+            data.rejected === 0) ||
             data.type === 'c_r') && (
             <div style={{ display: 'flex', marginBottom: '5px' }}>
               <button

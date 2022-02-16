@@ -5,12 +5,20 @@ import Loader from './../../components/Loader/Loader';
 import NotificationCard from '../../components/NotificationCard/NotificationCard';
 import { useSelector } from 'react-redux';
 import { ReactComponent as EmptyImage } from './../../assets/empty.svg';
+import { useDispatch } from 'react-redux';
+import { setNotificationCount } from './../../redux/user/user.actions';
+import moment from 'moment';
 
 export default function Notification() {
   const [notifications, setNotification] = useState();
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
 
   const userId = useSelector(state => state.user.userData.id);
+
+  useEffect(() => {
+    dispatch(setNotificationCount(0));
+  }, [dispatch]);
 
   useEffect(() => {
     setLoading(true);
@@ -24,9 +32,26 @@ export default function Notification() {
         const notif = res.data.notification_data.filter(
           cur => userId === cur.receiver || cur.rejected || cur.accepted
         );
-        console.log(notif);
+        // console.log(notif);
 
-        setNotification(notif);
+        const sortedNotification = notif
+          .map(cur => {
+            let timeStamp = cur.created_at;
+
+            if (cur.reciever === userId) {
+              if (cur.accepted_at) timeStamp = cur.accepted_at;
+              else if (cur.rejected_at) timeStamp = cur.rejected_at;
+            }
+
+            return {
+              ...cur,
+              timeStamp,
+            };
+          })
+          .sort((a, b) => moment(b.timeStamp) - moment(a.timeStamp));
+
+        console.log(sortedNotification);
+        setNotification(sortedNotification);
       })
       .finally(() => {
         setLoading(false);
@@ -36,9 +61,7 @@ export default function Notification() {
   //  d_r - discussion request - only reciever sees this
   //  n_r - new review - only reciever see this
   //  c_r - connection request  - only reciever sees this
-
   //  c_a - connection request accepted - only sender see this
-
   //  d_c - discussion completed - both parties sees this
 
   return (

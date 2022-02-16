@@ -19,6 +19,7 @@ import EditDeal from './pages/EditDeal/EditDeal';
 import Message from './pages/Message/Message';
 import { bearerInstance } from './utils/API';
 import Notification from './pages/Notification/Notifiaction';
+import { setNotificationCount } from './redux/user/user.actions';
 
 function App() {
   useEffect(() => {
@@ -32,6 +33,36 @@ function App() {
   const hasError = useSelector(state => state.data.hasError);
   const history = useHistory();
   const dispatch = useDispatch();
+  const userId = useSelector(state => state?.user?.userData?.id);
+
+  useEffect(() => {
+    bearerInstance
+      .get('/check_token')
+      .then(res => {
+        if (res.data.message === 'token valid')
+          return bearerInstance.get('/fetch_all_notifications');
+      })
+      .then(res => {
+        // to be kept
+        const notif = res.data.notification_data.filter(cur => {
+          if (userId === cur.sender)
+            if (cur.type === 'd_r')
+              return (
+                userId === cur.sender &&
+                cur.viewed_sender === 0 &&
+                (cur.accepted_at || cur.rejected_at)
+              );
+
+          return userId === cur.receiver && cur.viewed_receiver === 0;
+        });
+        console.log(notif);
+        console.log(userId);
+        dispatch(setNotificationCount(notif.length));
+      })
+      .catch(err => {
+        console.log('not authenticated');
+      });
+  }, [userId, dispatch]);
 
   const logout = () => {
     dispatch({ type: 'DESTROY_SESSION' });

@@ -3,7 +3,7 @@ export const setUserData = userData => ({
   payload: { userData },
 });
 
-export const seNotificationCount = num => ({
+export const setNotificationCount = num => ({
   type: 'SET_NOTIFICATION_COUNT',
   payload: num,
 });
