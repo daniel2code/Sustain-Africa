@@ -223,7 +223,11 @@ const NotificationCard = ({ data }) => {
       >
         {data.type === 'd_r' && user.id === data.receiver && (
           <div>
-            <p>
+            <p
+              style={{
+                marginBottom: data.accepted || data.rejected ? 0 : '1em',
+              }}
+            >
               {data.accepted
                 ? 'you accepted '
                 : data.rejected
