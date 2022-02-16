@@ -21,12 +21,19 @@
   &-card {
     border: 1px solid #ed1450;
     background-color: #fff2f6;
-    padding: 10px;
+    padding: 10px 15px;
     margin-bottom: 20px;
 
     &-disabled {
       border-color: #dddddd;
       background-color: #ffffff;
+    }
+
+    & p,
+    & .username-green {
+      font-size: 13px !important;
+      // @media screen and (max-width: 48em) {
+      // }
     }
 
     &-btn {

@@ -47,7 +47,10 @@ export default function Notification() {
               timeStamp,
             };
           })
-          .sort((a, b) => new Date(b.timeStamp) - new Date(a.timeStamp));
+          .sort(
+            (a, b) =>
+              new Date(b.timeStamp).getTime() - new Date(a.timeStamp).getTime()
+          );
 
         console.log(sortedNotification);
         setNotification(sortedNotification);
