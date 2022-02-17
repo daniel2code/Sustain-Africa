@@ -1,7 +1,7 @@
-export const countries = ["All Countries", "United States", "United Kingdom", "Nigeria"];
+export const countries = ["Any Country", "United States", "United Kingdom", "Nigeria"];
 
 export const us_states = [
-    "All States",
+    "Any State",
     "Alabama",
     "Alaska",
     "American Samoa",
@@ -64,7 +64,7 @@ export const us_states = [
 ];
 
 export const uk_states = [
-    "All States",
+    "Any State",
     "Avon",
     "Bedfordshire",
     "Berkshire",
@@ -117,7 +117,7 @@ export const uk_states = [
 ];
 
 export const ng_states = [
-    "All States",
+    "Any State",
     "Abia",
     "Adamawa",
     "Anambra",
@@ -159,7 +159,7 @@ export const ng_states = [
 
 // banks
 export const us_banks = [
-    "All Banks",
+    "Any Bank",
     "JPMorgan Chase Bank",
     "Bank of America",
     "Wells Fargo Bank",
@@ -296,7 +296,7 @@ export const us_banks = [
 ];
 
 export const uk_banks = [
-    "All Banks",
+    "Any Bank",
     "ABC International Bank",
     "The Access Bank UK",
     "ADIB",
@@ -390,7 +390,7 @@ export const uk_banks = [
 ];
 
 export const ng_banks = [
-    "All Banks",
+    "Any Bank",
     "Access Bank",
     "Fidelity Bank",
     "First City Monument Bank",
@@ -414,7 +414,7 @@ export const ng_banks = [
 ];
 
 export const account_types = [
-    "All Types",
+    "Any Type",
     "Savings",
     "Current",
     "Checking",
@@ -433,7 +433,7 @@ export const account_age = ["Any Age", "1", "2", "3", "4", "5", "6", "7", "8", "
 
 // crypto
 export const wallet_types = [
-    "All Wallet Types",
+    "Any Wallet Type",
     "Coinbase",
     "Trezor",
     "Exodus",
@@ -476,7 +476,7 @@ export const wallet_types = [
 ];
 
 export const exchanges = [
-    "All Exchanges",
+    "Any Exchange",
     "Coinbase",
     "Binance",
     "UPHOLD",
