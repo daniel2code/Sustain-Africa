@@ -57,8 +57,8 @@ export default function VerifyPhone() {
           message.success(response?.data?.message);
 
           const userData = {
-            ...response?.data?.data,
-            token: response?.data?.token,
+            ...userState.userData,
+            is_phone_no_verified: '1',
           };
           console.log(userData);
           dispatch(setUserData(userData));

@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Input, Button, message } from 'antd';
-import { useSelector /* useDispatch */ } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-// import { setUserData } from './../../redux/user/user.actions';
+import { setUserData } from './../../redux/user/user.actions';
 
 import './style-Auth.scss';
 import { instance } from './../../utils/API';
 
 export default function VerifyEmail() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const history = useHistory();
   const input1 = useRef(null);
   const input2 = useRef(null);
@@ -42,6 +42,13 @@ export default function VerifyEmail() {
     // eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    if (userState?.userData?.is_email_verified === '1') {
+      history.replace('/');
+    }
+    // eslint-disable-next-line
+  }, []);
+
   const onFinish = () => {
     const inputValuesJoined = `${inputValue1}${inputValue2}${inputValue3}${inputValue4}${inputValue5}${inputValue6}`;
 
@@ -61,12 +68,12 @@ export default function VerifyEmail() {
           setButtonLoading(false);
           message.success(response?.data?.message);
 
-          // const userData = {
-          //   ...response?.data?.data,
-          //   token: response?.data?.token,
-          // };
-          // console.log(userData);
-          // dispatch(setUserData(userData));
+          const userData = {
+            ...userState?.userData,
+            is_email_verified: 1,
+          };
+          console.log(userData);
+          dispatch(setUserData(userData));
 
           if (hasPhone) {
             history.push('/');

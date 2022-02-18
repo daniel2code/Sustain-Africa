@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { Form, Input, Button, message } from 'antd';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import './style-Auth.scss';
-import { instance, bearerInstance } from './../../utils/API';
+import { instance /* bearerInstance */ } from './../../utils/API';
 import { setUserData } from './../../redux/user/user.actions';
 
 export default function Login() {
@@ -12,17 +12,25 @@ export default function Login() {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const userState = useSelector(state => state.user);
+
   useEffect(() => {
-    bearerInstance
-      .get('/check_token')
-      .then(res => {
-        console.log(res.data);
-        if (res.data.message === 'token valid') history.replace('/');
-      })
-      .catch(err => {
-        console.log('not authenticated');
-      });
-  }, [history]);
+    if (userState?.userData) {
+      history.replace('/');
+    }
+  }, [history, userState?.userData]);
+
+  // useEffect(() => {
+  //   bearerInstance
+  //     .get('/check_token')
+  //     .then(res => {
+  //       console.log(res.data);
+  //       if (res.data.message === 'token valid') history.replace('/');
+  //     })
+  //     .catch(err => {
+  //       console.log('not authenticated');
+  //     });
+  // }, [history]);
 
   const onFinish = values => {
     setButtonLoading(true);
