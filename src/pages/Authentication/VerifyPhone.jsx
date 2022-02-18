@@ -47,6 +47,7 @@ export default function VerifyPhone() {
     const data = new FormData();
     data.append('user_name', registerInfo?.userInfo?.user_name);
     data.append('user_phone_no', input);
+    data.append('is_phone_no_verified', 1);
 
     instance
       .post('/register', data)
