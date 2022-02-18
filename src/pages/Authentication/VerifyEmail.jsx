@@ -1,14 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Input, Button, message } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector /* useDispatch */ } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setUserData } from './../../redux/user/user.actions';
+// import { setUserData } from './../../redux/user/user.actions';
 
 import './style-Auth.scss';
 import { instance } from './../../utils/API';
 
 export default function VerifyEmail() {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const history = useHistory();
   const input1 = useRef(null);
   const input2 = useRef(null);
