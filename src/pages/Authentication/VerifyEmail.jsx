@@ -1,11 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Input, Button, message } from 'antd';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { setUserData } from './../../redux/user/user.actions';
 
 import './style-Auth.scss';
 import { instance } from './../../utils/API';
 
-export default function VerifyEmail({ history }) {
+export default function VerifyEmail() {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const input1 = useRef(null);
   const input2 = useRef(null);
   const input3 = useRef(null);
@@ -45,6 +49,7 @@ export default function VerifyEmail({ history }) {
 
     const data = new FormData();
     data.append('match_verification', 1);
+    data.append('is_email_verified', 1);
     data.append('verify_email', userState?.userData?.email);
     data.append('verify_username', userState?.userData?.user_name);
     data.append('verification_code', inputValuesJoined);
@@ -55,6 +60,14 @@ export default function VerifyEmail({ history }) {
         if (response?.data?.status) {
           setButtonLoading(false);
           message.success(response?.data?.message);
+
+          // const userData = {
+          //   ...response?.data?.data,
+          //   token: response?.data?.token,
+          // };
+          // console.log(userData);
+          // dispatch(setUserData(userData));
+
           if (hasPhone) {
             history.push('/');
           } else {
@@ -145,9 +158,18 @@ export default function VerifyEmail({ history }) {
   const handleInputChange6 = value => {
     if (!(value.length > 1)) {
       setInputValue6(value);
-      if (value !== '') {
-      }
+      // if (value !== '') {
+      // }
     }
+  };
+
+  const autoFillInputs = value => {
+    setInputValue1(value[0]);
+    setInputValue2(value[1]);
+    setInputValue3(value[2]);
+    setInputValue4(value[3]);
+    setInputValue5(value[4]);
+    setInputValue6(value[5]);
   };
 
   return (
@@ -172,7 +194,11 @@ export default function VerifyEmail({ history }) {
               value={inputValue1}
               type="number"
               onChange={event => {
-                handleInputChange1(event.target.value, 1);
+                if (event.target.value.length > 1) {
+                  autoFillInputs(event.target.value);
+                } else {
+                  handleInputChange1(event.target.value);
+                }
               }}
             />
             <Input
@@ -181,7 +207,11 @@ export default function VerifyEmail({ history }) {
               type="number"
               value={inputValue2}
               onChange={event => {
-                handleInputChange2(event.target.value, 2);
+                if (event.target.value.length > 1) {
+                  autoFillInputs(event.target.value);
+                } else {
+                  handleInputChange2(event.target.value);
+                }
               }}
             />
 
@@ -191,7 +221,11 @@ export default function VerifyEmail({ history }) {
               type="number"
               value={inputValue3}
               onChange={event => {
-                handleInputChange3(event.target.value, 3);
+                if (event.target.value.length > 1) {
+                  autoFillInputs(event.target.value);
+                } else {
+                  handleInputChange3(event.target.value);
+                }
               }}
             />
 
@@ -201,7 +235,11 @@ export default function VerifyEmail({ history }) {
               type="number"
               value={inputValue4}
               onChange={event => {
-                handleInputChange4(event.target.value, 4);
+                if (event.target.value.length > 1) {
+                  autoFillInputs(event.target.value);
+                } else {
+                  handleInputChange4(event.target.value);
+                }
               }}
             />
 
@@ -211,7 +249,11 @@ export default function VerifyEmail({ history }) {
               type="number"
               value={inputValue5}
               onChange={event => {
-                handleInputChange5(event.target.value, 5);
+                if (event.target.value.length > 1) {
+                  autoFillInputs(event.target.value);
+                } else {
+                  handleInputChange5(event.target.value);
+                }
               }}
             />
 
@@ -221,7 +263,11 @@ export default function VerifyEmail({ history }) {
               type="number"
               value={inputValue6}
               onChange={event => {
-                handleInputChange6(event.target.value, 6);
+                if (event.target.value.length > 1) {
+                  autoFillInputs(event.target.value);
+                } else {
+                  handleInputChange6(event.target.value);
+                }
               }}
             />
           </div>

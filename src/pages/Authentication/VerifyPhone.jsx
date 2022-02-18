@@ -2,17 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, message } from 'antd';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { setUserData } from './../../redux/user/user.actions';
 
 import './style-Auth.scss';
 import { instance } from './../../utils/API';
 
-export default function VerifyPhone({ history }) {
+export default function VerifyPhone() {
+  const history = useHistory();
+  // useEffect(() => {
+  //   if (!registerInfo?.userInfo?.email) {
+  //     history.push('register');
+  //   }
+  //   //eslint-disable-next-line
+  // }, []);
+
+  const userState = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    if (!registerInfo?.userInfo?.email) {
-      history.push('register');
+    if (!userState?.userData) {
+      history.push('/register');
+    } else if (
+      userState?.userData?.is_phone_no_verification_skipped === '1' ||
+      userState?.userData?.is_phone_no_verified === '1'
+    ) {
+      history.push('/');
     }
-    //eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const [input, setInput] = useState('');
@@ -36,6 +54,13 @@ export default function VerifyPhone({ history }) {
         if (response?.data?.status) {
           setButtonLoading(false);
           message.success(response?.data?.message);
+
+          const userData = {
+            ...response?.data?.data,
+            token: response?.data?.token,
+          };
+          console.log(userData);
+          dispatch(setUserData(userData));
           history.push('/');
         } else {
           message.error(response?.data?.message);

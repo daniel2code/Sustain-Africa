@@ -75,9 +75,9 @@ function App() {
 
   bearerInstance.interceptors.request.use(
     function (config) {
-      if (userState?.userData?.token) {
-        config.headers.Authorization = `Bearer ${userState?.userData?.token}`;
-      }
+      // if (userState?.userData?.token) {
+      //   config.headers.Authorization = `Bearer ${userState?.userData?.token}`;
+      // }
       return config;
     },
     err => {

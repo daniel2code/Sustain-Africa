@@ -6,7 +6,7 @@ import randomWords from 'random-words';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 import './style-Auth.scss';
-import { instance,bearerInstance } from './../../utils/API';
+import { instance, bearerInstance } from './../../utils/API';
 import { setUserData } from './../../redux/user/user.actions';
 
 export default function Register() {
@@ -52,6 +52,7 @@ export default function Register() {
       .then(function (response) {
         if (response?.data?.status) {
           userData = { ...response?.data?.data, token: response?.data?.token };
+          console.log(userData);
           dispatch(setUserData(userData));
 
           requestVerificationCode(
