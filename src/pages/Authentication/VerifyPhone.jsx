@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, message } from 'antd';
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector /* useDispatch */ } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { setUserData } from './../../redux/user/user.actions';
+// import { setUserData } from './../../redux/user/user.actions';
 
 import './style-Auth.scss';
 import { instance } from './../../utils/API';
@@ -19,7 +19,7 @@ export default function VerifyPhone() {
   // }, []);
 
   const userState = useSelector(state => state.user);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   useEffect(() => {
     if (!userState?.userData) {
@@ -47,7 +47,7 @@ export default function VerifyPhone() {
     const data = new FormData();
     data.append('user_name', registerInfo?.userInfo?.user_name);
     data.append('user_phone_no', input);
-    data.append('is_phone_no_verified', 1);
+    // data.append('is_phone_no_verified', 1);
 
     instance
       .post('/register', data)
@@ -56,12 +56,12 @@ export default function VerifyPhone() {
           setButtonLoading(false);
           message.success(response?.data?.message);
 
-          const userData = {
-            ...userState.userData,
-            is_phone_no_verified: '1',
-          };
-          console.log(userData);
-          dispatch(setUserData(userData));
+          // const userData = {
+          //   ...userState.userData,
+          //   is_phone_no_verified: '1',
+          // };
+          // console.log(userData);
+          // dispatch(setUserData(userData));
           history.push('/');
         } else {
           message.error(response?.data?.message);
