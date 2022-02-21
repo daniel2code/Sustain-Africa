@@ -101,6 +101,14 @@
         }
       }
 
+      .ant-radio-inner {
+        &::after {
+          top: 50%;
+          left: 50%;
+          transform: scale(1) translate(-50%, -50%);
+        }
+      }
+
       .ant-select-selection-placeholder,
       .ant-input-selection-placeholder {
         color: #ed1450;

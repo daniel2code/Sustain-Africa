@@ -108,7 +108,7 @@ export default function EditDeal({ match }) {
     useState(null);
   const [minmax, setMinmax] = useState(false);
   const [rate, setRate] = useState(true);
-  const [curr, setCurr] = useState('');
+  const [curr, setCurr] = useState('usd');
 
   const getDealInfo = () => {
     instance
