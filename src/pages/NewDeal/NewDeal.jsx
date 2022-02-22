@@ -97,7 +97,7 @@ export default function NewDeal() {
     useState(null);
   const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
   const [minmax, setMinmax] = useState(false);
-  const [rate, setRate] = useState(true);
+  const [rate, setRate] = useState(1);
   const [curr, setCurr] = useState('usd');
 
   const onFinish = values => {

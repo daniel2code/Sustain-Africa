@@ -163,7 +163,7 @@ export default function DealItem({ item }) {
             at {item?.rate}
             {item?.rate_structure === 'percentage'
               ? '%'
-              : curType(item.currency)}
+              : '/' + curType(item.currency)}
             ”
           </div>
 
@@ -244,7 +244,13 @@ export default function DealItem({ item }) {
             {item?.rate && (
               <>
                 {' '}
-                rate <span className="bold">{item?.rate}%</span>{' '}
+                rate{' '}
+                <span className="bold">
+                  {item?.rate}
+                  {item?.rate_structure === 'percentage'
+                    ? '%'
+                    : '/' + curType(item.currency)}
+                </span>{' '}
                 <EllipsisOutlined />{' '}
               </>
             )}

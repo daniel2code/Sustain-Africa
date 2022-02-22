@@ -107,7 +107,7 @@ export default function EditDeal({ match }) {
   const [destinationWalletAgeInput, setDestinationWalletAgeInput] =
     useState(null);
   const [minmax, setMinmax] = useState(false);
-  const [rate, setRate] = useState(true);
+  const [rate, setRate] = useState(1);
   const [curr, setCurr] = useState('usd');
 
   const getDealInfo = () => {
@@ -139,15 +139,16 @@ export default function EditDeal({ match }) {
   };
 
   const initializeValues = dealData => {
-    console.log(dealData);
+    // console.log(dealData);
     setSelectedSource(dealData?.source);
     setSourceStateInput(dealData?.s_state);
     setSourceBankInput(dealData?.s_bank_name);
     setSourceAccountInput(dealData?.s_account_type);
     setSourceAccountAgeInput(dealData?.s_account_age);
-
-    setRate(dealData.rate_structure === 'percentage');
+    // console.log(dealData.rate_structure === 'percentage');
+    // console.log(dealData.rate_structure);
     setCurr(dealData.currency);
+    setRate(dealData.rate_structure === 'percentage' ? 1 : 0);
 
     setSelectedDestination(dealData?.destination);
     setDestinationStateInput(dealData?.d_state);
@@ -386,6 +387,8 @@ export default function EditDeal({ match }) {
                 min: deal?.min,
                 max: deal?.max,
                 rate: deal?.rate,
+                remit_rate_structure:
+                  deal?.rate_structure === 'percentage' ? 1 : 0,
                 currency: deal?.currency,
                 discussion: deal?.discussion,
                 discussion_detail: deal?.discussion_details,
@@ -1205,14 +1208,14 @@ export default function EditDeal({ match }) {
                 rate structure
               </Divider>
 
-              <Form.Item>
-                <Radio.Group name="remit_rate_structure" defaultValue={rate}>
+              <Form.Item name="remit_rate_structure">
+                <Radio.Group name="remit_rate_structure">
                   <Radio
                     className="ant-radio"
                     onChange={e => {
-                      if (e.target.checked) setRate(true);
+                      if (e.target.checked) setRate(1);
                     }}
-                    value={true}
+                    value={1}
                   >
                     by percentage
                   </Radio>
@@ -1220,9 +1223,9 @@ export default function EditDeal({ match }) {
                   <Radio
                     className="ant-radio"
                     onChange={e => {
-                      if (e.target.checked) setRate(false);
+                      if (e.target.checked) setRate(0);
                     }}
-                    value={false}
+                    value={0}
                   >
                     by currency
                   </Radio>
