@@ -17,6 +17,8 @@ import "./deal-page.scss";
 import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
 import { setHasError } from "../../redux/data/data.actions";
 import { format } from "timeago.js";
+import { Form, Input} from 'antd';
+
 
 const { confirm } = Modal;
 
@@ -72,6 +74,35 @@ export default function DealPage({ match }) {
           <div>source: {source}</div>
           <div>destination: {destination}</div>
           <div>rate: {rate}%</div>
+          
+          <Form.Item
+              label="amount(USD)"
+              name="amount"
+              rules={[
+                {
+                  required: true,
+                  message: "enter amount",
+                },
+              ]}
+              style={{
+                display: "inline-block",
+                width: "49%",
+                marginTop: "5%",
+              }}
+            >
+              <Input
+                placeholder="enter amount"
+                style={{ width: "100%" }}
+                formatter={(value) =>
+                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                }
+                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
+              />
+            </Form.Item>
+
+          <div>You will receive: N{rate}<small> (+ escrow fee)</small></div>
+
+          
         </div>
       ),
       onOk() {
