@@ -46,7 +46,7 @@ export default function DealPage({ match }) {
     //eslint-disable-next-line
   }, []);
 
-  const getDealInfo = async () => {
+  const getDealInfo = () => {
     instance
       .get(`/return_this_deal?deal_id=${match.params.id}`)
       .then(function (response) {
@@ -141,6 +141,16 @@ export default function DealPage({ match }) {
       onCancel() {},
     });
   }
+
+  const curType = curr => {
+    if (curr === 'usd') return '$';
+    //'&dollar;';
+    else if (curr === 'ngn') return '₦';
+    //'&#8358;';
+    else if (curr === 'cad') return '$';
+    //'&dollar;';
+    else if (curr === 'gbp') return '£'; //'&pound;';
+  };
 
   return (
     <div className="deal-page-container">
@@ -258,7 +268,12 @@ export default function DealPage({ match }) {
                 {deal?.destination === 'bank fund'
                   ? 'bank account'
                   : deal?.destination}{' '}
-                at {deal?.rate}%”
+
+                at {deal?.rate}
+                {deal?.rate_structure === 'percentage'
+                  ? '%'
+                  : '/' + curType(deal.currency)}
+                ”
               </div>
 
               <div className="deal-item-row-two">
@@ -342,7 +357,13 @@ export default function DealPage({ match }) {
                 {deal?.rate && (
                   <>
                     {' '}
-                    rate <span className="bold">{deal?.rate}%</span>{' '}
+                    rate{' '}
+                    <span className="bold">
+                      {deal?.rate}
+                      {deal?.rate_structure === 'percentage'
+                        ? '%'
+                        : '/' + curType(deal.currency)}
+                    </span>{' '}
                     <EllipsisOutlined />{' '}
                   </>
                 )}
