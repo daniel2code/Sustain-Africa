@@ -52,10 +52,61 @@
         font-weight: 500;
       }
 
+      .ant-alert {
+        font-size: 14px;
+        font-weight: 500;
+        color: #ed1450;
+        background-color: #ed125020;
+        border: 1.5px solid #ed1450;
+        border-radius: 10px;
+        padding: 5px 15px;
+
+        &-message {
+          color: #ed1450;
+        }
+      }
+
+      .ant-radio {
+        font-size: 14px;
+        font-weight: 500;
+        color: #ed1450;
+
+        &-wrapper {
+          &:not(:last-child) {
+            margin-right: 20px;
+          }
+        }
+
+        &-inner {
+          border: 1.5px solid #ed1450;
+
+          &::after {
+            background-color: #ed1450;
+          }
+        }
+      }
+
       .ant-input,
+      .ant-input-affix-wrapper,
       .ant-select-selector,
       .ant-input-number {
         border: 1.5px solid #ed1450;
+      }
+
+      .ant-input-affix-wrapper .ant-input {
+        border: none;
+
+        &:focus {
+          box-shadow: none;
+        }
+      }
+
+      .ant-radio-inner {
+        &::after {
+          top: 50%;
+          left: 50%;
+          transform: scale(1) translate(-50%, -50%);
+        }
       }
 
       .ant-select-selection-placeholder,
@@ -65,7 +116,7 @@
 
       .ant-form-item-required {
         &::before {
-          content: "";
+          content: '';
         }
         &::after {
           display: inline-block;
@@ -74,7 +125,7 @@
           font-size: 14px;
           font-family: SimSun, sans-serif;
           line-height: 1;
-          content: "*";
+          content: '*';
         }
       }
 

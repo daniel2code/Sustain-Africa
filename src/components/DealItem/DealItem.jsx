@@ -92,6 +92,16 @@ export default function DealItem({ item }) {
     });
   }
 
+  const curType = curr => {
+    if (curr === 'usd') return '$';
+    //'&dollar;';
+    else if (curr === 'ngn') return '₦';
+    //'&#8358;';
+    else if (curr === 'cad') return '$';
+    //'&dollar;';
+    else if (curr === 'gbp') return '£'; //'&pound;';
+  };
+
   return (
     <>
       <div className="deal-item-container">
@@ -181,12 +191,15 @@ export default function DealItem({ item }) {
             {item?.destination === 'bank fund'
               ? 'bank account'
               : item?.destination}{' '}
-            at {item?.rate}%”
+            at {item?.rate}
+            {item?.rate_structure === 'percentage'
+              ? '%'
+              : '/' + curType(item.currency)}
+            ”
           </div>
 
           <div className="deal-item-row-two">
             {item?.s_bank_name && (
-                
               <>
                 {' '}
                 bank name <span className="bold">{item?.s_bank_name}</span>{' '}
@@ -198,8 +211,8 @@ export default function DealItem({ item }) {
                 {' '}
                 account type{' '}
                 <span className="bold">{item?.s_account_type}</span>{' '}
-                <EllipsisOutlined />{' '}
-              +</>
+                <EllipsisOutlined /> +
+              </>
             )}
             {item?.s_account_age && item?.s_account_age !== 0 ? (
               <>
@@ -262,7 +275,13 @@ export default function DealItem({ item }) {
             {item?.rate && (
               <>
                 {' '}
-                rate <span className="bold">{item?.rate}%</span>{' '}
+                rate{' '}
+                <span className="bold">
+                  {item?.rate}
+                  {item?.rate_structure === 'percentage'
+                    ? '%'
+                    : '/' + curType(item.currency)}
+                </span>{' '}
                 <EllipsisOutlined />{' '}
               </>
             )}

@@ -10,9 +10,15 @@ import {
   Tooltip,
   Popconfirm,
   Breadcrumb,
+  Radio,
+  Alert,
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
-import { HomeOutlined, DownOutlined } from '@ant-design/icons';
+import {
+  HomeOutlined,
+  DownOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from './../../components/Loader/Loader';
 import { setHasError } from '../../redux/data/data.actions';
@@ -100,6 +106,9 @@ export default function EditDeal({ match }) {
     useState(null);
   const [destinationWalletAgeInput, setDestinationWalletAgeInput] =
     useState(null);
+  const [minmax, setMinmax] = useState(false);
+  const [rate, setRate] = useState(1);
+  const [curr, setCurr] = useState('usd');
 
   const getDealInfo = () => {
     instance
@@ -130,11 +139,16 @@ export default function EditDeal({ match }) {
   };
 
   const initializeValues = dealData => {
+    // console.log(dealData);
     setSelectedSource(dealData?.source);
     setSourceStateInput(dealData?.s_state);
     setSourceBankInput(dealData?.s_bank_name);
     setSourceAccountInput(dealData?.s_account_type);
     setSourceAccountAgeInput(dealData?.s_account_age);
+    // console.log(dealData.rate_structure === 'percentage');
+    // console.log(dealData.rate_structure);
+    setCurr(dealData.currency);
+    setRate(dealData.rate_structure === 'percentage' ? 1 : 0);
 
     setSelectedDestination(dealData?.destination);
     setDestinationStateInput(dealData?.d_state);
@@ -168,6 +182,13 @@ export default function EditDeal({ match }) {
 
   const onFinish = values => {
     setButtonLoading(true);
+    setMinmax(false);
+
+    if (+values?.min >= +values?.max) {
+      setButtonLoading(false);
+      setMinmax(true);
+      return;
+    }
 
     const data = new FormData();
     data.append('deal_id', match.params.id);
@@ -176,6 +197,7 @@ export default function EditDeal({ match }) {
     data.append('range_min', values?.min);
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
+    data.append('remit_rate_structure', rate ? 'percentage' : curr);
     data.append('currency', values?.currency);
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
@@ -318,6 +340,16 @@ export default function EditDeal({ match }) {
     }
   };
 
+  const curType = () => {
+    if (curr === 'usd') return '$';
+    //'&dollar;';
+    else if (curr === 'ngn') return '₦';
+    //'&#8358;';
+    else if (curr === 'cad') return '$';
+    //'&dollar;';
+    else if (curr === 'gbp') return '£'; //'&pound;';
+  };
+
   return (
     <div className="new-deal-container">
       {!deal && <Loader />}
@@ -355,6 +387,8 @@ export default function EditDeal({ match }) {
                 min: deal?.min,
                 max: deal?.max,
                 rate: deal?.rate,
+                remit_rate_structure:
+                  deal?.rate_structure === 'percentage' ? 1 : 0,
                 currency: deal?.currency,
                 discussion: deal?.discussion,
                 discussion_detail: deal?.discussion_details,
@@ -1171,6 +1205,34 @@ export default function EditDeal({ match }) {
               )}
 
               <Divider style={{ fontSize: '14px', color: '#999' }}>
+                rate structure
+              </Divider>
+
+              <Form.Item name="remit_rate_structure">
+                <Radio.Group name="remit_rate_structure">
+                  <Radio
+                    className="ant-radio"
+                    onChange={e => {
+                      if (e.target.checked) setRate(1);
+                    }}
+                    value={1}
+                  >
+                    by percentage
+                  </Radio>
+
+                  <Radio
+                    className="ant-radio"
+                    onChange={e => {
+                      if (e.target.checked) setRate(0);
+                    }}
+                    value={0}
+                  >
+                    by currency
+                  </Radio>
+                </Radio.Group>
+              </Form.Item>
+
+              <Divider style={{ fontSize: '14px', color: '#999' }}>
                 range & rate
               </Divider>
 
@@ -1200,6 +1262,10 @@ export default function EditDeal({ match }) {
                         />
                       }
                       placeholder="select"
+                      onChange={e => {
+                        // console.log(e);
+                        setCurr(e);
+                      }}
                     >
                       <Option value="usd">USD</Option>
                       <Option value="ngn">NGN</Option>
@@ -1209,7 +1275,7 @@ export default function EditDeal({ match }) {
                   </Form.Item>
                   <Form.Item
                     name="rate"
-                    label="rate (%)"
+                    label={`rate (${rate ? '%' : 'per ' + curType()})`}
                     style={{
                       display: 'inline-block',
                       width: 'calc(49% - 15px)',
@@ -1222,11 +1288,26 @@ export default function EditDeal({ match }) {
                       },
                     ]}
                   >
-                    <InputNumber
+                    {/* <InputNumber
                       style={{ width: '100%' }}
                       min={0}
                       max={100}
                       placeholder="0"
+                    /> */}
+
+                    <Input
+                      type="number"
+                      style={{
+                        width: '100%',
+                        paddingTop: '0',
+                        paddingBottom: '0',
+                      }}
+                      placeholder="0"
+                      suffix={
+                        <span style={{ fontSize: '14px', color: '#999' }}>
+                          {rate ? '%' : '/' + curType()}
+                        </span>
+                      }
                     />
                   </Form.Item>
                 </Form.Item>
@@ -1293,6 +1374,17 @@ export default function EditDeal({ match }) {
                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                   />
                 </Form.Item>
+                {minmax && (
+                  <Alert
+                    message="min amount must be less than max amount"
+                    type="error"
+                    showIcon
+                    icon={
+                      <ExclamationCircleOutlined style={{ color: '#ed1450' }} />
+                    }
+                    style={{ color: '#ed1450' }}
+                  />
+                )}
               </Form.Item>
 
               <Divider style={{ fontSize: '14px', color: '#999' }}>

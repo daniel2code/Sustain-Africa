@@ -122,7 +122,6 @@ export default function DealsList() {
       );
     } else if (value === 'location') {
       showModal();
-    } else {
     }
   };
 
