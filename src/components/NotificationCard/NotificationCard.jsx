@@ -25,6 +25,8 @@ const NotificationCard = ({ data }) => {
   // const [isModalVisible, setIsModalVisible] = useState(false);
   const [view, setView] = useState(false);
   const [stamp, setStamp] = useState();
+  const [rejected, setRejected] = useState(false);
+  const [accepted, setAccepted] = useState(false);
 
   const router = useHistory();
 
@@ -135,6 +137,7 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
+            setRejected(true);
             router.replace('/notifications');
           })
           .catch(() => console.log('Oops errors!'));
@@ -174,6 +177,7 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
+            setAccepted(true);
             router.replace('/message');
           })
           .catch(() => console.log('Oops errors!'));
@@ -181,7 +185,7 @@ const NotificationCard = ({ data }) => {
       onCancel() {},
     });
   }
-  
+
   return (
     <>
       {/* <Modal
@@ -317,8 +321,8 @@ const NotificationCard = ({ data }) => {
         <div style={{ display: 'flex' }}>
           {((data.type === 'd_r' &&
             data.receiver === user.id &&
-            data.accepted === 0 &&
-            data.rejected === 0) ||
+            (data.accepted === 0 || accepted) &&
+            (data.rejected === 0 || rejected)) ||
             data.type === 'c_r') && (
             <div style={{ display: 'flex', marginBottom: '5px' }}>
               <button
