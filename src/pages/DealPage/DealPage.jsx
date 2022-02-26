@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Tooltip, message, Divider, Breadcrumb, Modal } from 'antd';
+import {
+  Tooltip,
+  message,
+  Divider,
+  Breadcrumb,
+  Modal,
+  Form,
+  Input,
+} from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +25,6 @@ import './deal-page.scss';
 import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
 import { setHasError } from '../../redux/data/data.actions';
 import { format } from 'timeago.js';
-import { Form, Input } from 'antd';
 
 const { confirm } = Modal;
 
