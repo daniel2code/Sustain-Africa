@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Tooltip, message, Divider, Breadcrumb, Modal } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Tooltip, message, Divider, Breadcrumb, Modal } from 'antd';
+import { Link, useHistory } from 'react-router-dom';
 
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
 import {
   LikeOutlined,
   DislikeOutlined,
@@ -10,15 +10,14 @@ import {
   ArrowRightOutlined,
   HomeOutlined,
   ExclamationCircleOutlined,
-} from "@ant-design/icons";
-import Loader from "./../../components/Loader/Loader";
-import { instance } from "./../../utils/API";
-import "./deal-page.scss";
-import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
-import { setHasError } from "../../redux/data/data.actions";
-import { format } from "timeago.js";
-import { Form, Input} from 'antd';
-
+} from '@ant-design/icons';
+import Loader from './../../components/Loader/Loader';
+import { instance, bearerInstance } from './../../utils/API';
+import './deal-page.scss';
+import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
+import { setHasError } from '../../redux/data/data.actions';
+import { format } from 'timeago.js';
+import { Form, Input } from 'antd';
 
 const { confirm } = Modal;
 
@@ -27,8 +26,8 @@ export default function DealPage({ match }) {
   const history = useHistory();
   const [deal, setDeal] = useState(null);
   const [dealerData, setDealerData] = useState(null);
-  const [userId, setUserId] = useState("000111222333444");
-  const userIdState = useSelector((state) => state?.user?.userData?.id);
+  const [userId, setUserId] = useState('000111222333444');
+  const userIdState = useSelector(state => state?.user?.userData?.id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,15 +55,38 @@ export default function DealPage({ match }) {
       });
   };
 
+  // const handleOk = () => {
+  //   history.push("/message");
+  // };
+
   const handleOk = () => {
-    history.push("/message");
+    const data = new FormData();
+
+    // console.log(dealerData);
+    // console.log(userIdState);
+    // console.log(deal);
+
+    data.append('sender', userIdState);
+    data.append('receiver', deal.dealer_id);
+    data.append('type', 'd_r');
+    data.append('deal_id', deal.d_id);
+
+    // data.forEach(cur => console.log(cur));
+
+    bearerInstance
+      .post(`/new_notification`, data)
+      .then(res => {
+        console.log(res);
+        history.push('/message');
+      })
+      .catch(err => {});
   };
 
   function showDiscussConfirm(user, source, destination, rate) {
     confirm({
       title: (
         <div>
-          start a discussion with{" "}
+          start a discussion with{' '}
           <span className="username-green">@{user}</span>?
         </div>
       ),
@@ -74,35 +96,36 @@ export default function DealPage({ match }) {
           <div>source: {source}</div>
           <div>destination: {destination}</div>
           <div>rate: {rate}%</div>
-          
+
           <Form.Item
-              label="amount(USD)"
-              name="amount"
-              rules={[
-                {
-                  required: true,
-                  message: "enter amount",
-                },
-              ]}
-              style={{
-                display: "inline-block",
-                width: "49%",
-                marginTop: "5%",
-              }}
-            >
-              <Input
-                placeholder="enter amount"
-                style={{ width: "100%" }}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              />
-            </Form.Item>
+            label="amount(USD)"
+            name="amount"
+            rules={[
+              {
+                required: true,
+                message: 'enter amount',
+              },
+            ]}
+            style={{
+              display: 'inline-block',
+              width: '49%',
+              marginTop: '5%',
+            }}
+          >
+            <Input
+              placeholder="enter amount"
+              style={{ width: '100%' }}
+              formatter={value =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          </Form.Item>
 
-          <div>You will receive: N{rate}<small> (+ escrow fee)</small></div>
-
-          
+          <div>
+            You will receive: N{rate}
+            <small> (+ escrow fee)</small>
+          </div>
         </div>
       ),
       onOk() {
@@ -129,7 +152,7 @@ export default function DealPage({ match }) {
                 to={
                   userIdState &&
                   deal?.dealer_id.toString() === userId.toString()
-                    ? "/profile"
+                    ? '/profile'
                     : `/user/${deal?.dealer_id}/profile`
                 }
               >
@@ -166,15 +189,15 @@ export default function DealPage({ match }) {
               </div>*/}
               <div>
                 <div className="username-green">
-                  @{dealerData?.user_name_front}{" "}
+                  @{dealerData?.user_name_front}{' '}
                 </div>
                 <div>
                   <div className="score-green">
-                    score{" "}
+                    score{' '}
                     <span style={{ fontWeight: 600 }}>
                       {dealerData?.a_score}
-                    </span>{" "}
-                    <EllipsisOutlined /> status{" "}
+                    </span>{' '}
+                    <EllipsisOutlined /> status{' '}
                     <span style={{ fontWeight: 600 }}>online</span>
                   </div>
                 </div>
@@ -185,14 +208,14 @@ export default function DealPage({ match }) {
               title={`i am picking ${deal?.source} and will remit to ${deal?.destination}`}
             >
               <div className="source-destination">
-                {deal?.source}{" "}
+                {deal?.source}{' '}
                 <ArrowRightOutlined
                   style={{
-                    strokeWidth: "50",
-                    stroke: "white",
+                    strokeWidth: '50',
+                    stroke: 'white',
                   }}
-                />{" "}
-                {deal?.destination}{" "}
+                />{' '}
+                {deal?.destination}{' '}
               </div>
             </Tooltip>
           </div>
@@ -202,150 +225,151 @@ export default function DealPage({ match }) {
               <div className="deal-item-row-one">
                 “
                 {deal?.s_account_age &&
-                  deal?.s_account_age !== "Any Age" &&
+                  deal?.s_account_age !== 'Any Age' &&
                   deal?.s_bank_name &&
                   `${deal?.s_account_age} ${
-                    deal?.s_account_age !== "Any Age" ? "year" : ""
-                  }${deal?.s_account_age !== 1 ? "s" : ""} old `}
+                    deal?.s_account_age !== 'Any Age' ? 'year' : ''
+                  }${deal?.s_account_age !== 1 ? 's' : ''} old `}
                 {deal?.s_wallet_age &&
-                  deal?.s_wallet_age !== "Any Age" &&
+                  deal?.s_wallet_age !== 'Any Age' &&
                   deal?.s_wallet_type &&
                   `${deal?.s_wallet_age} ${
-                    deal?.s_wallet_age !== "Any Age" ? "year" : ""
-                  }${deal?.s_wallet_age !== 1 ? "s" : ""} old `}
+                    deal?.s_wallet_age !== 'Any Age' ? 'year' : ''
+                  }${deal?.s_wallet_age !== 1 ? 's' : ''} old `}
                 {deal?.s_bank_name &&
                   `${deal?.s_bank_name} ${deal?.s_account_type} account available in `}
                 {deal?.s_wallet_type && `${deal?.source} wallet available`}
                 {deal?.s_state && `${deal?.s_state},`}
-                {deal?.source !== "bank fund" &&
-                deal?.source !== "bitcoin" &&
-                deal?.source !== "ethereum" &&
-                deal?.source !== "litecoin" &&
-                deal?.source !== "dogecoin"
+                {deal?.source !== 'bank fund' &&
+                deal?.source !== 'bitcoin' &&
+                deal?.source !== 'ethereum' &&
+                deal?.source !== 'litecoin' &&
+                deal?.source !== 'dogecoin'
                   ? deal?.source
-                  : ""}{" "}
-                {deal?.s_country && `${deal?.s_country},`} to remit to{" "}
-                {deal?.destination === "bank fund"
-                  ? "bank account"
-                  : deal?.destination}{" "} at {deal?.rate}%”
+                  : ''}{' '}
+                {deal?.s_country && `${deal?.s_country},`} to remit to{' '}
+                {deal?.destination === 'bank fund'
+                  ? 'bank account'
+                  : deal?.destination}{' '}
+                at {deal?.rate}%”
               </div>
 
               <div className="deal-item-row-two">
                 {deal?.s_bank_name && (
                   <>
-                    {" "}
+                    {' '}
                     bank name <span className="bold">
                       {deal?.s_bank_name}
-                    </span>{" "}
-                    <EllipsisOutlined />{" "}
+                    </span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_account_type && (
                   <>
-                    {" "}
-                    account type{" "}
-                    <span className="bold">{deal?.s_account_type}</span>{" "}
-                    <EllipsisOutlined />{" "}
+                    {' '}
+                    account type{' '}
+                    <span className="bold">{deal?.s_account_type}</span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_account_age && deal?.s_account_age !== 0 ? (
                   <>
-                    {" "}
-                    account age{" "}
+                    {' '}
+                    account age{' '}
                     <span className="bold">
                       {deal?.s_account_age} years old
-                    </span>{" "}
-                    <EllipsisOutlined />{" "}
+                    </span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 ) : null}
                 {deal?.s_card_brand && (
                   <>
-                    {" "}
-                    card brand{" "}
-                    <span className="bold">{deal?.s_card_brand}</span>{" "}
-                    <EllipsisOutlined />{" "}
+                    {' '}
+                    card brand{' '}
+                    <span className="bold">{deal?.s_card_brand}</span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_card_type && (
                   <>
-                    {" "}
+                    {' '}
                     card type <span className="bold">
                       {deal?.s_card_type}
-                    </span>{" "}
-                    <EllipsisOutlined />{" "}
+                    </span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_exchange && (
                   <>
-                    {" "}
+                    {' '}
                     exchange <span className="bold">
                       {deal?.s_exchange}
-                    </span>{" "}
-                    <EllipsisOutlined />{" "}
+                    </span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_wallet_type && (
                   <>
-                    {" "}
-                    wallet type{" "}
-                    <span className="bold">{deal?.s_wallet_type}</span>{" "}
-                    <EllipsisOutlined />{" "}
+                    {' '}
+                    wallet type{' '}
+                    <span className="bold">{deal?.s_wallet_type}</span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.min && (
                   <>
-                    {" "}
-                    min{" "}
-                    <span className="bold">{`${deal?.min.toLocaleString()} ${deal?.currency.toUpperCase()}`}</span>{" "}
-                    <EllipsisOutlined />{" "}
+                    {' '}
+                    min{' '}
+                    <span className="bold">{`${deal?.min.toLocaleString()} ${deal?.currency.toUpperCase()}`}</span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.max && (
                   <>
-                    {" "}
-                    max{" "}
-                    <span className="bold">{`${deal?.max.toLocaleString()} ${deal?.currency.toUpperCase()}`}</span>{" "}
-                    <EllipsisOutlined />{" "}
+                    {' '}
+                    max{' '}
+                    <span className="bold">{`${deal?.max.toLocaleString()} ${deal?.currency.toUpperCase()}`}</span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.rate && (
                   <>
-                    {" "}
-                    rate <span className="bold">{deal?.rate}%</span>{" "}
-                    <EllipsisOutlined />{" "}
+                    {' '}
+                    rate <span className="bold">{deal?.rate}%</span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_state && (
                   <>
-                    {" "}
+                    {' '}
                     bank state <span className="bold">
                       {deal?.s_state}
-                    </span>{" "}
-                    <EllipsisOutlined />{" "}
+                    </span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.s_country && (
                   <>
-                    {" "}
+                    {' '}
                     bank country <span className="bold">
                       {deal?.s_country}
-                    </span>{" "}
-                    <EllipsisOutlined />{" "}
+                    </span>{' '}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.discussion && (
                   <>
-                    {" "}
-                    discussion{" "}
+                    {' '}
+                    discussion{' '}
                     <Tooltip placement="top" title={deal?.discussion_details}>
-                      <span className="discussion">{deal?.discussion}</span>{" "}
+                      <span className="discussion">{deal?.discussion}</span>{' '}
                     </Tooltip>
-                    <EllipsisOutlined />{" "}
+                    <EllipsisOutlined />{' '}
                   </>
                 )}
                 {deal?.deal_summary && (
                   <>
-                    {" "}
+                    {' '}
                     <Tooltip placement="top" title={deal?.deal_summary}>
                       <span className="discussion">other notes</span>
                     </Tooltip>
@@ -354,22 +378,22 @@ export default function DealPage({ match }) {
               </div>
 
               <div className="deal-item-row-three">
-                <span>{deal?.d_last_updated_at ? "updated" : ""}</span>{" "}
+                <span>{deal?.d_last_updated_at ? 'updated' : ''}</span>{' '}
                 {format(
                   deal?.d_last_updated_at
                     ? deal?.d_last_updated_at
                     : deal?.d_created_at
-                )}{" "}
+                )}{' '}
                 <Tooltip
                   placement="top"
                   title={
-                    "user posted this deal from this location and will probably arrange a meetup there if necessary."
+                    'user posted this deal from this location and will probably arrange a meetup there if necessary.'
                   }
                 >
-                  {" "}
-                  ·{" "}
+                  {' '}
+                  ·{' '}
                   <span className="location">{dealerData?.user_location}</span>
-                </Tooltip>{" "}
+                </Tooltip>{' '}
               </div>
 
               <div className="deal-item-row-four">
@@ -391,14 +415,14 @@ export default function DealPage({ match }) {
                   }}
                 >
                   {deal?.dealer_id.toString() === userId.toString()
-                    ? "edit"
-                    : "review"}
+                    ? 'edit'
+                    : 'review'}
                 </div>
                 <div
                   className={`grey-button-nobg ${
                     deal?.dealer_id.toString() === userId.toString()
-                      ? "no-margin-right"
-                      : ""
+                      ? 'no-margin-right'
+                      : ''
                   }`}
                 >
                   share
@@ -415,8 +439,8 @@ export default function DealPage({ match }) {
                           deal?.rate
                         );
                       } else {
-                        message.error("you must login to continue");
-                        history.push("/login");
+                        message.error('you must login to continue');
+                        history.push('/login');
                       }
                     }}
                   >
@@ -428,7 +452,7 @@ export default function DealPage({ match }) {
           </div>
 
           <Divider
-            style={{ fontSize: "14px", color: "#999", marginTop: "60px" }}
+            style={{ fontSize: '14px', color: '#999', marginTop: '60px' }}
           >
             reviews for @{dealerData?.user_name_front} (
             {dealerData?.total_reviews})

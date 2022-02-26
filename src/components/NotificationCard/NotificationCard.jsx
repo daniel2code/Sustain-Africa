@@ -138,7 +138,7 @@ const NotificationCard = ({ data }) => {
         })
           .then(res => {
             setRejected(true);
-            router.replace('/notifications');
+            router.push('/notifications');
           })
           .catch(() => console.log('Oops errors!'));
       },
@@ -328,26 +328,32 @@ const NotificationCard = ({ data }) => {
               <button
                 style={{ marginRight: '10px' }}
                 className={`notification-card-btn notification-card-btn-pink${
-                  data.accepted || data.rejected ? ' notification-disabled' : ''
+                  data.accepted || data.rejected || accepted || rejected
+                    ? ' notification-disabled'
+                    : ''
                 }`}
                 // disabled when the deal is
-                disabled={data.accepted || data.rejected}
+                disabled={
+                  data.accepted || data.rejected || accepted || rejected
+                }
                 onClick={showAcceptConfirm}
               >
-                {data.accepted === 1 ? 'accepted' : 'accept'}
+                {data.accepted === 1 || accepted ? 'accepted' : 'accept'}
               </button>
 
               <button
                 className={`notification-card-btn notification-card-btn-out${
-                  data.accepted || data.rejected
+                  data.accepted || data.rejected || accepted || rejected
                     ? ' notification-disabled-rej'
                     : ''
                 }`}
                 // disabled when the deal is
-                disabled={data.accepted || data.rejected}
+                disabled={
+                  data.accepted || data.rejected || accepted || rejected
+                }
                 onClick={showPromiseConfirm}
               >
-                {data.rejected === 1 ? 'rejected' : 'reject'}
+                {data.rejected === 1 || rejected ? 'rejected' : 'reject'}
               </button>
             </div>
           )}
