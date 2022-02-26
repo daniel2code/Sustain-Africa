@@ -12,8 +12,7 @@ import {
 } from '@ant-design/icons';
 import './DealItem.scss';
 import { bearerInstance } from '../../utils/API';
-import { Form, Input} from 'antd';
-
+import { Form, Input } from 'antd';
 
 const { confirm } = Modal;
 
@@ -29,7 +28,7 @@ export default function DealItem({ item }) {
     data.append('type', 'd_r');
     data.append('deal_id', item.d_id);
 
-    data.forEach(cur => console.log(cur));
+    // data.forEach(cur => console.log(cur));
 
     bearerInstance
       .post(`/new_notification`, data)
@@ -56,34 +55,35 @@ export default function DealItem({ item }) {
           <div>rate: {rate}%</div>
 
           <Form.Item
-              label="amount(USD)"
-              name="amount"
-              rules={[
-                {
-                  required: true,
-                  message: "enter amount",
-                },
-              ]}
-              style={{
-                display: "inline-block",
-                width: "49%",
-                marginTop: "5%",
-              }}
-            >
-              <Input
-                placeholder="enter amount"
-                style={{ width: "100%" }}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              />
-            </Form.Item>
+            label="amount(USD)"
+            name="amount"
+            rules={[
+              {
+                required: true,
+                message: 'enter amount',
+              },
+            ]}
+            style={{
+              display: 'inline-block',
+              width: '49%',
+              marginTop: '5%',
+            }}
+          >
+            <Input
+              placeholder="enter amount"
+              style={{ width: '100%' }}
+              formatter={value =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          </Form.Item>
 
-          <div>You will receive: N{rate}<small> (+ escrow fee)</small></div>
+          <div>
+            You will receive: N{rate}
+            <small> (+ escrow fee)</small>
+          </div>
         </div>
-
-        
       ),
       onOk() {
         handleOk();

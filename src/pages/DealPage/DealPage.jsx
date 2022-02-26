@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Tooltip, message, Divider, Breadcrumb, Modal } from 'antd';
+import {
+  Tooltip,
+  message,
+  Divider,
+  Breadcrumb,
+  Modal,
+  Form,
+  Input,
+} from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -12,13 +20,11 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import Loader from './../../components/Loader/Loader';
-import { instance } from './../../utils/API';
+import { instance, bearerInstance } from './../../utils/API';
 import './deal-page.scss';
 import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
 import { setHasError } from '../../redux/data/data.actions';
 import { format } from 'timeago.js';
-import { Form, Input} from 'antd';
-
 
 const { confirm } = Modal;
 
@@ -56,8 +62,31 @@ export default function DealPage({ match }) {
       });
   };
 
+  // const handleOk = () => {
+  //   history.push("/message");
+  // };
+
   const handleOk = () => {
-    history.push('/message');
+    const data = new FormData();
+
+    // console.log(dealerData);
+    // console.log(userIdState);
+    // console.log(deal);
+
+    data.append('sender', userIdState);
+    data.append('receiver', deal.dealer_id);
+    data.append('type', 'd_r');
+    data.append('deal_id', deal.d_id);
+
+    // data.forEach(cur => console.log(cur));
+
+    bearerInstance
+      .post(`/new_notification`, data)
+      .then(res => {
+        console.log(res);
+        history.push('/message');
+      })
+      .catch(err => {});
   };
 
   function showDiscussConfirm(user, source, destination, rate) {
@@ -74,35 +103,36 @@ export default function DealPage({ match }) {
           <div>source: {source}</div>
           <div>destination: {destination}</div>
           <div>rate: {rate}%</div>
-          
+
           <Form.Item
-              label="amount(USD)"
-              name="amount"
-              rules={[
-                {
-                  required: true,
-                  message: "enter amount",
-                },
-              ]}
-              style={{
-                display: "inline-block",
-                width: "49%",
-                marginTop: "5%",
-              }}
-            >
-              <Input
-                placeholder="enter amount"
-                style={{ width: "100%" }}
-                formatter={(value) =>
-                  `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-                }
-                parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
-              />
-            </Form.Item>
+            label="amount(USD)"
+            name="amount"
+            rules={[
+              {
+                required: true,
+                message: 'enter amount',
+              },
+            ]}
+            style={{
+              display: 'inline-block',
+              width: '49%',
+              marginTop: '5%',
+            }}
+          >
+            <Input
+              placeholder="enter amount"
+              style={{ width: '100%' }}
+              formatter={value =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+              }
+              parser={value => value.replace(/\$\s?|(,*)/g, '')}
+            />
+          </Form.Item>
 
-          <div>You will receive: N{rate}<small> (+ escrow fee)</small></div>
-
-          
+          <div>
+            You will receive: N{rate}
+            <small> (+ escrow fee)</small>
+          </div>
         </div>
       ),
       onOk() {
@@ -238,6 +268,7 @@ export default function DealPage({ match }) {
                 {deal?.destination === 'bank fund'
                   ? 'bank account'
                   : deal?.destination}{' '}
+
                 at {deal?.rate}
                 {deal?.rate_structure === 'percentage'
                   ? '%'

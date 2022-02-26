@@ -25,6 +25,8 @@ const NotificationCard = ({ data }) => {
   // const [isModalVisible, setIsModalVisible] = useState(false);
   const [view, setView] = useState(false);
   const [stamp, setStamp] = useState();
+  const [rejected, setRejected] = useState(false);
+  const [accepted, setAccepted] = useState(false);
 
   const router = useHistory();
 
@@ -135,7 +137,8 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
-            router.replace('/notifications');
+            setRejected(true);
+            router.push('/notifications');
           })
           .catch(() => console.log('Oops errors!'));
       },
@@ -174,6 +177,7 @@ const NotificationCard = ({ data }) => {
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
           .then(res => {
+            setAccepted(true);
             router.replace('/message');
           })
           .catch(() => console.log('Oops errors!'));
@@ -181,7 +185,7 @@ const NotificationCard = ({ data }) => {
       onCancel() {},
     });
   }
-  
+
   return (
     <>
       {/* <Modal
@@ -317,33 +321,39 @@ const NotificationCard = ({ data }) => {
         <div style={{ display: 'flex' }}>
           {((data.type === 'd_r' &&
             data.receiver === user.id &&
-            data.accepted === 0 &&
-            data.rejected === 0) ||
+            (data.accepted === 0 || accepted) &&
+            (data.rejected === 0 || rejected)) ||
             data.type === 'c_r') && (
             <div style={{ display: 'flex', marginBottom: '5px' }}>
               <button
                 style={{ marginRight: '10px' }}
                 className={`notification-card-btn notification-card-btn-pink${
-                  data.accepted || data.rejected ? ' notification-disabled' : ''
+                  data.accepted || data.rejected || accepted || rejected
+                    ? ' notification-disabled'
+                    : ''
                 }`}
                 // disabled when the deal is
-                disabled={data.accepted || data.rejected}
+                disabled={
+                  data.accepted || data.rejected || accepted || rejected
+                }
                 onClick={showAcceptConfirm}
               >
-                {data.accepted === 1 ? 'accepted' : 'accept'}
+                {data.accepted === 1 || accepted ? 'accepted' : 'accept'}
               </button>
 
               <button
                 className={`notification-card-btn notification-card-btn-out${
-                  data.accepted || data.rejected
+                  data.accepted || data.rejected || accepted || rejected
                     ? ' notification-disabled-rej'
                     : ''
                 }`}
                 // disabled when the deal is
-                disabled={data.accepted || data.rejected}
+                disabled={
+                  data.accepted || data.rejected || accepted || rejected
+                }
                 onClick={showPromiseConfirm}
               >
-                {data.rejected === 1 ? 'rejected' : 'reject'}
+                {data.rejected === 1 || rejected ? 'rejected' : 'reject'}
               </button>
             </div>
           )}
