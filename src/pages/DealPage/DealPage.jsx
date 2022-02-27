@@ -100,19 +100,18 @@ export default function DealPage({ match }) {
       icon: <ExclamationCircleOutlined />,
       content: (
         <div>
-          <div>source: {source}</div>
-          <div>destination: {destination}</div>
-          <div>rate: {rate}%</div>
+          <div>source: {source} ($)</div>
+          <div>destination: {destination} (₦)</div>
+          <div>rate: ₦{rate}/$</div>
 
           <Form.Item
-            label="amount(USD)"
-            name="amount"
-            rules={[
-              {
-                required: true,
-                message: 'enter amount',
-              },
-            ]}
+              label="amount $"
+              name="amount"
+              rules={[
+                {
+                  message: 'enter trade amount...',
+                },
+              ]}
             style={{
               display: 'inline-block',
               width: '49%',
@@ -120,8 +119,8 @@ export default function DealPage({ match }) {
             }}
           >
             <Input
-              placeholder="enter amount"
-              style={{ width: '100%' }}
+              placeholder="enter amount..."
+              style={{ width: '100%', borderColor: '#ed1450' }}
               formatter={value =>
                 `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
               }
@@ -130,8 +129,8 @@ export default function DealPage({ match }) {
           </Form.Item>
 
           <div>
-            You will receive: N{rate}
-            <small> (+ escrow fee)</small>
+            you will receive <strong>₦{rate}.00</strong>
+            <br /><small>(minus escrow fee)</small>
           </div>
         </div>
       ),
