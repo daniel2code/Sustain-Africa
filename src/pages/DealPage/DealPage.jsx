@@ -105,7 +105,7 @@ export default function DealPage({ match }) {
           <div>rate: ₦{rate}/$</div>
 
           <Form.Item
-              label="amount $"
+              label="source amount $"
               name="amount"
               rules={[
                 {

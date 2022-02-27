@@ -55,7 +55,7 @@ export default function DealItem({ item }) {
           <div>rate: ₦{rate}/$</div>
 
           <Form.Item
-            label="amount $"
+            label="source amount $"
             name="amount"
             rules={[
               {
