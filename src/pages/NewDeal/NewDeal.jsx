@@ -85,6 +85,9 @@ export default function NewDeal() {
   const [sourceAccountInput, setSourceAccountInput] = useState(null);
   const [sourceAccountAgeInput, setSourceAccountAgeInput] = useState(null);
 
+  const [sourceCur, setSourceCur] = useState('usd');
+  const [DestCur, setDestCur] = useState('usd');
+
   const [selectedDestination, setSelectedDestination] = useState('');
   const [destinationStatesToRender, setDestinationStatesToRender] = useState(
     []
@@ -98,7 +101,7 @@ export default function NewDeal() {
   const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
   const [minmax, setMinmax] = useState(false);
   const [rate, setRate] = useState(1);
-  const [curr, setCurr] = useState('usd');
+  // const [curr, setCurr] = useState('usd');
 
   const onFinish = values => {
     // console.log(values);
@@ -119,7 +122,7 @@ export default function NewDeal() {
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
     data.append('currency', values?.currency);
-    data.append('remit_rate_structure', rate ? 'percentage' : curr);
+    data.append('remit_rate_structure', rate ? 'percentage' : sourceCur);
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
     data.append('deal_summary', values?.summary);
@@ -260,13 +263,11 @@ export default function NewDeal() {
     }
   };
 
-  const curType = () => {
-    if (curr === 'usd') return '$';
+  const curType = curr => {
+    if (curr === 'usd' || curr === 'cad') return '$';
     //'&dollar;';
     else if (curr === 'ngn') return '₦';
     //'&#8358;';
-    else if (curr === 'cad') return '$';
-    //'&dollar;';
     else if (curr === 'gbp') return '£'; //'&pound;';
   };
 
@@ -696,6 +697,39 @@ export default function NewDeal() {
                 </Form.Item>
               </>
             )}
+            {selectedSource !== '' && (
+              <>
+                <Form.Item
+                  name="source_currency"
+                  style={{ width: '80%' }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'please specify currency!',
+                    },
+                  ]}
+                >
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: '50',
+                          color: '#ed1450',
+                        }}
+                      />
+                    }
+                    onChange={e => setSourceCur(e)}
+                    placeholder="currency"
+                  >
+                    <Option value="usd">USD ($)</Option>
+                    <Option value="ngn">NGN (₦)</Option>
+                    <Option value="cad">CAD ($)</Option>
+                    <Option value="gbp">GBP (£)</Option>
+                  </Select>
+                </Form.Item>
+              </>
+            )}
+
             <div className="form-row">
               <Form.Item
                 name="destination"
@@ -1095,6 +1129,39 @@ export default function NewDeal() {
               </>
             )}
 
+            {selectedDestination !== '' && (
+              <>
+                <Form.Item
+                  name="destination_currency"
+                  style={{ width: '80%' }}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'please specify currency!',
+                    },
+                  ]}
+                >
+                  <Select
+                    suffixIcon={
+                      <DownOutlined
+                        style={{
+                          strokeWidth: '50',
+                          color: '#ed1450',
+                        }}
+                      />
+                    }
+                    onChange={e => setDestCur(e)}
+                    placeholder="currency"
+                  >
+                    <Option value="usd">USD ($)</Option>
+                    <Option value="ngn">NGN (₦)</Option>
+                    <Option value="cad">CAD ($)</Option>
+                    <Option value="gbp">GBP (£)</Option>
+                  </Select>
+                </Form.Item>
+              </>
+            )}
+
             <Divider style={{ fontSize: '14px', color: '#999' }}>
               rate structure
             </Divider>
@@ -1129,7 +1196,7 @@ export default function NewDeal() {
 
             <div className="form-row">
               <Form.Item style={{ marginBottom: 0 }}>
-                <Form.Item
+                {/* <Form.Item
                   label="currency"
                   name="currency"
                   style={{
@@ -1163,14 +1230,14 @@ export default function NewDeal() {
                     <Option value="cad">CAD</Option>
                     <Option value="gbp">GBP</Option>
                   </Select>
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                   name="rate"
-                  label={`rate (${rate ? '%' : 'per ' + curType()})`}
+                  label={`rate (${rate ? '%' : 'per ' + curType(sourceCur)})`}
                   style={{
                     display: 'inline-block',
-                    width: 'calc(49% - 15px)',
-                    marginLeft: '2%',
+                    width: 'calc(100% - 30px)',
+                    // marginLeft: '2%',
                   }}
                   rules={[
                     {
@@ -1179,15 +1246,6 @@ export default function NewDeal() {
                     },
                   ]}
                 >
-                  {/* {rate ? (
-                    <InputNumber
-                      style={{ width: '100%' }}
-                      min={0}
-                      max={100}
-                      placeholder="0"
-                      
-                    />
-                  ) : ( */}
                   <Input
                     type="number"
                     style={{
@@ -1198,11 +1256,15 @@ export default function NewDeal() {
                     placeholder="0"
                     suffix={
                       <span style={{ fontSize: '14px', color: '#999' }}>
-                        {rate ? '%' : '/' + curType()}
+                        {rate ? '%' : '/' + curType(sourceCur)}
+                      </span>
+                    }
+                    prefix={
+                      <span style={{ fontSize: '14px', color: '#999' }}>
+                        {rate ? '%' : '' + curType(DestCur)}
                       </span>
                     }
                   />
-                  {/* )} */}
                 </Form.Item>
               </Form.Item>
               <div className="tooltip-container  origin">

@@ -1,17 +1,17 @@
-import axios from "axios";
+import axios from 'axios';
 
 export const instance = axios.create({
-  baseURL: "https://sustain.herogloballogistics.com/factory",
+  baseURL: 'https://sustain.herogloballogistics.com/factory',
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
   },
 });
 
 export const bearerInstance = axios.create({
-  baseURL: "https://sustain.herogloballogistics.com/factory",
+  baseURL: 'https://sustain.herogloballogistics.com/factory',
   headers: {
-    Accept: "application/json",
-    "Content-Type": "application/x-www-form-urlencoded",
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
   },
 });
