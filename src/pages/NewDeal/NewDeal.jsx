@@ -86,7 +86,7 @@ export default function NewDeal() {
   const [sourceAccountAgeInput, setSourceAccountAgeInput] = useState(null);
 
   const [sourceCur, setSourceCur] = useState('usd');
-  const [DestCur, setDestCur] = useState('usd');
+  const [destCur, setDestCur] = useState('usd');
 
   const [selectedDestination, setSelectedDestination] = useState('');
   const [destinationStatesToRender, setDestinationStatesToRender] = useState(
@@ -718,7 +718,14 @@ export default function NewDeal() {
                         }}
                       />
                     }
-                    onChange={e => setSourceCur(e)}
+                    onChange={e => {
+                      setSourceCur(e);
+
+                      if (rate) {
+                        form.setFieldsValue({ destination_currency: e });
+                        setDestCur(e);
+                      }
+                    }}
                     placeholder="currency"
                   >
                     <Option value="usd">USD ($)</Option>
@@ -1150,8 +1157,11 @@ export default function NewDeal() {
                         }}
                       />
                     }
+                    // value={destCur}
+                    // initialValue={destCur}
                     onChange={e => setDestCur(e)}
                     placeholder="currency"
+                    disabled={rate}
                   >
                     <Option value="usd">USD ($)</Option>
                     <Option value="ngn">NGN (₦)</Option>
@@ -1171,9 +1181,9 @@ export default function NewDeal() {
                 <Radio
                   className="ant-radio"
                   onChange={e => {
-                    if (e.target.checked) setRate(true);
+                    if (e.target.checked) setRate(1);
                   }}
-                  value={true}
+                  value={1}
                 >
                   by percentage
                 </Radio>
@@ -1181,9 +1191,9 @@ export default function NewDeal() {
                 <Radio
                   className="ant-radio"
                   onChange={e => {
-                    if (e.target.checked) setRate(false);
+                    if (e.target.checked) setRate(0);
                   }}
-                  value={false}
+                  value={0}
                 >
                   by currency
                 </Radio>
@@ -1196,41 +1206,6 @@ export default function NewDeal() {
 
             <div className="form-row">
               <Form.Item style={{ marginBottom: 0 }}>
-                {/* <Form.Item
-                  label="currency"
-                  name="currency"
-                  style={{
-                    display: 'inline-block',
-                    width: 'calc(49% - 15px)',
-                  }}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please specify currency!',
-                    },
-                  ]}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="select"
-                    onChange={e => {
-                      // console.log(e);
-                      setCurr(e);
-                    }}
-                  >
-                    <Option value="usd">USD</Option>
-                    <Option value="ngn">NGN</Option>
-                    <Option value="cad">CAD</Option>
-                    <Option value="gbp">GBP</Option>
-                  </Select>
-                </Form.Item> */}
                 <Form.Item
                   name="rate"
                   label={`rate (${rate ? '%' : 'per ' + curType(sourceCur)})`}
@@ -1261,7 +1236,7 @@ export default function NewDeal() {
                     }
                     prefix={
                       <span style={{ fontSize: '14px', color: '#999' }}>
-                        {rate ? '%' : '' + curType(DestCur)}
+                        {rate ? '' : curType(destCur)}
                       </span>
                     }
                   />
