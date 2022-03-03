@@ -198,7 +198,7 @@ export default function EditDeal({ match }) {
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
     data.append('remit_rate_structure', rate ? 'percentage' : curr);
-    data.append('currency', values?.currency);
+    // data.append('currency', values?.currency);
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
     data.append('deal_summary', values?.summary);

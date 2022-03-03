@@ -1,10 +1,11 @@
-import React from "react";
-import { ArrowRightOutlined, EllipsisOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
-import { Popconfirm } from "antd";
+import React from 'react';
+import { ArrowRightOutlined, EllipsisOutlined } from '@ant-design/icons';
+import { useHistory } from 'react-router-dom';
+import { Popconfirm } from 'antd';
+import { curType } from '../../utils/datasource';
 
-import "./profiledealitem.scss";
-import useDeals from "../../hooks/useDeals";
+import './profiledealitem.scss';
+import useDeals from '../../hooks/useDeals';
 
 export default function ProfileDealItem({ item, showDelete }) {
   const history = useHistory();
@@ -15,13 +16,13 @@ export default function ProfileDealItem({ item, showDelete }) {
       <div className="top">
         <div className="left">
           <div className="source-destination">
-            {item?.source}{" "}
+            {item?.source}{' '}
             <ArrowRightOutlined
               style={{
-                strokeWidth: "50",
-                stroke: "white",
+                strokeWidth: '50',
+                stroke: 'white',
               }}
-            />{" "}
+            />{' '}
             {item?.destination}
           </div>
         </div>
@@ -37,7 +38,7 @@ export default function ProfileDealItem({ item, showDelete }) {
           {showDelete && (
             <Popconfirm
               placement="topRight"
-              title={"delete this deal?"}
+              title={'delete this deal?'}
               onConfirm={() => {
                 deleteDeal(item?.d_id);
               }}
@@ -52,13 +53,19 @@ export default function ProfileDealItem({ item, showDelete }) {
       <div className="bottom">
         <div className="info">
           {item?.deal_summary} <EllipsisOutlined />
-          min{" "}
+          min{' '}
           <span className="bold">
-            {`${item?.min.toLocaleString()} ${item?.currency.toUpperCase()}`}
-          </span>{" "}
-          <EllipsisOutlined /> max{" "}
-          <span className="bold">{`${item?.max.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{" "}
-          <EllipsisOutlined /> rate <span className="bold">{item?.rate}%</span>
+            {`${item?.min?.toLocaleString()} ${item?.destination_currency?.toUpperCase()}`}
+          </span>{' '}
+          <EllipsisOutlined /> max{' '}
+          <span className="bold">{`${item?.max?.toLocaleString()} ${item?.destination_currency?.toUpperCase()}`}</span>{' '}
+          <EllipsisOutlined /> rate{' '}
+          <span className="bold">
+            {item?.rate}
+            {item?.rate_structure === 'percentage'
+              ? '%'
+              : '/' + curType(item.source_currency.toLowerCase())}
+          </span>
         </div>
       </div>
     </div>

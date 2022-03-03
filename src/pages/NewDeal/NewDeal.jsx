@@ -117,12 +117,17 @@ export default function NewDeal() {
 
     const data = new FormData();
     data.append('source', values?.source);
+    data.append('source_currency', values?.source_currency);
     data.append('destination', values?.destination);
+    data.append('destination_currency', values?.destination_currency);
     data.append('range_min', values?.min);
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
-    data.append('currency', values?.currency);
-    data.append('remit_rate_structure', rate ? 'percentage' : sourceCur);
+    // data.append('currency', values?.currency);
+    data.append(
+      'remit_rate_structure',
+      rate ? 'percentage' : values.source_currency
+    );
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
     data.append('deal_summary', values?.summary);
