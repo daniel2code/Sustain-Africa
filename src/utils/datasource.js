@@ -576,11 +576,9 @@ export const card_brands = [
 ];
 
 export const curType = curr => {
-  if (curr === 'usd') return '$';
+  if (curr === 'usd' || curr === 'cad') return '$';
   //'&dollar;';
   else if (curr === 'ngn') return '₦';
   //'&#8358;';
-  else if (curr === 'cad') return '$';
-  //'&dollar;';
   else if (curr === 'gbp') return '£'; //'&pound;';
 };

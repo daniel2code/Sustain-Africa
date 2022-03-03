@@ -36,6 +36,7 @@ import {
   wallet_age,
   card_types,
   card_brands,
+  curType,
 } from './../../utils/datasource';
 import './NewDeal.scss';
 import useDeals from '../../hooks/useDeals';
@@ -266,14 +267,6 @@ export default function NewDeal() {
       setDestinationStatesToRender(ng_states);
       setDestinationBanksToRender(ng_banks);
     }
-  };
-
-  const curType = curr => {
-    if (curr === 'usd' || curr === 'cad') return '$';
-    //'&dollar;';
-    else if (curr === 'ngn') return '₦';
-    //'&#8358;';
-    else if (curr === 'gbp') return '£'; //'&pound;';
   };
 
   return (
