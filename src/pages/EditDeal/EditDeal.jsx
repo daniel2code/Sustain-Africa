@@ -39,6 +39,7 @@ import {
   wallet_age,
   card_types,
   card_brands,
+  curType,
 } from './../../utils/datasource';
 import '../NewDeal/NewDeal.scss';
 import useDeals from '../../hooks/useDeals';
@@ -86,6 +87,9 @@ export default function EditDeal({ match }) {
   const userState = useSelector(state => state.user);
   const [buttonLoading, setButtonLoading] = useState(false);
 
+  const [sourceCur, setSourceCur] = useState('usd');
+  const [destCur, setDestCur] = useState('usd');
+
   const [selectedSource, setSelectedSource] = useState(null);
   const [sourceStatesToRender, setSourceStatesToRender] = useState([]);
   const [sourceBanksToRender, setSourceBanksToRender] = useState([]);
@@ -108,7 +112,7 @@ export default function EditDeal({ match }) {
     useState(null);
   const [minmax, setMinmax] = useState(false);
   const [rate, setRate] = useState(1);
-  const [curr, setCurr] = useState('usd');
+  // const [curr, setCurr] = useState('usd');
 
   const getDealInfo = () => {
     instance
@@ -147,8 +151,10 @@ export default function EditDeal({ match }) {
     setSourceAccountAgeInput(dealData?.s_account_age);
     // console.log(dealData.rate_structure === 'percentage');
     // console.log(dealData.rate_structure);
-    setCurr(dealData.currency);
+    // setCurr(dealData.currency);
     setRate(dealData.rate_structure === 'percentage' ? 1 : 0);
+    setDestCur(dealData?.destination_currency.toLowerCase());
+    setSourceCur(dealData?.source_currency.toLowerCase());
 
     setSelectedDestination(dealData?.destination);
     setDestinationStateInput(dealData?.d_state);
@@ -190,15 +196,22 @@ export default function EditDeal({ match }) {
       return;
     }
 
+    console.log(values);
+
     const data = new FormData();
     data.append('deal_id', match.params.id);
     data.append('source', values?.source);
+    data.append('source_currency', values?.source_currency.toUpperCase());
     data.append('destination', values?.destination);
+    data.append(
+      'destination_currency',
+      values?.destination_currency.toUpperCase()
+    );
     data.append('range_min', values?.min);
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
-    data.append('remit_rate_structure', rate ? 'percentage' : curr);
-    data.append('currency', values?.currency);
+    data.append('remit_rate_structure', rate ? 'percentage' : 'currency');
+    // data.append('currency', values?.currency);
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
     data.append('deal_summary', values?.summary);
@@ -274,6 +287,9 @@ export default function EditDeal({ match }) {
       'd_card_brand',
       values?.destination_card_brand ? values?.destination_card_brand : ''
     );
+    data.entries();
+
+    for (let datum of data.entries()) console.log(datum);
 
     bearerInstance
       .post('/edit_deal', data)
@@ -340,16 +356,6 @@ export default function EditDeal({ match }) {
     }
   };
 
-  const curType = () => {
-    if (curr === 'usd') return '$';
-    //'&dollar;';
-    else if (curr === 'ngn') return '₦';
-    //'&#8358;';
-    else if (curr === 'cad') return '$';
-    //'&dollar;';
-    else if (curr === 'gbp') return '£'; //'&pound;';
-  };
-
   return (
     <div className="new-deal-container">
       {!deal && <Loader />}
@@ -383,7 +389,9 @@ export default function EditDeal({ match }) {
               scrollToFirstError
               initialValues={{
                 source: deal?.source,
+                source_currency: deal?.source_currency,
                 destination: deal?.destination,
+                destination_currency: deal?.destination_currency,
                 min: deal?.min,
                 max: deal?.max,
                 rate: deal?.rate,
@@ -802,6 +810,45 @@ export default function EditDeal({ match }) {
                   </Form.Item>
                 </>
               )}
+              {selectedSource !== '' && (
+                <>
+                  <Form.Item
+                    name="source_currency"
+                    style={{ width: '80%' }}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please specify currency!',
+                      },
+                    ]}
+                  >
+                    <Select
+                      suffixIcon={
+                        <DownOutlined
+                          style={{
+                            strokeWidth: '50',
+                            color: '#ed1450',
+                          }}
+                        />
+                      }
+                      onChange={e => {
+                        setSourceCur(e);
+
+                        if (rate) {
+                          form.setFieldsValue({ destination_currency: e });
+                          setDestCur(e);
+                        }
+                      }}
+                      placeholder="currency"
+                    >
+                      <Option value="usd">USD ($)</Option>
+                      <Option value="ngn">NGN (₦)</Option>
+                      <Option value="cad">CAD ($)</Option>
+                      <Option value="gbp">GBP (£)</Option>
+                    </Select>
+                  </Form.Item>
+                </>
+              )}
               <div className="form-row">
                 <Form.Item
                   name="destination"
@@ -1204,6 +1251,42 @@ export default function EditDeal({ match }) {
                 </>
               )}
 
+              {selectedDestination !== '' && (
+                <>
+                  <Form.Item
+                    name="destination_currency"
+                    style={{ width: '80%' }}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'please specify currency!',
+                      },
+                    ]}
+                  >
+                    <Select
+                      suffixIcon={
+                        <DownOutlined
+                          style={{
+                            strokeWidth: '50',
+                            color: '#ed1450',
+                          }}
+                        />
+                      }
+                      // value={destCur}
+                      // initialValue={destCur}
+                      onChange={e => setDestCur(e)}
+                      placeholder="currency"
+                      disabled={rate}
+                    >
+                      <Option value="usd">USD ($)</Option>
+                      <Option value="ngn">NGN (₦)</Option>
+                      <Option value="cad">CAD ($)</Option>
+                      <Option value="gbp">GBP (£)</Option>
+                    </Select>
+                  </Form.Item>
+                </>
+              )}
+
               <Divider style={{ fontSize: '14px', color: '#999' }}>
                 rate structure
               </Divider>
@@ -1239,47 +1322,12 @@ export default function EditDeal({ match }) {
               <div className="form-row">
                 <Form.Item style={{ marginBottom: 0 }}>
                   <Form.Item
-                    label="currency"
-                    name="currency"
-                    style={{
-                      display: 'inline-block',
-                      width: 'calc(49% - 15px)',
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: 'please specify currency!',
-                      },
-                    ]}
-                  >
-                    <Select
-                      suffixIcon={
-                        <DownOutlined
-                          style={{
-                            strokeWidth: '50',
-                            color: '#ed1450',
-                          }}
-                        />
-                      }
-                      placeholder="select"
-                      onChange={e => {
-                        // console.log(e);
-                        setCurr(e);
-                      }}
-                    >
-                      <Option value="usd">USD</Option>
-                      <Option value="ngn">NGN</Option>
-                      <Option value="cad">CAD</Option>
-                      <Option value="gbp">GBP</Option>
-                    </Select>
-                  </Form.Item>
-                  <Form.Item
                     name="rate"
-                    label={`rate (${rate ? '%' : 'per ' + curType()})`}
+                    label={`rate (${rate ? '%' : 'per ' + curType(sourceCur)})`}
                     style={{
                       display: 'inline-block',
-                      width: 'calc(49% - 15px)',
-                      marginLeft: '2%',
+                      width: 'calc(100% - 30px)',
+                      // marginLeft: '2%',
                     }}
                     rules={[
                       {
@@ -1288,13 +1336,6 @@ export default function EditDeal({ match }) {
                       },
                     ]}
                   >
-                    {/* <InputNumber
-                      style={{ width: '100%' }}
-                      min={0}
-                      max={100}
-                      placeholder="0"
-                    /> */}
-
                     <Input
                       type="number"
                       style={{
@@ -1305,7 +1346,12 @@ export default function EditDeal({ match }) {
                       placeholder="0"
                       suffix={
                         <span style={{ fontSize: '14px', color: '#999' }}>
-                          {rate ? '%' : '/' + curType()}
+                          {rate ? '%' : '/' + curType(sourceCur)}
+                        </span>
+                      }
+                      prefix={
+                        <span style={{ fontSize: '14px', color: '#999' }}>
+                          {rate ? '' : curType(destCur)}
                         </span>
                       }
                     />

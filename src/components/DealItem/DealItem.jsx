@@ -13,12 +13,18 @@ import {
 import './DealItem.scss';
 import { bearerInstance } from '../../utils/API';
 import { Form, Input } from 'antd';
+import { curType } from '../../utils/datasource';
+// import { useEffect } from 'react';
 
 const { confirm } = Modal;
 
 export default function DealItem({ item }) {
   const history = useHistory();
   const userIdState = useSelector(state => state?.user?.userData?.id);
+
+  // useEffect(() => {
+  //   console.log(item);
+  // }, [item]);
 
   const handleOk = () => {
     const data = new FormData();
@@ -80,7 +86,8 @@ export default function DealItem({ item }) {
 
           <div>
             you will receive <strong>₦{rate}.00</strong>
-            <br /><small>(minus escrow fee)</small>
+            <br />
+            <small>(minus escrow fee)</small>
           </div>
         </div>
       ),
@@ -90,16 +97,6 @@ export default function DealItem({ item }) {
       onCancel() {},
     });
   }
-
-  const curType = curr => {
-    if (curr === 'usd') return '$';
-    //'&dollar;';
-    else if (curr === 'ngn') return '₦';
-    //'&#8358;';
-    else if (curr === 'cad') return '$';
-    //'&dollar;';
-    else if (curr === 'gbp') return '£'; //'&pound;';
-  };
 
   return (
     <>
@@ -162,38 +159,42 @@ export default function DealItem({ item }) {
         </Tooltip>
         <div className="deal-item-wrapper">
           <div className="deal-item-row-one">
-            “
+            “{/* bank */}
             {item?.s_account_age &&
               item?.s_account_age !== 'Any Age' &&
               item?.s_bank_name &&
               `${item?.s_account_age} ${
                 item?.s_account_age !== 'Any Age' ? 'year' : ''
               }${item?.s_account_age !== 1 ? 's' : ''} old `}
+            {/* wallet */}
             {item?.s_wallet_age &&
               item?.s_wallet_age !== 'Any Age' &&
               item?.s_wallet_type &&
               `${item?.s_wallet_age} ${
                 item?.s_wallet_age !== 'Any Age' ? 'year' : ''
               }${item?.s_wallet_age !== 1 ? 's' : ''} old `}
+            {/* bank name */}
             {item?.s_bank_name &&
               `${item?.s_bank_name} ${item?.s_account_type} account available in `}
-            {item?.s_wallet_type && `${item?.source} wallet available`}
+            {/* {item?.s_wallet_type && `${item?.source} wallet available`} */}
             {item?.s_state && `${item?.s_state},`}
             {item?.source !== 'bank fund' &&
             item?.source !== 'bitcoin' &&
             item?.source !== 'ethereum' &&
             item?.source !== 'litecoin' &&
             item?.source !== 'dogecoin'
-              ? item?.source
+              ? `${item?.source} wallet (${curType(
+                  item.source_currency.toLowerCase()
+                )}) available`
               : ''}{' '}
             {item?.s_country && `${item?.s_country},`} to remit to{' '}
             {item?.destination === 'bank fund'
               ? 'bank account'
-              : item?.destination}{' '}
-            at {item?.rate}
+              : item?.destination}
+            ({curType(item.destination_currency.toLowerCase())}) at {item?.rate}
             {item?.rate_structure === 'percentage'
               ? '%'
-              : '/' + curType(item.currency)}
+              : '/' + curType(item.source_currency.toLowerCase())}
             ”
           </div>
 
@@ -259,7 +260,7 @@ export default function DealItem({ item }) {
               <>
                 {' '}
                 min{' '}
-                <span className="bold">{`${item?.min.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{' '}
+                <span className="bold">{`${item?.min?.toLocaleString()} ${item?.destination_currency?.toUpperCase()}`}</span>{' '}
                 <EllipsisOutlined />{' '}
               </>
             )}
@@ -267,7 +268,7 @@ export default function DealItem({ item }) {
               <>
                 {' '}
                 max{' '}
-                <span className="bold">{`${item?.max.toLocaleString()} ${item?.currency.toUpperCase()}`}</span>{' '}
+                <span className="bold">{`${item?.max?.toLocaleString()} ${item?.destination_currency?.toUpperCase()}`}</span>{' '}
                 <EllipsisOutlined />{' '}
               </>
             )}
@@ -279,7 +280,7 @@ export default function DealItem({ item }) {
                   {item?.rate}
                   {item?.rate_structure === 'percentage'
                     ? '%'
-                    : '/' + curType(item.currency)}
+                    : '/' + curType(item.source_currency.toLowerCase())}
                 </span>{' '}
                 <EllipsisOutlined />{' '}
               </>

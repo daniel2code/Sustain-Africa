@@ -25,6 +25,7 @@ import './deal-page.scss';
 import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
 import { setHasError } from '../../redux/data/data.actions';
 import { format } from 'timeago.js';
+import { curType } from '../../utils/datasource';
 
 const { confirm } = Modal;
 
@@ -105,13 +106,13 @@ export default function DealPage({ match }) {
           <div>rate: ₦{rate}/$</div>
 
           <Form.Item
-              label="source amount $"
-              name="amount"
-              rules={[
-                {
-                  message: 'enter trade amount...',
-                },
-              ]}
+            label="source amount $"
+            name="amount"
+            rules={[
+              {
+                message: 'enter trade amount...',
+              },
+            ]}
             style={{
               display: 'inline-block',
               width: '49%',
@@ -130,7 +131,8 @@ export default function DealPage({ match }) {
 
           <div>
             you will receive <strong>₦{rate}.00</strong>
-            <br /><small>(minus escrow fee)</small>
+            <br />
+            <small>(minus escrow fee)</small>
           </div>
         </div>
       ),
@@ -140,16 +142,6 @@ export default function DealPage({ match }) {
       onCancel() {},
     });
   }
-
-  const curType = curr => {
-    if (curr === 'usd') return '$';
-    //'&dollar;';
-    else if (curr === 'ngn') return '₦';
-    //'&#8358;';
-    else if (curr === 'cad') return '$';
-    //'&dollar;';
-    else if (curr === 'gbp') return '£'; //'&pound;';
-  };
 
   return (
     <div className="deal-page-container">
@@ -254,24 +246,25 @@ export default function DealPage({ match }) {
                   }${deal?.s_wallet_age !== 1 ? 's' : ''} old `}
                 {deal?.s_bank_name &&
                   `${deal?.s_bank_name} ${deal?.s_account_type} account available in `}
-                {deal?.s_wallet_type && `${deal?.source} wallet available`}
+                {/* {deal?.s_wallet_type && `${deal?.source} wallet available`} */}
                 {deal?.s_state && `${deal?.s_state},`}
                 {deal?.source !== 'bank fund' &&
                 deal?.source !== 'bitcoin' &&
                 deal?.source !== 'ethereum' &&
                 deal?.source !== 'litecoin' &&
                 deal?.source !== 'dogecoin'
-                  ? deal?.source
+                  ? `${deal?.source} wallet (${curType(
+                      deal.source_currency.toLowerCase()
+                    )}) available`
                   : ''}{' '}
                 {deal?.s_country && `${deal?.s_country},`} to remit to{' '}
                 {deal?.destination === 'bank fund'
                   ? 'bank account'
                   : deal?.destination}{' '}
-
                 at {deal?.rate}
                 {deal?.rate_structure === 'percentage'
                   ? '%'
-                  : '/' + curType(deal.currency)}
+                  : '/' + curType(deal.source_currency.toLowerCase())}
                 ”
               </div>
 
@@ -341,7 +334,7 @@ export default function DealPage({ match }) {
                   <>
                     {' '}
                     min{' '}
-                    <span className="bold">{`${deal?.min.toLocaleString()} ${deal?.currency.toUpperCase()}`}</span>{' '}
+                    <span className="bold">{`${deal?.min.toLocaleString()} ${deal?.destination_currency?.toUpperCase()}`}</span>{' '}
                     <EllipsisOutlined />{' '}
                   </>
                 )}
@@ -349,7 +342,7 @@ export default function DealPage({ match }) {
                   <>
                     {' '}
                     max{' '}
-                    <span className="bold">{`${deal?.max.toLocaleString()} ${deal?.currency.toUpperCase()}`}</span>{' '}
+                    <span className="bold">{`${deal?.max.toLocaleString()} ${deal?.destination_currency?.toUpperCase()}`}</span>{' '}
                     <EllipsisOutlined />{' '}
                   </>
                 )}
@@ -361,7 +354,7 @@ export default function DealPage({ match }) {
                       {deal?.rate}
                       {deal?.rate_structure === 'percentage'
                         ? '%'
-                        : '/' + curType(deal.currency)}
+                        : '/' + curType(deal.source_currency.toLowerCase())}
                     </span>{' '}
                     <EllipsisOutlined />{' '}
                   </>
