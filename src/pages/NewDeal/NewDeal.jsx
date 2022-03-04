@@ -125,10 +125,7 @@ export default function NewDeal() {
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
     // data.append('currency', values?.currency);
-    data.append(
-      'remit_rate_structure',
-      rate ? 'percentage' : values.source_currency
-    );
+    data.append('remit_rate_structure', rate ? 'percentage' : 'currency');
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
     data.append('deal_summary', values?.summary);

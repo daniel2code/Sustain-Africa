@@ -196,19 +196,21 @@ export default function EditDeal({ match }) {
       return;
     }
 
+    console.log(values);
+
     const data = new FormData();
     data.append('deal_id', match.params.id);
     data.append('source', values?.source);
-    data.append('source_currency', values?.source_currency);
+    data.append('source_currency', values?.source_currency.toUpperCase());
     data.append('destination', values?.destination);
-    data.append('destination_currency', values?.destination_currency);
+    data.append(
+      'destination_currency',
+      values?.destination_currency.toUpperCase()
+    );
     data.append('range_min', values?.min);
     data.append('range_max', values?.max);
     data.append('remit_rate', values?.rate);
-    data.append(
-      'remit_rate_structure',
-      rate ? 'percentage' : values?.source_currency
-    );
+    data.append('remit_rate_structure', rate ? 'percentage' : 'currency');
     // data.append('currency', values?.currency);
     data.append('discussion_title', values?.discussion);
     data.append('discussion_details', values?.discussion_detail);
@@ -287,7 +289,7 @@ export default function EditDeal({ match }) {
     );
     data.entries();
 
-    // for (let datum of data.entries()) console.log(datum);
+    for (let datum of data.entries()) console.log(datum);
 
     bearerInstance
       .post('/edit_deal', data)
