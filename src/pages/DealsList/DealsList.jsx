@@ -254,7 +254,7 @@ export default function DealsList() {
               <div className="arrows">
                 <SwapOutlined
                   style={{
-                    fontSize: '18px',
+                    fontSize: "inherit",
                     strokeWidth: '15',
                     stroke: '#ed1450',
                   }}
