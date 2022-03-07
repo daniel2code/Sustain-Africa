@@ -52,8 +52,17 @@ export default function Navbar() {
                   <Link to="/notifications">
                     {notificationCount ? (
                       <Badge
-                        style={{ backgroundColor: '#ed1450', transform: `translateX(${40}%) translateY(${-40}%)`, fontSize: 11 }}
-                        count={notificationCount} title={notificationCount > 1 ? notificationCount + " notifications" : notificationCount + " notification"}
+                        style={{
+                          backgroundColor: '#ed1450',
+                          transform: `translateX(${40}%) translateY(${-40}%)`,
+                          fontSize: 11,
+                        }}
+                        count={notificationCount}
+                        title={
+                          notificationCount > 1
+                            ? notificationCount + ' notifications'
+                            : notificationCount + ' notification'
+                        }
                       >
                         <BellOutlined
                           style={{
@@ -81,7 +90,9 @@ export default function Navbar() {
                       >
                         <Link to="/profile">profile</Link>
                       </Menu.Item>
-                      <Menu.Item key="2">wallet</Menu.Item>
+                      <Menu.Item key="2">
+                        <Link to="/wallet">wallet</Link>
+                      </Menu.Item>
                       <Menu.Item key="3">settings</Menu.Item>
                       <Menu.Divider />
                       <Menu.Item
