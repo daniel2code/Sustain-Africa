@@ -90,7 +90,10 @@ export default function Navbar() {
                       >
                         <Link to="/profile">profile</Link>
                       </Menu.Item>
-                      <Menu.Item key="2">
+                      <Menu.Item
+                        key="2"
+                        disabled={location.pathname === '/wallet'}
+                      >
                         <Link to="/wallet">wallet</Link>
                       </Menu.Item>
                       <Menu.Item key="3">settings</Menu.Item>

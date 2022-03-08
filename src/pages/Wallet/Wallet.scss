@@ -3,11 +3,78 @@
   margin-top: 65px;
   padding-bottom: 40px;
 
+  .ant-divider-inner-text {
+    color: #ed1450;
+  }
+
   &-wrapper {
     width: 95%;
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
     padding: 10px;
+  }
+
+  &-p {
+    font-size: 16px;
+    color: #999;
+    margin: 0;
+  }
+
+  &-price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & div {
+      &:first-child {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        & div {
+          flex: 0 0 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  &-coin {
+    margin: 30px 0;
+    margin-bottom: 40px;
+
+    & h2 {
+      margin: 0;
+      color: #14a014;
+      font-weight: 700;
+      font-size: 20px;
+      cursor: default;
+    }
+
+    &-btn {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+      margin-bottom: 10px;
+
+      &-1 {
+        background-color: #9995;
+        border-color: #999;
+        color: #999;
+
+        &:hover,
+        &:focus {
+          background-color: #9995;
+          border-color: #999;
+          color: #999;
+        }
+      }
+
+      & .ant-btn-primary {
+        background-color: #14a014;
+        border-color: #14a014;
+      }
+    }
   }
 }
