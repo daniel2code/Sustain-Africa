@@ -1,5 +1,5 @@
 // import { useEffect, useState } from 'react';
-import { /* Tabs, */ Button, Divider, Breadcrumb } from 'antd';
+import { /* Tabs, */ Button, Divider, Breadcrumb, Table } from 'antd';
 import { Link /* useHistory */ } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 import { UpOutlined, DownOutlined, HomeOutlined } from '@ant-design/icons';
@@ -7,6 +7,53 @@ import { UpOutlined, DownOutlined, HomeOutlined } from '@ant-design/icons';
 import Bitcoin from '../../assets/Bitcoin.svg';
 
 import './Wallet.scss';
+
+const columns = [
+  {
+    title: 'Transaction',
+    dataIndex: 'transaction',
+    key: 'transaction',
+    render: (text, record) => (
+      <div>
+        {text === 'send' ? <UpOutlined /> : <DownOutlined />}
+        <div style={{ height: '16px', width: '16px' }}>
+          <img
+            alt="bitcoin"
+            src={Bitcoin}
+            style={{ height: '100%', width: '100%' }}
+          />
+        </div>
+        <p>{text}</p>
+        <p>{record.time}</p>
+      </div>
+    ),
+  },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+  },
+  {
+    title: 'Amount',
+    key: 'amount',
+    dataIndex: 'amount',
+    render: text => (
+      <>
+        <p>{text}BTC</p>
+        <p>{text * 450}USD</p>
+      </>
+    ),
+  },
+];
+
+const data = [
+  {
+    transaction: 'send',
+    time: '2022-04-04',
+    status: 'successful',
+    amount: 0.005,
+  },
+];
 
 const Wallet = () => {
   return (
@@ -72,6 +119,8 @@ const Wallet = () => {
         </div>
 
         <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
+
+        <Table columns={columns} dataSource={data} />
       </div>
     </div>
   );
