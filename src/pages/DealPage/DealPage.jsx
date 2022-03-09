@@ -133,7 +133,7 @@ export default function DealPage({ match }) {
             </Form.Item>
 
           <div>
-            <Row><Col span={9}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
+            <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{rate}.00</strong>
               <span style={{
                 fontSize: '12px',
                 marginTop: '-5px',
