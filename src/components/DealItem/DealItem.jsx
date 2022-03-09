@@ -56,13 +56,13 @@ export default function DealItem({ item }) {
       icon: <ExclamationCircleOutlined />,
       content: (
         <div>
-          <Row><Col span={8}>source:</Col> <Col span={8}>{source} ($)</Col></Row>
-          <Row><Col span={8}>destination:</Col> <Col span={8}>{destination} (₦)</Col></Row>
-          <Row><Col span={8}>rate:</Col> <Col span={8}>₦{rate}/$</Col></Row>
+          <Row><Col span={10}>source:</Col> <Col span={10}>{source} ($)</Col></Row>
+          <Row><Col span={10}>destination:</Col> <Col span={10}>{destination} (₦)</Col></Row>
+          <Row><Col span={10}>rate:</Col> <Col span={10}>₦{rate}/$</Col></Row>
 
           <Form.Item
             label="amount $"
-            labelCol={{span: 8}}
+            labelCol={{span: 10}}
             labelAlign="left"
             wrapperCol={{span: 12}}
             name="amount"
@@ -88,7 +88,7 @@ export default function DealItem({ item }) {
           </Form.Item>
 
           <div>
-            <Row><Col span={8}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
+            <Row><Col span={10}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
               <span style={{
                 fontSize: '12px',
                 marginTop: '-5px',
