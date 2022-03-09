@@ -101,13 +101,13 @@ export default function DealPage({ match }) {
       icon: <ExclamationCircleOutlined />,
       content: (
         <div>
-          <Row><Col span={10}>source</Col> <Col span={10}>{source} ($)</Col></Row>
-          <Row><Col span={10}>destination</Col> <Col span={10}>{destination} (₦)</Col></Row>
-          <Row><Col span={10}>rate</Col> <Col span={10}>₦{rate}/$</Col></Row>
+          <Row><Col span={9}>source</Col> <Col span={9}>{source} ($)</Col></Row>
+          <Row><Col span={9}>destination</Col> <Col span={9}>{destination} (₦)</Col></Row>
+          <Row><Col span={9}>rate</Col> <Col span={9}>₦{rate}/$</Col></Row>
 
           <Form.Item
             label="amount $"
-            labelCol={{span: 10}}
+            labelCol={{span: 9}}
             labelAlign="left"
             wrapperCol={{span: 12}}
             name="amount"
@@ -133,7 +133,7 @@ export default function DealPage({ match }) {
             </Form.Item>
 
           <div>
-            <Row><Col span={10}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
+            <Row><Col span={9}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
               <span style={{
                 fontSize: '12px',
                 marginTop: '-5px',
