@@ -6,7 +6,7 @@ import {
   Breadcrumb,
   Modal,
   Form,
-  Input,
+  Input, Row, Col,
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -101,12 +101,15 @@ export default function DealPage({ match }) {
       icon: <ExclamationCircleOutlined />,
       content: (
         <div>
-          <div>source: {source} ($)</div>
-          <div>destination: {destination} (₦)</div>
-          <div>rate: ₦{rate}/$</div>
+          <Row><Col span={8}>source:</Col> <Col span={8}>{source} ($)</Col></Row>
+          <Row><Col span={8}>destination:</Col> <Col span={8}>{destination} (₦)</Col></Row>
+          <Row><Col span={8}>rate:</Col> <Col span={8}>₦{rate}/$</Col></Row>
 
           <Form.Item
-            label="source amount $"
+            label="amount $"
+            labelCol={{span: 8}}
+            labelAlign="left"
+            wrapperCol={{span: 10}}
             name="amount"
             rules={[
               {
@@ -114,9 +117,9 @@ export default function DealPage({ match }) {
               },
             ]}
             style={{
-              display: 'inline-block',
-              width: '49%',
-              marginTop: '5%',
+              textAlign: 'left',
+              marginTop: '3%',
+              marginBottom: '3%'
             }}
           >
             <Input
@@ -127,12 +130,15 @@ export default function DealPage({ match }) {
               }
               parser={value => value.replace(/\$\s?|(,*)/g, '')}
             />
-          </Form.Item>
+            </Form.Item>
 
           <div>
-            you will receive <strong>₦{rate}.00</strong>
-            <br />
-            <small>(minus escrow fee)</small>
+            <Row><Col span={8}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
+              <span style={{
+                fontSize: '12px',
+                marginTop: '-5px',
+              }}> (- escrow fee)</span></Col>
+            </Row>
           </div>
         </div>
       ),

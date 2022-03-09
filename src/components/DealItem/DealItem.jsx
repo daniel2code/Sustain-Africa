@@ -1,5 +1,5 @@
 import React from 'react';
-import { message, Tooltip, Modal } from 'antd';
+import {message, Tooltip, Modal, Row, Col} from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { format } from 'timeago.js';
@@ -56,12 +56,15 @@ export default function DealItem({ item }) {
       icon: <ExclamationCircleOutlined />,
       content: (
         <div>
-          <div>source: {source} ($)</div>
-          <div>destination: {destination} (₦)</div>
-          <div>rate: ₦{rate}/$</div>
+          <Row><Col span={8}>source:</Col> <Col span={8}>{source} ($)</Col></Row>
+          <Row><Col span={8}>destination:</Col> <Col span={8}>{destination} (₦)</Col></Row>
+          <Row><Col span={8}>rate:</Col> <Col span={8}>₦{rate}/$</Col></Row>
 
           <Form.Item
-            label="source amount $"
+            label="amount $"
+            labelCol={{span: 8}}
+            labelAlign="left"
+            wrapperCol={{span: 10}}
             name="amount"
             rules={[
               {
@@ -69,9 +72,9 @@ export default function DealItem({ item }) {
               },
             ]}
             style={{
-              display: 'inline-block',
-              width: '49%',
-              marginTop: '5%',
+              textAlign: 'left',
+              marginTop: '3%',
+              marginBottom: '3%'
             }}
           >
             <Input
@@ -85,9 +88,12 @@ export default function DealItem({ item }) {
           </Form.Item>
 
           <div>
-            you will receive <strong>₦{rate}.00</strong>
-            <br />
-            <small>(minus escrow fee)</small>
+            <Row><Col span={8}>to receive:</Col> <Col span={12}><strong>₦{rate}.00</strong>
+              <span style={{
+                fontSize: '12px',
+                marginTop: '-5px',
+              }}> (- escrow fee)</span></Col>
+            </Row>
           </div>
         </div>
       ),
