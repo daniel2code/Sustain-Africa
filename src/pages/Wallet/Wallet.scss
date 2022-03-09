@@ -16,7 +16,7 @@
   }
 
   &-p {
-    font-size: 16px;
+    font-size: 14px;
     color: #999;
     margin: 0;
   }
@@ -30,11 +30,11 @@
       &:first-child {
         display: flex;
         align-items: center;
-        gap: 5px;
+        // gap: 5px;
 
         & div {
-          flex: 0 0 30px;
-          height: 30px;
+          flex: 0 0 24px;
+          height: 24px;
         }
       }
     }
@@ -54,9 +54,13 @@
 
     &-btn {
       display: flex;
-      gap: 30px;
+      // gap: 30px;
       align-items: center;
       margin-bottom: 10px;
+
+      & button:first-child {
+        margin-right: 30px;
+      }
 
       &-1 {
         background-color: #9995;

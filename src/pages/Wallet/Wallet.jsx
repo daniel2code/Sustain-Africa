@@ -71,7 +71,7 @@ const Wallet = () => {
         {/* bitcoin price in usd */}
         <div className="wallet-price">
           <div>
-            <div>
+            <div style={{ marginRight: '5px' }}>
               <img
                 alt="bitcoin"
                 src={Bitcoin}
@@ -120,7 +120,7 @@ const Wallet = () => {
 
         <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
 
-        <Table columns={columns} dataSource={data} />
+        <Table pagination={false} columns={columns} dataSource={data} />
       </div>
     </div>
   );
