@@ -64,7 +64,7 @@ export default function DealItem({ item }) {
             label="amount $"
             labelCol={{span: 8}}
             labelAlign="left"
-            wrapperCol={{span: 10}}
+            wrapperCol={{span: 12}}
             name="amount"
             rules={[
               {

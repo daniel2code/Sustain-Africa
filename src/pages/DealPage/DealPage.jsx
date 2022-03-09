@@ -109,7 +109,7 @@ export default function DealPage({ match }) {
             label="amount $"
             labelCol={{span: 8}}
             labelAlign="left"
-            wrapperCol={{span: 10}}
+            wrapperCol={{span: 12}}
             name="amount"
             rules={[
               {
