@@ -84,6 +84,12 @@ const data = [
     status: 'successful',
     amount: 0.005,
   },
+  {
+    transaction: 'recieved',
+    time: '2022-04-24',
+    status: 'successful',
+    amount: 0.005,
+  },
 ];
 
 const Wallet = () => {
@@ -157,6 +163,13 @@ const Wallet = () => {
           columns={columns}
           dataSource={data}
         />
+
+        <Link
+          to="#"
+          style={{ textAlign: 'center', display: 'block', marginTop: '10px' }}
+        >
+          view full history
+        </Link>
       </div>
     </div>
   );
