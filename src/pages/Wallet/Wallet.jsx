@@ -40,7 +40,7 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0 }}>{text}</p>
+          <p style={{ marginBottom: 0, fontSize: '14px' }}>{text}</p>
           <p style={{ marginBottom: 0, fontSize: '10px' }}>{record.time}</p>
         </div>
       </div>
@@ -50,6 +50,7 @@ const columns = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
+    render: text => <p style={{ marginBottom: 0, fontSize: '14px' }}>{text}</p>,
   },
   {
     title: 'Amount',
@@ -57,7 +58,9 @@ const columns = [
     dataIndex: 'amount',
     render: text => (
       <>
-        <p style={{ marginBottom: 0, textAlign: 'right' }}>{text}BTC</p>
+        <p style={{ marginBottom: 0, fontSize: '14px', textAlign: 'right' }}>
+          {text}BTC
+        </p>
         <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
           {text * 450}USD
         </p>
