@@ -14,17 +14,35 @@ const columns = [
     dataIndex: 'transaction',
     key: 'transaction',
     render: (text, record) => (
-      <div>
-        {text === 'send' ? <UpOutlined /> : <DownOutlined />}
-        <div style={{ height: '16px', width: '16px' }}>
+      <div className="wallet-table-transaction">
+        {text === 'send' ? (
+          <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
+        ) : (
+          <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
+        )}
+        <div
+          style={{
+            height: '16px',
+            width: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginRight: '5px',
+          }}
+        >
           <img
             alt="bitcoin"
             src={Bitcoin}
-            style={{ height: '100%', width: '100%' }}
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
           />
         </div>
-        <p>{text}</p>
-        <p>{record.time}</p>
+        <div>
+          <p style={{ marginBottom: 0 }}>{text}</p>
+          <p style={{ marginBottom: 0, fontSize: '10px' }}>{record.time}</p>
+        </div>
       </div>
     ),
   },
@@ -39,8 +57,10 @@ const columns = [
     dataIndex: 'amount',
     render: text => (
       <>
-        <p>{text}BTC</p>
-        <p>{text * 450}USD</p>
+        <p style={{ marginBottom: 0, textAlign: 'right' }}>{text}BTC</p>
+        <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
+          {text * 450}USD
+        </p>
       </>
     ),
   },
@@ -120,7 +140,12 @@ const Wallet = () => {
 
         <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
 
-        <Table pagination={false} columns={columns} dataSource={data} />
+        <Table
+          className="wallet-table"
+          pagination={false}
+          columns={columns}
+          dataSource={data}
+        />
       </div>
     </div>
   );
