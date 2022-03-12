@@ -15,7 +15,7 @@ const columns = [
     key: 'transaction',
     render: (text, record) => (
       <div className="wallet-table-transaction">
-        {text === 'send' ? (
+        {text === 'sent out' ? (
           <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         ) : (
           <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
@@ -41,7 +41,13 @@ const columns = [
         </div>
         <div>
           <p style={{ marginBottom: 0, fontSize: '14px' }}>{text}</p>
-          <p style={{ marginBottom: 0, fontSize: '10px' }}>{record.time}</p>
+          <p style={{ marginBottom: 0, fontSize: '10px' }}>
+            {new Date(record.time).toLocaleString('en-us', {
+              month: 'short',
+              day: '2-digit',
+              year: 'numeric',
+            })}
+          </p>
         </div>
       </div>
     ),
@@ -56,12 +62,14 @@ const columns = [
     title: 'Amount',
     key: 'amount',
     dataIndex: 'amount',
-    render: text => (
+    render: (text, record) => (
       <>
         <p style={{ marginBottom: 0, fontSize: '14px', textAlign: 'right' }}>
+          {record.transaction === 'sent out' ? '+' : '-'}
           {text}BTC
         </p>
         <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
+          {record.transaction === 'sent out' ? '+' : '-'}
           {text * 450}USD
         </p>
       </>
@@ -71,8 +79,8 @@ const columns = [
 
 const data = [
   {
-    transaction: 'send',
-    time: '2022-04-04',
+    transaction: 'sent out',
+    time: '2022-04-24',
     status: 'successful',
     amount: 0.005,
   },
