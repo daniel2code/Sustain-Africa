@@ -1,16 +1,16 @@
-// import { useEffect, useState } from 'react';
-import { /* Tabs, */ Button, Divider, Breadcrumb, Table } from 'antd';
-import { Link /* useHistory */ } from 'react-router-dom';
+import { useState } from 'react';
+import { Button, Divider, Breadcrumb, Table } from 'antd';
+import { Link } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 import { UpOutlined, DownOutlined, HomeOutlined } from '@ant-design/icons';
 // import Loader from '../../components/Loader/Loader';
 import Bitcoin from '../../assets/Bitcoin.svg';
-
+import WalletModal from '../../components/WalletModal/WalletModal';
 import './Wallet.scss';
 
 const columns = [
   {
-    title: 'Transaction',
+    title: 'transaction',
     dataIndex: 'transaction',
     key: 'transaction',
     render: (text, record) => (
@@ -40,8 +40,8 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '14px' }}>{text}</p>
-          <p style={{ marginBottom: 0, fontSize: '10px' }}>
+          <p style={{ marginBottom: 0, fontSize: '12px' }}>{text}</p>
+          <p style={{ marginBottom: 0, fontSize: '8px' }}>
             {new Date(record.time).toLocaleString('en-us', {
               month: 'short',
               day: '2-digit',
@@ -53,22 +53,22 @@ const columns = [
     ),
   },
   {
-    title: 'Status',
+    title: 'status',
     dataIndex: 'status',
     key: 'status',
-    render: text => <p style={{ marginBottom: 0, fontSize: '14px' }}>{text}</p>,
+    render: text => <p style={{ marginBottom: 0, fontSize: '12px' }}>{text}</p>,
   },
   {
-    title: 'Amount',
+    title: 'amount',
     key: 'amount',
     dataIndex: 'amount',
     render: (text, record) => (
       <>
-        <p style={{ marginBottom: 0, fontSize: '14px', textAlign: 'right' }}>
+        <p style={{ marginBottom: 0, fontSize: '12px', textAlign: 'right' }}>
           {record.transaction === 'sent out' ? '+' : '-'}
           {text}BTC
         </p>
-        <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
+        <p style={{ marginBottom: 0, fontSize: '8px', textAlign: 'right' }}>
           {record.transaction === 'sent out' ? '+' : '-'}
           {text * 450}USD
         </p>
@@ -93,8 +93,13 @@ const data = [
 ];
 
 const Wallet = () => {
+  const [walletModal, setWalletModal] = useState(false);
+  const [send, setSend] = useState(false);
+
   return (
     <div className="wallet">
+      {walletModal && <WalletModal send={send} />}
+
       <div className="wallet-wrapper">
         <Breadcrumb>
           <Breadcrumb.Item>
@@ -123,7 +128,7 @@ const Wallet = () => {
           </div>
         </div>
 
-        <Divider style={{ fontSize: '14px' }}>current balance</Divider>
+        <Divider style={{ fontSize: '12px' }}>current balance</Divider>
 
         {/*wallet + send and receive bitcoin */}
         <div className="wallet-coin">
@@ -133,11 +138,25 @@ const Wallet = () => {
           </p>
 
           <div className="wallet-coin-btn">
-            <Button type="primary" block>
+            <Button
+              type="primary"
+              block
+              onClick={() => {
+                setWalletModal(true);
+                setSend(true);
+              }}
+            >
               send coin
             </Button>
 
-            <Button type="primary" block>
+            <Button
+              type="primary"
+              block
+              onClick={() => {
+                setWalletModal(true);
+                setSend(false);
+              }}
+            >
               receive coin
             </Button>
           </div>
@@ -155,7 +174,7 @@ const Wallet = () => {
           </div>
         </div>
 
-        <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
+        <Divider style={{ fontSize: '12px' }}>recent activity</Divider>
 
         <Table
           className="wallet-table"
@@ -166,7 +185,7 @@ const Wallet = () => {
 
         <Link
           to="#"
-          style={{ textAlign: 'center', display: 'block', marginTop: '10px' }}
+          style={{ textAlign: 'center', display: 'block', marginTop: '8px' }}
         >
           view full history
         </Link>
