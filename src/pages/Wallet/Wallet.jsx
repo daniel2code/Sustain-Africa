@@ -135,7 +135,7 @@ const Wallet = () => {
         {/*wallet + send and receive bitcoin */}
         <div className="wallet-coin">
           <h2>0.00317642 BTC</h2>
-          <p className="wallet-p" style={{ marginBottom: '20px' }}>
+          <p className="wallet-p" style={{ marginBottom: '20px', marginTop: '-5px' }}>
             approx 121.88 usd
           </p>
 
