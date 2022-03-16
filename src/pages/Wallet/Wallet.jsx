@@ -130,7 +130,7 @@ const Wallet = () => {
           </div>
         </div>
 
-        <Divider style={{ fontSize: '12px' }}>current balance</Divider>
+        <Divider style={{ fontSize: '14px' }}>current balance</Divider>
 
         {/*wallet + send and receive bitcoin */}
         <div className="wallet-coin">
@@ -176,7 +176,7 @@ const Wallet = () => {
           </div>
         </div>
 
-        <Divider style={{ fontSize: '12px' }}>recent activity</Divider>
+        <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
 
         <Table
           className="wallet-table"
