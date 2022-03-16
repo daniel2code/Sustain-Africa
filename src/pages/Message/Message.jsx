@@ -39,7 +39,7 @@ export default function Message() {
         async function generateToken() {
             const {token} = (
                 await axios.get(
-                    `https://sustain.herogloballogistics.com/chat/server.php?create-token=${username}`
+                    `https://sustain.africa/chat/server.php?create-token=${username}`
                 )
             ).data;
             return token;

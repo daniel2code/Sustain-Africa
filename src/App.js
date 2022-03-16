@@ -120,7 +120,7 @@ function App() {
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/user/:id/profile" component={OtherProfile} />
             <Route exact path="/deal/:id" component={DealPage} />
-            <Route exact path="/message" component={Message} />
+            <Route exact path="/message/:id" component={Message} />
             <Route exact path="/notifications" component={Notification} />
           </Switch>
         ) : (
