@@ -1,0 +1,41 @@
+.walletModal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 1000;
+
+  &-container {
+    background-color: rgba(255, 255, 255, 0.7);
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  &-modal {
+    background-color: #fff;
+    position: relative;
+    border-radius: 20px;
+    padding: 10px 20px 30px 20px;
+    margin: 0 auto;
+    margin-top: 100px;
+    width: 700px;
+    max-width: 90%;
+    box-shadow: 5px 5px 5px 5px #999;
+    z-index: 2;
+  }
+
+  &-close {
+    border: none;
+    background-color: #fff;
+    color: #999;
+    cursor: pointer;
+    display: block;
+    margin-left: auto;
+  }
+}
