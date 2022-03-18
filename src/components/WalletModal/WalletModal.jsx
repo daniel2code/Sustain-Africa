@@ -25,7 +25,9 @@ const WalletModal = ({ send, close }) => {
             <Send style={{ height: '25px', width: '25px' }} />
           </div>
 
-          {send ? null : (
+          {send ? (
+            <div className="walletModal-send walletModal-box-left"></div>
+          ) : (
             <div className="walletModal-recieve walletModal-box-left">
               <h3>receive bitcoin</h3>
 
