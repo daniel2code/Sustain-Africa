@@ -6,7 +6,7 @@ import { Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
 
 const WalletModal = ({ send, close }) => {
-  const [proceed, setProceed] = useState(true);
+  const [proceed, setProceed] = useState(false);
 
   const sendBtc = values => {
     alert('submitted');
@@ -44,9 +44,104 @@ const WalletModal = ({ send, close }) => {
 
               {proceed ? (
                 <>
-                  <div></div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      fontWeight: '600',
+                      fontSize: '11px',
+                    }}
+                  >
+                    <p style={{ margin: '0', flex: '0 0 40%' }}>send amount</p>
 
-                  <div></div>
+                    <p style={{ margin: '0' }}>
+                      0.00005462 btc
+                      <br />
+                      <span
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: '400',
+                        }}
+                      >
+                        (≈ 2.12 usd)
+                      </span>
+                    </p>
+                  </div>
+
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'flex-start',
+                      alignItems: 'flex-start',
+                      fontWeight: '600',
+                      fontSize: '11px',
+                    }}
+                  >
+                    <p style={{ margin: '0', flex: '0 0 40%' }}>network fee</p>
+
+                    <p style={{ margin: '0' }}>
+                      0.00008 btc
+                      <br />
+                      <span
+                        style={{
+                          fontSize: '10px',
+                          fontWeight: '400',
+                        }}
+                      >
+                        (≈ 3.10 usd)
+                      </span>
+                    </p>
+                  </div>
+
+                  <p
+                    style={{
+                      marginBottom: '0px',
+                      fontSize: '12px',
+                      marginTop: '10px',
+                    }}
+                  >
+                    0.00005462 btc (2.12 usd) will be sent to:
+                  </p>
+                  <p
+                    className="walletModal-p"
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: 700,
+                      marginBottom: '20px',
+                    }}
+                  >
+                    bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5
+                  </p>
+
+                  <p
+                    style={{
+                      marginBottom: '0px',
+                      fontSize: '12px',
+                    }}
+                  >
+                    total deduction will be:
+                  </p>
+                  <p
+                    style={{
+                      color: '#14a014',
+                      fontWeight: 700,
+                      fontSize: '18px',
+                      marginBottom: '0',
+                    }}
+                  >
+                    0.00013462 btc
+                  </p>
+                  <span
+                    style={{
+                      marginBottom: '30px',
+                      display: 'block',
+                      color: '#999',
+                      fontSize: '10px',
+                    }}
+                  >
+                    ≈ 5.22 usd
+                  </span>
 
                   <Alert
                     message="bitcoin transactions are final! please cross check your inputs before you proceed."
@@ -63,7 +158,7 @@ const WalletModal = ({ send, close }) => {
                       border: '2px solid #ed1450',
                       borderRadius: '10px',
                       backgroundColor: '#ed145040',
-                      marginBottom: '30px',
+                      marginBottom: '20px',
                     }}
                   />
 

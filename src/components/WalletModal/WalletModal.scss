@@ -23,7 +23,7 @@
     border-radius: 20px;
     padding: 10px 20px 30px 20px;
     margin: 0 auto;
-    margin-top: 100px;
+    margin-top: 75px;
     width: 600px;
     max-width: 90%;
     box-shadow: 5px 5px 5px 5px #999;
@@ -101,5 +101,13 @@
     color: #ed1450;
     font-size: 12px;
     line-height: 15px;
+  }
+
+  &-p {
+    word-wrap: break-word;
+
+    @media only screen and (max-width: 540px) {
+      width: 250px;
+    }
   }
 }
