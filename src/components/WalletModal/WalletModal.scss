@@ -24,7 +24,7 @@
     padding: 10px 20px 30px 20px;
     margin: 0 auto;
     margin-top: 100px;
-    width: 700px;
+    width: 600px;
     max-width: 90%;
     box-shadow: 5px 5px 5px 5px #999;
     z-index: 2;
@@ -37,5 +37,59 @@
     cursor: pointer;
     display: block;
     margin-left: auto;
+  }
+
+  &-box {
+    display: flex;
+    align-items: flex-start;
+
+    &-left {
+      flex: 1;
+
+      & h3 {
+        margin-top: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      & h4 {
+        font-size: 15px;
+        font-weight: 500;
+        margin-bottom: 0;
+      }
+
+      & p {
+        font-size: 12px;
+        font-weight: 500;
+        color: #999;
+        margin-bottom: 10px;
+
+        &.walletModal-address {
+          color: #14a014;
+          font-weight: 700;
+          font-size: 18px;
+          line-height: 20px;
+          margin-bottom: 20px;
+          word-wrap: break-word;
+
+          @media only screen and (max-width: 540px) {
+            width: 250px;
+          }
+        }
+      }
+    }
+  }
+
+  &-recieve {
+    &-icon {
+      transform: rotate(180deg);
+    }
+  }
+
+  & .ant-alert-message {
+    color: #ed1450;
+    font-size: 12px;
+    line-height: 15px;
   }
 }
