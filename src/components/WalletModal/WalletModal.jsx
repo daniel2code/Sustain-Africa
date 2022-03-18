@@ -2,9 +2,16 @@ import './WalletModal.scss';
 import { createPortal } from 'react-dom';
 import { CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
 import { ReactComponent as Send } from '../../assets/send.svg';
-import { Alert, Button } from 'antd';
+import { Alert, Button, Form, Input } from 'antd';
+import { useState } from 'react';
 
 const WalletModal = ({ send, close }) => {
+  const [proceed, setProceed] = useState(false);
+
+  const submit = values => {
+    setProceed(true);
+  };
+
   return createPortal(
     <div className="walletModal">
       <div className="walletModal-container" onClick={close} />
@@ -26,7 +33,103 @@ const WalletModal = ({ send, close }) => {
           </div>
 
           {send ? (
-            <div className="walletModal-send walletModal-box-left"></div>
+            <div className="walletModal-send walletModal-box-left">
+              <h3>send bitcoin</h3>
+
+              {proceed ? (
+                <></>
+              ) : (
+                <>
+                  <h4>
+                    available{' '}
+                    <span style={{ color: '#ed1450' }}>0.00093434</span> btc
+                  </h4>
+
+                  <Form onFinish={submit}>
+                    <Form.Item
+                      name="btc_amount"
+                      label="btc amount"
+                      style={{
+                        display: 'inline-block',
+                        width: 'calc(100%)',
+                        // marginLeft: '2%',
+                      }}
+                      rules={[
+                        {
+                          // required: true,
+                          message: 'input rate!',
+                        },
+                      ]}
+                    >
+                      <Input
+                        type="number"
+                        style={{
+                          width: '100%',
+                          paddingTop: '0',
+                          paddingBottom: '0',
+                        }}
+                        placeholder="0.00000"
+                        suffix={
+                          <span style={{ fontSize: '10px', color: '#999' }}>
+                            ~ 0 usd
+                          </span>
+                        }
+                      />
+                    </Form.Item>
+
+                    <Form.Item
+                      name="btc_address"
+                      label="to address"
+                      style={{
+                        display: 'inline-block',
+                        width: 'calc(100%)',
+                        marginBottom: '10px',
+                      }}
+                      rules={[
+                        {
+                          // required: true,
+                          message: 'input rate!',
+                        },
+                      ]}
+                    >
+                      <Input
+                        type="number"
+                        style={{
+                          width: '100%',
+                          paddingTop: '0',
+                          paddingBottom: '0',
+                        }}
+                        placeholder="enter bitcoin address"
+                      />
+                    </Form.Item>
+                    <p style={{ marginBottom: '0px', fontSize: '10px' }}>
+                      a bitcoin address looks like this
+                    </p>
+                    <p
+                      style={{
+                        marginBottom: '0px',
+                        fontSize: '11px',
+                        fontWeight: 700,
+                      }}
+                    >
+                      3MBWkUkFSiWRNrpCxcTjnhT4rt23qk1wWz{' '}
+                      <span style={{ fontWeight: 400 }}>(sample only)</span>
+                    </p>
+
+                    <Button
+                      type="primary"
+                      style={{
+                        marginLeft: 'auto',
+                        display: 'block',
+                        marginTop: '30px',
+                      }}
+                    >
+                      continue
+                    </Button>
+                  </Form>
+                </>
+              )}
+            </div>
           ) : (
             <div className="walletModal-recieve walletModal-box-left">
               <h3>receive bitcoin</h3>

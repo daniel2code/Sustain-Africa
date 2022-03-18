@@ -52,38 +52,48 @@
         font-weight: 600;
         margin-bottom: 10px;
       }
-
-      & h4 {
-        font-size: 15px;
-        font-weight: 500;
-        margin-bottom: 0;
-      }
-
-      & p {
-        font-size: 12px;
-        font-weight: 500;
-        color: #999;
-        margin-bottom: 10px;
-
-        &.walletModal-address {
-          color: #14a014;
-          font-weight: 700;
-          font-size: 18px;
-          line-height: 20px;
-          margin-bottom: 20px;
-          word-wrap: break-word;
-
-          @media only screen and (max-width: 540px) {
-            width: 250px;
-          }
-        }
-      }
     }
   }
 
   &-recieve {
     &-icon {
       transform: rotate(180deg);
+    }
+
+    & h4 {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 0;
+    }
+
+    & p {
+      font-size: 12px;
+      font-weight: 500;
+      color: #999;
+      margin-bottom: 10px;
+
+      &.walletModal-address {
+        color: #14a014;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 20px;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+
+        @media only screen and (max-width: 540px) {
+          width: 250px;
+        }
+      }
+    }
+  }
+
+  &-send {
+    & h3 {
+      margin-top: 0px;
+    }
+
+    & h4 {
+      margin-bottom: 20px;
     }
   }
 
