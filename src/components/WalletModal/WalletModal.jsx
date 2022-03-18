@@ -6,7 +6,13 @@ import { Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
 
 const WalletModal = ({ send, close }) => {
-  const [proceed, setProceed] = useState(false);
+  const [proceed, setProceed] = useState(true);
+
+  const sendBtc = values => {
+    alert('submitted');
+  };
+
+  const sendOtp = () => {};
 
   const submit = values => {
     setProceed(true);
@@ -37,7 +43,99 @@ const WalletModal = ({ send, close }) => {
               <h3>send bitcoin</h3>
 
               {proceed ? (
-                <></>
+                <>
+                  <div></div>
+
+                  <div></div>
+
+                  <Alert
+                    message="bitcoin transactions are final! please cross check your inputs before you proceed."
+                    type="error"
+                    showIcon
+                    icon={
+                      <ExclamationCircleOutlined
+                        style={{ color: '#ed1450', marginTop: '5px' }}
+                      />
+                    }
+                    style={{
+                      color: '#ed1450',
+                      alignItems: 'flex-start',
+                      border: '2px solid #ed1450',
+                      borderRadius: '10px',
+                      backgroundColor: '#ed145040',
+                      marginBottom: '30px',
+                    }}
+                  />
+
+                  <Form onFinish={sendBtc}>
+                    <Form.Item
+                      name="otp"
+                      label="enter OTP"
+                      style={{
+                        display: 'inline-block',
+                        width: 'calc(100%)',
+                        marginBottom: '0',
+                      }}
+                      rules={[
+                        {
+                          // required: true,
+                          message: 'input rate!',
+                        },
+                      ]}
+                    >
+                      <Input
+                        type="text"
+                        style={{
+                          width: '100%',
+                          paddingTop: '0',
+                          paddingBottom: '0',
+                        }}
+                        placeholder="click send first..."
+                      />
+                    </Form.Item>
+                    <Button
+                      onClick={sendOtp}
+                      type="text"
+                      style={{
+                        color: '#ed1450',
+                        padding: '0',
+                        height: 'unset',
+                        display: 'block',
+                        marginLeft: 'auto',
+                      }}
+                    >
+                      send OTP by SMS
+                    </Button>
+
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center',
+                        marginTop: '30px',
+                      }}
+                    >
+                      <Button
+                        onClick={() => setProceed(false)}
+                        type="text"
+                        style={{ color: '#ed1450' }}
+                      >
+                        back
+                      </Button>
+
+                      <Button
+                        type="primary"
+                        style={{
+                          marginLeft: 'auto',
+                          display: 'block',
+                        }}
+                        htmlType="submit"
+                      >
+                        continue
+                      </Button>
+                    </div>
+                  </Form>
+                </>
               ) : (
                 <>
                   <h4>
@@ -52,7 +150,6 @@ const WalletModal = ({ send, close }) => {
                       style={{
                         display: 'inline-block',
                         width: 'calc(100%)',
-                        // marginLeft: '2%',
                       }}
                       rules={[
                         {
@@ -93,7 +190,7 @@ const WalletModal = ({ send, close }) => {
                       ]}
                     >
                       <Input
-                        type="number"
+                        type="text"
                         style={{
                           width: '100%',
                           paddingTop: '0',
@@ -123,6 +220,7 @@ const WalletModal = ({ send, close }) => {
                         display: 'block',
                         marginTop: '30px',
                       }}
+                      htmlType="submit"
                     >
                       continue
                     </Button>
