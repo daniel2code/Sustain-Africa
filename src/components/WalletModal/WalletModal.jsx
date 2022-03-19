@@ -49,24 +49,24 @@ const WalletModal = ({ send, close }) => {
                       display: 'flex',
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
-                      fontWeight: '600',
-                      fontSize: '11px',
+                      fontWeight: '600'
                     }}
                   >
-                    <p style={{ margin: '0', flex: '0 0 40%' }}>send amount</p>
+                    <h4 style={{ margin: '0', flex: '0 0 40%' }}>send amount</h4>
 
-                    <p style={{ margin: '0' }}>
+
+                    <h4 style={{ margin: '0' }}>
                       0.00005462 btc
                       <br />
                       <span
                         style={{
-                          fontSize: '10px',
+                          fontSize: '12px',
                           fontWeight: '400',
                         }}
                       >
                         (≈ 2.12 usd)
                       </span>
-                    </p>
+                    </h4>
                   </div>
 
                   <div
@@ -74,50 +74,48 @@ const WalletModal = ({ send, close }) => {
                       display: 'flex',
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
-                      fontWeight: '600',
-                      fontSize: '11px',
+                      fontWeight: '600'
                     }}
                   >
-                    <p style={{ margin: '0', flex: '0 0 40%' }}>network fee</p>
+                    <h4 style={{ margin: '0', flex: '0 0 40%' }}>network fee</h4>
 
-                    <p style={{ margin: '0' }}>
+                    <h4 style={{ margin: '0' }}>
                       0.00008 btc
                       <br />
                       <span
                         style={{
-                          fontSize: '10px',
+                          fontSize: '12px',
                           fontWeight: '400',
                         }}
                       >
                         (≈ 3.10 usd)
                       </span>
-                    </p>
+                    </h4>
                   </div>
 
                   <p
                     style={{
                       marginBottom: '0px',
-                      fontSize: '12px',
-                      marginTop: '10px',
+                      fontSize: '13px',
+                      marginTop: '20px',
                     }}
                   >
                     0.00005462 btc (2.12 usd) will be sent to:
                   </p>
-                  <p
+                  <h4
                     className="walletModal-p"
                     style={{
-                      fontSize: '12px',
                       fontWeight: 700,
-                      marginBottom: '20px',
+                      marginBottom: '20px'
                     }}
                   >
                     bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5
-                  </p>
+                  </h4>
 
                   <p
                     style={{
                       marginBottom: '0px',
-                      fontSize: '12px',
+                      fontSize: '13px',
                     }}
                   >
                     total deduction will be:
@@ -126,25 +124,25 @@ const WalletModal = ({ send, close }) => {
                     style={{
                       color: '#14a014',
                       fontWeight: 700,
-                      fontSize: '18px',
+                      fontSize: '20px',
                       marginBottom: '0',
                     }}
                   >
-                    0.00013462 btc
+                    0.00013462 BTC
                   </p>
                   <span
                     style={{
-                      marginBottom: '30px',
+                      marginBottom: '20px',
+                      marginTop: '-2px',
                       display: 'block',
-                      color: '#999',
-                      fontSize: '10px',
+                      fontSize: '12px',
                     }}
                   >
-                    ≈ 5.22 usd
+                    approx 5.22 usd
                   </span>
 
                   <Alert
-                    message="bitcoin transactions are final! please cross check your inputs before you proceed."
+                    message="bitcoin transactions are final! please cross check your inputs before you proceed!"
                     type="error"
                     showIcon
                     icon={
@@ -155,7 +153,7 @@ const WalletModal = ({ send, close }) => {
                     style={{
                       color: '#ed1450',
                       alignItems: 'flex-start',
-                      border: '2px solid #ed1450',
+                      border: '1.5px solid #ed1450',
                       borderRadius: '10px',
                       backgroundColor: '#ed145040',
                       marginBottom: '20px',
@@ -170,6 +168,7 @@ const WalletModal = ({ send, close }) => {
                         display: 'inline-block',
                         width: 'calc(100%)',
                         marginBottom: '0',
+                        fontSize: "13px"
                       }}
                       rules={[
                         {
@@ -197,6 +196,7 @@ const WalletModal = ({ send, close }) => {
                         height: 'unset',
                         display: 'block',
                         marginLeft: 'auto',
+                        fontSize: '13px'
                       }}
                     >
                       send OTP by SMS
@@ -213,7 +213,7 @@ const WalletModal = ({ send, close }) => {
                       <Button
                         onClick={() => setProceed(false)}
                         type="text"
-                        style={{ color: '#ed1450' }}
+                        style={{ color: '#ed1450', fontSize: "16px" }}
                       >
                         back
                       </Button>
@@ -223,6 +223,7 @@ const WalletModal = ({ send, close }) => {
                         style={{
                           marginLeft: 'auto',
                           display: 'block',
+                          fontSize: "16px"
                         }}
                         htmlType="submit"
                       >
@@ -235,7 +236,7 @@ const WalletModal = ({ send, close }) => {
                 <>
                   <h4>
                     available{' '}
-                    <span style={{ color: '#ed1450' }}>0.00093434</span> btc
+                    <span style={{ color: '#ed1450', fontWeight: 600 }}>0.00093434</span> btc
                   </h4>
 
                   <Form onFinish={submit}>
@@ -262,7 +263,7 @@ const WalletModal = ({ send, close }) => {
                         }}
                         placeholder="0.00000"
                         suffix={
-                          <span style={{ fontSize: '10px', color: '#999' }}>
+                          <span style={{ fontSize: '12px', color: '#999' }}>
                             ~ 0 usd
                           </span>
                         }
@@ -294,26 +295,27 @@ const WalletModal = ({ send, close }) => {
                         placeholder="enter bitcoin address"
                       />
                     </Form.Item>
-                    <p style={{ marginBottom: '0px', fontSize: '10px' }}>
-                      a bitcoin address looks like this
+                    <p style={{ marginBottom: '0px', fontSize: '13px' }}>
+                      a bitcoin address looks like this:
                     </p>
                     <p
                       style={{
                         marginBottom: '0px',
-                        fontSize: '11px',
+                        fontSize: '13px',
                         fontWeight: 700,
                       }}
                     >
                       3MBWkUkFSiWRNrpCxcTjnhT4rt23qk1wWz{' '}
                       <span style={{ fontWeight: 400 }}>(sample only)</span>
-                    </p>
+                      </p>
 
-                    <Button
+                  <Button
                       type="primary"
                       style={{
                         marginLeft: 'auto',
                         display: 'block',
                         marginTop: '30px',
+                        fontSize: "16px"
                       }}
                       htmlType="submit"
                     >
@@ -326,10 +328,7 @@ const WalletModal = ({ send, close }) => {
           ) : (
             <div className="walletModal-recieve walletModal-box-left">
               <h3>receive bitcoin</h3>
-
-              <h4>your bitcoin address</h4>
-
-              <p>use this address to deposit bitcoin (btc) tokens:</p>
+              <h4>use this address to deposit bitcoin (btc) tokens:</h4>
 
               <p className="walletModal-address">
                 38p1GxDgz9GMqA4t9oe5Cpe1SmwhsSj
@@ -355,7 +354,7 @@ const WalletModal = ({ send, close }) => {
                 style={{
                   color: '#ed1450',
                   alignItems: 'flex-start',
-                  border: '2px solid #ed1450',
+                  border: '1.5px solid #ed1450',
                   borderRadius: '10px',
                   backgroundColor: '#ed145040',
                 }}
