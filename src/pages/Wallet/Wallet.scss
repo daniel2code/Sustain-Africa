@@ -4,6 +4,12 @@
   padding-bottom: 40px;
   position: relative;
 
+  & .ant-alert-message {
+    color: #14a014;
+    font-size: 13px;
+    line-height: 15px;
+  }
+
   .ant-divider-inner-text {
     color: #ed1450;
   }

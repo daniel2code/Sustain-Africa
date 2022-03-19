@@ -8,9 +8,7 @@ import { useState } from 'react';
 const WalletModal = ({ send, close }) => {
   const [proceed, setProceed] = useState(false);
 
-  const sendBtc = values => {
-    alert('submitted');
-  };
+  const sendBtc = values => {};
 
   const sendOtp = () => {};
 
@@ -49,11 +47,12 @@ const WalletModal = ({ send, close }) => {
                       display: 'flex',
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
-                      fontWeight: '600'
+                      fontWeight: '600',
                     }}
                   >
-                    <h4 style={{ margin: '0', flex: '0 0 40%' }}>send amount</h4>
-
+                    <h4 style={{ margin: '0', flex: '0 0 40%' }}>
+                      send amount
+                    </h4>
 
                     <h4 style={{ margin: '0' }}>
                       0.00005462 btc
@@ -74,10 +73,12 @@ const WalletModal = ({ send, close }) => {
                       display: 'flex',
                       justifyContent: 'flex-start',
                       alignItems: 'flex-start',
-                      fontWeight: '600'
+                      fontWeight: '600',
                     }}
                   >
-                    <h4 style={{ margin: '0', flex: '0 0 40%' }}>network fee</h4>
+                    <h4 style={{ margin: '0', flex: '0 0 40%' }}>
+                      network fee
+                    </h4>
 
                     <h4 style={{ margin: '0' }}>
                       0.00008 btc
@@ -106,7 +107,7 @@ const WalletModal = ({ send, close }) => {
                     className="walletModal-p"
                     style={{
                       fontWeight: 700,
-                      marginBottom: '20px'
+                      marginBottom: '20px',
                     }}
                   >
                     bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5
@@ -168,7 +169,7 @@ const WalletModal = ({ send, close }) => {
                         display: 'inline-block',
                         width: 'calc(100%)',
                         marginBottom: '0',
-                        fontSize: "13px"
+                        fontSize: '13px',
                       }}
                       rules={[
                         {
@@ -196,7 +197,7 @@ const WalletModal = ({ send, close }) => {
                         height: 'unset',
                         display: 'block',
                         marginLeft: 'auto',
-                        fontSize: '13px'
+                        fontSize: '13px',
                       }}
                     >
                       send OTP by SMS
@@ -213,7 +214,7 @@ const WalletModal = ({ send, close }) => {
                       <Button
                         onClick={() => setProceed(false)}
                         type="text"
-                        style={{ color: '#ed1450', fontSize: "16px" }}
+                        style={{ color: '#ed1450', fontSize: '16px' }}
                       >
                         back
                       </Button>
@@ -223,7 +224,7 @@ const WalletModal = ({ send, close }) => {
                         style={{
                           marginLeft: 'auto',
                           display: 'block',
-                          fontSize: "16px"
+                          fontSize: '16px',
                         }}
                         htmlType="submit"
                       >
@@ -236,7 +237,10 @@ const WalletModal = ({ send, close }) => {
                 <>
                   <h4>
                     available{' '}
-                    <span style={{ color: '#ed1450', fontWeight: 600 }}>0.00093434</span> btc
+                    <span style={{ color: '#ed1450', fontWeight: 600 }}>
+                      0.00093434
+                    </span>{' '}
+                    btc
                   </h4>
 
                   <Form onFinish={submit}>
@@ -307,15 +311,15 @@ const WalletModal = ({ send, close }) => {
                     >
                       3MBWkUkFSiWRNrpCxcTjnhT4rt23qk1wWz{' '}
                       <span style={{ fontWeight: 400 }}>(sample only)</span>
-                      </p>
+                    </p>
 
-                  <Button
+                    <Button
                       type="primary"
                       style={{
                         marginLeft: 'auto',
                         display: 'block',
                         marginTop: '30px',
-                        fontSize: "16px"
+                        fontSize: '16px',
                       }}
                       htmlType="submit"
                     >

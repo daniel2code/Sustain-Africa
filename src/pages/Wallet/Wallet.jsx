@@ -1,8 +1,13 @@
 import { useState } from 'react';
-import { Button, Divider, Breadcrumb, Table } from 'antd';
+import { Alert, Button, Divider, Breadcrumb, Table } from 'antd';
 import { Link } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
-import { UpOutlined, DownOutlined, HomeOutlined } from '@ant-design/icons';
+import {
+  UpOutlined,
+  DownOutlined,
+  HomeOutlined,
+  ExclamationCircleOutlined,
+} from '@ant-design/icons';
 // import Loader from '../../components/Loader/Loader';
 import Bitcoin from '../../assets/Bitcoin.svg';
 import WalletModal from '../../components/WalletModal/WalletModal';
@@ -112,6 +117,25 @@ const Wallet = () => {
           <Breadcrumb.Item>wallet</Breadcrumb.Item>
         </Breadcrumb>
 
+        <Alert
+          message="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
+          type="error"
+          showIcon
+          icon={
+            <ExclamationCircleOutlined
+              style={{ color: '#14a014', marginTop: '5px' }}
+            />
+          }
+          style={{
+            color: '#14a014',
+            alignItems: 'flex-start',
+            border: '1.5px solid #14a014',
+            borderRadius: '10px',
+            backgroundColor: '#14a01440',
+            marginBottom: '20px',
+          }}
+        />
+
         {/* bitcoin price in usd */}
         <div className="wallet-price">
           <div>
@@ -135,7 +159,10 @@ const Wallet = () => {
         {/*wallet + send and receive bitcoin */}
         <div className="wallet-coin">
           <h2>0.00317642 BTC</h2>
-          <p className="wallet-p" style={{ marginBottom: '20px', marginTop: '-5px' }}>
+          <p
+            className="wallet-p"
+            style={{ marginBottom: '20px', marginTop: '-5px' }}
+          >
             approx 121.88 usd
           </p>
 
