@@ -193,9 +193,16 @@ export default function DealPage({ match }) {
 
                           
                 <div>
-                  start a discussion with{' '}
+                  <ExclamationCircleOutlined />
+                  <b>start a discussion with{' '}</b>
+
                   <span className="username-green">@{dealerData?.user_name_front}</span>?
                 </div>
+
+                <Row><Col span={9}>source</Col> <Col span={9}>{deal?.source} ($)</Col></Row>
+                <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} (₦)</Col></Row>
+                <Row><Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col></Row>
+
                 <Form layout="inline" {...formProps}>
                   <Form.Item
                     label="Amount"
