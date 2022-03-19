@@ -116,7 +116,7 @@ export default function Message() {
                                 </div>
                                 <div>
                                     <div className="username-green">
-                                        officerknow{' '}
+                                        {username}{' '}
                                         <span style={{color: '#14a014'}}>&#9679;</span>
                                     </div>
                                     <div className="status">waiting to accept..</div>
