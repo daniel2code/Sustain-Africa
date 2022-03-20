@@ -39,6 +39,10 @@ export default function DealPage({ match }) {
   const [userId, setUserId] = useState('000111222333444');
   const userIdState = useSelector(state => state?.user?.userData?.id);
 
+  const [amount, setAmount ] = useState(0)
+
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getDealInfo();
@@ -99,7 +103,7 @@ export default function DealPage({ match }) {
     formProps,
     show,
     formLoading,
-    //formValues,
+    formValues,
     //formResult,
   } = useModalForm({
     defaultVisible: false,
@@ -223,18 +227,22 @@ export default function DealPage({ match }) {
 
                 <Form layout="inline" {...formProps}>
                   <Form.Item
-                    label="Amount"
-                    name="amount ($)"
-                    rules={[{ required: true, message: 'Please input amount' }]}
-                  >
-                    <Input placeholder="Please input Amount" />
+                    label=""
+                    name="amount"
+                    rules={[{required: true, message: 'Please input amount'}]}>  
+                    <Row><Col span={14}>Amount</Col>
+                    <Col span={9}>
+                      <Input placeholder="Please input Amount" value={amount} onChange={e => setAmount(e.target.value)} />
+                    </Col></Row>
+
                   </Form.Item>
 
                   
                 </Form>
 
                 <div>
-                  <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{}.00</strong>
+                  <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{amount * deal?.rate}.00</strong>
+                  {console.log(formValues.amount)}
                     <span style={{
                       fontSize: '12px',
                       marginTop: '-5px',
