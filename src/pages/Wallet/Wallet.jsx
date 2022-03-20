@@ -119,7 +119,8 @@ const Wallet = () => {
 
         <Alert
           message="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
-          type="error"
+          type="success"
+          closable
           showIcon
           icon={
             <ExclamationCircleOutlined
