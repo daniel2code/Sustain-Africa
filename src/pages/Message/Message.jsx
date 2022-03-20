@@ -170,7 +170,8 @@ export default function Message() {
                     <div className="row-one">
                         <TextArea
                             //autoSize={{minRows: 1, maxRows: 2}}
-                            placeholder="type a message..."
+                            placeholder="        
+                            type a message..."
                             value={messageInput}
                             onChange={e => {
                                 setMessageInput(e.target.value);
