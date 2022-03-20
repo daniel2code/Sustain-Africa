@@ -103,7 +103,7 @@ export default function DealPage({ match }) {
     formProps,
     show,
     formLoading,
-    formValues,
+    //formValues,
     //formResult,
   } = useModalForm({
     defaultVisible: false,
