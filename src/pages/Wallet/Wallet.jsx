@@ -6,7 +6,6 @@ import {
   UpOutlined,
   DownOutlined,
   HomeOutlined,
-  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 // import Loader from '../../components/Loader/Loader';
 import Bitcoin from '../../assets/Bitcoin.svg';
@@ -116,6 +115,7 @@ const Wallet = () => {
           </Breadcrumb.Item>
           <Breadcrumb.Item>wallet</Breadcrumb.Item>
         </Breadcrumb>
+
 
         <Alert
           message="bitcoin sent!"

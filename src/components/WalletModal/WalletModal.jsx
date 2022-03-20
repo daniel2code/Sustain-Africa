@@ -1,6 +1,6 @@
 import './WalletModal.scss';
 import { createPortal } from 'react-dom';
-import { CloseOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { CloseOutlined } from '@ant-design/icons';
 import { ReactComponent as Send } from '../../assets/send.svg';
 import { Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
@@ -142,8 +142,7 @@ const WalletModal = ({ send, close }) => {
                   </span>
 
                     <Alert
-                        message="warning!"
-                        description="bitcoin transactions are final! please cross check your inputs before you proceed!"
+                        message="bitcoin transactions are final! please cross check your inputs before you proceed!"
                         type="warning"
                         style={{ marginBottom: '20px' }}
                         closable
@@ -336,8 +335,7 @@ const WalletModal = ({ send, close }) => {
               </div>
 
                 <Alert
-                    message="warning!"
-                    description="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
+                    message="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
                     type="warning"
                     style={{ marginBottom: '20px' }}
                     closable
