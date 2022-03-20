@@ -320,7 +320,7 @@ const WalletModal = ({ send, close }) => {
           ) : (
             <div className="walletModal-recieve walletModal-box-left">
               <h3>receive bitcoin</h3>
-              <h4>use this address to deposit bitcoin (btc) tokens:</h4>
+              <h4>deposit btc tokens here:</h4>
 
               <p className="walletModal-address">
                 38p1GxDgz9GMqA4t9oe5Cpe1SmwhsSj
