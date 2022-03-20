@@ -18,7 +18,7 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
   HomeOutlined,
-  ExclamationCircleOutlined,
+  ExclamationCircleOutlined, 
 } from '@ant-design/icons';
 import Loader from './../../components/Loader/Loader';
 import { instance, bearerInstance } from './../../utils/API';
@@ -214,41 +214,41 @@ export default function DealPage({ match }) {
                 {/* <p>result: {formResult}</p> */}
 
                           
-                <div>
-                  <ExclamationCircleOutlined />
+                <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
+                  <ExclamationCircleOutlined style={{fontSize: '25px', paddingRight: '10px', color: '#ed1450'}}/>
                   <b>start a discussion with{' '}</b>
 
                   <span className="username-green">@{dealerData?.user_name_front}</span>?
                 </div>
+                <div className="deal-details" style={{marginLeft: '40px'}}>
+                  <Row><Col span={9}>source</Col> <Col span={9}>{deal?.source} ($)</Col></Row>
+                  <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} (₦)</Col></Row>
+                  <Row><Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col></Row>
 
-                <Row><Col span={9}>source</Col> <Col span={9}>{deal?.source} ($)</Col></Row>
-                <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} (₦)</Col></Row>
-                <Row><Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col></Row>
+                  <Form layout="inline" {...formProps}>
+                    <Form.Item
+                      label="Amount"
+                      name="amount"
+                      rules={[{required: true, message: 'Please input amount'}]} >  
+                      
+                        <Input placeholder="Please input Amount" onChange={e => setAmount(e.target.value)} />
+                      
 
-                <Form layout="inline" {...formProps}>
-                  <Form.Item
-                    label=""
-                    name="amount"
-                    rules={[{required: true, message: 'Please input amount'}]}>  
-                    <Row><Col span={14}>Amount</Col>
-                    <Col span={9}>
-                      <Input placeholder="Please input Amount" value={amount} onChange={e => setAmount(e.target.value)} />
-                    </Col></Row>
+                    </Form.Item>
 
-                  </Form.Item>
+                    
+                  </Form>
 
-                  
-                </Form>
-
-                <div>
-                  <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{amount * deal?.rate}.00</strong>
-                  {console.log(formValues.amount)}
-                    <span style={{
-                      fontSize: '12px',
-                      marginTop: '-5px',
-                    }}> (- escrow fee)</span></Col>
-                  </Row>
+                  <div>
+                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{amount * deal?.rate}.00</strong>
+                      <span style={{
+                        fontSize: '12px',
+                        marginTop: '5px',
+                      }}> (- escrow fee)</span></Col>
+                    </Row>
+                  </div>
                 </div>
+
               </>
             </Spin>
           </Modal>
