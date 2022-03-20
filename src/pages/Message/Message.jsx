@@ -175,7 +175,7 @@ export default function Message() {
                             onChange={e => {
                                 setMessageInput(e.target.value);
                             }}
-                            style={{borderRadius: '30px',  marginRight: '10px'}}
+                            style={{borderRadius: '30px',  marginRight: '10px', borderColor: '#ed1450'}}
                         />
                         <Button
                             type="primary"
