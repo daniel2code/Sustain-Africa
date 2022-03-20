@@ -4,6 +4,8 @@ import {
     LikeOutlined,
     DislikeOutlined,
     RightOutlined,
+    SendOutlined,
+    FieldTimeOutlined
 } from '@ant-design/icons';
 import {useSelector} from 'react-redux';
 import {StreamChat} from 'stream-chat';
@@ -125,12 +127,12 @@ export default function Message() {
 
                             <div className="right">
                                 <div className="like-dislike no-margin-top">
-                  <span className="like">
-                    <LikeOutlined/> 21
-                  </span>
+                                    <span className="like">
+                                        <LikeOutlined/> 21
+                                    </span>
                                     <span className="dislike no-margin-right">
-                    <DislikeOutlined/> 4
-                  </span>
+                                        <DislikeOutlined/> 4
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -164,13 +166,28 @@ export default function Message() {
                 <div className="wrapper">
                     <div className="row-one">
                         <TextArea
-                            autoSize={{minRows: 2, maxRows: 4}}
+                            //autoSize={{minRows: 1, maxRows: 2}}
                             placeholder="type a message..."
                             value={messageInput}
                             onChange={e => {
                                 setMessageInput(e.target.value);
                             }}
+                            style={{borderRadius: '30px',  marginRight: '10px'}}
                         />
+                        <Button
+                            type="primary"
+                            size="normal"
+                            onClick={() => {
+                                handleSendMessage();
+                            }}
+                            style={{borderRadius: '50%', height: '60px', marginRight: '10px',
+                                    display: 'flex', alignItems: 'center', justifyContent: "center"}}
+
+                        >
+                            <SendOutlined  style={{fontSize: '30px',display: 'flex', 
+                                            alignItems: 'center', justifyContent: "center"}} />
+                            
+                        </Button>
                     </div>
 
                     <div className="row-two">
@@ -183,15 +200,10 @@ export default function Message() {
                             </div>
                         </div>
                         <div className="right">
-                            <Button
-                                type="primary"
-                                size="normal"
-                                onClick={() => {
-                                    handleSendMessage();
-                                }}
-                            >
-                                send
-                            </Button>
+                            
+                            <FieldTimeOutlined  style={{fontSize: '20px', marginRight: '4px'}}/>
+                            5 mins
+
                         </div>
                     </div>
                 </div>

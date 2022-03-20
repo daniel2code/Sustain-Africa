@@ -116,12 +116,19 @@
       display: block;
       .row-one {
         margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
       }
       .row-two {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         margin-bottom: 10px;
+        .right {
+          display: flex;
+          margin-right: 2%;
+        }
         .left {
           display: flex;
           .end,

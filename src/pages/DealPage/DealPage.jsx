@@ -6,7 +6,7 @@ import {
   Breadcrumb,
   Modal,
   Form,
-  Input, Row, Col, Spin, Button
+  Input, Row, Col, Spin, //Button
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 import { useModalForm } from 'sunflower-antd';
@@ -28,7 +28,7 @@ import { setHasError } from '../../redux/data/data.actions';
 import { format } from 'timeago.js';
 import { curType } from '../../utils/datasource';
 
-const { confirm } = Modal;
+//const { confirm } = Modal;
 
 
 export default function DealPage({ match }) {
@@ -69,28 +69,28 @@ export default function DealPage({ match }) {
   //   history.push("/message");
   // };
 
-  const handleOk = () => {
-    const data = new FormData();
+  // const handleOk = () => {
+  //   const data = new FormData();
 
-    // console.log(dealerData);
-    // console.log(userIdState);
-    // console.log(deal);
+  //   // console.log(dealerData);
+  //   // console.log(userIdState);
+  //   // console.log(deal);
 
-    data.append('sender', userIdState);
-    data.append('receiver', deal.dealer_id);
-    data.append('type', 'd_r');
-    data.append('deal_id', deal.d_id);
+  //   data.append('sender', userIdState);
+  //   data.append('receiver', deal.dealer_id);
+  //   data.append('type', 'd_r');
+  //   data.append('deal_id', deal.d_id);
 
-    // data.forEach(cur => console.log(cur));
+  //   // data.forEach(cur => console.log(cur));
 
-    bearerInstance
-      .post(`/new_notification`, data)
-      .then(res => {
-        console.log(res);
-        history.push(`/message/${deal.d_id}`);
-      })
-      .catch(err => {});
-  };
+  //   bearerInstance
+  //     .post(`/new_notification`, data)
+  //     .then(res => {
+  //       console.log(res);
+  //       history.push(`/message/${deal.d_id}`);
+  //     })
+  //     .catch(err => {});
+  // };
 
 
   const [form] = Form.useForm();
@@ -99,17 +99,35 @@ export default function DealPage({ match }) {
     formProps,
     show,
     formLoading,
-    formValues,
-    formResult,
+    //formValues,
+    //formResult,
   } = useModalForm({
     defaultVisible: false,
     autoSubmitClose: true,
     autoResetForm: true,
     async submit({ username, email }) {
-      console.log('beforeSubmit');
-      await new Promise(r => setTimeout(r, 1000));
-      console.log('afterSubmit', username, email);
-      return 'ok';
+      // console.log('beforeSubmit');
+      // await new Promise(r => setTimeout(r, 1000));
+      // console.log('afterSubmit', username, email);
+      // return 'ok';
+
+      const data = new FormData();
+
+
+      data.append('sender', userIdState);
+      data.append('receiver', deal.dealer_id);
+      data.append('type', 'd_r');
+      data.append('deal_id', deal.d_id);
+
+      // data.forEach(cur => console.log(cur));
+
+      bearerInstance
+        .post(`/new_notification`, data)
+        .then(res => {
+          console.log(res);
+          history.push(`/message/${deal.d_id}`);
+        })
+        .catch(err => {});
     },
     form,
   });
