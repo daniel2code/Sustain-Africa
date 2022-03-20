@@ -102,6 +102,9 @@ export default function Message() {
             {messages && !loading && chatChannel ? (
                 <div className="header-container">
                     <div className="header-wrapper">
+                        <div className="header-title" >
+                            Buying $50 bank funds from
+                        </div>
                         <div className="header-main">
                             <div className="left" onClick={() => {
                             }}>
