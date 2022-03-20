@@ -291,6 +291,7 @@ const WalletModal = ({ send, close }) => {
                       a bitcoin address looks like this:
                     </p>
                     <p
+                      className="walletModal-p"
                       style={{
                         marginBottom: '0px',
                         fontSize: '13px',
