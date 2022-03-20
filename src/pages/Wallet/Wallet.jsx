@@ -118,22 +118,12 @@ const Wallet = () => {
         </Breadcrumb>
 
         <Alert
-          message="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
-          type="error"
+          message="bitcoin sent!"
+          description="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
+          type="success"
+          style={{ marginBottom: '20px' }}
           showIcon
-          icon={
-            <ExclamationCircleOutlined
-              style={{ color: '#14a014', marginTop: '5px' }}
-            />
-          }
-          style={{
-            color: '#14a014',
-            alignItems: 'flex-start',
-            border: '1.5px solid #14a014',
-            borderRadius: '10px',
-            backgroundColor: '#14a01440',
-            marginBottom: '20px',
-          }}
+          closable
         />
 
         {/* bitcoin price in usd */}

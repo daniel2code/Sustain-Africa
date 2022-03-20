@@ -29,8 +29,7 @@ const WalletModal = ({ send, close }) => {
           <div
             className={send ? '' : 'walletModal-recieve-icon'}
             style={{
-              color: 'rgb(255,213,0)',
-              marginRight: '5px',
+              color: 'rgb(255,213,0)'
             }}
           >
             <Send style={{ height: '25px', width: '25px' }} />
@@ -142,24 +141,13 @@ const WalletModal = ({ send, close }) => {
                     approx 5.22 usd
                   </span>
 
-                  <Alert
-                    message="bitcoin transactions are final! please cross check your inputs before you proceed!"
-                    type="error"
-                    showIcon
-                    icon={
-                      <ExclamationCircleOutlined
-                        style={{ color: '#ed1450', marginTop: '5px' }}
-                      />
-                    }
-                    style={{
-                      color: '#ed1450',
-                      alignItems: 'flex-start',
-                      border: '1.5px solid #ed1450',
-                      borderRadius: '10px',
-                      backgroundColor: '#ed145040',
-                      marginBottom: '20px',
-                    }}
-                  />
+                    <Alert
+                        message="warning!"
+                        description="bitcoin transactions are final! please cross check your inputs before you proceed!"
+                        type="warning"
+                        style={{ marginBottom: '20px' }}
+                        closable
+                    />
 
                   <Form onFinish={sendBtc}>
                     <Form.Item
@@ -346,23 +334,13 @@ const WalletModal = ({ send, close }) => {
                 </Button>
               </div>
 
-              <Alert
-                message="note: make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
-                type="error"
-                showIcon
-                icon={
-                  <ExclamationCircleOutlined
-                    style={{ color: '#ed1450', marginTop: '5px' }}
-                  />
-                }
-                style={{
-                  color: '#ed1450',
-                  alignItems: 'flex-start',
-                  border: '1.5px solid #ed1450',
-                  borderRadius: '10px',
-                  backgroundColor: '#ed145040',
-                }}
-              />
+                <Alert
+                    message="warning!"
+                    description="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
+                    type="warning"
+                    style={{ marginBottom: '20px' }}
+                    closable
+                />
             </div>
           )}
         </div>
