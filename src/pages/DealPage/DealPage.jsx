@@ -231,7 +231,7 @@ export default function DealPage({ match }) {
                       name="amount"
                       rules={[{required: true, message: 'Please input amount'}]} >  
                       
-                      <Row> <Col span={14}>
+                      <Row> <Col span={19}>
                       
                         <Input placeholder="Please input Amount" onChange={e => setAmount(e.target.value)}/></Col></Row>
                       
