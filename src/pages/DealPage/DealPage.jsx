@@ -223,7 +223,7 @@ export default function DealPage({ match }) {
 
                   <Form {...formProps}>
                     <Form.Item
-                      label={"amount"}
+                      label={"amount ($)"}
                       name="amount"
                       labelCol={{span: 9}}
                       labelAlign="left"
@@ -235,13 +235,13 @@ export default function DealPage({ match }) {
                         marginBottom: '3%'
                         }}
                         >
-                      <Input style={{ width: '100%', borderColor: '#ed1450' }} placeholder="enter amount..." onChange={e => setAmount(e.target.value)} />
+                      <Input style={{ borderColor: '#ed1450' }} placeholder="enter amount..." onChange={e => setAmount(e.target.value)} />
 
                     </Form.Item>
                   </Form>
 
                   <div>
-                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>${amount * deal?.rate}.00</strong>
+                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.destination_currency}{amount * deal?.rate}.00</strong>
                       <span style={{
                         fontSize: '12px',
                         marginTop: '5px',
