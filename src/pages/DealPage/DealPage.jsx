@@ -6,9 +6,10 @@ import {
   Breadcrumb,
   Modal,
   Form,
-  Input, Row, Col,
+  Input, Row, Col, Spin, //Button
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
+import { useModalForm } from 'sunflower-antd';
 
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -17,7 +18,7 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
   HomeOutlined,
-  ExclamationCircleOutlined,
+  ExclamationCircleOutlined, 
 } from '@ant-design/icons';
 import Loader from './../../components/Loader/Loader';
 import { instance, bearerInstance } from './../../utils/API';
@@ -27,7 +28,8 @@ import { setHasError } from '../../redux/data/data.actions';
 import { format } from 'timeago.js';
 import { curType } from '../../utils/datasource';
 
-const { confirm } = Modal;
+//const { confirm } = Modal;
+
 
 export default function DealPage({ match }) {
   const dispatch = useDispatch();
@@ -36,6 +38,10 @@ export default function DealPage({ match }) {
   const [dealerData, setDealerData] = useState(null);
   const [userId, setUserId] = useState('000111222333444');
   const userIdState = useSelector(state => state?.user?.userData?.id);
+
+  const [amount, setAmount ] = useState(0)
+
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -67,86 +73,128 @@ export default function DealPage({ match }) {
   //   history.push("/message");
   // };
 
-  const handleOk = () => {
-    const data = new FormData();
+  // const handleOk = () => {
+  //   const data = new FormData();
 
-    // console.log(dealerData);
-    // console.log(userIdState);
-    // console.log(deal);
+  //   // console.log(dealerData);
+  //   // console.log(userIdState);
+  //   // console.log(deal);
 
-    data.append('sender', userIdState);
-    data.append('receiver', deal.dealer_id);
-    data.append('type', 'd_r');
-    data.append('deal_id', deal.d_id);
+  //   data.append('sender', userIdState);
+  //   data.append('receiver', deal.dealer_id);
+  //   data.append('type', 'd_r');
+  //   data.append('deal_id', deal.d_id);
 
-    // data.forEach(cur => console.log(cur));
+  //   // data.forEach(cur => console.log(cur));
 
-    bearerInstance
-      .post(`/new_notification`, data)
-      .then(res => {
-        console.log(res);
-        history.push('/message');
-      })
-      .catch(err => {});
-  };
+  //   bearerInstance
+  //     .post(`/new_notification`, data)
+  //     .then(res => {
+  //       console.log(res);
+  //       history.push(`/message/${deal.d_id}`);
+  //     })
+  //     .catch(err => {});
+  // };
+
+
+  const [form] = Form.useForm();
+  const {
+    modalProps,
+    formProps,
+    show,
+    formLoading,
+    //formValues,
+    //formResult,
+  } = useModalForm({
+    defaultVisible: false,
+    autoSubmitClose: true,
+    autoResetForm: true,
+    async submit({ username, email }) {
+      // console.log('beforeSubmit');
+      // await new Promise(r => setTimeout(r, 1000));
+      // console.log('afterSubmit', username, email);
+      // return 'ok';
+
+      const data = new FormData();
+
+
+      data.append('sender', userIdState);
+      data.append('receiver', deal.dealer_id);
+      data.append('type', 'd_r');
+      data.append('deal_id', deal.d_id);
+
+      // data.forEach(cur => console.log(cur));
+
+      bearerInstance
+        .post(`/new_notification`, data)
+        .then(res => {
+          console.log(res);
+          history.push(`/message/${deal.d_id}`);
+        })
+        .catch(err => {});
+    },
+    form,
+  });
 
   function showDiscussConfirm(user, source, destination, rate) {
-    confirm({
-      title: (
-        <div>
-          start a discussion with{' '}
-          <span className="username-green">@{user}</span>?
-        </div>
-      ),
-      icon: <ExclamationCircleOutlined />,
-      content: (
-        <div>
-          <Row><Col span={9}>source</Col> <Col span={9}>{source} ($)</Col></Row>
-          <Row><Col span={9}>destination</Col> <Col span={9}>{destination} (₦)</Col></Row>
-          <Row><Col span={9}>rate</Col> <Col span={9}>₦{rate}/$</Col></Row>
+    
+    // confirm({
+    //   title: (
+    //     <div>
+    //       start a discussion with{' '}
+    //       <span className="username-green">@{user}</span>?
+    //     </div>
+    //   ),
+    //   icon: <ExclamationCircleOutlined />,
+    //   content: (
+    //     <div>
+    //       <Row><Col span={9}>source</Col> <Col span={9}>{source} ($)</Col></Row>
+    //       <Row><Col span={9}>destination</Col> <Col span={9}>{destination} (₦)</Col></Row>
+    //       <Row><Col span={9}>rate</Col> <Col span={9}>₦{rate}/$</Col></Row>
 
-          <Form.Item
-            label="amount $"
-            labelCol={{span: 9}}
-            labelAlign="left"
-            wrapperCol={{span: 12}}
-            name="amount"
-            rules={[
-              {
-                message: 'enter trade amount...',
-              },
-            ]}
-            style={{
-              textAlign: 'left',
-              marginTop: '3%',
-              marginBottom: '3%'
-            }}
-          >
-            <Input
-              placeholder="enter amount..."
-              style={{ width: '100%', borderColor: '#ed1450' }}
-              formatter={value =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
-            />
-            </Form.Item>
+    //       <Form {...formProps}>
+    //         <Form.Item
+    //           label="amount $"
+    //           labelCol={{span: 9}}
+    //           labelAlign="left"
+    //           wrapperCol={{span: 12}}
+    //           name="amount"
+    //           rules={[{ required: true, message: 'Please input amount' }]}
+    //           style={{
+    //             textAlign: 'left',
+    //             marginTop: '3%',
+    //             marginBottom: '3%'
+    //           }}
+    //         >
+    //           <Input
+    //             placeholder="enter amount..."
+    //             style={{ width: '100%', borderColor: '#ed1450' }}
+    //             formatter={value =>
+    //               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    //             }
+    //             parser={value => value.replace(/\$\s?|(,*)/g, '')}
+    //           />
+    //           </Form.Item>
+    //         </Form>
 
-          <div>
-            <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{rate}.00</strong>
-              <span style={{
-                fontSize: '12px',
-                marginTop: '-5px',
-              }}> (- escrow fee)</span></Col>
-            </Row>
-          </div>
-        </div>
-      ),
-      onOk() {
-        handleOk();
-      },
-      onCancel() {},
-    });
+    //       <div>
+    //         <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{rate}.00</strong>
+    //           <span style={{
+    //             fontSize: '12px',
+    //             marginTop: '-5px',
+    //           }}> (- escrow fee)</span></Col>
+    //         </Row>
+    //       </div>
+    //     </div>
+    //   ),
+    //   onOk() {
+    //     handleOk();
+    //   },
+    //   onCancel() {},
+    // });
+
+      
+
   }
 
   return (
@@ -155,6 +203,59 @@ export default function DealPage({ match }) {
 
       {deal && dealerData && (
         <div className="deal-page-wrapper">
+
+          {/* ModalForm for amount */}
+          <Modal {...modalProps} okText="Next" width={400}>
+            <Spin spinning={formLoading}>
+              <>
+                {/* <p>
+                  submit: username {formValues.username} email {formValues.email}
+                </p> */}
+                {/* <p>result: {formResult}</p> */}
+
+                          
+                <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
+                  <ExclamationCircleOutlined style={{fontSize: '25px', paddingRight: '10px', color: '#ed1450'}}/>
+                  <b>start a discussion with{' '}</b>
+
+                  <span className="username-green">@{dealerData?.user_name_front}</span>?
+                </div>
+                <div className="deal-details" style={{marginLeft: '40px'}}>
+                  <Row><Col span={9}>source</Col> <Col span={9}>{deal?.source} ($)</Col></Row>
+                  <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} (₦)</Col></Row>
+                  <Row><Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col></Row>
+
+                  <Form layout="inline" {...formProps}>
+                    <Form.Item
+                      label="Amount"
+                      name="amount"
+                      rules={[{required: true, message: 'Please input amount'}]} >  
+                      
+                      <Row> <Col span={19}>
+                      
+                        <Input placeholder="Please input Amount" onChange={e => setAmount(e.target.value)}/></Col></Row>
+                      
+
+                    </Form.Item>
+
+                    
+                  </Form>
+
+                  <div>
+                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{amount * deal?.rate}.00</strong>
+                      <span style={{
+                        fontSize: '12px',
+                        marginTop: '5px',
+                      }}> (- escrow fee)</span></Col>
+                    </Row>
+                  </div>
+                </div>
+
+              </>
+            </Spin>
+          </Modal>
+
+
           <Breadcrumb>
             <Breadcrumb.Item>
               <Link to="/">
@@ -456,18 +557,20 @@ export default function DealPage({ match }) {
                 {deal?.dealer_id.toString() !== userId.toString() && (
                   <button
                     className="green-button"
-                    onClick={() => {
-                      if (userIdState) {
+                    onClick={ () => {
+                      if (!userIdState) {
+                        message.error('you must login to continue');
+                        history.push('/login');
+                  
+                      } 
                         showDiscussConfirm(
                           dealerData?.user_name_front,
                           deal?.source,
                           deal?.destination,
                           deal?.rate
                         );
-                      } else {
-                        message.error('you must login to continue');
-                        history.push('/login');
-                      }
+                        show()
+
                     }}
                   >
                     discuss

@@ -40,7 +40,7 @@ export default function DealItem({ item }) {
       .post(`/new_notification`, data)
       .then(res => {
         console.log(res);
-        history.push('/message');
+        history.push(`/message/${item.d_id}`);
       })
       .catch(err => {});
   };
