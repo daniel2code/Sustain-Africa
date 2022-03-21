@@ -13,11 +13,7 @@ import {
   Alert,
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  HomeOutlined,
-  DownOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
+import { HomeOutlined, DownOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
 import { bearerInstance } from './../../utils/API';
@@ -1299,13 +1295,11 @@ export default function NewDeal() {
               </Form.Item>
               {minmax && (
                 <Alert
-                  message="min amount must be less than max amount"
+                  message="error"
+                  description="min amount must be less than max amount"
                   type="error"
                   showIcon
-                  icon={
-                    <ExclamationCircleOutlined style={{ color: '#ed1450' }} />
-                  }
-                  style={{ color: '#ed1450' }}
+                  closable
                 />
               )}
             </Form.Item>

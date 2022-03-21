@@ -29,7 +29,7 @@ const WalletModal = ({ send, close }) => {
           <div
             className={send ? '' : 'walletModal-recieve-icon'}
             style={{
-              color: 'rgb(255,213,0)'
+              color: 'rgb(255,213,0)',
             }}
           >
             <Send style={{ height: '25px', width: '25px' }} />
@@ -141,12 +141,14 @@ const WalletModal = ({ send, close }) => {
                     approx 5.22 usd
                   </span>
 
-                    <Alert
-                        message="bitcoin transactions are final! please cross check your inputs before you proceed!"
-                        type="warning"
-                        style={{ marginBottom: '20px' }}
-                        closable
-                    />
+                  <Alert
+                    message="warning"
+                    description="bitcoin transactions are final! please cross check your inputs before you proceed!"
+                    type="warning"
+                    style={{ marginBottom: '20px' }}
+                    closable
+                    showIcon
+                  />
 
                   <Form onFinish={sendBtc}>
                     <Form.Item
@@ -334,12 +336,14 @@ const WalletModal = ({ send, close }) => {
                 </Button>
               </div>
 
-                <Alert
-                    message="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
-                    type="warning"
-                    style={{ marginBottom: '20px' }}
-                    closable
-                />
+              <Alert
+                message="warning"
+                description="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
+                type="warning"
+                style={{ marginBottom: '20px' }}
+                closable
+                showIcon
+              />
             </div>
           )}
         </div>
