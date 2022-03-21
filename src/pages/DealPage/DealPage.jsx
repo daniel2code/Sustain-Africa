@@ -223,7 +223,7 @@ export default function DealPage({ match }) {
 
                   <Row><Form {...formProps}>
                     <Form.Item
-                      label={"amount (" + deal?.source_currency + ")"}
+                      label={"amount (" + deal?.destination_currency + ")"}
                       name="amount"
                       labelCol={{span: 10}}
                       labelAlign="left"
@@ -241,7 +241,7 @@ export default function DealPage({ match }) {
                   </Form></Row>
 
                   <div>
-                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.destination_currency}{amount * deal?.rate}.00</strong>
+                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.source_currency}{amount * deal?.rate}.00</strong>
                       <span style={{
                         fontSize: '12px',
                         marginTop: '5px',
