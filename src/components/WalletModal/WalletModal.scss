@@ -5,10 +5,12 @@
   height: 100%;
   width: 100%;
   z-index: 1000;
+  overflow-y: auto;
+  padding-bottom: 100px;
 
   &-container {
-    background-color: rgba(255, 255, 255, 0.7);
-    position: absolute;
+    background-color: rgba(0, 0, 0, 0.4);
+    position: fixed;
     left: 0;
     top: 0;
     height: 100%;
@@ -20,14 +22,15 @@
   &-modal {
     background-color: #fff;
     position: relative;
-    border-radius: 20px;
-    padding: 10px 20px 30px 20px;
+    border-radius: 5px;
+    padding: 10px 15px 30px 20px;
     margin: 0 auto;
-    margin-top: 100px;
-    width: 700px;
+    margin-top: 75px;
+    width: 600px;
     max-width: 90%;
-    box-shadow: 5px 5px 5px 5px #999;
+    // box-shadow: 3px 3px 3px 3px #999;
     z-index: 2;
+    animation: dropin 0.2s ease-in;
   }
 
   &-close {
@@ -37,5 +40,88 @@
     cursor: pointer;
     display: block;
     margin-left: auto;
+    margin-right: -10px;
+  }
+
+  &-box {
+    display: flex;
+    align-items: flex-start;
+
+    &-left {
+      flex: 1;
+      padding-right: 20px;
+
+      & h3 {
+        margin-top: 10px;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  &-recieve {
+    &-icon {
+      transform: rotate(180deg);
+    }
+
+    & p {
+      font-size: 12px;
+      font-weight: 500;
+      color: #999;
+      margin-bottom: 10px;
+
+      &.walletModal-address {
+        color: #14a014;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 20px;
+        margin-bottom: 20px;
+        word-wrap: break-word;
+
+        @media only screen and (max-width: 540px) {
+          width: 250px;
+        }
+      }
+    }
+  }
+
+  &-send {
+    & h3 {
+      margin-top: 0px;
+    }
+
+    & h4 {
+      margin-bottom: 20px;
+    }
+
+    &ant-input {
+      font-size: 16px;
+    }
+  }
+
+  & .ant-alert-message {
+    color: #ed1450;
+    font-size: 13px;
+    line-height: 15px;
+  }
+
+  &-p {
+    word-wrap: break-word;
+
+    @media only screen and (max-width: 540px) {
+      width: 200px;
+    }
+  }
+}
+
+@keyframes dropin {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
