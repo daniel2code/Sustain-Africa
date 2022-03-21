@@ -22,7 +22,6 @@
   &-modal {
     background-color: #fff;
     position: relative;
-    border-radius: 5px;
     padding: 10px 15px 30px 20px;
     margin: 0 auto;
     margin-top: 75px;
@@ -40,7 +39,7 @@
     cursor: pointer;
     display: block;
     margin-left: auto;
-    margin-right: -10px;
+    margin-right: -5px;
   }
 
   &-box {
@@ -88,7 +87,7 @@
 
   &-send {
     & h3 {
-      margin-top: 0px;
+      margin-top: 0;
     }
 
     & h4 {
