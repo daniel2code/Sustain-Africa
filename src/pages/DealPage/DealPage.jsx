@@ -221,24 +221,24 @@ export default function DealPage({ match }) {
                   <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} ({deal?.destination_currency})</Col></Row>
                   <Row><Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col></Row>
 
-                  <Form {...formProps}>
+                  <Row><Form {...formProps}>
                     <Form.Item
-                      label={"amount ($)"}
+                      label={"amount (" + deal?.source_currency + ")"}
                       name="amount"
-                      labelCol={{span: 9}}
+                      labelCol={{span: 10}}
                       labelAlign="left"
                       wrapperCol={{span: 12}}
                       rules={[{message: 'enter amount...'}]}
                       style={{
                         textAlign: 'left',
                         marginTop: '3%',
-                        marginBottom: '3%'
+                        marginBottom: '3%',
                         }}
                         >
                       <Input style={{ borderColor: '#ed1450' }} placeholder="enter amount..." onChange={e => setAmount(e.target.value)} />
 
                     </Form.Item>
-                  </Form>
+                  </Form></Row>
 
                   <div>
                     <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.destination_currency}{amount * deal?.rate}.00</strong>
