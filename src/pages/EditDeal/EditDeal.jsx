@@ -14,11 +14,7 @@ import {
   Alert,
 } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
-import {
-  HomeOutlined,
-  DownOutlined,
-  ExclamationCircleOutlined,
-} from '@ant-design/icons';
+import { HomeOutlined, DownOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import Loader from './../../components/Loader/Loader';
 import { setHasError } from '../../redux/data/data.actions';
@@ -1422,13 +1418,11 @@ export default function EditDeal({ match }) {
                 </Form.Item>
                 {minmax && (
                   <Alert
-                    message="min amount must be less than max amount"
+                    message="error"
+                    description="min amount must be less than max amount"
                     type="error"
                     showIcon
-                    icon={
-                      <ExclamationCircleOutlined style={{ color: '#ed1450' }} />
-                    }
-                    style={{ color: '#ed1450' }}
+                    closable
                   />
                 )}
               </Form.Item>

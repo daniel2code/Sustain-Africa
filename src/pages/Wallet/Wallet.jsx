@@ -2,11 +2,7 @@ import { useState } from 'react';
 import { Alert, Button, Divider, Breadcrumb, Table } from 'antd';
 import { Link } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
-import {
-  UpOutlined,
-  DownOutlined,
-  HomeOutlined,
-} from '@ant-design/icons';
+import { UpOutlined, DownOutlined, HomeOutlined } from '@ant-design/icons';
 // import Loader from '../../components/Loader/Loader';
 import Bitcoin from '../../assets/Bitcoin.svg';
 import WalletModal from '../../components/WalletModal/WalletModal';
@@ -115,7 +111,6 @@ const Wallet = () => {
           </Breadcrumb.Item>
           <Breadcrumb.Item>wallet</Breadcrumb.Item>
         </Breadcrumb>
-
 
         <Alert
           message="bitcoin sent!"
