@@ -108,23 +108,12 @@ const Wallet = () => {
   const [send, setSend] = useState(false);
   const [sent, setSent] = useState(false);
   const [btcPrice, setBtcPrice] = useState('');
-
-  // const user = useSelector(state => state?.user?.userData);
+  const [walletData, setWalletData] = useState();
+  const [userBalance, setUserBalance] = useState();
 
   useEffect(() => {
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   bearerInstance
-  //     .get('/wallet_cypher?view_wallet=1')
-  //     .then(res => {
-  //       console.log(res.data);
-  //     })
-  //     .catch(err => {
-  //       console.log('something went wrong');
-  //     });
-  // }, []);
 
   const fetchData = () => {
     setReload(true);
@@ -132,8 +121,20 @@ const Wallet = () => {
     bearerInstance
       .get('/wallet?prices=1')
       .then(res => {
-        // console.log(res.data.message.USD['15m']);
         setBtcPrice(res.data.message.USD['15m']);
+
+        return bearerInstance.get('/wallet_data');
+      })
+      .then(res => {
+        setWalletData(res.data.wallet_data[0]);
+
+        return bearerInstance.get(
+          `/wallet_cypher?view_wallet=1&name=${res.data.wallet_data[0].wallet_name}`
+        );
+      })
+      .then(res => {
+        setUserBalance(res.data.message);
+
         setLoading(false);
         setReload(false);
       })
@@ -144,12 +145,15 @@ const Wallet = () => {
 
   return (
     <>
-      <WalletModal
-        open={walletModal}
-        send={send}
-        sent={() => setSent(true)}
-        close={() => setWalletModal(false)}
-      />
+      {walletModal && (
+        <WalletModal
+          open={walletModal}
+          send={send}
+          sent={() => setSent(true)}
+          close={() => setWalletModal(false)}
+          walletData={walletData}
+        />
+      )}
 
       <div className="wallet">
         <div className="wallet-wrapper">
@@ -208,12 +212,16 @@ const Wallet = () => {
 
               {/*wallet + send and receive bitcoin */}
               <div className="wallet-coin">
-                <h2>0.00317642 BTC</h2>
+                <h2>{userBalance.balance_btc} BTC</h2>
                 <p
                   className="wallet-p"
                   style={{ marginBottom: '20px', marginTop: '-5px' }}
                 >
-                  approx 121.88 usd
+                  approx{' '}
+                  {new Intl.NumberFormat('en-us').format(
+                    userBalance.balance_btc
+                  )}{' '}
+                  usd
                 </p>
 
                 <div className="wallet-coin-btn">

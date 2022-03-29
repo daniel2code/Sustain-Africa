@@ -1,10 +1,45 @@
 import './WalletModal.scss';
 import { ReactComponent as Send } from '../../assets/send.svg';
 import { Modal, Alert, Button, Form, Input } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { bearerInstance } from '../../utils/API';
+import { LoadingOutlined } from '@ant-design/icons';
 
-const WalletModal = ({ send, close, open, sent }) => {
+const WalletModal = ({ send, close, open, sent, walletData }) => {
   const [proceed, setProceed] = useState(false);
+  const [addLoad, setAddLoad] = useState(true);
+  const [address, setAddress] = useState('');
+
+  const getAddress = () => {
+    if (!send) {
+      setAddLoad(true);
+      console.log(walletData.wallet_name);
+      const wallet_name = walletData.wallet_name;
+
+      var data = new FormData();
+      data.append('new_address_in_wallet', '1');
+      data.append('bech32', 'false');
+      data.append('wallet_name', wallet_name);
+
+      bearerInstance
+        .post(`/wallet_cypher`, data)
+        .then(res => {
+          console.log(res.data.message);
+          setAddress(res.data.message.address);
+
+          setAddLoad(false);
+        })
+        .catch(err => {
+          console.log(err);
+          console.log('something went wrong');
+        });
+    }
+  };
+
+  useEffect(() => {
+    getAddress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const sendBtc = values => {};
 
@@ -320,14 +355,22 @@ const WalletModal = ({ send, close, open, sent }) => {
               <h3>receive bitcoin</h3>
               <h4>deposit btc tokens here:</h4>
 
-              <p className="walletModal-address">
-                38p1GxDgz9GMqA4t9oe5Cpe1SmwhsSj
-              </p>
+              <p className="walletModal-address">{address}</p>
 
               <div style={{ marginBottom: '20px' }}>
-                <Button type="primary">copy address </Button>
+                <Button type="primary" disabled={addLoad}>
+                  {addLoad ? (
+                    <LoadingOutlined spin style={{ color: '#fff' }} />
+                  ) : (
+                    'copy address'
+                  )}{' '}
+                </Button>
 
-                <Button type="text" style={{ color: '#ed1450' }}>
+                <Button
+                  type="text"
+                  style={{ color: '#ed1450' }}
+                  onClick={getAddress}
+                >
                   get new
                 </Button>
               </div>
