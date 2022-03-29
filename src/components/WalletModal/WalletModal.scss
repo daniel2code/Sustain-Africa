@@ -3,9 +3,15 @@
     display: none;
   }
 
+  & .ant-form-item-label > label {
+    height: unset;
+  }
+
   &-box {
     display: flex;
     align-items: flex-start;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
     &-left {
       flex: 1;

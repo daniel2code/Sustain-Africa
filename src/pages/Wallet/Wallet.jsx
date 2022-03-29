@@ -111,20 +111,11 @@ const Wallet = () => {
   const [walletData, setWalletData] = useState();
   const [userBalance, setUserBalance] = useState();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
   const fetchData = () => {
     setReload(true);
 
     bearerInstance
-      .get('/wallet?prices=1')
-      .then(res => {
-        setBtcPrice(res.data.message.USD['15m']);
-
-        return bearerInstance.get('/wallet_data');
-      })
+      .get('/wallet_data')
       .then(res => {
         setWalletData(res.data.wallet_data[0]);
 
@@ -135,6 +126,11 @@ const Wallet = () => {
       .then(res => {
         setUserBalance(res.data.message);
 
+        return bearerInstance.get('/wallet?prices=1');
+      })
+      .then(res => {
+        setBtcPrice(res.data.message.USD['15m']);
+
         setLoading(false);
         setReload(false);
       })
@@ -142,6 +138,10 @@ const Wallet = () => {
         console.log('something went wrong');
       });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
