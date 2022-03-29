@@ -13,6 +13,7 @@ import Bitcoin from '../../assets/Bitcoin.svg';
 import WalletModal from '../../components/WalletModal/WalletModal';
 import { bearerInstance } from '../../utils/API';
 import './Wallet.scss';
+// import { useSelector } from 'react-redux';
 
 const columns = [
   {
@@ -105,11 +106,25 @@ const Wallet = () => {
   const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [send, setSend] = useState(false);
+  const [sent, setSent] = useState(false);
   const [btcPrice, setBtcPrice] = useState('');
+
+  // const user = useSelector(state => state?.user?.userData);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // useEffect(() => {
+  //   bearerInstance
+  //     .get('/wallet_cypher?view_wallet=1')
+  //     .then(res => {
+  //       console.log(res.data);
+  //     })
+  //     .catch(err => {
+  //       console.log('something went wrong');
+  //     });
+  // }, []);
 
   const fetchData = () => {
     setReload(true);
@@ -132,8 +147,10 @@ const Wallet = () => {
       <WalletModal
         open={walletModal}
         send={send}
+        sent={() => setSent(true)}
         close={() => setWalletModal(false)}
       />
+
       <div className="wallet">
         <div className="wallet-wrapper">
           {loading && <Loader />}
@@ -148,14 +165,16 @@ const Wallet = () => {
                 <Breadcrumb.Item>wallet</Breadcrumb.Item>
               </Breadcrumb>
 
-              <Alert
-                message="bitcoin sent!"
-                description="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
-                type="success"
-                style={{ marginBottom: '20px' }}
-                showIcon
-                closable
-              />
+              {sent && (
+                <Alert
+                  message="bitcoin sent!"
+                  description="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
+                  type="success"
+                  style={{ marginBottom: '20px' }}
+                  showIcon
+                  closable
+                />
+              )}
 
               {/* bitcoin price in usd */}
               <div className="wallet-price">

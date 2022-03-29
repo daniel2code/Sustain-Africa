@@ -3,7 +3,7 @@ import { ReactComponent as Send } from '../../assets/send.svg';
 import { Modal, Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
 
-const WalletModal = ({ send, close, open }) => {
+const WalletModal = ({ send, close, open, sent }) => {
   const [proceed, setProceed] = useState(false);
 
   const sendBtc = values => {};
@@ -16,7 +16,7 @@ const WalletModal = ({ send, close, open }) => {
 
   return (
     <Modal onCancel={close} visible={open} className="walletModal">
-      <div className="walletModal-modal">
+      <div>
         <div className="walletModal-box">
           <div
             className={send ? '' : 'walletModal-recieve-icon'}
@@ -208,6 +208,10 @@ const WalletModal = ({ send, close, open }) => {
                           fontSize: '16px',
                         }}
                         htmlType="submit"
+                        onClick={() => {
+                          sent();
+                          close();
+                        }}
                       >
                         continue
                       </Button>
