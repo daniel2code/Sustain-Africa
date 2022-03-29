@@ -108,17 +108,24 @@ const Wallet = () => {
   const [btcPrice, setBtcPrice] = useState('');
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
+    setReload(true);
+
     bearerInstance
       .get('/wallet?prices=1')
       .then(res => {
         // console.log(res.data.message.USD['15m']);
         setBtcPrice(res.data.message.USD['15m']);
         setLoading(false);
+        setReload(false);
       })
       .catch(err => {
         console.log('something went wrong');
       });
-  }, []);
+  };
 
   return (
     <>
@@ -167,7 +174,7 @@ const Wallet = () => {
                   <p className="wallet-p">
                     <SyncOutlined
                       spin={reload}
-                      onClick={() => {}}
+                      onClick={fetchData}
                       style={{
                         color: '#ed1450',
                         marginRight: '10px',
