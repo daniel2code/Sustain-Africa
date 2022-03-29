@@ -98,9 +98,13 @@ const Wallet = () => {
 
   return (
     <div className="wallet">
-      {walletModal && (
-        <WalletModal send={send} close={() => setWalletModal(false)} />
-      )}
+      {/* {walletModal && ( */}
+      <WalletModal
+        open={walletModal}
+        send={send}
+        close={() => setWalletModal(false)}
+      />
+      {/* )} */}
 
       <div className="wallet-wrapper">
         <Breadcrumb>

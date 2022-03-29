@@ -1,11 +1,9 @@
 import './WalletModal.scss';
-import { createPortal } from 'react-dom';
-import { CloseOutlined } from '@ant-design/icons';
 import { ReactComponent as Send } from '../../assets/send.svg';
-import { Alert, Button, Form, Input } from 'antd';
+import { Modal, Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
 
-const WalletModal = ({ send, close }) => {
+const WalletModal = ({ send, close, open }) => {
   const [proceed, setProceed] = useState(false);
 
   const sendBtc = values => {};
@@ -16,15 +14,9 @@ const WalletModal = ({ send, close }) => {
     setProceed(true);
   };
 
-  return createPortal(
-    <div className="walletModal">
-      <div className="walletModal-container" onClick={close} />
-
+  return (
+    <Modal onCancel={close} visible={open} className="walletModal">
       <div className="walletModal-modal">
-        <button className="walletModal-close" onClick={close}>
-          <CloseOutlined />
-        </button>
-
         <div className="walletModal-box">
           <div
             className={send ? '' : 'walletModal-recieve-icon'}
@@ -348,8 +340,7 @@ const WalletModal = ({ send, close }) => {
           )}
         </div>
       </div>
-    </div>,
-    document.getElementById('wallet-modal')
+    </Modal>
   );
 };
 
