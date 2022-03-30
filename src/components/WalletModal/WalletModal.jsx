@@ -9,6 +9,7 @@ const WalletModal = ({ send, close, open, sent, walletData }) => {
   const [proceed, setProceed] = useState(false);
   const [addLoad, setAddLoad] = useState(true);
   const [address, setAddress] = useState('');
+  const [copy, setCopy] = useState(false);
 
   const getAddress = () => {
     if (!send) {
@@ -353,7 +354,19 @@ const WalletModal = ({ send, close, open, sent, walletData }) => {
             <p className="walletModal-address">{address}</p>
 
             <div style={{ marginBottom: '20px' }}>
-              <Button type="primary" disabled={addLoad}>
+              <Button
+                type="primary"
+                disabled={addLoad}
+                onClick={() => {
+                  navigator.clipboard.writeText(address).then(() => {
+                    setCopy(true);
+
+                    setTimeout(() => {
+                      setCopy(false);
+                    }, 3000);
+                  });
+                }}
+              >
                 {addLoad ? (
                   <LoadingOutlined spin style={{ color: '#fff' }} />
                 ) : (
@@ -369,6 +382,17 @@ const WalletModal = ({ send, close, open, sent, walletData }) => {
                 get new
               </Button>
             </div>
+
+            {copy && (
+              <Alert
+                message="success"
+                description="copied!"
+                type="success"
+                style={{ marginBottom: '20px' }}
+                closable
+                showIcon
+              />
+            )}
 
             <Alert
               message="warning"
