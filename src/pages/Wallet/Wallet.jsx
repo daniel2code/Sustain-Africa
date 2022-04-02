@@ -221,7 +221,7 @@ const Wallet = () => {
                 >
                   approx{' '}
                   {new Intl.NumberFormat('en-us').format(
-                    userBalance.balance_btc
+                    userBalance.balance_usd
                   )}{' '}
                   usd
                 </p>
