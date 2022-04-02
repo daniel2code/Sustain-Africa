@@ -118,7 +118,7 @@ const Wallet = () => {
       .get('/wallet_data')
       .then(res => {
         setWalletData(res.data.wallet_data[0]);
-        console.log(res.data.wallet_data[0]);
+        // console.log(res.data.wallet_data[0]);
 
         return bearerInstance.get(
           `/wallet_cypher?view_wallet=1&name=${res.data.wallet_data[0].wallet_name}`
@@ -126,7 +126,7 @@ const Wallet = () => {
       })
       .then(res => {
         setUserBalance(res.data.message);
-        console.log(res.data.message);
+        // console.log(res.data.message);
 
         return bearerInstance.get('/wallet?prices=1');
       })
