@@ -29,7 +29,10 @@ const columns = [
     dataIndex: 'transaction',
     key: 'transaction',
     render: (_, record) => (
-      <div className="wallet-table-transaction">
+      <div
+        className="wallet-table-transaction"
+        style={{ opacity: record.confirmations === 0 ? '0.5' : '1' }}
+      >
         {record.type === 'incoming' ? (
           <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         ) : (
@@ -72,11 +75,25 @@ const columns = [
     dataIndex: 'status',
     key: 'status',
     render: (_, record) => (
-      <Tooltip title={record.confirmation + ' confirmations'}>
-        <p style={{ marginBottom: 0, fontSize: '13px' }}>
+      <Tooltip
+        title={`${
+          record.confirmations < 3 ? record.confirmations : '3'
+        } of 3 confirmations`}
+      >
+        <span
+          style={{
+            marginBottom: 0,
+            fontSize: '13px',
+            cursor: 'pointer',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
+          }}
+        >
           {record.confirmation < 3 ? 'pending' : 'successful'}
-          <Badge color={record.confirmation < 3 ? 'yellow' : 'green'} />
-        </p>
+          <Badge
+            style={{ marginLeft: '.5rem' }}
+            color={record.confirmation < 3 ? 'yellow' : 'green'}
+          />
+        </span>
       </Tooltip>
     ),
   },
@@ -86,13 +103,27 @@ const columns = [
     dataIndex: 'amount',
     render: (text, record) => (
       <>
-        <p style={{ marginBottom: 0, fontSize: '13px', textAlign: 'right' }}>
+        <p
+          style={{
+            marginBottom: 0,
+            fontSize: '13px',
+            textAlign: 'right',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
+          }}
+        >
           {record.type === 'incoming' ? '+' : '-'}
-          {text}BTC
+          {record.value_btc} BTC
         </p>
-        <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
+        <p
+          style={{
+            marginBottom: 0,
+            fontSize: '10px',
+            textAlign: 'right',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
+          }}
+        >
           {record.type === 'incoming' ? '+' : '-'}
-          {text * 450}USD
+          {record.value_usd} USD
         </p>
       </>
     ),
