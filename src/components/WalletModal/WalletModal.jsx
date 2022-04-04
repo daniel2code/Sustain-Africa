@@ -4,17 +4,19 @@ import { Modal, Alert, Button, Form, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { bearerInstance } from '../../utils/API';
 import { LoadingOutlined } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
-const WalletModal = ({ send, close, open, sent, walletData }) => {
+const WalletModal = ({ send, close, open, sent }) => {
   const [proceed, setProceed] = useState(false);
   const [addLoad, setAddLoad] = useState(true);
   const [address, setAddress] = useState('');
   const [copy, setCopy] = useState(false);
 
+  const { wallet_name } = useSelector(state => state.user.userData);
+
   const getAddress = () => {
     if (!send) {
       setAddLoad(true);
-      const wallet_name = walletData.wallet_name;
       // console.log(wallet_name);
 
       var data = new FormData();

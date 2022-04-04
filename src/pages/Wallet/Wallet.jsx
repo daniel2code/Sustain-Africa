@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Divider, Breadcrumb, Table } from 'antd';
+import {
+  Alert,
+  Button,
+  Divider,
+  Breadcrumb,
+  Table,
+  Badge,
+  Tooltip,
+} from 'antd';
 import { Link } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import {
   UpOutlined,
   DownOutlined,
@@ -20,9 +28,9 @@ const columns = [
     title: 'transaction',
     dataIndex: 'transaction',
     key: 'transaction',
-    render: (text, record) => (
+    render: (_, record) => (
       <div className="wallet-table-transaction">
-        {text === 'sent out' ? (
+        {record.type === 'incoming' ? (
           <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         ) : (
           <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
@@ -47,9 +55,9 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '13px' }}>{text}</p>
+          <p style={{ marginBottom: 0, fontSize: '13px' }}>{record.type}</p>
           <p style={{ marginBottom: 0, fontSize: '10px' }}>
-            {new Date(record.time).toLocaleString('en-us', {
+            {new Date(record.confirmed).toLocaleString('en-us', {
               month: 'short',
               day: '2-digit',
               year: 'numeric',
@@ -63,7 +71,14 @@ const columns = [
     title: 'status',
     dataIndex: 'status',
     key: 'status',
-    render: text => <p style={{ marginBottom: 0, fontSize: '13px' }}>{text}</p>,
+    render: (_, record) => (
+      <Tooltip title={record.confirmation + ' confirmations'}>
+        <p style={{ marginBottom: 0, fontSize: '13px' }}>
+          {record.confirmation < 3 ? 'pending' : 'successful'}
+          <Badge color={record.confirmation < 3 ? 'yellow' : 'green'} />
+        </p>
+      </Tooltip>
+    ),
   },
   {
     title: 'amount',
@@ -72,11 +87,11 @@ const columns = [
     render: (text, record) => (
       <>
         <p style={{ marginBottom: 0, fontSize: '13px', textAlign: 'right' }}>
-          {record.transaction === 'sent out' ? '+' : '-'}
+          {record.type === 'incoming' ? '+' : '-'}
           {text}BTC
         </p>
         <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
-          {record.transaction === 'sent out' ? '+' : '-'}
+          {record.type === 'incoming' ? '+' : '-'}
           {text * 450}USD
         </p>
       </>
@@ -84,22 +99,22 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    key: '1',
-    transaction: 'sent out',
-    time: '2022-04-24',
-    status: 'successful',
-    amount: 0.005,
-  },
-  {
-    key: '2',
-    transaction: 'recieved',
-    time: '2022-04-24',
-    status: 'successful',
-    amount: 0.005,
-  },
-];
+// const data = [
+//   {
+//     key: '1',
+//     transaction: 'sent out',
+//     time: '2022-04-24',
+//     status: 'successful',
+//     amount: 0.005,
+//   },
+//   {
+//     key: '2',
+//     transaction: 'recieved',
+//     time: '2022-04-24',
+//     status: 'successful',
+//     amount: 0.005,
+//   },
+// ];
 
 const Wallet = () => {
   const [loading, setLoading] = useState(true);
@@ -108,22 +123,15 @@ const Wallet = () => {
   const [send, setSend] = useState(false);
   const [sent, setSent] = useState(false);
   const [btcPrice, setBtcPrice] = useState('');
-  const [walletData, setWalletData] = useState();
+  const [data, setData] = useState();
   const [userBalance, setUserBalance] = useState();
+  const { wallet_name } = useSelector(state => state.user.userData);
 
   const fetchData = () => {
     setReload(true);
 
     bearerInstance
-      .get('/wallet_data')
-      .then(res => {
-        setWalletData(res.data.wallet_data[0]);
-        // console.log(res.data.wallet_data[0]);
-
-        return bearerInstance.get(
-          `/wallet_cypher?view_wallet=1&name=${res.data.wallet_data[0].wallet_name}`
-        );
-      })
+      .get(`/wallet_cypher?view_wallet=1&name=${wallet_name}`)
       .then(res => {
         setUserBalance(res.data.message);
         // console.log(res.data.message);
@@ -143,6 +151,20 @@ const Wallet = () => {
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    bearerInstance
+      .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
+      .then(res => {
+        console.log(res.data.message);
+        setData(res.data.message);
+      })
+      .catch(err => {
+        console.log('something went wrong');
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -153,7 +175,6 @@ const Wallet = () => {
           send={send}
           sent={() => setSent(true)}
           close={() => setWalletModal(false)}
-          walletData={walletData}
         />
       )}
 
