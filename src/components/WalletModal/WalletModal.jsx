@@ -1,11 +1,9 @@
 import './WalletModal.scss';
-import { createPortal } from 'react-dom';
-import { CloseOutlined } from '@ant-design/icons';
 import { ReactComponent as Send } from '../../assets/send.svg';
-import { Alert, Button, Form, Input } from 'antd';
+import { Modal, Alert, Button, Form, Input } from 'antd';
 import { useState } from 'react';
 
-const WalletModal = ({ send, close }) => {
+const WalletModal = ({ send, close, open }) => {
   const [proceed, setProceed] = useState(false);
 
   const sendBtc = values => {};
@@ -16,20 +14,14 @@ const WalletModal = ({ send, close }) => {
     setProceed(true);
   };
 
-  return createPortal(
-    <div className="walletModal">
-      <div className="walletModal-container" onClick={close} />
-
+  return (
+    <Modal onCancel={close} visible={open} className="walletModal">
       <div className="walletModal-modal">
-        <button className="walletModal-close" onClick={close}>
-          <CloseOutlined />
-        </button>
-
         <div className="walletModal-box">
           <div
             className={send ? '' : 'walletModal-recieve-icon'}
             style={{
-              color: 'rgb(255,213,0)'
+              color: 'rgb(255,213,0)',
             }}
           >
             <Send style={{ height: '18px', width: '18px', marginTop: '5px', marginRight: '5px' }} />
@@ -141,12 +133,14 @@ const WalletModal = ({ send, close }) => {
                     approx 5.22 usd
                   </span>
 
-                    <Alert
-                        message="bitcoin transactions are final! please cross check your inputs before you proceed!"
-                        type="warning"
-                        style={{ marginBottom: '20px' }}
-                        closable
-                    />
+                  <Alert
+                    message="warning"
+                    description="bitcoin transactions are final! please cross check your inputs before you proceed!"
+                    type="warning"
+                    style={{ marginBottom: '20px' }}
+                    closable
+                    showIcon
+                  />
 
                   <Form onFinish={sendBtc}>
                     <Form.Item
@@ -334,18 +328,19 @@ const WalletModal = ({ send, close }) => {
                 </Button>
               </div>
 
-                <Alert
-                    message="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
-                    type="warning"
-                    style={{ marginBottom: '20px' }}
-                    closable
-                />
+              <Alert
+                message="warning"
+                description="make sure you only send btc tokens on the bitcoin network to avoid fund loss!"
+                type="warning"
+                style={{ marginBottom: '20px' }}
+                closable
+                showIcon
+              />
             </div>
           )}
         </div>
       </div>
-    </div>,
-    document.getElementById('wallet-modal')
+    </Modal>
   );
 };
 
