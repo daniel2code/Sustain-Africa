@@ -7,6 +7,7 @@ import {
   Table,
   Badge,
   Tooltip,
+  Tag,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -58,13 +59,16 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '13px' }}>{record.type}</p>
-          <p style={{ marginBottom: 0, fontSize: '10px' }}>
-            {new Date(record.confirmed).toLocaleString('en-us', {
-              month: 'short',
-              day: '2-digit',
-              year: 'numeric',
-            })}
+          <p style={{ marginBottom: 0, fontSize: '10px' }}>{record.type}</p>
+          <p style={{ marginBottom: 0, fontSize: '8px' }}>
+            {new Date(record.confirmed || record.received).toLocaleString(
+              'en-us',
+              {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+              }
+            )}
           </p>
         </div>
       </div>
@@ -83,15 +87,19 @@ const columns = [
         <span
           style={{
             marginBottom: 0,
-            fontSize: '13px',
             cursor: 'pointer',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {record.confirmation < 3 ? 'pending' : 'successful'}
+          <Tag
+            style={{ fontSize: '8px' }}
+            color={record.confirmations < 3 ? 'yellow' : 'green'}
+          >
+            {record.confirmations < 3 ? 'pending' : 'successful'}
+          </Tag>
           <Badge
             style={{ marginLeft: '.5rem' }}
-            color={record.confirmation < 3 ? 'yellow' : 'green'}
+            color={record.confirmations < 3 ? 'yellow' : 'green'}
           />
         </span>
       </Tooltip>
@@ -112,7 +120,7 @@ const columns = [
           }}
         >
           {record.type === 'incoming' ? '+' : '-'}
-          {record.value_btc} BTC
+          {Number(record.value_btc.toFixed(7))} BTC
         </p>
         <p
           style={{
@@ -129,23 +137,6 @@ const columns = [
     ),
   },
 ];
-
-// const data = [
-//   {
-//     key: '1',
-//     transaction: 'sent out',
-//     time: '2022-04-24',
-//     status: 'successful',
-//     amount: 0.005,
-//   },
-//   {
-//     key: '2',
-//     transaction: 'recieved',
-//     time: '2022-04-24',
-//     status: 'successful',
-//     amount: 0.005,
-//   },
-// ];
 
 const Wallet = () => {
   const [loading, setLoading] = useState(true);
@@ -190,7 +181,14 @@ const Wallet = () => {
       .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
       .then(res => {
         console.log(res.data.message);
-        setData(res.data.message);
+        setData(
+          res.data.message.map((cur, i) => {
+            return {
+              key: i,
+              ...cur,
+            };
+          })
+        );
       })
       .catch(err => {
         console.log('something went wrong');
