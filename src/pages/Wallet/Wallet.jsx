@@ -114,7 +114,7 @@ const columns = [
         <p
           style={{
             marginBottom: 0,
-            fontSize: '13px',
+            fontSize: '10px',
             textAlign: 'right',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
@@ -125,7 +125,7 @@ const columns = [
         <p
           style={{
             marginBottom: 0,
-            fontSize: '10px',
+            fontSize: '8px',
             textAlign: 'right',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
