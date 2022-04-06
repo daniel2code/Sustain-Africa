@@ -58,6 +58,8 @@ const columns = [
                 month: 'short',
                 day: '2-digit',
                 year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
               }
             )}
           </p>
@@ -81,11 +83,20 @@ const columns = [
             marginBottom: 0,
             marginRight: 0,
             cursor: 'pointer',
-            opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
-          color={record.confirmations < 3 ? 'yellow' : 'green'}
+          color={
+            record.confirmations === 0
+              ? 'grey'
+              : record.confirmations < 3 && record.confirmations > 0
+              ? 'yellow'
+              : 'green'
+          }
         >
-          {record.confirmations < 3 ? 'pending' : 'successful'}
+          {record.confirmations === 0
+            ? 'detected'
+            : record.confirmations < 3 && record.confirmations > 0
+            ? 'pending'
+            : 'successful'}
         </Tag>
       </Tooltip>
     ),
@@ -156,28 +167,40 @@ const Wallet = () => {
       });
   };
 
+  const loadTransactions = () => {
+    bearerInstance
+      .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
+      .then(res => {
+        console.log(res.data.message);
+        setData(
+          res.data.message
+            .map((cur, i) => {
+              return {
+                key: i,
+                ...cur,
+              };
+            })
+            .sort(
+              (a, b) =>
+                new Date(a.confirmed).getTime() ||
+                new Date(a.recieved).getTime() -
+                  new Date(b.confirmed).getTime() ||
+                new Date(b.recieved).getTime()
+            )
+        );
+      })
+      .catch(err => {
+        console.log('something went wrong');
+      });
+  };
+
   useEffect(() => {
     fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    bearerInstance
-      .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
-      .then(res => {
-        console.log(res.data.message);
-        setData(
-          res.data.message.map((cur, i) => {
-            return {
-              key: i,
-              ...cur,
-            };
-          })
-        );
-      })
-      .catch(err => {
-        console.log('something went wrong');
-      });
+    loadTransactions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -234,7 +257,10 @@ const Wallet = () => {
                   <p className="wallet-p">
                     <SyncOutlined
                       spin={reload}
-                      onClick={fetchData}
+                      onClick={() => {
+                        fetchData();
+                        loadTransactions();
+                      }}
                       style={{
                         color: '#ed1450',
                         marginRight: '12px',
