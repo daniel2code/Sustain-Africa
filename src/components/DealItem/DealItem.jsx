@@ -425,7 +425,13 @@ export default function DealItem({ item }) {
                         <Form.Item
                           label={"Amount (" + curType(item?.destination_currency) + ")"}
                           name="amount"
-                          rules={[{required: true, message: 'Please input amount'}]} >  
+                          rules={[{required: true, message: 'Please input amount'}]} 
+                          style={{
+                            textAlign: 'left',
+                            marginTop: '3%',
+                            marginBottom: '3%',
+                            }}
+                        >  
                           
                           <Row> <Col span={19}>
                           
