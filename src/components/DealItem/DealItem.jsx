@@ -444,7 +444,7 @@ export default function DealItem({ item }) {
                       </Form>
 
                       <div>
-                        <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{amount * item?.rate}.00</strong>
+                        <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{item?.source_currency.toUpperCase()}{amount * item?.rate}.00</strong>
                           <span style={{
                             fontSize: '12px',
                             marginTop: '5px',

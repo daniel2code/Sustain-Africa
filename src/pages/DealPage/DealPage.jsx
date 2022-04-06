@@ -246,7 +246,7 @@ export default function DealPage({ match }) {
                   </Form></Row>
 
                   <div>
-                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.source_currency}{amount * deal?.rate}.00</strong>
+                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.source_currency.toUpperCase()}{amount * deal?.rate}.00</strong>
                       <span style={{
                         fontSize: '12px',
                         marginTop: '5px',
