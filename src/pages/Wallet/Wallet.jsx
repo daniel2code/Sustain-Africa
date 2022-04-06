@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react';
-import {
-  Alert,
-  Button,
-  Divider,
-  Breadcrumb,
-  Table,
-  Badge,
-  Tooltip,
-  Tag,
-} from 'antd';
+import { Alert, Button, Divider, Breadcrumb, Table, Tooltip, Tag } from 'antd';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import {
@@ -59,8 +50,8 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '10px' }}>{record.type}</p>
-          <p style={{ marginBottom: 0, fontSize: '8px' }}>
+          <p style={{ marginBottom: 0, fontSize: '12px' }}>{record.type}</p>
+          <p style={{ marginBottom: 0, fontSize: '10px' }}>
             {new Date(record.confirmed || record.received).toLocaleString(
               'en-us',
               {
@@ -84,24 +75,18 @@ const columns = [
           record.confirmations < 3 ? record.confirmations : '3'
         } of 3 confirmations`}
       >
-        <span
+        <Tag
           style={{
+            fontSize: '10px',
             marginBottom: 0,
+            marginRight: 0,
             cursor: 'pointer',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
+          color={record.confirmations < 3 ? 'yellow' : 'green'}
         >
-          <Tag
-            style={{ fontSize: '8px' }}
-            color={record.confirmations < 3 ? 'yellow' : 'green'}
-          >
-            {record.confirmations < 3 ? 'pending' : 'successful'}
-          </Tag>
-          <Badge
-            style={{ marginLeft: '.5rem' }}
-            color={record.confirmations < 3 ? 'yellow' : 'green'}
-          />
-        </span>
+          {record.confirmations < 3 ? 'pending' : 'successful'}
+        </Tag>
       </Tooltip>
     ),
   },
@@ -114,7 +99,7 @@ const columns = [
         <p
           style={{
             marginBottom: 0,
-            fontSize: '10px',
+            fontSize: '12px',
             textAlign: 'right',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
@@ -125,7 +110,7 @@ const columns = [
         <p
           style={{
             marginBottom: 0,
-            fontSize: '8px',
+            fontSize: '10px',
             textAlign: 'right',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
@@ -252,7 +237,7 @@ const Wallet = () => {
                       onClick={fetchData}
                       style={{
                         color: '#ed1450',
-                        marginRight: '10px',
+                        marginRight: '12px',
                       }}
                     />
                     price: {new Intl.NumberFormat('en-us').format(btcPrice)} usd
