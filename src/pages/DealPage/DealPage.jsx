@@ -18,7 +18,6 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
   HomeOutlined,
-  ExclamationCircleOutlined, 
 } from '@ant-design/icons';
 import Loader from './../../components/Loader/Loader';
 import { instance, bearerInstance } from './../../utils/API';
@@ -137,7 +136,7 @@ export default function DealPage({ match }) {
   });
 
   function showDiscussConfirm(user, source, destination, rate) {
-    
+
     // confirm({
     //   title: (
     //     <div>
@@ -193,7 +192,7 @@ export default function DealPage({ match }) {
     //   onCancel() {},
     // });
 
-      
+
 
   }
 
@@ -205,7 +204,7 @@ export default function DealPage({ match }) {
         <div className="deal-page-wrapper">
 
           {/* ModalForm for amount */}
-          <Modal {...modalProps} okText="Next" width={400}>
+          <Modal {...modalProps} okText="next" cancelText="cancel" width={400}>
             <Spin spinning={formLoading}>
               <>
                 {/* <p>
@@ -213,36 +212,36 @@ export default function DealPage({ match }) {
                 </p> */}
                 {/* <p>result: {formResult}</p> */}
 
-                          
-                <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
-                  <ExclamationCircleOutlined style={{fontSize: '25px', paddingRight: '10px', color: '#ed1450'}}/>
-                  <b>start a discussion with{' '}</b>
 
-                  <span className="username-green">@{dealerData?.user_name_front}</span>?
+                <div style={{display: 'flex', alignItems: 'center', marginLeft: "20px", marginBottom: "10px"}}>
+                  start a discussion with{' '}<span className="username-green">{' '}&nbsp;@{dealerData?.user_name_front}</span>?
                 </div>
-                <div className="deal-details" style={{marginLeft: '40px'}}>
-                  <Row><Col span={9}>source</Col> <Col span={9}>{deal?.source} ($)</Col></Row>
-                  <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} (₦)</Col></Row>
+                <div className="deal-details" style={{marginLeft: '20px'}}>
+                  <Row><Col span={9}>source</Col> <Col span={9}>{deal?.source} ({deal?.source_currency})</Col></Row>
+                  <Row><Col span={9}>destination</Col> <Col span={9}>{deal?.destination} ({deal?.destination_currency})</Col></Row>
                   <Row><Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col></Row>
 
-                  <Form layout="inline" {...formProps}>
+                  <Row><Form {...formProps}>
                     <Form.Item
-                      label={"Amount (" + deal?.destination_currency + ")"}
+                      label={"Amount (" + curType(deal?.destination_currency) + ")"}
                       name="amount"
-                      rules={[{required: true, message: 'Please input amount'}]} >  
-                      
-                      <Row> <Col span={19}>
-                      
-                        <Input placeholder="Please input Amount" onChange={e => setAmount(e.target.value)}/></Col></Row>
-                      
+                      labelCol={{span: 10}}
+                      labelAlign="left"
+                      wrapperCol={{span: 12}}
+                      rules={[{message: 'enter amount...'}]}
+                      style={{
+                        textAlign: 'left',
+                        marginTop: '3%',
+                        marginBottom: '3%',
+                        }}
+                        >
+                      <Input style={{ borderColor: '#ed1450' }} placeholder="enter amount..." onChange={e => setAmount(e.target.value)} />
 
                     </Form.Item>
-
-                    
-                  </Form>
+                  </Form></Row>
 
                   <div>
-                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{amount * deal?.rate}.00</strong>
+                    <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{deal?.source_currency}{amount * deal?.rate}.00</strong>
                       <span style={{
                         fontSize: '12px',
                         marginTop: '5px',
@@ -561,8 +560,8 @@ export default function DealPage({ match }) {
                       if (!userIdState) {
                         message.error('you must login to continue');
                         history.push('/login');
-                  
-                      } 
+
+                      }
                         showDiscussConfirm(
                           dealerData?.user_name_front,
                           deal?.source,

@@ -423,7 +423,7 @@ export default function DealItem({ item }) {
 
                       <Form layout="inline" {...formProps}>
                         <Form.Item
-                          label={"Amount (" + item?.destination_currency + ")"}
+                          label={"Amount (" + curType(item?.destination_currency) + ")"}
                           name="amount"
                           rules={[{required: true, message: 'Please input amount'}]} >  
                           

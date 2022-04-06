@@ -20,6 +20,7 @@ import Message from './pages/Message/Message';
 import { bearerInstance } from './utils/API';
 import Notification from './pages/Notification/Notifiaction';
 import { setNotificationCount } from './redux/user/user.actions';
+import Wallet from './pages/Wallet/Wallet';
 
 function App() {
   useEffect(() => {
@@ -118,6 +119,7 @@ function App() {
             <Route exact path="/verify-email" component={VerifyEmail} />
             <Route exact path="/add-phone" component={VerifyPhone} />
             <Route exact path="/profile" component={Profile} />
+            <Route exact path="/wallet" component={Wallet} />
             <Route exact path="/user/:id/profile" component={OtherProfile} />
             <Route exact path="/deal/:id" component={DealPage} />
             <Route exact path="/message/:id" component={Message} />
