@@ -234,7 +234,7 @@ export default function DealPage({ match }) {
                         marginTop: '3%',
                         marginBottom: '3%',
                         }}
-                        >
+                        
                       <Input style={{ borderColor: '#ed1450' }} placeholder="enter amount..." onChange={e => setAmount(e.target.value)} />
 
                     </Form.Item>
