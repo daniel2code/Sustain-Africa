@@ -18,6 +18,8 @@ import axios from 'axios';
 const {TextArea} = Input;
 
 export default function Message() {
+    const dealsList = useSelector(state => state.data.dealsList);
+
     const messagesEndRef = useRef(null);
     const username = useSelector(state => state?.user?.userData?.user_name);
     const [chatChannel, setChatChannel] = useState(null);
@@ -31,7 +33,7 @@ export default function Message() {
         // eslint-disable-next-line
     }, []);
 
-    const client = new StreamChat('twtrsx9dd48k');
+    const client = StreamChat.getInstance('twtrsx9dd48k');
 
     const scrollToMessagesEnd = () => {
         messagesEndRef.current?.scrollIntoView();
@@ -49,7 +51,7 @@ export default function Message() {
 
         const token = await generateToken();
 
-        client.connectUser(
+        const clientlog = await client.connectUser(
             {
                 id: username,
                 name: username,
@@ -57,15 +59,18 @@ export default function Message() {
             token
         );
 
+        console.log(clientlog)
+
         const channel = client.channel('messaging', 'sustain-test-1', {
-            name: 'sustain test',
-            members: [],
-            created_by_id: username,
-            session: 8,
+            // name: 'sustain test',
+            members: ['Ibrahim', username.toString()],
         });
 
         setChatChannel(channel);
         await channel.watch();
+
+        console.log(channel)
+        console.log('deals data',dealsList)
 
         if (loading) {
             setMessages(channel.state.messages);

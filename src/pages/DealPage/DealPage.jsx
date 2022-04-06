@@ -227,7 +227,7 @@ export default function DealPage({ match }) {
 
                   <Form layout="inline" {...formProps}>
                     <Form.Item
-                      label="Amount"
+                      label={"Amount (" + deal?.destination_currency + ")"}
                       name="amount"
                       rules={[{required: true, message: 'Please input amount'}]} >  
                       
