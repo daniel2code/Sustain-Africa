@@ -228,7 +228,7 @@ export default function DealPage({ match }) {
                       labelCol={{span: 10}}
                       labelAlign="left"
                       wrapperCol={{span: 12}}
-                      rules={[{message: 'enter amount...'}]}
+                      rules={[{required: true, message: 'Please input amount'}]} > 
                       style={{
                         textAlign: 'left',
                         marginTop: '3%',
