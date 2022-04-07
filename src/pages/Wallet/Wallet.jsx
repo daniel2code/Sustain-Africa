@@ -335,7 +335,7 @@ const Wallet = () => {
               />
 
               <Button
-                onClick={() => setView(data.length)}
+                onClick={() => setView(data?.length)}
                 type="text"
                 style={{
                   color: '#ed1450',
