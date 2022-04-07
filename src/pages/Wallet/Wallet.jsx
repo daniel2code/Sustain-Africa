@@ -335,7 +335,10 @@ const Wallet = () => {
               />
 
               <Button
-                onClick={() => setView(data?.length)}
+                onClick={() => {
+                  if (data.length - view > 6) setView(view + 6);
+                  else setView(data?.length);
+                }}
                 type="text"
                 style={{
                   color: '#ed1450',
@@ -344,7 +347,7 @@ const Wallet = () => {
                   marginTop: '8px',
                 }}
               >
-                view full history
+                load more
               </Button>
             </>
           )}
