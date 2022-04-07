@@ -13,7 +13,7 @@ import Bitcoin from '../../assets/Bitcoin.svg';
 import WalletModal from '../../components/WalletModal/WalletModal';
 import { bearerInstance } from '../../utils/API';
 import './Wallet.scss';
-// import { useSelector } from 'react-redux';
+import moment from 'moment';
 
 const columns = [
   {
@@ -83,10 +83,11 @@ const columns = [
             marginBottom: 0,
             marginRight: 0,
             cursor: 'pointer',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
           color={
             record.confirmations === 0
-              ? 'grey'
+              ? 'default'
               : record.confirmations < 3 && record.confirmations > 0
               ? 'yellow'
               : 'green'
@@ -142,6 +143,7 @@ const Wallet = () => {
   const [sent, setSent] = useState(false);
   const [btcPrice, setBtcPrice] = useState('');
   const [data, setData] = useState();
+  const [view, setView] = useState(6);
   const [userBalance, setUserBalance] = useState();
   const { wallet_name } = useSelector(state => state.user.userData);
 
@@ -171,23 +173,22 @@ const Wallet = () => {
     bearerInstance
       .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
       .then(res => {
-        console.log(res.data.message);
-        setData(
-          res.data.message
-            .map((cur, i) => {
-              return {
-                key: i,
-                ...cur,
-              };
-            })
-            .sort(
-              (a, b) =>
-                new Date(a.confirmed).getTime() ||
-                new Date(a.recieved).getTime() -
-                  new Date(b.confirmed).getTime() ||
-                new Date(b.recieved).getTime()
-            )
-        );
+        const data = res.data.message
+          .map((cur, i) => {
+            return {
+              key: i,
+              ...cur,
+            };
+          })
+          .sort((a, b) => {
+            if (a.recieved && b.confirmed)
+              return moment(b.confirmed) - moment(a.recieved);
+            else if (b.recieved && a.confirmed)
+              return moment(b.received) - moment(a.confirmed);
+            else return moment(b.confirmed) - moment(a.confirmed);
+          });
+
+        setData(data);
       })
       .catch(err => {
         console.log('something went wrong');
@@ -330,19 +331,21 @@ const Wallet = () => {
                 className="wallet-table"
                 pagination={false}
                 columns={columns}
-                dataSource={data}
+                dataSource={data?.slice(0, view)}
               />
 
-              <Link
-                to="#"
+              <Button
+                onClick={() => setView(data.length)}
+                type="text"
                 style={{
-                  textAlign: 'center',
+                  color: '#ed1450',
                   display: 'block',
+                  margin: '0 auto',
                   marginTop: '8px',
                 }}
               >
                 view full history
-              </Link>
+              </Button>
             </>
           )}
         </div>
