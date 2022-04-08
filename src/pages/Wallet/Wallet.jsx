@@ -50,8 +50,8 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '12px' }}>{record.type}</p>
-          <p style={{ marginBottom: 0, fontSize: '10px' }}>
+          <p style={{ marginBottom: 0, fontSize: '13px' }}>{record.type}</p>
+          <p style={{ marginBottom: 0, fontSize: '11px' }}>
             {new Date(record.confirmed || record.received).toLocaleString(
               'en-us',
               {
@@ -79,7 +79,7 @@ const columns = [
       >
         <Tag
           style={{
-            fontSize: '10px',
+            fontSize: '11px',
             marginBottom: 0,
             marginRight: 0,
             cursor: 'pointer',
@@ -111,7 +111,7 @@ const columns = [
         <p
           style={{
             marginBottom: 0,
-            fontSize: '12px',
+            fontSize: '13px',
             textAlign: 'right',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
@@ -122,7 +122,7 @@ const columns = [
         <p
           style={{
             marginBottom: 0,
-            fontSize: '10px',
+            fontSize: '11px',
             textAlign: 'right',
             opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
