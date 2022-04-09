@@ -151,7 +151,7 @@ const Wallet = () => {
     setReload(true);
 
     bearerInstance
-      .get(`/wallet_cypher?view_wallet=1&name=${wallet_name}`)
+      .get(`/wallet_cypher?wallet=1&name=${wallet_name}`)
       .then(res => {
         setUserBalance(res.data.message);
         // console.log(res.data.message);
