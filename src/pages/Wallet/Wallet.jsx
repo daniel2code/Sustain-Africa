@@ -140,7 +140,7 @@ const Wallet = () => {
   const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [send, setSend] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [sent, setSent] = useState('');
   const [btcPrice, setBtcPrice] = useState('');
   const [data, setData] = useState();
   const [view, setView] = useState(6);
@@ -211,7 +211,9 @@ const Wallet = () => {
         <WalletModal
           open={walletModal}
           send={send}
-          sent={() => setSent(true)}
+          sent={val => {
+            setSent(val);
+          }}
           close={() => setWalletModal(false)}
           btcPrice={+btcPrice}
           curBal={+userBalance.balance_btc}
@@ -235,7 +237,7 @@ const Wallet = () => {
               {sent && (
                 <Alert
                   message="bitcoin sent!"
-                  description="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
+                  description={sent}
                   type="success"
                   style={{ marginBottom: '20px' }}
                   showIcon
@@ -295,6 +297,7 @@ const Wallet = () => {
                     type="primary"
                     block
                     onClick={() => {
+                      setSent('');
                       setWalletModal(true);
                       setSend(true);
                     }}

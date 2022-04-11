@@ -1,6 +1,6 @@
 import './WalletModal.scss';
 import { ReactComponent as Send } from '../../assets/send.svg';
-import { Modal, Alert, Button, Form, Input } from 'antd';
+import { Modal, Alert, Button, Form, Input, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { bearerInstance } from '../../utils/API';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -11,7 +11,14 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   const [addLoad, setAddLoad] = useState(true);
   const [address, setAddress] = useState('');
   const [amount, setAmount] = useState(0);
+  const [rcAdd, setRcAdd] = useState('');
   const [copy, setCopy] = useState(false);
+  const [transactionData, setTransactionData] = useState();
+  const [initLoad, setInitLoad] = useState(false);
+  const [initErr, setInitErr] = useState(false);
+
+  const [otpResend, setOtpResend] = useState(false);
+  const [sendLoad, setSendLoad] = useState(false);
 
   const { wallet_name } = useSelector(state => state.user.userData);
 
@@ -45,13 +52,71 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sendBtc = values => {};
+  const sendBtc = values => {
+    setSendLoad(true);
+    var data = new FormData();
+    data.append('send_transaction', '1');
+    data.append('tx', JSON.stringify(transactionData.tx));
+    data.append('tosign', JSON.stringify(transactionData.tosign));
+    data.append('signatures', JSON.stringify(transactionData.signatures));
+    data.append('pubkeys', JSON.stringify(transactionData.pubkeys));
+    data.append('otp_to_verify', values.otp);
 
-  const sendOtp = () => {};
+    bearerInstance
+      .post('/wallet_cypher', data)
+      .then(res => {
+        setSendLoad(false);
+        sent(
+          `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`
+        );
+        close();
+      })
+      .catch(err => {
+        console.log(err);
+        message.error(err.response?.data?.message);
+      });
+  };
+
+  const sendOtp = () => {
+    setOtpResend(true);
+
+    const data = new FormData();
+    data.append('send_otp', '1');
+
+    bearerInstance
+      .post('/wallet_cypher', data)
+      .then(res => {
+        setOtpResend(false);
+      })
+      .catch(err => {
+        console.log(err);
+        message.error(err.response?.data?.message);
+      });
+  };
 
   const initializeTransaction = values => {
-    setProceed(true);
-    console.log(values);
+    if (+values.btc_amount <= 0) return setInitErr(true);
+
+    setInitLoad(true);
+    setInitErr(false);
+
+    const data = new FormData();
+    data.append('new_transaction', '1');
+    data.append('wallet_name', wallet_name);
+    data.append('destination', values.btc_address);
+    data.append('value', `${+values.btc_amount * 100000000}`);
+
+    bearerInstance
+      .post('/wallet_cypher', data)
+      .then(res => {
+        setInitLoad(false);
+        setTransactionData(res.data.message);
+        setProceed(true);
+      })
+      .catch(err => {
+        console.log(err);
+        message.error(err.response?.data?.message);
+      });
   };
 
   return (
@@ -83,7 +148,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>send amount</h4>
 
                   <h4 style={{ margin: '0' }}>
-                    0.00005462 btc
+                    {transactionData.total_btc} btc
                     <br />
                     <span
                       style={{
@@ -91,7 +156,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                         fontWeight: '400',
                       }}
                     >
-                      (≈ 2.12 usd)
+                      (≈ {transactionData.total_usd} usd)
                     </span>
                   </h4>
                 </div>
@@ -107,7 +172,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>network fee</h4>
 
                   <h4 style={{ margin: '0' }}>
-                    0.00008 btc
+                    {transactionData.fees_btc} btc
                     <br />
                     <span
                       style={{
@@ -115,7 +180,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                         fontWeight: '400',
                       }}
                     >
-                      (≈ 3.10 usd)
+                      (≈ {transactionData.fees_usd} usd)
                     </span>
                   </h4>
                 </div>
@@ -127,7 +192,8 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     marginTop: '20px',
                   }}
                 >
-                  0.00005462 btc (2.12 usd) will be sent to:
+                  {transactionData.total_btc} btc ({transactionData.total_usd}{' '}
+                  usd) will be sent to:
                 </p>
                 <h4
                   className="walletModal-p"
@@ -136,7 +202,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     marginBottom: '20px',
                   }}
                 >
-                  bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5
+                  {rcAdd}
                 </h4>
 
                 <p
@@ -155,7 +221,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     marginBottom: '0',
                   }}
                 >
-                  0.00013462 BTC
+                  {transactionData.total_btc + transactionData.fees_btc} BTC
                 </p>
                 <span
                   style={{
@@ -165,7 +231,8 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     fontSize: '12px',
                   }}
                 >
-                  approx 5.22 usd
+                  approx {transactionData.total_usd + transactionData.fees_usd}{' '}
+                  usd
                 </span>
 
                 <Alert
@@ -189,13 +256,17 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     }}
                     rules={[
                       {
-                        // required: true,
-                        message: 'input rate!',
+                        required: true,
+                        message: 'please enter your otp!',
+                      },
+                      {
+                        message: 'otp must be 6 numbers',
+                        len: 6,
                       },
                     ]}
                   >
                     <Input
-                      type="text"
+                      type="number"
                       style={{
                         width: '100%',
                         paddingTop: '0',
@@ -204,9 +275,11 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                       placeholder="click send first..."
                     />
                   </Form.Item>
+
                   <Button
                     onClick={sendOtp}
                     type="text"
+                    loading={otpResend}
                     style={{
                       color: '#ed1450',
                       padding: '0',
@@ -237,16 +310,13 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
 
                     <Button
                       type="primary"
+                      loading={sendLoad}
                       style={{
                         marginLeft: 'auto',
                         display: 'block',
                         fontSize: '16px',
                       }}
                       htmlType="submit"
-                      onClick={() => {
-                        sent();
-                        close();
-                      }}
                     >
                       continue
                     </Button>
@@ -264,6 +334,17 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                 </h4>
 
                 <Form onFinish={initializeTransaction}>
+                  {initErr && (
+                    <Alert
+                      type="error"
+                      showIcon
+                      message="error"
+                      description="enter a value greater than zero"
+                      closable
+                      style={{ marginBottom: '10px' }}
+                    />
+                  )}
+
                   <Form.Item
                     name="btc_amount"
                     label="btc amount"
@@ -274,14 +355,14 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     rules={[
                       {
                         required: true,
-                        message: 'input btc price!',
+                        message: 'input a valid amount in btc!',
                       },
                       {
                         validator: (_, val) => {
                           if (+val < curBal) {
                             return Promise.resolve();
                           }
-                          return Promise.reject('insufficient btc');
+                          return Promise.reject('you don’t have enough coins');
                         },
                       },
                     ]}
@@ -326,6 +407,9 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                         paddingTop: '0',
                         paddingBottom: '0',
                       }}
+                      value={rcAdd}
+                      onChange={e => setRcAdd(e.target.value)}
+                      autoComplete="off"
                       placeholder="enter bitcoin address"
                     />
                   </Form.Item>
@@ -353,6 +437,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                       fontSize: '16px',
                     }}
                     htmlType="submit"
+                    loading={initLoad}
                   >
                     continue
                   </Button>
