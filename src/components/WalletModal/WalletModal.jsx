@@ -18,7 +18,15 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   const [initErr, setInitErr] = useState(false);
 
   const [otpResend, setOtpResend] = useState(false);
+  const [otpView, setOtpView] = useState(false);
   const [sendLoad, setSendLoad] = useState(false);
+
+  useEffect(() => {
+    if (proceed)
+      setTimeout(() => {
+        setOtpView(true);
+      }, 10000);
+  }, [proceed]);
 
   const { wallet_name } = useSelector(state => state.user.userData);
 
@@ -84,7 +92,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     data.append('send_otp', '1');
 
     bearerInstance
-      .post('/wallet_cypher', data)
+      .post('/wallet_cypher?send_otp=1', data)
       .then(res => {
         setOtpResend(false);
       })
@@ -276,21 +284,23 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     />
                   </Form.Item>
 
-                  <Button
-                    onClick={sendOtp}
-                    type="text"
-                    loading={otpResend}
-                    style={{
-                      color: '#ed1450',
-                      padding: '0',
-                      height: 'unset',
-                      display: 'block',
-                      marginLeft: 'auto',
-                      fontSize: '13px',
-                    }}
-                  >
-                    resend OTP by SMS
-                  </Button>
+                  {otpView && (
+                    <Button
+                      onClick={sendOtp}
+                      type="text"
+                      loading={otpResend}
+                      style={{
+                        color: '#ed1450',
+                        padding: '0',
+                        height: 'unset',
+                        display: 'block',
+                        marginLeft: 'auto',
+                        fontSize: '13px',
+                      }}
+                    >
+                      resend OTP by SMS
+                    </Button>
+                  )}
 
                   <div
                     style={{
