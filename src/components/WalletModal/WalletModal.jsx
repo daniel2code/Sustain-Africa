@@ -73,6 +73,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     bearerInstance
       .post('/wallet_cypher', data)
       .then(res => {
+        console.log(res.data);
         setSendLoad(false);
         sent(
           `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`
