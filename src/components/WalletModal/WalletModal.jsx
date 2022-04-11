@@ -6,10 +6,11 @@ import { bearerInstance } from '../../utils/API';
 import { LoadingOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 
-const WalletModal = ({ send, close, open, sent }) => {
+const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   const [proceed, setProceed] = useState(false);
   const [addLoad, setAddLoad] = useState(true);
   const [address, setAddress] = useState('');
+  const [amount, setAmount] = useState(0);
   const [copy, setCopy] = useState(false);
 
   const { wallet_name } = useSelector(state => state.user.userData);
@@ -48,8 +49,9 @@ const WalletModal = ({ send, close, open, sent }) => {
 
   const sendOtp = () => {};
 
-  const submit = values => {
+  const initializeTransaction = values => {
     setProceed(true);
+    console.log(values);
   };
 
   return (
@@ -256,12 +258,12 @@ const WalletModal = ({ send, close, open, sent }) => {
                 <h4>
                   available{' '}
                   <span style={{ color: '#ed1450', fontWeight: 600 }}>
-                    0.00093434
+                    {curBal}
                   </span>{' '}
                   btc
                 </h4>
 
-                <Form onFinish={submit}>
+                <Form onFinish={initializeTransaction}>
                   <Form.Item
                     name="btc_amount"
                     label="btc amount"
@@ -271,8 +273,16 @@ const WalletModal = ({ send, close, open, sent }) => {
                     }}
                     rules={[
                       {
-                        // required: true,
-                        message: 'input rate!',
+                        required: true,
+                        message: 'input btc price!',
+                      },
+                      {
+                        validator: (_, val) => {
+                          if (+val < curBal) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject('insufficient btc');
+                        },
                       },
                     ]}
                   >
@@ -283,10 +293,12 @@ const WalletModal = ({ send, close, open, sent }) => {
                         paddingTop: '0',
                         paddingBottom: '0',
                       }}
+                      value={amount}
+                      onChange={e => setAmount(e.target.value)}
                       placeholder="0.00000"
                       suffix={
                         <span style={{ fontSize: '12px', color: '#999' }}>
-                          ~ 0 usd
+                          ~ {(btcPrice * amount).toFixed(2)} usd
                         </span>
                       }
                     />
@@ -302,8 +314,8 @@ const WalletModal = ({ send, close, open, sent }) => {
                     }}
                     rules={[
                       {
-                        // required: true,
-                        message: 'input rate!',
+                        required: true,
+                        message: 'pleace type in a valid address',
                       },
                     ]}
                   >

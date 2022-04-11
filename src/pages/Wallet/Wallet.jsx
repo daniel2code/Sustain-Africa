@@ -213,6 +213,8 @@ const Wallet = () => {
           send={send}
           sent={() => setSent(true)}
           close={() => setWalletModal(false)}
+          btcPrice={+btcPrice}
+          curBal={+userBalance.balance_btc}
         />
       )}
 
