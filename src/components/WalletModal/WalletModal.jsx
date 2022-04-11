@@ -289,7 +289,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                       fontSize: '13px',
                     }}
                   >
-                    send OTP by SMS
+                    resend OTP by SMS
                   </Button>
 
                   <div
