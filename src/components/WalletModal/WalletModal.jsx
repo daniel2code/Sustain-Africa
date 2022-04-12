@@ -99,9 +99,11 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
 
   const sendOtp = () => {
     setOtpResend(true);
+    const data = new FormData();
+    data.append('send_otp', '1');
 
     bearerInstance
-      .post('/wallet_cypher?send_otp=1')
+      .post('/wallet_cypher?send_otp=1', data)
       .then(res => {
         setOtpResend(false);
         message.success('opt has been resent');
