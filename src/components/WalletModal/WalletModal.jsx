@@ -365,14 +365,16 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     }}
                     rules={[
                       {
-                        required: true,
-                        message: 'input a valid amount in btc!',
-                      },
-                      {
                         validator: (_, val) => {
-                          if (+val < curBal) {
+                          if (+val < curBal && +val > 0) {
                             return Promise.resolve();
                           }
+
+                          if (+val <= 0 || val === undefined)
+                            return Promise.reject(
+                              'Input a valid amount in btc!'
+                            );
+
                           return Promise.reject('you don’t have enough coins');
                         },
                       },
@@ -407,7 +409,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     rules={[
                       {
                         required: true,
-                        message: 'pleace type in a valid address',
+                        message: 'enter a valid BTC address',
                       },
                     ]}
                   >
