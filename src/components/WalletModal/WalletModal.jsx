@@ -166,7 +166,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>send amount</h4>
 
                   <h4 style={{ margin: '0' }}>
-                    {transactionData.total_btc} btc
+                    {Number(transactionData.total_btc.toFixed(7))} btc
                     <br />
                     <span
                       style={{
@@ -190,7 +190,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>network fee</h4>
 
                   <h4 style={{ margin: '0' }}>
-                    {transactionData.fees_btc} btc
+                    {Number(transactionData.fees_btc.toFixed(7))} btc
                     <br />
                     <span
                       style={{
@@ -210,8 +210,8 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     marginTop: '20px',
                   }}
                 >
-                  {transactionData.total_btc} btc ({transactionData.total_usd}{' '}
-                  usd) will be sent to:
+                  {Number(transactionData.total_btc.toFixed(7))} btc (
+                  {transactionData.total_usd} usd) will be sent to:
                 </p>
                 <h4
                   className="walletModal-p"
@@ -239,7 +239,12 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     marginBottom: '0',
                   }}
                 >
-                  {transactionData.total_btc + transactionData.fees_btc} BTC
+                  {Number(
+                    (
+                      transactionData.total_btc + transactionData.fees_btc
+                    ).toFixed(7)
+                  )}{' '}
+                  BTC
                 </p>
                 <span
                   style={{
@@ -249,7 +254,12 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     fontSize: '12px',
                   }}
                 >
-                  approx {transactionData.total_usd + transactionData.fees_usd}{' '}
+                  approx{' '}
+                  {Number(
+                    (
+                      transactionData.total_usd + transactionData.fees_usd
+                    ).toFixed(2)
+                  )}{' '}
                   usd
                 </span>
 
