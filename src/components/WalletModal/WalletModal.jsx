@@ -73,11 +73,22 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     bearerInstance
       .post('/wallet_cypher', data)
       .then(res => {
+        console.log(res);
         console.log(res.data);
         setSendLoad(false);
-        sent(
-          `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`
-        );
+
+        if (res.data.message.error)
+          sent({
+            type: 'error',
+            message: 'error',
+            description: res.data.message.error,
+          });
+        else
+          sent({
+            type: 'success',
+            message: 'bitcoin sent!',
+            description: `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`,
+          });
         close();
       })
       .catch(err => {
@@ -89,13 +100,11 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   const sendOtp = () => {
     setOtpResend(true);
 
-    const data = new FormData();
-    data.append('send_otp', '1');
-
     bearerInstance
-      .post('/wallet_cypher?send_otp=1', data)
+      .post('/wallet_cypher?send_otp=1')
       .then(res => {
         setOtpResend(false);
+        message.success('opt has been resent');
       })
       .catch(err => {
         console.log(err);

@@ -140,7 +140,7 @@ const Wallet = () => {
   const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [send, setSend] = useState(false);
-  const [sent, setSent] = useState('');
+  const [sent, setSent] = useState(null);
   const [btcPrice, setBtcPrice] = useState('');
   const [data, setData] = useState();
   const [view, setView] = useState(6);
@@ -236,9 +236,12 @@ const Wallet = () => {
 
               {sent && (
                 <Alert
-                  message="bitcoin sent!"
-                  description={sent}
-                  type="success"
+                  message={sent.message}
+                  className={`wallet-alert ${
+                    sent.type === 'error' ? 'wallet-alert-err' : ''
+                  }`}
+                  description={sent.description}
+                  type={sent.type}
                   style={{ marginBottom: '20px' }}
                   showIcon
                   closable
@@ -297,7 +300,7 @@ const Wallet = () => {
                     type="primary"
                     block
                     onClick={() => {
-                      setSent('');
+                      setSent(null);
                       setWalletModal(true);
                       setSend(true);
                     }}
