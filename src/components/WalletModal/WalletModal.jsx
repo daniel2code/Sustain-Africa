@@ -365,6 +365,10 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     }}
                     rules={[
                       {
+                        required: true,
+                        message: '',
+                      },
+                      {
                         validator: (_, val) => {
                           if (+val < curBal && +val > 0) {
                             return Promise.resolve();
