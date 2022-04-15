@@ -2,12 +2,14 @@
   width: 100%;
   margin-top: 65px;
   padding-bottom: 40px;
+
   .deal-page-wrapper {
     width: 95%;
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
     padding: 10px;
+
     .user-info {
       display: flex;
       flex-direction: row;
@@ -104,4 +106,9 @@
 
 .ant-modal-confirm .ant-modal-body {
   padding: 18px;
+}
+
+.ant-modal-footer,
+.ant-modal-close {
+  display: none;
 }
