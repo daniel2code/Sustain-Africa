@@ -239,7 +239,7 @@ export default function DealPage({ match }) {
                   <Form {...formProps}>
                     <Form.Item
                       label={
-                        'Amount (' + curType(deal?.destination_currency) + ')'
+                        'amount (' + curType(deal?.destination_currency) + ')'
                       }
                       name="amount"
                       labelCol={{ span: 9 }}
@@ -253,10 +253,10 @@ export default function DealPage({ match }) {
                             // }
 
                             if (val === undefined)
-                              return Promise.reject('Please input amount');
+                              return Promise.reject('please input amount');
 
-                            if (+val <= 0 || val === undefined)
-                              return Promise.reject('Please input amount');
+                            if (+val <= 0)
+                              return Promise.reject('please input amount');
                           },
                         },
                       ]}
