@@ -146,44 +146,43 @@ export default function DealPage({ match }) {
               </Row>
 
               <Form onFinish={submit}>
-                <Row>
-                  <Form.Item
-                    label={
-                      'amount (' + curType(deal?.destination_currency) + ')'
-                    }
-                    name="amount"
-                    labelCol={{ span: 9 }}
-                    labelAlign="left"
-                    wrapperCol={{ span: 12 }}
-                    rules={[
-                      {
-                        validator: (_, val) => {
-                          // if (+val < curBal && +val > 0) {
-                          //   return Promise.resolve();
-                          // }
+                <Form.Item
+                  label={`amount (${curType(deal?.destination_currency)})`}
+                  name="amount"
+                  labelCol={{ span: 9 }}
+                  labelAlign="left"
+                  wrapperCol={{ span: 24 }}
+                  rules={[
+                    {
+                      validator: (_, val) => {
+                        // if (+val < curBal && +val > 0) {
+                        //   return Promise.resolve();
+                        // }
 
-                          if (val === undefined)
-                            return Promise.reject('please input amount');
+                        if (val === undefined)
+                          return Promise.reject('please input amount');
 
-                          if (+val <= 0)
-                            return Promise.reject('please input amount');
-                        },
+                        if (+val <= 0)
+                          return Promise.reject('please input amount');
                       },
-                    ]}
-                    style={{
-                      textAlign: 'left',
-                      marginTop: '3%',
-                      marginBottom: '3%',
-                    }}
-                  >
+                    },
+                  ]}
+                  style={{
+                    textAlign: 'left',
+                    marginTop: '3%',
+                    marginBottom: '3%',
+                    display: 'inline-block',
+                  }}
+                >
+                  <Col span={24}>
                     <Input
                       type="number"
                       style={{ borderColor: '#ed1450' }}
                       placeholder="enter amount..."
                       onChange={e => setAmount(e.target.value)}
                     />
-                  </Form.Item>
-                </Row>
+                  </Col>
+                </Form.Item>
 
                 <Row>
                   <Col span={9}>to receive</Col>{' '}

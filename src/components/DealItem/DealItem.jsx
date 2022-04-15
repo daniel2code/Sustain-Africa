@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {message, Tooltip, Modal, Row, Col, Spin} from 'antd';
+import React /* useState */ from 'react';
+import { message, Tooltip /* Modal, Row, Col, Spin */ } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { format } from 'timeago.js';
@@ -8,13 +8,12 @@ import {
   DislikeOutlined,
   ArrowRightOutlined,
   EllipsisOutlined,
-  ExclamationCircleOutlined,
+  // ExclamationCircleOutlined,
 } from '@ant-design/icons';
-import { useModalForm } from 'sunflower-antd';
 
 import './DealItem.scss';
-import { bearerInstance } from '../../utils/API';
-import { Form, Input } from 'antd';
+// import { bearerInstance } from '../../utils/API';
+// import { Form, Input } from 'antd';
 import { curType } from '../../utils/datasource';
 // import { useEffect } from 'react';
 
@@ -23,43 +22,41 @@ import { curType } from '../../utils/datasource';
 export default function DealItem({ item }) {
   const history = useHistory();
   const userIdState = useSelector(state => state?.user?.userData?.id);
-  const [amount, setAmount ] = useState(0)
+  // const [amount, setAmount] = useState(0);
 
+  // const [form] = Form.useForm();
+  // const {
+  //   modalProps,
+  //   formProps,
+  //   show,
+  //   formLoading,
+  //   //formValues,
+  //   //formResult,
+  // } = useModalForm({
+  //   defaultVisible: false,
+  //   autoSubmitClose: true,
+  //   autoResetForm: true,
+  //   async submit({ username, email }) {
 
-  const [form] = Form.useForm();
-  const {
-    modalProps,
-    formProps,
-    show,
-    formLoading,
-    //formValues,
-    //formResult,
-  } = useModalForm({
-    defaultVisible: false,
-    autoSubmitClose: true,
-    autoResetForm: true,
-    async submit({ username, email }) {
-    
-      const data = new FormData();
+  //     const data = new FormData();
 
+  //     data.append('sender', userIdState);
+  //     data.append('receiver', item.dealer_id);
+  //     data.append('type', 'd_r');
+  //     data.append('deal_id', item.d_id);
 
-      data.append('sender', userIdState);
-      data.append('receiver', item.dealer_id);
-      data.append('type', 'd_r');
-      data.append('deal_id', item.d_id);
+  //     // data.forEach(cur => console.log(cur));
 
-      // data.forEach(cur => console.log(cur));
-
-      bearerInstance
-        .post(`/new_notification`, data)
-        .then(res => {
-          console.log(res);
-          history.push(`/message/${item.d_id}`);
-        })
-        .catch(err => {});
-    },
-    form,
-  });
+  //     bearerInstance
+  //       .post(`/new_notification`, data)
+  //       .then(res => {
+  //         console.log(res);
+  //         history.push(`/message/${item.d_id}`);
+  //       })
+  //       .catch(err => {});
+  //   },
+  //   form,
+  // });
 
   // useEffect(() => {
   //   console.log(item);
@@ -401,13 +398,10 @@ export default function DealItem({ item }) {
               </div>
 
               {/* ModalForm for amount */}
-              <Modal {...modalProps} okText="Next" width={400}>
+              {/* <Modal {...modalProps} okText="Next" width={400}>
                 <Spin spinning={formLoading}>
                   <>
-                    {/* <p>
-                      submit: username {formValues.username} email {formValues.email}
-                    </p> */}
-                    {/* <p>result: {formResult}</p> */}
+                    
 
                               
                     <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
@@ -455,16 +449,14 @@ export default function DealItem({ item }) {
 
                   </>
                 </Spin>
-              </Modal>
+              </Modal> */}
               {userIdState &&
-              item?.dealer_id.toString() !== userIdState.toString() ? (                
-                
+              item?.dealer_id.toString() !== userIdState.toString() ? (
                 <button
                   className="green-button"
                   onClick={() => {
                     if (userIdState) {
-                        show()
-
+                      // show()
                       // showDiscussConfirm(
                       //   item?.user_name_front,
                       //   item?.source,
