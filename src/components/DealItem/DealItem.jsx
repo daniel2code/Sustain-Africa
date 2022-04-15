@@ -1,5 +1,5 @@
-import React from 'react';
-import {message, Tooltip, Modal, Row, Col} from 'antd';
+import React, {useState} from 'react';
+import {message, Tooltip, Modal, Row, Col, Spin} from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { format } from 'timeago.js';
@@ -10,99 +10,138 @@ import {
   EllipsisOutlined,
   ExclamationCircleOutlined,
 } from '@ant-design/icons';
+import { useModalForm } from 'sunflower-antd';
+
 import './DealItem.scss';
 import { bearerInstance } from '../../utils/API';
 import { Form, Input } from 'antd';
 import { curType } from '../../utils/datasource';
 // import { useEffect } from 'react';
 
-const { confirm } = Modal;
+// const { confirm } = Modal;
 
 export default function DealItem({ item }) {
   const history = useHistory();
   const userIdState = useSelector(state => state?.user?.userData?.id);
+  const [amount, setAmount ] = useState(0)
+
+
+  const [form] = Form.useForm();
+  const {
+    modalProps,
+    formProps,
+    show,
+    formLoading,
+    //formValues,
+    //formResult,
+  } = useModalForm({
+    defaultVisible: false,
+    autoSubmitClose: true,
+    autoResetForm: true,
+    async submit({ username, email }) {
+    
+      const data = new FormData();
+
+
+      data.append('sender', userIdState);
+      data.append('receiver', item.dealer_id);
+      data.append('type', 'd_r');
+      data.append('deal_id', item.d_id);
+
+      // data.forEach(cur => console.log(cur));
+
+      bearerInstance
+        .post(`/new_notification`, data)
+        .then(res => {
+          console.log(res);
+          history.push(`/message/${item.d_id}`);
+        })
+        .catch(err => {});
+    },
+    form,
+  });
 
   // useEffect(() => {
   //   console.log(item);
   // }, [item]);
 
-  const handleOk = () => {
-    const data = new FormData();
+  // const handleOk = () => {
+  //   const data = new FormData();
 
-    data.append('sender', userIdState);
-    data.append('receiver', item.dealer_id);
-    data.append('type', 'd_r');
-    data.append('deal_id', item.d_id);
+  //   data.append('sender', userIdState);
+  //   data.append('receiver', item.dealer_id);
+  //   data.append('type', 'd_r');
+  //   data.append('deal_id', item.d_id);
 
-    // data.forEach(cur => console.log(cur));
+  //   // data.forEach(cur => console.log(cur));
 
-    bearerInstance
-      .post(`/new_notification`, data)
-      .then(res => {
-        console.log(res);
-        history.push(`/message/${item.d_id}`);
-      })
-      .catch(err => {});
-  };
+  //   bearerInstance
+  //     .post(`/new_notification`, data)
+  //     .then(res => {
+  //       console.log(res);
+  //       history.push(`/message/${item.d_id}`);
+  //     })
+  //     .catch(err => {});
+  // };
 
-  function showDiscussConfirm(user, source, destination, rate) {
-    confirm({
-      title: (
-        <div>
-          start a discussion with{' '}
-          <span className="username-green">@{user}</span>?
-        </div>
-      ),
-      icon: <ExclamationCircleOutlined />,
-      content: (
-        <div>
-          <Row><Col span={9}>source</Col> <Col span={9}>{source} ($)</Col></Row>
-          <Row><Col span={9}>destination</Col> <Col span={9}>{destination} (₦)</Col></Row>
-          <Row><Col span={9}>rate</Col> <Col span={9}>₦{rate}/$</Col></Row>
+  // function showDiscussConfirm(user, source, destination, rate) {
+  //   confirm({
+  //     title: (
+  //       <div>
+  //         start a discussion with{' '}
+  //         <span className="username-green">@{user}</span>?
+  //       </div>
+  //     ),
+  //     icon: <ExclamationCircleOutlined />,
+  //     content: (
+  //       <div>
+  //         <Row><Col span={9}>source</Col> <Col span={9}>{source} ($)</Col></Row>
+  //         <Row><Col span={9}>destination</Col> <Col span={9}>{destination} (₦)</Col></Row>
+  //         <Row><Col span={9}>rate</Col> <Col span={9}>₦{rate}/$</Col></Row>
 
-          <Form.Item
-            label="amount $"
-            labelCol={{span: 9}}
-            labelAlign="left"
-            wrapperCol={{span: 12}}
-            name="amount"
-            rules={[
-              {
-                message: 'enter trade amount...',
-              },
-            ]}
-            style={{
-              textAlign: 'left',
-              marginTop: '3%',
-              marginBottom: '3%'
-            }}
-          >
-            <Input
-              placeholder="enter amount..."
-              style={{ width: '100%', borderColor: '#ed1450' }}
-              formatter={value =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
-            />
-          </Form.Item>
+  //         <Form.Item
+  //           label="amount $"
+  //           labelCol={{span: 9}}
+  //           labelAlign="left"
+  //           wrapperCol={{span: 12}}
+  //           name="amount"
+  //           rules={[
+  //             {
+  //               message: 'enter trade amount...',
+  //             },
+  //           ]}
+  //           style={{
+  //             textAlign: 'left',
+  //             marginTop: '3%',
+  //             marginBottom: '3%'
+  //           }}
+  //         >
+  //           <Input
+  //             placeholder="enter amount..."
+  //             style={{ width: '100%', borderColor: '#ed1450' }}
+  //             formatter={value =>
+  //               `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  //             }
+  //             parser={value => value.replace(/\$\s?|(,*)/g, '')}
+  //           />
+  //         </Form.Item>
 
-          <div>
-            <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{rate}.00</strong>
-              <span style={{
-                fontSize: '12px',
-                marginTop: '-5px',
-              }}> (- escrow fee)</span></Col>
-            </Row>
-          </div>
-        </div>
-      ),
-      onOk() {
-        handleOk();
-      },
-      onCancel() {},
-    });
-  }
+  //         <div>
+  //           <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{rate}.00</strong>
+  //             <span style={{
+  //               fontSize: '12px',
+  //               marginTop: '-5px',
+  //             }}> (- escrow fee)</span></Col>
+  //           </Row>
+  //         </div>
+  //       </div>
+  //     ),
+  //     onOk() {
+  //       handleOk();
+  //     },
+  //     onCancel() {},
+  //   });
+  // }
 
   return (
     <>
@@ -360,18 +399,78 @@ export default function DealItem({ item }) {
               >
                 view
               </div>
+
+              {/* ModalForm for amount */}
+              <Modal {...modalProps} okText="Next" width={400}>
+                <Spin spinning={formLoading}>
+                  <>
+                    {/* <p>
+                      submit: username {formValues.username} email {formValues.email}
+                    </p> */}
+                    {/* <p>result: {formResult}</p> */}
+
+                              
+                    <div style={{display: 'flex', alignItems: 'center', margin: '10px 0px'}}>
+                      <ExclamationCircleOutlined style={{fontSize: '25px', paddingRight: '10px', color: '#ed1450'}}/>
+                      <b>start a discussion with{' '}</b>
+
+                      <span className="username-green">@{item?.user_name_front}</span>?
+                    </div>
+                    <div className="deal-details" style={{marginLeft: '40px'}}>
+                      <Row><Col span={9}>source</Col> <Col span={9}>{item?.source} ($)</Col></Row>
+                      <Row><Col span={9}>destination</Col> <Col span={9}>{item?.destination} (₦)</Col></Row>
+                      <Row><Col span={9}>rate</Col> <Col span={9}>₦{item?.rate}/$</Col></Row>
+
+                      <Form layout="inline" {...formProps}>
+                        <Form.Item
+                          label={"Amount (" + curType(item?.destination_currency) + ")"}
+                          name="amount"
+                          rules={[{required: true, message: 'Please input amount'}]} 
+                          style={{
+                            textAlign: 'left',
+                            marginTop: '3%',
+                            marginBottom: '3%',
+                            }}
+                        >  
+                          
+                          <Row> <Col span={19}>
+                          
+                            <Input placeholder="Please input Amount" onChange={e => setAmount(e.target.value)}/></Col></Row>
+                          
+
+                        </Form.Item>
+
+                        
+                      </Form>
+
+                      <div>
+                        <Row><Col span={9}>to receive</Col> <Col span={12}><strong>{item?.source_currency.toUpperCase()}{amount * item?.rate}.00</strong>
+                          <span style={{
+                            fontSize: '12px',
+                            marginTop: '5px',
+                          }}> (- escrow fee)</span></Col>
+                        </Row>
+                      </div>
+                    </div>
+
+                  </>
+                </Spin>
+              </Modal>
               {userIdState &&
-              item?.dealer_id.toString() !== userIdState.toString() ? (
+              item?.dealer_id.toString() !== userIdState.toString() ? (                
+                
                 <button
                   className="green-button"
                   onClick={() => {
                     if (userIdState) {
-                      showDiscussConfirm(
-                        item?.user_name_front,
-                        item?.source,
-                        item?.destination,
-                        item?.rate
-                      );
+                        show()
+
+                      // showDiscussConfirm(
+                      //   item?.user_name_front,
+                      //   item?.source,
+                      //   item?.destination,
+                      //   item?.rate
+                      // );
                     } else {
                       message.error('you must login to continue');
                       history.push('/login');
