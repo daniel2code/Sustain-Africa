@@ -98,13 +98,14 @@ export default function DealPage({ match }) {
         visible={modal}
         onCancel={() => setModal(false)}
         cancelText="cancel"
+        width={400}
       >
         <div style={{ display: 'flex', alignItems: 'flex-start' }}>
           <div
             style={{
               fontSize: '25px',
               marginRight: '20px',
-              color: 'rgb(237, 20, 80)',
+              color: '#faad14',
             }}
           >
             <ExclamationCircleOutlined />
@@ -151,7 +152,7 @@ export default function DealPage({ match }) {
                   name="amount"
                   labelCol={{ span: 9 }}
                   labelAlign="left"
-                  wrapperCol={{ span: 24 }}
+                  wrapperCol={{ span: 12 }}
                   rules={[
                     {
                       validator: (_, val) => {
@@ -169,9 +170,7 @@ export default function DealPage({ match }) {
                   ]}
                   style={{
                     textAlign: 'left',
-                    marginTop: '3%',
-                    marginBottom: '3%',
-                    display: 'inline-block',
+                    marginTop: '5px',
                   }}
                 >
                   <Col span={24}>
