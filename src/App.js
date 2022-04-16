@@ -109,25 +109,27 @@ function App() {
     <div className="App">
       <Layout className="layout">
         <Navbar />
-        {!hasError ? (
-          <Switch>
-            <Route exact path="/" component={DealsList} />
-            <Route exact path="/new-deal" component={NewDeal} />
-            <Route exact path="/edit-deal/:id" component={EditDeal} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/verify-email" component={VerifyEmail} />
-            <Route exact path="/add-phone" component={VerifyPhone} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/wallet" component={Wallet} />
-            <Route exact path="/user/:id/profile" component={OtherProfile} />
-            <Route exact path="/deal/:id" component={DealPage} />
-            <Route exact path="/message/:id" component={Message} />
-            <Route exact path="/notifications" component={Notification} />
-          </Switch>
-        ) : (
-          <ErrorBoundary />
-        )}
+        <div className="layout-body">
+          {!hasError ? (
+            <Switch>
+              <Route exact path="/" component={DealsList} />
+              <Route exact path="/new-deal" component={NewDeal} />
+              <Route exact path="/edit-deal/:id" component={EditDeal} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/verify-email" component={VerifyEmail} />
+              <Route exact path="/add-phone" component={VerifyPhone} />
+              <Route exact path="/profile" component={Profile} />
+              <Route exact path="/wallet" component={Wallet} />
+              <Route exact path="/user/:id/profile" component={OtherProfile} />
+              <Route exact path="/deal/:id" component={DealPage} />
+              <Route exact path="/message/:id" component={Message} />
+              <Route exact path="/notifications" component={Notification} />
+            </Switch>
+          ) : (
+            <ErrorBoundary />
+          )}
+        </div>
       </Layout>
     </div>
   );
