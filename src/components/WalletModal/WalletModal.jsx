@@ -75,7 +75,6 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
       .then(res => {
         console.log(res);
         console.log(res.data);
-        setSendLoad(false);
 
         if (res.data.message.error)
           sent({
@@ -94,6 +93,9 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
       .catch(err => {
         console.log(err);
         message.error(err.response?.data?.message);
+      })
+      .finally(() => {
+        setSendLoad(false);
       });
   };
 
@@ -105,12 +107,14 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     bearerInstance
       .post('/wallet_cypher?send_otp=1', data)
       .then(res => {
-        setOtpResend(false);
         message.success('opt has been resent');
       })
       .catch(err => {
         console.log(err);
         message.error(err.response?.data?.message);
+      })
+      .finally(() => {
+        setOtpResend(false);
       });
   };
 
@@ -129,13 +133,15 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     bearerInstance
       .post('/wallet_cypher', data)
       .then(res => {
-        setInitLoad(false);
         setTransactionData(res.data.message);
         setProceed(true);
       })
       .catch(err => {
         console.log(err);
         message.error(err.response?.data?.message);
+      })
+      .finally(() => {
+        setInitLoad(false);
       });
   };
 
@@ -361,6 +367,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   available{' '}
                   <span style={{ color: '#ed1450', fontWeight: 600 }}>
                     {curBal}
+                    {curBal === 0 && '.00'}
                   </span>{' '}
                   btc
                 </h4>

@@ -283,7 +283,10 @@ const Wallet = () => {
 
               {/*wallet + send and receive bitcoin */}
               <div className="wallet-coin">
-                <h2>{userBalance.balance_btc} BTC</h2>
+                <h2>
+                  {userBalance.balance_btc}
+                  {userBalance.balance_btc === 0 && '.00'} BTC
+                </h2>
                 <p
                   className="wallet-p"
                   style={{ marginBottom: '20px', marginTop: '-5px' }}
@@ -291,8 +294,24 @@ const Wallet = () => {
                   approx{' '}
                   {new Intl.NumberFormat('en-us').format(
                     userBalance.balance_usd
-                  )}{' '}
-                  usd
+                  )}
+                  {userBalance.balance_usd === 0 && '.00'} usd
+                  {userBalance.balance_usd === 0 && (
+                    <Button
+                      type="text"
+                      style={{
+                        color: '#ed1450',
+                        padding: 0,
+                        marginLeft: '5px',
+                      }}
+                      onClick={() => {
+                        setWalletModal(true);
+                        setSend(false);
+                      }}
+                    >
+                      deposit some coins
+                    </Button>
+                  )}
                 </p>
 
                 <div className="wallet-coin-btn">
