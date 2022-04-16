@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Tooltip,
-  message,
-  Divider,
-  Breadcrumb,
-  Modal,
-  Form,
-  Input,
-  Row,
-  Col,
-  Button,
-} from 'antd';
+import { Tooltip, message, Divider, Breadcrumb } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,15 +9,15 @@ import {
   EllipsisOutlined,
   ArrowRightOutlined,
   HomeOutlined,
-  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import Loader from './../../components/Loader/Loader';
-import { instance, bearerInstance } from './../../utils/API';
+import { instance } from './../../utils/API';
 import './deal-page.scss';
 import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
 import { setHasError } from '../../redux/data/data.actions';
 import { format } from 'timeago.js';
 import { curType } from '../../utils/datasource';
+import DealModal from '../../components/DealModal/DealModal';
 
 //const { confirm } = Modal;
 
@@ -37,19 +26,14 @@ export default function DealPage({ match }) {
   const history = useHistory();
   const [deal, setDeal] = useState(null);
   const [dealerData, setDealerData] = useState(null);
-  const [userId, setUserId] = useState('000111222333444');
-  const userIdState = useSelector(state => state?.user?.userData?.id);
+  const userId = useSelector(state => state?.user?.userData?.id);
 
-  const [amount, setAmount] = useState(0);
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     getDealInfo();
 
-    if (userIdState) {
-      setUserId(userIdState);
-    }
     //eslint-disable-next-line
   }, []);
 
@@ -58,6 +42,7 @@ export default function DealPage({ match }) {
       .get(`/return_this_deal?deal_id=${match.params.id}`)
       .then(function (response) {
         setDeal(response?.data?.deal_data[0]);
+        console.log(response?.data?.deal_data[0]);
         setDealerData(response?.data?.dealer_profile_data[0]);
       })
       .catch(function (error) {
@@ -69,170 +54,15 @@ export default function DealPage({ match }) {
       });
   };
 
-  const submit = () => {
-    const data = new FormData();
-
-    // console.log(dealerData);
-    // console.log(userIdState);
-    // console.log(deal);
-
-    data.append('sender', userIdState);
-    data.append('receiver', deal.dealer_id);
-    data.append('type', 'd_r');
-    data.append('deal_id', deal.d_id);
-
-    // data.forEach(cur => console.log(cur));
-
-    bearerInstance
-      .post(`/new_notification`, data)
-      .then(res => {
-        console.log(res);
-        history.push(`/message/${deal.d_id}`);
-      })
-      .catch(err => {});
-  };
-
   return (
     <>
-      <Modal
-        visible={modal}
-        onCancel={() => setModal(false)}
-        cancelText="cancel"
-        width={400}
-      >
-        <div style={{ display: 'flex', alignItems: 'flex-start' }}>
-          <div
-            style={{
-              fontSize: '25px',
-              color: '#faad14',
-              marginRight: '15px',
-              marginLeft: '5px',
-            }}
-          >
-            <ExclamationCircleOutlined />
-          </div>
-          <div style={{ flex: '1' }}>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                marginBottom: '10px',
-              }}
-            >
-              start a discussion with{' '}
-              <span
-                style={{
-                  marginLeft: '5px',
-                }}
-                className="username-green"
-              >
-                @{dealerData?.user_name_front}
-              </span>
-              ?
-            </div>
-            <div className="deal-details">
-              <Row>
-                <Col span={9}>source</Col>
-                <Col span={9}>
-                  {deal?.source} ({curType(deal?.source_currency)})
-                </Col>
-              </Row>
-              <Row>
-                <Col span={9}>destination</Col>
-                <Col span={9}>
-                  {deal?.destination} ({curType(deal?.destination_currency)})
-                </Col>
-              </Row>
-              <Row>
-                <Col span={9}>rate</Col>
-                <Col span={9}>
-                  {deal?.rate_structure !== 'percentage' &&
-                    `/${curType(deal?.source_currency)}`}
-                  {deal?.rate}
-                  {deal?.rate_structure === 'percentage'
-                    ? '%'
-                    : `/${curType(deal?.destination_currency)}`}
-                </Col>
-              </Row>
+      <DealModal
+        modal={modal}
+        close={() => setModal(false)}
+        deal={deal}
+        dealerData={dealerData}
+      />
 
-              <Form onFinish={submit}>
-                <Form.Item
-                  label={`amount (${curType(deal?.destination_currency)})`}
-                  name="amount"
-                  labelCol={{ span: 9 }}
-                  labelAlign="left"
-                  wrapperCol={{ span: 12 }}
-                  rules={[
-                    {
-                      validator: (_, val) => {
-                        // if (+val < curBal && +val > 0) {
-                        //   return Promise.resolve();
-                        // }
-
-                        if (val === undefined)
-                          return Promise.reject('please input amount');
-
-                        if (+val <= 0)
-                          return Promise.reject('please input amount');
-                      },
-                    },
-                  ]}
-                  style={{
-                    textAlign: 'left',
-                    marginTop: '5px',
-                    flexWrap: 'unset',
-                  }}
-                >
-                  <Input
-                    type="number"
-                    style={{ borderColor: '#ed1450', display: 'inline-block' }}
-                    placeholder="enter amount..."
-                    onChange={e => setAmount(e.target.value)}
-                  />
-                </Form.Item>
-
-                <Row>
-                  <Col span={9}>to receive</Col>{' '}
-                  <Col span={12}>
-                    <strong>
-                      {curType(deal?.source_currency.toLowerCase())}
-                      {amount * deal?.rate}.00
-                    </strong>
-                    <span
-                      style={{
-                        fontSize: '12px',
-                        marginTop: '5px',
-                      }}
-                    >
-                      {' '}
-                      (- escrow fee)
-                    </span>
-                  </Col>
-                </Row>
-
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-end',
-                    marginTop: '10px',
-                  }}
-                >
-                  <Button
-                    style={{ marginRight: '10px' }}
-                    onClick={() => setModal(false)}
-                  >
-                    cancel
-                  </Button>
-
-                  <Button htmlType="submit" type="primary">
-                    ok
-                  </Button>
-                </div>
-              </Form>
-            </div>
-          </div>
-        </div>
-      </Modal>
       <div className="deal-page-container">
         {(!deal || !dealerData) && <Loader />}
 
@@ -247,8 +77,7 @@ export default function DealPage({ match }) {
               <Breadcrumb.Item>
                 <Link
                   to={
-                    userIdState &&
-                    deal?.dealer_id.toString() === userId.toString()
+                    userId && deal?.dealer_id.toString() === userId.toString()
                       ? '/profile'
                       : `/user/${deal?.dealer_id}/profile`
                   }
@@ -264,7 +93,7 @@ export default function DealPage({ match }) {
                 className="left"
                 onClick={() => {
                   if (
-                    userIdState &&
+                    userId &&
                     deal?.dealer_id.toString() === userId.toString()
                   ) {
                     history.push(`/profile`);
@@ -539,7 +368,7 @@ export default function DealPage({ match }) {
                     <button
                       className="green-button"
                       onClick={() => {
-                        if (!userIdState) {
+                        if (!userId) {
                           message.error('you must login to continue');
                           history.push('/login');
                         }
