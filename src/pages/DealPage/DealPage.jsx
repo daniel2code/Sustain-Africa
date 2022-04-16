@@ -104,8 +104,9 @@ export default function DealPage({ match }) {
           <div
             style={{
               fontSize: '25px',
-              marginRight: '20px',
               color: '#faad14',
+              marginRight: '15px',
+              marginLeft: '5px',
             }}
           >
             <ExclamationCircleOutlined />
@@ -131,19 +132,27 @@ export default function DealPage({ match }) {
             </div>
             <div className="deal-details">
               <Row>
-                <Col span={9}>source</Col>{' '}
+                <Col span={9}>source</Col>
                 <Col span={9}>
                   {deal?.source} ({curType(deal?.source_currency)})
                 </Col>
               </Row>
               <Row>
-                <Col span={9}>destination</Col>{' '}
+                <Col span={9}>destination</Col>
                 <Col span={9}>
                   {deal?.destination} ({curType(deal?.destination_currency)})
                 </Col>
               </Row>
               <Row>
-                <Col span={9}>rate</Col> <Col span={9}>₦{deal?.rate}/$</Col>
+                <Col span={9}>rate</Col>
+                <Col span={9}>
+                  {deal?.rate_structure !== 'percentage' &&
+                    `/${curType(deal?.source_currency)}`}
+                  {deal?.rate}
+                  {deal?.rate_structure === 'percentage'
+                    ? '%'
+                    : `/${curType(deal?.destination_currency)}`}
+                </Col>
               </Row>
 
               <Form onFinish={submit}>
@@ -171,16 +180,15 @@ export default function DealPage({ match }) {
                   style={{
                     textAlign: 'left',
                     marginTop: '5px',
+                    flexWrap: 'unset',
                   }}
                 >
-                  <Col span={24}>
-                    <Input
-                      type="number"
-                      style={{ borderColor: '#ed1450' }}
-                      placeholder="enter amount..."
-                      onChange={e => setAmount(e.target.value)}
-                    />
-                  </Col>
+                  <Input
+                    type="number"
+                    style={{ borderColor: '#ed1450', display: 'inline-block' }}
+                    placeholder="enter amount..."
+                    onChange={e => setAmount(e.target.value)}
+                  />
                 </Form.Item>
 
                 <Row>

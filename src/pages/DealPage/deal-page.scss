@@ -112,3 +112,15 @@
 .ant-modal-close {
   display: none;
 }
+
+element.style {
+}
+@media (max-width: 575px) {
+  .ant-form .ant-form-item .ant-form-item-label {
+    flex: 0 0 37.5%;
+  }
+
+  .ant-form .ant-form-item .ant-form-item-control {
+    flex: 1;
+  }
+}
