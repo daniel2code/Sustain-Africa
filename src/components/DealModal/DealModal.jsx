@@ -38,6 +38,20 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
       .finally(() => setLoading(false));
   };
 
+  const dealAmount = (amt, structure, rate) => {
+    let prc;
+
+    if (structure === 'percentage') {
+      const ratePercent = rate / 100;
+      prc = amt * ratePercent;
+    } else {
+      prc = amt * rate;
+    }
+
+    const escr = prc * 0.03;
+    return { price: (prc - escr).toFixed(2), escrow: escr.toFixed(2) };
+  };
+
   return (
     <Modal visible={modal} onCancel={close} cancelText="cancel" width={400}>
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -140,7 +154,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                 <Col span={12}>
                   <strong>
                     {curType(deal?.source_currency.toLowerCase())}
-                    {amount * deal?.rate}
+                    {dealAmount(amount, deal?.rate_structure, deal?.rate).price}
                   </strong>
                   <span
                     style={{
@@ -151,7 +165,11 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                     {' '}
                     (-
                     {curType(deal?.source_currency.toLowerCase())}
-                    {amount * deal?.rate * 0.03} escrow fee)
+                    {
+                      dealAmount(amount, deal?.rate_structure, deal?.rate)
+                        .escrow
+                    }{' '}
+                    escrow fee)
                   </span>
                 </Col>
               </Row>
