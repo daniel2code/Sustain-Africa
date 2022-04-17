@@ -22,6 +22,17 @@ body {
   height: 100%;
 }
 
+.layout {
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+
+  &-body {
+    overflow-y: auto;
+    flex: 1;
+  }
+}
+
 .ant-input {
   line-height: 2.1;
 }
