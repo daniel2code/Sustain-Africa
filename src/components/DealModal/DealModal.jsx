@@ -43,7 +43,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
 
     if (structure === 'percentage') {
       const ratePercent = rate / 100;
-      prc = amt * ratePercent;
+      prc = amt - amt * ratePercent;
     } else {
       prc = amt * rate;
     }
@@ -53,7 +53,13 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
   };
 
   return (
-    <Modal visible={modal} onCancel={close} cancelText="cancel" width={400}>
+    <Modal
+      className="dealmodal"
+      visible={modal}
+      onCancel={close}
+      cancelText="cancel"
+      width={400}
+    >
       <div style={{ display: 'flex', alignItems: 'flex-start' }}>
         <div
           style={{
