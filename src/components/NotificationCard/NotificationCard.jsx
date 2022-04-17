@@ -156,7 +156,7 @@ const NotificationCard = ({ data }) => {
         })
           .then(res => {
             setAccepted(true);
-            router.replace('/message');
+            router.replace('/discussion');
           })
           .catch(() => console.log('Oops errors!'));
       },

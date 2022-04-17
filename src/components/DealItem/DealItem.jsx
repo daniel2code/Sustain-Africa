@@ -1,5 +1,5 @@
-import React from 'react';
-import {message, Tooltip, Modal, Row, Col} from 'antd';
+import React, { useState } from 'react';
+import { message, Tooltip } from 'antd';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { format } from 'timeago.js';
@@ -8,104 +8,24 @@ import {
   DislikeOutlined,
   ArrowRightOutlined,
   EllipsisOutlined,
-  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import './DealItem.scss';
-import { bearerInstance } from '../../utils/API';
-import { Form, Input } from 'antd';
 import { curType } from '../../utils/datasource';
-// import { useEffect } from 'react';
-
-const { confirm } = Modal;
+import DealModal from '../DealModal/DealModal';
 
 export default function DealItem({ item }) {
   const history = useHistory();
   const userIdState = useSelector(state => state?.user?.userData?.id);
-
-  // useEffect(() => {
-  //   console.log(item);
-  // }, [item]);
-
-  const handleOk = () => {
-    const data = new FormData();
-
-    data.append('sender', userIdState);
-    data.append('receiver', item.dealer_id);
-    data.append('type', 'd_r');
-    data.append('deal_id', item.d_id);
-
-    // data.forEach(cur => console.log(cur));
-
-    bearerInstance
-      .post(`/new_notification`, data)
-      .then(res => {
-        console.log(res);
-        history.push(`/message/${item.d_id}`);
-      })
-      .catch(err => {});
-  };
-
-  function showDiscussConfirm(user, source, destination, rate) {
-    confirm({
-      title: (
-        <div>
-          start a discussion with{' '}
-          <span className="username-green">@{user}</span>?
-        </div>
-      ),
-      icon: <ExclamationCircleOutlined />,
-      content: (
-        <div>
-          <Row><Col span={9}>source</Col> <Col span={9}>{source} ($)</Col></Row>
-          <Row><Col span={9}>destination</Col> <Col span={9}>{destination} (₦)</Col></Row>
-          <Row><Col span={9}>rate</Col> <Col span={9}>₦{rate}/$</Col></Row>
-
-          <Form.Item
-            label="amount $"
-            labelCol={{span: 9}}
-            labelAlign="left"
-            wrapperCol={{span: 12}}
-            name="amount"
-            rules={[
-              {
-                message: 'enter trade amount...',
-              },
-            ]}
-            style={{
-              textAlign: 'left',
-              marginTop: '3%',
-              marginBottom: '3%'
-            }}
-          >
-            <Input
-              placeholder="enter amount..."
-              style={{ width: '100%', borderColor: '#ed1450' }}
-              formatter={value =>
-                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-              }
-              parser={value => value.replace(/\$\s?|(,*)/g, '')}
-            />
-          </Form.Item>
-
-          <div>
-            <Row><Col span={9}>to receive</Col> <Col span={12}><strong>₦{rate}.00</strong>
-              <span style={{
-                fontSize: '12px',
-                marginTop: '-5px',
-              }}> (- escrow fee)</span></Col>
-            </Row>
-          </div>
-        </div>
-      ),
-      onOk() {
-        handleOk();
-      },
-      onCancel() {},
-    });
-  }
+  const [modal, setModal] = useState(false);
 
   return (
     <>
+      <DealModal
+        modal={modal}
+        close={() => setModal(false)}
+        deal={item}
+        dealerData={item}
+      />
       <div className="deal-item-container">
         <div
           className="left"
@@ -360,18 +280,14 @@ export default function DealItem({ item }) {
               >
                 view
               </div>
+
               {userIdState &&
               item?.dealer_id.toString() !== userIdState.toString() ? (
                 <button
                   className="green-button"
                   onClick={() => {
                     if (userIdState) {
-                      showDiscussConfirm(
-                        item?.user_name_front,
-                        item?.source,
-                        item?.destination,
-                        item?.rate
-                      );
+                      setModal(true);
                     } else {
                       message.error('you must login to continue');
                       history.push('/login');
