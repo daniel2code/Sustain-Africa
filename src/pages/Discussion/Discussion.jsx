@@ -23,11 +23,11 @@ import {
   Window,
 } from 'stream-chat-react';
 import 'stream-chat-react/dist/css/index.css';
-import './message.scss';
+import './discussion.scss';
 
 // const { TextArea } = Input;
 
-export default function Message() {
+export default function Discussion() {
   const dealsList = useSelector(state => state.data.dealsList);
 
   const messagesEndRef = useRef(null);

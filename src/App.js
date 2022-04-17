@@ -16,11 +16,12 @@ import Profile from './pages/Profile/Profile';
 import OtherProfile from './pages/Profile/OtherProfile';
 import DealPage from './pages/DealPage/DealPage';
 import EditDeal from './pages/EditDeal/EditDeal';
-import Message from './pages/Message/Message';
+import Discussion from './pages/Discussion/Discussion';
 import { bearerInstance } from './utils/API';
 import Notification from './pages/Notification/Notifiaction';
 import { setNotificationCount } from './redux/user/user.actions';
 import Wallet from './pages/Wallet/Wallet';
+import DiscussionMenu from './pages/Discussion/DiscussionMenu';
 
 function App() {
   useEffect(() => {
@@ -123,7 +124,8 @@ function App() {
               <Route exact path="/wallet" component={Wallet} />
               <Route exact path="/user/:id/profile" component={OtherProfile} />
               <Route exact path="/deal/:id" component={DealPage} />
-              <Route exact path="/message/:id" component={Message} />
+              <Route exact path="/discussion" component={DiscussionMenu} />
+              <Route exact path="/discussion/:id" component={Discussion} />
               <Route exact path="/notifications" component={Notification} />
             </Switch>
           ) : (

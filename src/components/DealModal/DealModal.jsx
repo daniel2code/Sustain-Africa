@@ -32,7 +32,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
       .post(`/new_notification`, data)
       .then(res => {
         console.log(res);
-        history.push(`/message/${deal.d_id}`);
+        history.push(`/discussion/${deal.d_id}`);
       })
       .catch(err => {})
       .finally(() => setLoading(false));

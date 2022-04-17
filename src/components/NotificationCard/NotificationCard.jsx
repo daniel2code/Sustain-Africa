@@ -101,7 +101,7 @@ const NotificationCard = ({ data }) => {
   //   bearerInstance
   //     .post(`/update_notification`, notData)
   //     .then(res => {
-  //       router.push('/message');
+  //       router.push('/discussion');
   //     })
   //     .catch(err => {
   //       console.log(err);
@@ -178,7 +178,7 @@ const NotificationCard = ({ data }) => {
         })
           .then(res => {
             setAccepted(true);
-            router.replace('/message');
+            router.replace('/discussion');
           })
           .catch(() => console.log('Oops errors!'));
       },

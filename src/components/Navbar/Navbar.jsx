@@ -96,10 +96,16 @@ export default function Navbar() {
                       >
                         <Link to="/wallet">wallet</Link>
                       </Menu.Item>
-                      <Menu.Item key="3">settings</Menu.Item>
+                      <Menu.Item
+                        key="3"
+                        disabled={location.pathname === '/discussion'}
+                      >
+                        <Link to="/discussion">discussions</Link>
+                      </Menu.Item>
+                      <Menu.Item key="5">settings</Menu.Item>
                       <Menu.Divider />
                       <Menu.Item
-                        key="4"
+                        key="5"
                         onClick={() => {
                           dispatch({ type: 'DESTROY_SESSION' });
                           localStorage.clear();
