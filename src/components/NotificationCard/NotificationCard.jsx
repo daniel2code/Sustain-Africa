@@ -90,28 +90,6 @@ const NotificationCard = ({ data }) => {
         });
   };
 
-  // const handleOk = () => {
-  //   const notData = new FormData();
-  //   notData.append('notification_id', data.id);
-  //   notData.append('viewed', '');
-  //   notData.append('accepted', '1');
-  //   notData.append('rejected', '');
-  //   notData.append('reviewed', '');
-
-  //   bearerInstance
-  //     .post(`/update_notification`, notData)
-  //     .then(res => {
-  //       router.push('/message');
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const handleCancel = () => {
-  //   setIsModalVisible(false);
-  // };
-
   function showPromiseConfirm() {
     confirm({
       title: (
@@ -188,37 +166,6 @@ const NotificationCard = ({ data }) => {
 
   return (
     <>
-      {/* <Modal
-        title={
-          <div className="avatar">
-            <Avatar
-              style={{
-                color: '#14a014',
-                backgroundColor: '#a9fca9',
-                fontWeight: '500',
-              }}
-            >
-              {data.sender_details[0].user_name_front.charAt(0).toUpperCase()}
-            </Avatar>{' '}
-            {data.sender_details[0].user_name_front}{' '}
-            <span style={{ color: '#14a014' }}>&#9679;</span>
-          </div>
-        }
-        visible={isModalVisible}
-        onOk={handleOk}
-        onCancel={handleCancel}
-      >
-        <p>
-          start a discussion with{' '}
-          <Link
-            to={`/user/${data.sender}/profile`}
-            className="notification-link username-green"
-          >
-            @{data.sender_details[0].user_name_front}
-          </Link>
-        </p>
-      </Modal> */}
-
       <div
         className={`notification-card${
           view ? ' notification-card-disabled' : ''
@@ -287,36 +234,17 @@ const NotificationCard = ({ data }) => {
           </div>
         ) : null}
 
-        {/* {data.type === 'd_c' && (
+        {data.type === 'w_in' && (
           <div>
             <p>
-              <Link
-                to={`/deal/${data.deal_id}`}
-                className="notification-link username-green"
-              >
-                deal
-              </Link>{' '}
-              with{' '}
-              {data.sender === user.id && (
-                <Link
-                  to={`/user/${data.receiver}/profile`}
-                  className="notification-link username-green"
-                >
-                  @{data.receiver_details[0].user_name_front}
-                </Link>
-              )}
-              {data.receiver === user.id && (
-                <Link
-                  to={`/user/${data.sender}/profile`}
-                  className="notification-link username-green"
-                >
-                  @{data.sender_details[0].user_name_front}
-                </Link>
-              )}{' '}
-              completed successfully
+              <span className="notification-pink">
+                {Number(parseFloat(data.amount).toFixed(7))}
+              </span>{' '}
+              btc was deposited into your sustain wallet at address{' '}
+              <span className="notification-pink">{data.address}</span>
             </p>
           </div>
-        )} */}
+        )}
 
         <div style={{ display: 'flex' }}>
           {((data.type === 'd_r' &&
