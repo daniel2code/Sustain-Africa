@@ -91,13 +91,13 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
           </div>
           <div className="deal-details">
             <Row>
-              <Col span={9}>source</Col>
+              <Col span={9}>picking</Col>
               <Col span={9}>
                 {deal?.source} ({curType(deal?.source_currency)})
               </Col>
             </Row>
             <Row>
-              <Col span={9}>destination</Col>
+              <Col span={9}>to remit</Col>
               <Col span={9}>
                 {deal?.destination} ({curType(deal?.destination_currency)})
               </Col>
@@ -106,17 +106,17 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
               <Col span={9}>rate</Col>
               <Col span={9}>
                 {deal?.rate_structure !== 'percentage' &&
-                  `/${curType(deal?.source_currency)}`}
+                  `${curType(deal?.destination_currency)}`}
                 {deal?.rate}
                 {deal?.rate_structure === 'percentage'
                   ? '%'
-                  : `/${curType(deal?.destination_currency)}`}
+                  : `/${curType(deal?.source_currency)}`}
               </Col>
             </Row>
 
             <Form onFinish={submit}>
               <Form.Item
-                label={`amount (${curType(deal?.destination_currency)})`}
+                label={`amount (${curType(deal?.source_currency)})`}
                 name="amount"
                 labelCol={{ span: 9 }}
                 labelAlign="left"
@@ -158,7 +158,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                 <Col span={9}>to receive</Col>{' '}
                 <Col span={12}>
                   <strong>
-                    {curType(deal?.source_currency.toLowerCase())}
+                    {curType(deal?.destination_currency.toLowerCase())}
                     {dealAmount(amount, deal?.rate_structure, deal?.rate)}
                   </strong>
                   {/*<span
