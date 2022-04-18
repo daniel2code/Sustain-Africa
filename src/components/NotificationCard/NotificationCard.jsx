@@ -241,7 +241,12 @@ const NotificationCard = ({ data }) => {
                 {Number(parseFloat(data.amount).toFixed(7))}
               </span>{' '}
               btc was deposited into your sustain wallet at address{' '}
-              <span className="notification-pink">{data.address}</span>
+              <span
+                className="notification-pink"
+                style={{ wordWrap: 'break-word' }}
+              >
+                {data.address}
+              </span>
             </p>
           </div>
         )}
