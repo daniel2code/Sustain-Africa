@@ -113,17 +113,19 @@ export default function Discussion() {
   };
 
   return (
-    <div className="message-wrapper">
-      <Chat client={client} theme="messaging light">
-        <Channel channel={chatChannel}>
-          <Window>
-            <ChannelHeader />
-            <MessageList />
-            <MessageInput />
-          </Window>
-          <Thread />
-        </Channel>
-      </Chat>
+    <div className="message">
+      <div className="message-wrapper">
+        <Chat client={client} theme="messaging light">
+          <Channel channel={chatChannel}>
+            <Window>
+              <ChannelHeader />
+              <MessageList />
+              <MessageInput />
+            </Window>
+            <Thread />
+          </Channel>
+        </Chat>
+      </div>
     </div>
 
     // <div className="message-page-container">

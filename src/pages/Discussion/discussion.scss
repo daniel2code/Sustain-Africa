@@ -165,13 +165,24 @@
   }
 }
 
-.message-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: white;
-  display: flex;
-  flex-flow: column;
+.message {
+  flex-grow: 1;
+  overflow: hidden;
 
-  & .str-chat-channel {
+  &-wrapper {
+    max-width: 800px;
+    height: 100%;
+    margin: 0 auto;
+    background-color: white;
+
+    & .str-chat-channel {
+      max-height: unset;
+      height: 100%;
+    }
+
+    & .str-chat__main-panel {
+      background-color: white;
+      padding: unset;
+    }
   }
 }
