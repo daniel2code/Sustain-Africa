@@ -57,8 +57,8 @@ function App() {
 
           return userId === cur.receiver && cur.viewed_receiver === 0;
         });
-        console.log(notif);
-        console.log(userId);
+        // console.log(notif);
+        // console.log(userId);
         dispatch(setNotificationCount(notif.length));
       })
       .catch(err => {
