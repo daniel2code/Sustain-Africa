@@ -383,6 +383,8 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                       display: 'inline-block',
                       width: 'calc(100%)',
                     }}
+                    // validateStatus="error"
+                    // help="help"
                     rules={[
                       {
                         required: true,
