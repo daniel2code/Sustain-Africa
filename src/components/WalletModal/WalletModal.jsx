@@ -50,7 +50,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
         })
         .catch(err => {
           message.error(err.response?.data?.message);
-          console.log('something went wrong');
+          // console.log('something went wrong');
         });
     }
   };
@@ -62,36 +62,29 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
 
   const sendBtc = values => {
     setSendLoad(true);
+    console.log(transactionData);
     var data = new FormData();
     data.append('send_transaction', '1');
-    data.append('tx', transactionData.tx);
-    data.append('tosign', transactionData.tosign);
-    data.append('signatures', transactionData.signatures);
-    data.append('pubkeys', transactionData.pubkeys);
+    data.append('tx', JSON.stringify(transactionData.tx));
+    data.append('tosign', JSON.stringify(transactionData.tosign));
+    data.append('signatures', JSON.stringify(transactionData.signatures));
+    data.append('pubkeys', JSON.stringify(transactionData.pubkeys));
     data.append('otp_to_verify', values.otp);
 
     bearerInstance
       .post('/wallet_cypher', data)
       .then(res => {
-        console.log(res);
         console.log(res.data);
 
-        if (res.data.message.error)
-          sent({
-            type: 'error',
-            message: 'error',
-            description: res.data.message.error,
-          });
-        else
-          sent({
-            type: 'success',
-            message: 'bitcoin sent!',
-            description: `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`,
-          });
+        sent({
+          type: 'success',
+          message: 'bitcoin sent!',
+          description: `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`,
+        });
         close();
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
         message.error(err.response?.data?.message);
       })
       .finally(() => {
