@@ -49,7 +49,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
           setAddLoad(false);
         })
         .catch(err => {
-          console.log(err);
+          message.error(err.response?.data?.message);
           console.log('something went wrong');
         });
     }
@@ -110,7 +110,6 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
         message.success('opt has been resent');
       })
       .catch(err => {
-        console.log(err);
         message.error(err.response?.data?.message);
       })
       .finally(() => {
@@ -137,7 +136,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
         setProceed(true);
       })
       .catch(err => {
-        console.log(err);
+        console.log(err.response?.data);
         message.error(err.response?.data?.message);
       })
       .finally(() => {
