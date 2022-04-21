@@ -30,6 +30,8 @@ body {
   &-body {
     overflow-y: auto;
     flex: 1;
+    display: flex;
+    flex-flow: column;
   }
 }
 

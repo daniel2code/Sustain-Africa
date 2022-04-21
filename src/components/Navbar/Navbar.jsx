@@ -98,9 +98,9 @@ export default function Navbar() {
                       </Menu.Item>
                       <Menu.Item
                         key="3"
-                        disabled={location.pathname === '/discussion'}
+                        disabled={location.pathname === '/chat'}
                       >
-                        <Link to="/discussion">discussions</Link>
+                        <Link to="/chat">chats</Link>
                       </Menu.Item>
                       <Menu.Item key="5">settings</Menu.Item>
                       <Menu.Divider />

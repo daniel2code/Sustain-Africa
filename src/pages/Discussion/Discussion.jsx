@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect, useRef } from 'react';
 // import { Avatar, Input, Button } from 'antd';
 // import {
@@ -38,18 +39,10 @@ export default function Discussion() {
   const [loading, setLoading] = useState(true);
   //   const [messageInput, setMessageInput] = useState('');
 
-  useEffect(() => {
-    initChat();
-    // eslint-disable-next-line
-  }, []);
+  const [client, setClient] = useState(null);
+  const [channel, setChannel] = useState(null);
 
-  const client = StreamChat.getInstance('twtrsx9dd48k');
-
-  const scrollToMessagesEnd = () => {
-    messagesEndRef.current?.scrollIntoView();
-  };
-
-  const initChat = async () => {
+  const init = async () => {
     async function generateToken() {
       const { token } = (
         await axios.get(
@@ -61,6 +54,8 @@ export default function Discussion() {
 
     const token = await generateToken();
 
+    console.log(token);
+
     const clientlog = await client.connectUser(
       {
         id: username,
@@ -71,28 +66,65 @@ export default function Discussion() {
 
     console.log(clientlog);
 
-    const channel = client.channel('messaging', 'sustain-test-1', {
-      // name: 'sustain test',
-      members: ['Ibrahim', username.toString()],
-    });
-
-    setChatChannel(channel);
-    await channel.watch();
-
-    console.log(channel);
-    console.log('deals data', dealsList);
-
-    if (loading) {
-      setMessages(channel.state.messages);
-    }
-
-    setLoading(false);
-    scrollToMessagesEnd();
-
-    channel.on('message.new', event => {
-      updateMessages(event.message);
-    });
+    const chatClient = StreamChat.getInstance('twtrsx9dd48k');
   };
+
+  useEffect(() => {
+    init();
+    // initChat();
+    // eslint-disable-next-line
+  }, []);
+
+  // const client = StreamChat.getInstance('twtrsx9dd48k');
+
+  // const scrollToMessagesEnd = () => {
+  //   messagesEndRef.current?.scrollIntoView();
+  // };
+
+  // const initChat = async () => {
+  //   async function generateToken() {
+  //     const { token } = (
+  //       await axios.get(
+  //         `https://sustain.africa/chat/server.php?create-token=${username}`
+  //       )
+  //     ).data;
+  //     return token;
+  //   }
+
+  //   const token = await generateToken();
+
+  //   const clientlog = await client.connectUser(
+  //     {
+  //       id: username,
+  //       name: username,
+  //     },
+  //     token
+  //   );
+
+  //   console.log(clientlog);
+
+  //   const channel = client.channel('messaging', 'sustain-test-1', {
+  //     // name: 'sustain test',
+  //     members: ['Ibrahim', username.toString()],
+  //   });
+
+  //   setChatChannel(channel);
+  //   await channel.watch();
+
+  //   console.log(channel);
+  //   console.log('deals data', dealsList);
+
+  //   if (loading) {
+  //     setMessages(channel.state.messages);
+  //   }
+
+  //   setLoading(false);
+  //   scrollToMessagesEnd();
+
+  //   channel.on('message.new', event => {
+  //     updateMessages(event.message);
+  //   });
+  // };
 
   //   const handleSendMessage = () => {
   //     setMessagesBackup(messages);
@@ -102,28 +134,30 @@ export default function Discussion() {
   //     setMessageInput('');
   //   };
 
-  const updateMessages = newMessage => {
-    let messageCopy = messages;
-    if (messages === []) {
-      messageCopy = messagesBackup;
-    }
-    messageCopy.push(newMessage);
-    setMessages(messageCopy);
-    scrollToMessagesEnd();
-  };
+  // const updateMessages = newMessage => {
+  //   let messageCopy = messages;
+  //   if (messages === []) {
+  //     messageCopy = messagesBackup;
+  //   }
+  //   messageCopy.push(newMessage);
+  //   setMessages(messageCopy);
+  //   scrollToMessagesEnd();
+  // };
 
   return (
-    <div className="message-wrapper">
-      <Chat client={client} theme="messaging light">
-        <Channel channel={chatChannel}>
-          <Window>
-            <ChannelHeader />
-            <MessageList />
-            <MessageInput />
-          </Window>
-          <Thread />
-        </Channel>
-      </Chat>
+    <div className="message">
+      <div className="message-wrapper">
+        <Chat client={client} theme="messaging light">
+          <Channel channel={chatChannel}>
+            <Window>
+              <ChannelHeader />
+              <MessageList />
+              <MessageInput />
+            </Window>
+            <Thread />
+          </Channel>
+        </Chat>
+      </div>
     </div>
 
     // <div className="message-page-container">
