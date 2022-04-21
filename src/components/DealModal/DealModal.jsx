@@ -147,7 +147,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
               </Form.Item>
 
               <Row>
-                <Col span={9}>to receive</Col>{' '}
+                <Col span={9}>to remit</Col>{' '}
                 <Col span={12}>
                   <strong style={{ fontSize: '16px' }}>
                     {curType(deal?.destination_currency.toLowerCase())}
