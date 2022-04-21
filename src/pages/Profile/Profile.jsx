@@ -85,7 +85,7 @@ export default function Profile() {
           <Divider
             style={{ fontSize: '14px', color: '#999', marginTop: '30px' }}
           >
-            discussions (16)
+            chats (16)
           </Divider>
 
           <div className="discussions">
