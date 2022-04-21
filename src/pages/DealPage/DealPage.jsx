@@ -77,7 +77,7 @@ export default function DealPage({ match }) {
               <Breadcrumb.Item>
                 <Link
                   to={
-                    userId && deal?.dealer_id.toString() === userId.toString()
+                    userId && deal?.dealer_id === userId
                       ? '/profile'
                       : `/user/${deal?.dealer_id}/profile`
                   }
@@ -92,10 +92,7 @@ export default function DealPage({ match }) {
               <div
                 className="left"
                 onClick={() => {
-                  if (
-                    userId &&
-                    deal?.dealer_id.toString() === userId.toString()
-                  ) {
+                  if (userId && deal?.dealer_id === userId) {
                     history.push(`/profile`);
                   } else {
                     history.push(`/user/${deal?.dealer_id}/profile`);
@@ -346,25 +343,21 @@ export default function DealPage({ match }) {
                   <div
                     className="grey-button-nobg"
                     onClick={() => {
-                      if (deal?.dealer_id.toString() === userId.toString()) {
+                      if (deal?.dealer_id === userId) {
                         history.push(`/edit-deal/${deal?.d_id}`);
                       }
                     }}
                   >
-                    {deal?.dealer_id.toString() === userId.toString()
-                      ? 'edit'
-                      : 'review'}
+                    {deal?.dealer_id === userId ? 'edit' : 'review'}
                   </div>
                   <div
                     className={`grey-button-nobg ${
-                      deal?.dealer_id.toString() === userId.toString()
-                        ? 'no-margin-right'
-                        : ''
+                      deal?.dealer_id === userId ? 'no-margin-right' : ''
                     }`}
                   >
                     share
                   </div>
-                  {deal?.dealer_id.toString() !== userId.toString() && (
+                  {deal?.dealer_id !== userId && (
                     <button
                       className="green-button"
                       onClick={() => {

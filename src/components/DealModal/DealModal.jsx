@@ -3,36 +3,26 @@ import './DealModal.scss';
 import { Modal, Form, Input, Row, Col, Button, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { bearerInstance } from './../../utils/API';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 import { curType } from '../../utils/datasource';
-// import { useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 const DealModal = ({ modal, close, deal, dealerData }) => {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
-  const userId = useSelector(state => state?.user?.userData?.id);
-  // const history = useHistory();
+  // const userId = useSelector(state => state?.user?.userData?.id);
+  const history = useHistory();
 
   const submit = values => {
     setLoading(true);
     const data = new FormData();
-
-    // console.log(dealerData);
-    // console.log(userIdState);
-    // console.log(deal);
-
-    data.append('sender', userId);
-    data.append('receiver', deal.dealer_id);
-    data.append('type', 'd_r');
     data.append('deal_id', deal.d_id);
 
-    // data.forEach(cur => console.log(cur));
-
     bearerInstance
-      .post(`/new_notification`, data)
+      .post('/new_discussion', data)
       .then(res => {
         console.log(res);
-        // history.push(`/chat/${deal.d_id}`);
+        history.push(`/chat/${res.data.id}`);
       })
       .catch(err => {
         message.error(err.response?.data?.message);
@@ -99,7 +89,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
               </Col>
             </Row>
             <Row>
-              <Col span={9}>to remit</Col>
+              <Col span={9}>to remit to</Col>
               <Col span={9}>
                 {deal?.destination} ({curType(deal?.destination_currency)})
               </Col>

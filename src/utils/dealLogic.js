@@ -15,10 +15,11 @@ const generateDealText = item => {
       item?.d_account_type !== 'Any Type'
     )
       return `${item?.s_bank_name} ${item?.s_account_type} account
-              available in ${item?.s_state}, ${item?.s_country} (
-              ${item?.source_currency}), to remit to ${item?.d_bank_name} 
-              ${item?.d_account_type} bank account in ${item?.d_country} (
-              ${item?.destination_currency}) at 
+              available in ${item?.s_state}, ${item?.s_country} 
+              (${curType(item?.source_currency)}), to remit to 
+              ${item?.d_bank_name} ${item?.d_account_type} bank account in 
+              ${item?.d_country} 
+              (${curType(item?.destination_currency)}) at 
               ${curType(item?.source_currency)}${item?.rate}/
               ${curType(item?.destination_currency)}.`;
     else if (
@@ -33,7 +34,7 @@ const generateDealText = item => {
       return `${item?.s_bank_name} ${item?.s_account_type} account
               available (${item?.source_currency}), to remit to 
               ${item?.d_bank_name} ${item?.d_account_type} bank account (
-              ${item?.destination_currency}) at 
+              ${curType(item?.destination_currency)}) at 
               ${curType(item?.source_currency)}${item?.rate}/
               ${curType(item?.destination_currency)}.`;
     else if (
@@ -48,7 +49,7 @@ const generateDealText = item => {
       return `${item?.s_account_type} account
               available (${item?.source_currency}), to remit to 
               ${item?.d_account_type} bank account (
-              ${item?.destination_currency}) at 
+              ${curType(item?.destination_currency)}) at 
               ${curType(item?.source_currency)}${item?.rate}/
               ${curType(item?.destination_currency)}.`;
     else if (
@@ -62,7 +63,7 @@ const generateDealText = item => {
     )
       return ` account available 
               (${item?.source_currency}), to remit to bank account 
-              (${item?.destination_currency}) at 
+              (${curType(item?.destination_currency)}) at 
               ${curType(item?.source_currency)}${item?.rate}/
               ${curType(item?.destination_currency)}.`;
   }
