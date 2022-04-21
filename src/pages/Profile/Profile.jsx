@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react";
-import { Tabs, Button, message, Divider, Breadcrumb } from "antd";
-import { Link, useHistory } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { Tabs, Button, message, Divider, Breadcrumb } from 'antd';
+import { Link, useHistory } from 'react-router-dom';
 
-import { useSelector } from "react-redux";
+import { useSelector } from 'react-redux';
 import {
   LikeOutlined,
   DislikeOutlined,
   EllipsisOutlined,
   HomeOutlined,
-} from "@ant-design/icons";
-import Loader from "./../../components/Loader/Loader";
+} from '@ant-design/icons';
+import Loader from './../../components/Loader/Loader';
 
-import PrefileDiscussionItem from "../../components/ProfileDiscussionItem/ProfileDiscussionItem";
-import ProfileDealItem from "./../../components/ProfileDealsItem/ProfileDealItem";
-import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
-import "./profile.scss";
-import useProfile from "../../hooks/useProfile";
+import ProfileDiscussionItem from '../../components/ProfileDiscussionItem/ProfileDiscussionItem';
+import ProfileDealItem from './../../components/ProfileDealsItem/ProfileDealItem';
+import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
+import './profile.scss';
+import useProfile from '../../hooks/useProfile';
 
 const { TabPane } = Tabs;
 
@@ -23,16 +23,16 @@ export default function Profile() {
   const { getProfileInfo } = useProfile();
 
   const history = useHistory();
-  const userState = useSelector((state) => state.user);
-  const profileData = useSelector((state) => state.data.profile);
+  const userState = useSelector(state => state.user);
+  const profileData = useSelector(state => state.data.profile);
   const [dealsCount, setDealsCount] = useState(3);
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
     if (!userState?.userData) {
-      history.push("/login");
-      message.warning("please login to continue");
+      history.push('/login');
+      message.warning('please login to continue');
     } else {
       getProfileInfo();
     }
@@ -64,45 +64,45 @@ export default function Profile() {
               {profileData?.profile_data[0]?.user_name_front}
             </div>
             <div className="rate">
-              profile score <span>{profileData?.profile_data[0]?.a_score}</span>{" "}
-              <EllipsisOutlined /> knows <span>25 dealers</span>{" "}
-              <EllipsisOutlined /> from{" "}
+              profile score <span>{profileData?.profile_data[0]?.a_score}</span>{' '}
+              <EllipsisOutlined /> knows <span>25 dealers</span>{' '}
+              <EllipsisOutlined /> from{' '}
               <span>{profileData?.profile_data[0]?.user_location}</span>
             </div>
 
             <div className="like-dislike">
               <span className="like">
-                <LikeOutlined />{" "}
+                <LikeOutlined />{' '}
                 {profileData?.profile_data[0]?.total_positive_reviews}
               </span>
               <span className="dislike">
-                <DislikeOutlined />{" "}
+                <DislikeOutlined />{' '}
                 {profileData?.profile_data[0]?.total_negative_reviews}
               </span>
             </div>
           </div>
 
           <Divider
-            style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
+            style={{ fontSize: '14px', color: '#999', marginTop: '30px' }}
           >
             discussions (16)
           </Divider>
 
           <div className="discussions">
-            <PrefileDiscussionItem key="1" />
-            <PrefileDiscussionItem key="3" />
-            <PrefileDiscussionItem key="2" />
+            <ProfileDiscussionItem key="1" />
+            <ProfileDiscussionItem key="3" />
+            <ProfileDiscussionItem key="2" />
           </div>
 
           <Divider
-            style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
+            style={{ fontSize: '14px', color: '#999', marginTop: '30px' }}
           >
             your deals ({profileData?.total_deals_count})
           </Divider>
 
           {profileData?.deals_data.length > 0 ? (
             <div className="deals">
-              {profileData?.deals_data.slice(0, dealsCount).map((item) => (
+              {profileData?.deals_data.slice(0, dealsCount).map(item => (
                 <ProfileDealItem
                   item={item}
                   key={item?.d_id}
@@ -126,7 +126,7 @@ export default function Profile() {
           )}
 
           <Divider
-            style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
+            style={{ fontSize: '14px', color: '#999', marginTop: '30px' }}
           >
             reviews ({profileData?.profile_data[0]?.total_reviews})
           </Divider>

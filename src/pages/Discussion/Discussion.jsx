@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Avatar, Input, Button } from 'antd';
 // import {
 //   LikeOutlined,
@@ -18,9 +17,10 @@ import {
   Channel,
   ChannelHeader,
   Chat,
+  LoadingIndicator,
   MessageInput,
   MessageList,
-  Thread,
+  // Thread,
   Window,
 } from 'stream-chat-react';
 import 'stream-chat-react/dist/css/index.css';
@@ -29,127 +29,67 @@ import './discussion.scss';
 // const { TextArea } = Input;
 
 export default function Discussion() {
-  const dealsList = useSelector(state => state.data.dealsList);
-
-  const messagesEndRef = useRef(null);
-  const username = useSelector(state => state?.user?.userData?.user_name);
-  const [chatChannel, setChatChannel] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [messagesBackup /* setMessagesBackup */] = useState([]);
-  const [loading, setLoading] = useState(true);
-  //   const [messageInput, setMessageInput] = useState('');
+  const user = useSelector(state => state?.user?.userData);
 
   const [client, setClient] = useState(null);
   const [channel, setChannel] = useState(null);
 
   const init = async () => {
     const res = await axios.get(
-      `https://sustain.africa/chat/server.php?create-token=${username}`
+      `https://sustain.africa/chat/server.php?create-token=${user.id}`
     );
 
-    const token = res.data.token;
+    const { token } = res.data;
 
-    const client = StreamChat.getInstance('twtrsx9dd48k');
+    const chatClient = StreamChat.getInstance('twtrsx9dd48k');
 
-    const clientlog = await client.connectUser(
+    const clientlog = await chatClient.connectUser(
       {
-        id: username,
-        name: username,
+        id: user.id,
+        name: user.user_name,
       },
       token
     );
 
     console.log(clientlog);
+
+    const chatChannel = chatClient.channel('messaging', 'sustain-test-1', {
+      name: 'sustain test',
+      members: ['test'],
+    });
+
+    await chatChannel.watch();
+
+    console.log(chatChannel);
+
+    setChannel(chatChannel);
+    setClient(chatClient);
   };
 
   useEffect(() => {
     init();
-    // initChat();
+
+    if (client) return () => client.disconnectUser();
     // eslint-disable-next-line
   }, []);
-
-  // const client = StreamChat.getInstance('twtrsx9dd48k');
-
-  // const scrollToMessagesEnd = () => {
-  //   messagesEndRef.current?.scrollIntoView();
-  // };
-
-  // const initChat = async () => {
-  //   async function generateToken() {
-  //     const { token } = (
-  //       await axios.get(
-  //         `https://sustain.africa/chat/server.php?create-token=${username}`
-  //       )
-  //     ).data;
-  //     return token;
-  //   }
-
-  //   const token = await generateToken();
-
-  //   const clientlog = await client.connectUser(
-  //     {
-  //       id: username,
-  //       name: username,
-  //     },
-  //     token
-  //   );
-
-  //   console.log(clientlog);
-
-  //   const channel = client.channel('messaging', 'sustain-test-1', {
-  //     // name: 'sustain test',
-  //     members: ['Ibrahim', username.toString()],
-  //   });
-
-  //   setChatChannel(channel);
-  //   await channel.watch();
-
-  //   console.log(channel);
-  //   console.log('deals data', dealsList);
-
-  //   if (loading) {
-  //     setMessages(channel.state.messages);
-  //   }
-
-  //   setLoading(false);
-  //   scrollToMessagesEnd();
-
-  //   channel.on('message.new', event => {
-  //     updateMessages(event.message);
-  //   });
-  // };
-
-  //   const handleSendMessage = () => {
-  //     setMessagesBackup(messages);
-  //     chatChannel.sendMessage({
-  //       text: messageInput,
-  //     });
-  //     setMessageInput('');
-  //   };
-
-  // const updateMessages = newMessage => {
-  //   let messageCopy = messages;
-  //   if (messages === []) {
-  //     messageCopy = messagesBackup;
-  //   }
-  //   messageCopy.push(newMessage);
-  //   setMessages(messageCopy);
-  //   scrollToMessagesEnd();
-  // };
 
   return (
     <div className="message">
       <div className="message-wrapper">
-        {/* <Chat client={client} theme="messaging light">
-          <Channel channel={chatChannel}>
-            <Window>
-              <ChannelHeader />
-              <MessageList />
-              <MessageInput />
-            </Window>
-            <Thread />
-          </Channel>
-        </Chat> */}
+        {!channel && !client ? (
+          <LoadingIndicator />
+        ) : (
+          <Chat client={client} theme="messaging light">
+            <Channel channel={channel}>
+              <Window>
+                <ChannelHeader />
+                <MessageList />
+                <MessageInput />
+              </Window>
+              {/* <Thread /> */}
+            </Channel>
+          </Chat>
+        )}
       </div>
     </div>
 
