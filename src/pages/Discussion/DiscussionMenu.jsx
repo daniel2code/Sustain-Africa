@@ -30,6 +30,7 @@ export default function DiscussionMenu() {
           </Breadcrumb>
 
           <Select
+            style={{ flex: '0 0 160px' }}
             value={filterValue}
             suffixIcon={<DownOutlined />}
             placeholder="filter by..."
