@@ -153,21 +153,6 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                     {curType(deal?.destination_currency.toLowerCase())}
                     {dealAmount(amount, deal?.rate_structure, deal?.rate)}
                   </strong>
-                  {/*<span
-                    style={{
-                      fontSize: '12px',
-                      marginTop: '5px',
-                    }}
-                  >
-                    {' '}
-                    (-
-                    {curType(deal?.source_currency.toLowerCase())}
-                     {
-                      dealAmount(amount, deal?.rate_structure, deal?.rate)
-                        .escrow
-                    }{' '}
-                    escrow fee) 
-                  </span>*/}
                 </Col>
               </Row>
 

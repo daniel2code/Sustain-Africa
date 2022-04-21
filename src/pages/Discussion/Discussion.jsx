@@ -43,18 +43,13 @@ export default function Discussion() {
   const [channel, setChannel] = useState(null);
 
   const init = async () => {
-    async function generateToken() {
-      const { token } = (
-        await axios.get(
-          `https://sustain.africa/chat/server.php?create-token=${username}`
-        )
-      ).data;
-      return token;
-    }
+    const res = await axios.get(
+      `https://sustain.africa/chat/server.php?create-token=${username}`
+    );
 
-    const token = await generateToken();
+    const token = res.data.token;
 
-    console.log(token);
+    const client = StreamChat.getInstance('twtrsx9dd48k');
 
     const clientlog = await client.connectUser(
       {
@@ -65,8 +60,6 @@ export default function Discussion() {
     );
 
     console.log(clientlog);
-
-    const chatClient = StreamChat.getInstance('twtrsx9dd48k');
   };
 
   useEffect(() => {
@@ -147,7 +140,7 @@ export default function Discussion() {
   return (
     <div className="message">
       <div className="message-wrapper">
-        <Chat client={client} theme="messaging light">
+        {/* <Chat client={client} theme="messaging light">
           <Channel channel={chatChannel}>
             <Window>
               <ChannelHeader />
@@ -156,7 +149,7 @@ export default function Discussion() {
             </Window>
             <Thread />
           </Channel>
-        </Chat>
+        </Chat> */}
       </div>
     </div>
 
