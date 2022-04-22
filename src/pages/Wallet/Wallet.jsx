@@ -1,21 +1,31 @@
-import { useState } from 'react';
-import { Alert, Button, Divider, Breadcrumb, Table } from 'antd';
+import { useEffect, useState } from 'react';
+import { Alert, Button, Divider, Breadcrumb, Table, Tooltip, Tag } from 'antd';
 import { Link } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
-import { UpOutlined, DownOutlined, HomeOutlined } from '@ant-design/icons';
-// import Loader from '../../components/Loader/Loader';
+import { useSelector } from 'react-redux';
+import {
+  UpOutlined,
+  DownOutlined,
+  HomeOutlined,
+  SyncOutlined,
+} from '@ant-design/icons';
+import Loader from '../../components/Loader/Loader';
 import Bitcoin from '../../assets/Bitcoin.svg';
 import WalletModal from '../../components/WalletModal/WalletModal';
+import { bearerInstance } from '../../utils/API';
 import './Wallet.scss';
+import moment from 'moment';
 
 const columns = [
   {
     title: 'transaction',
     dataIndex: 'transaction',
     key: 'transaction',
-    render: (text, record) => (
-      <div className="wallet-table-transaction">
-        {text === 'sent out' ? (
+    render: (_, record) => (
+      <div
+        className="wallet-table-transaction"
+        style={{ opacity: record.confirmations === 0 ? '0.5' : '1' }}
+      >
+        {record.type === 'incoming' ? (
           <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         ) : (
           <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
@@ -40,13 +50,18 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '13px' }}>{text}</p>
-          <p style={{ marginBottom: 0, fontSize: '10px' }}>
-            {new Date(record.time).toLocaleString('en-us', {
-              month: 'short',
-              day: '2-digit',
-              year: 'numeric',
-            })}
+          <p style={{ marginBottom: 0, fontSize: '13px' }}>{record.type}</p>
+          <p style={{ marginBottom: 0, fontSize: '11px' }}>
+            {new Date(record.confirmed || record.received).toLocaleString(
+              'en-us',
+              {
+                month: 'short',
+                day: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+              }
+            )}
           </p>
         </div>
       </div>
@@ -56,7 +71,36 @@ const columns = [
     title: 'status',
     dataIndex: 'status',
     key: 'status',
-    render: text => <p style={{ marginBottom: 0, fontSize: '13px' }}>{text}</p>,
+    render: (_, record) => (
+      <Tooltip
+        title={`${
+          record.confirmations < 3 ? record.confirmations : '3'
+        } of 3 confirmations`}
+      >
+        <Tag
+          style={{
+            fontSize: '11px',
+            marginBottom: 0,
+            marginRight: 0,
+            cursor: 'pointer',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
+          }}
+          color={
+            record.confirmations === 0
+              ? 'default'
+              : record.confirmations < 3 && record.confirmations > 0
+              ? 'yellow'
+              : 'green'
+          }
+        >
+          {record.confirmations === 0
+            ? 'detected'
+            : record.confirmations < 3 && record.confirmations > 0
+            ? 'pending'
+            : 'successful'}
+        </Tag>
+      </Tooltip>
+    ),
   },
   {
     title: 'amount',
@@ -64,148 +108,276 @@ const columns = [
     dataIndex: 'amount',
     render: (text, record) => (
       <>
-        <p style={{ marginBottom: 0, fontSize: '13px', textAlign: 'right' }}>
-          {record.transaction === 'sent out' ? '+' : '-'}
-          {text}BTC
+        <p
+          style={{
+            marginBottom: 0,
+            fontSize: '13px',
+            textAlign: 'right',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
+          }}
+        >
+          {record.type === 'incoming' ? '+' : '-'}
+          {Number(record.value_btc.toFixed(7))} BTC
         </p>
-        <p style={{ marginBottom: 0, fontSize: '10px', textAlign: 'right' }}>
-          {record.transaction === 'sent out' ? '+' : '-'}
-          {text * 450}USD
+        <p
+          style={{
+            marginBottom: 0,
+            fontSize: '11px',
+            textAlign: 'right',
+            opacity: record.confirmations === 0 ? '0.5' : '1',
+          }}
+        >
+          {record.type === 'incoming' ? '+' : '-'}
+          {record.value_usd} USD
         </p>
       </>
     ),
   },
 ];
 
-const data = [
-  {
-    transaction: 'sent out',
-    time: '2022-04-24',
-    status: 'successful',
-    amount: 0.005,
-  },
-  {
-    transaction: 'recieved',
-    time: '2022-04-24',
-    status: 'successful',
-    amount: 0.005,
-  },
-];
-
 const Wallet = () => {
+  const [loading, setLoading] = useState(true);
+  const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [send, setSend] = useState(false);
+  const [sent, setSent] = useState(null);
+  const [btcPrice, setBtcPrice] = useState('');
+  const [data, setData] = useState();
+  const [view, setView] = useState(6);
+  const [userBalance, setUserBalance] = useState();
+  const { wallet_name } = useSelector(state => state.user.userData);
+
+  const fetchData = () => {
+    setReload(true);
+
+    bearerInstance
+      .get(`/wallet_cypher?wallet=1&name=${wallet_name}`)
+      .then(res => {
+        setUserBalance(res.data.message);
+        // console.log(res.data.message);
+
+        return bearerInstance.get('/wallet?prices=1');
+      })
+      .then(res => {
+        setBtcPrice(res.data.message.USD['15m']);
+
+        setLoading(false);
+        setReload(false);
+      })
+      .catch(err => {
+        console.log('something went wrong');
+      });
+  };
+
+  const loadTransactions = () => {
+    bearerInstance
+      .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
+      .then(res => {
+        const data = res.data.message
+          .map((cur, i) => {
+            return {
+              key: i,
+              ...cur,
+            };
+          })
+          .sort((a, b) => {
+            if (a.recieved && b.confirmed)
+              return moment(b.confirmed) - moment(a.recieved);
+            else if (b.recieved && a.confirmed)
+              return moment(b.received) - moment(a.confirmed);
+            else return moment(b.confirmed) - moment(a.confirmed);
+          });
+
+        setData(data);
+      })
+      .catch(err => {
+        console.log('something went wrong');
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    loadTransactions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>
-      {' '}
-      <WalletModal
-        open={walletModal}
-        send={send}
-        close={() => setWalletModal(false)}
-      />
+      {walletModal && (
+        <WalletModal
+          open={walletModal}
+          send={send}
+          sent={val => {
+            setSent(val);
+          }}
+          close={() => setWalletModal(false)}
+          btcPrice={+btcPrice}
+          curBal={+userBalance.balance_btc}
+        />
+      )}
+
       <div className="wallet">
         <div className="wallet-wrapper">
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/">
-                <HomeOutlined />
-              </Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>wallet</Breadcrumb.Item>
-          </Breadcrumb>
+          {loading && <Loader />}
+          {!loading && (
+            <>
+              <Breadcrumb>
+                <Breadcrumb.Item>
+                  <Link to="/">
+                    <HomeOutlined />
+                  </Link>
+                </Breadcrumb.Item>
+                <Breadcrumb.Item>wallet</Breadcrumb.Item>
+              </Breadcrumb>
 
-          <Alert
-            message="bitcoin sent!"
-            description="0.00013462 BTC has been successfully sent to bc1qkzk3ea0muwkyf292aevfqglmg0xkjwa50lg6f5"
-            type="success"
-            style={{ marginBottom: '20px' }}
-            showIcon
-            closable
-          />
-
-          {/* bitcoin price in usd */}
-          <div className="wallet-price">
-            <div>
-              <div style={{ marginRight: '5px' }}>
-                <img
-                  alt="bitcoin"
-                  src={Bitcoin}
-                  style={{ height: '100%', width: '100%' }}
+              {sent && (
+                <Alert
+                  message={sent.message}
+                  className={`wallet-alert ${
+                    sent.type === 'error' ? 'wallet-alert-err' : ''
+                  }`}
+                  description={sent.description}
+                  type={sent.type}
+                  style={{ marginBottom: '20px' }}
+                  showIcon
+                  closable
                 />
+              )}
+
+              {/* bitcoin price in usd */}
+              <div className="wallet-price">
+                <div>
+                  <div style={{ marginRight: '5px' }}>
+                    <img
+                      alt="bitcoin"
+                      src={Bitcoin}
+                      style={{ height: '100%', width: '100%' }}
+                    />
+                  </div>
+                  <p className="wallet-p">Bitcoin</p>
+                </div>
+
+                <div>
+                  <p className="wallet-p">
+                    <SyncOutlined
+                      spin={reload}
+                      onClick={() => {
+                        fetchData();
+                        loadTransactions();
+                      }}
+                      style={{
+                        color: '#ed1450',
+                        marginRight: '12px',
+                      }}
+                    />
+                    price: {new Intl.NumberFormat('en-us').format(btcPrice)} usd
+                  </p>
+                </div>
               </div>
-              <p className="wallet-p">Bitcoin</p>
-            </div>
 
-            <div>
-              <p className="wallet-p">price: 38,371.17 usd</p>
-            </div>
-          </div>
+              <Divider style={{ fontSize: '14px' }}>current balance</Divider>
 
-          <Divider style={{ fontSize: '14px' }}>current balance</Divider>
+              {/*wallet + send and receive bitcoin */}
+              <div className="wallet-coin">
+                <h2>
+                  {userBalance.balance_btc}
+                  {userBalance.balance_btc === 0 && '.00'} BTC
+                </h2>
+                <p
+                  className="wallet-p"
+                  style={{ marginBottom: '20px', marginTop: '-5px' }}
+                >
+                  approx{' '}
+                  {new Intl.NumberFormat('en-us').format(
+                    userBalance.balance_usd
+                  )}
+                  {userBalance.balance_usd === 0 && '.00'} usd
+                  {userBalance.balance_usd === 0 && (
+                    <Button
+                      type="text"
+                      style={{
+                        color: '#ed1450',
+                        padding: 0,
+                        marginLeft: '5px',
+                      }}
+                      onClick={() => {
+                        setWalletModal(true);
+                        setSend(false);
+                      }}
+                    >
+                      deposit some coins
+                    </Button>
+                  )}
+                </p>
 
-          {/*wallet + send and receive bitcoin */}
-          <div className="wallet-coin">
-            <h2>0.00317642 BTC</h2>
-            <p
-              className="wallet-p"
-              style={{ marginBottom: '20px', marginTop: '-5px' }}
-            >
-              approx 121.88 usd
-            </p>
+                <div className="wallet-coin-btn">
+                  <Button
+                    type="primary"
+                    block
+                    onClick={() => {
+                      setSent(null);
+                      setWalletModal(true);
+                      setSend(true);
+                    }}
+                  >
+                    send coin
+                  </Button>
 
-            <div className="wallet-coin-btn">
+                  <Button
+                    type="primary"
+                    block
+                    onClick={() => {
+                      setWalletModal(true);
+                      setSend(false);
+                    }}
+                  >
+                    receive coin
+                  </Button>
+                </div>
+
+                <div className="wallet-coin-btn">
+                  <Button className="wallet-coin-btn-1" block>
+                    <UpOutlined />
+                    buy coin
+                  </Button>
+
+                  <Button className="wallet-coin-btn-1" block>
+                    <DownOutlined />
+                    sell coin
+                  </Button>
+                </div>
+              </div>
+
+              <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
+
+              <Table
+                className="wallet-table"
+                pagination={false}
+                columns={columns}
+                dataSource={data?.slice(0, view)}
+              />
+
               <Button
-                type="primary"
-                block
                 onClick={() => {
-                  setWalletModal(true);
-                  setSend(true);
+                  if (data.length - view > 6) setView(view + 6);
+                  else setView(data?.length);
+                }}
+                type="text"
+                style={{
+                  color: '#ed1450',
+                  display: 'block',
+                  margin: '0 auto',
+                  marginTop: '8px',
                 }}
               >
-                send coin
+                load more
               </Button>
-
-              <Button
-                type="primary"
-                block
-                onClick={() => {
-                  setWalletModal(true);
-                  setSend(false);
-                }}
-              >
-                receive coin
-              </Button>
-            </div>
-
-            <div className="wallet-coin-btn">
-              <Button className="wallet-coin-btn-1" block>
-                <UpOutlined />
-                buy coin
-              </Button>
-
-              <Button className="wallet-coin-btn-1" block>
-                <DownOutlined />
-                sell coin
-              </Button>
-            </div>
-          </div>
-
-          <Divider style={{ fontSize: '14px' }}>recent activity</Divider>
-
-          <Table
-            className="wallet-table"
-            pagination={false}
-            columns={columns}
-            dataSource={data}
-          />
-
-          <Link
-            to="#"
-            style={{ textAlign: 'center', display: 'block', marginTop: '8px' }}
-          >
-            view full history
-          </Link>
+            </>
+          )}
         </div>
       </div>
     </>

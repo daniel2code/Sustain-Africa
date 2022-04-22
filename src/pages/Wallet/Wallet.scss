@@ -4,10 +4,18 @@
   padding-bottom: 40px;
   position: relative;
 
-  & .ant-alert-message {
-    color: #14a014;
-    font-size: 13px;
-    line-height: 15px;
+  &-alert {
+    & .ant-alert-message {
+      color: #14a014;
+      font-size: 13px;
+      line-height: 15px;
+    }
+
+    &-err {
+      & .ant-alert-message {
+        color: #ed1450;
+      }
+    }
   }
 
   .ant-divider-inner-text {
@@ -93,15 +101,21 @@
     & .ant-table-thead {
       & > tr {
         & > th {
+          padding-bottom: 10px !important;
           background: #fff;
           border: unset;
           padding: unset;
           font-weight: 400;
           color: #999;
           font-size: 14px;
+          width: 33%;
 
           &::before {
             display: none;
+          }
+
+          &:nth-child(2) {
+            text-align: center;
           }
 
           &:nth-child(3) {
@@ -123,7 +137,12 @@
           padding: unset;
           vertical-align: top;
           font-weight: 500;
+          // font-size: 10px;
           // color: #999;
+
+          &:nth-child(2) {
+            text-align: center;
+          }
         }
       }
     }
