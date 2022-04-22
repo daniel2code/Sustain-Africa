@@ -3,9 +3,15 @@
     display: none;
   }
 
+  & .ant-form-item-label > label {
+    height: unset;
+  }
+
   &-box {
     display: flex;
     align-items: flex-start;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
     &-left {
       flex: 1;
@@ -60,11 +66,11 @@
     }
   }
 
-  & .ant-alert-message {
-    color: #ed1450;
-    font-size: 13px;
-    line-height: 15px;
-  }
+  // & .ant-alert-message {
+  //   color: #ed1450;
+  //   font-size: 13px;
+  //   line-height: 15px;
+  // }
 
   &-p {
     word-wrap: break-word;
@@ -72,16 +78,5 @@
     @media only screen and (max-width: 540px) {
       width: 200px;
     }
-  }
-}
-
-@keyframes dropin {
-  from {
-    transform: scale(0);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
   }
 }
