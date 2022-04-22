@@ -17,41 +17,57 @@ import {
   card_types,
   card_brands,
 } from '../../utils/datasource';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const { Option } = Select;
 
-const DealHeader = ({ title, mainName, tooltipText }) => {
-  const [selectedDestination, setSelectedDestination] = useState('');
-  const [destinationStatesToRender, setDestinationStatesToRender] = useState(
-    []
-  );
-  const [destinationBanksToRender, setDestinationBanksToRender] = useState([]);
-  const [destinationStateInput, setDestinationStateInput] = useState(null);
-  const [destinationBankInput, setDestinationBankInput] = useState(null);
-  const [destinationAccountInput, setDestinationAccountInput] = useState(null);
-  const [destinationAccountAgeInput, setDestinationAccountAgeInput] =
-    useState(null);
+const DealHeader = ({
+  title,
+  mainName,
+  tooltipText,
+  cur,
+  setCur,
+  rate,
+  typ,
+  country,
+  disableSelect,
+}) => {
+  const [type, setType] = useState('');
+  const [StatesToRender, setStatesToRender] = useState([]);
+  const [BanksToRender, setBanksToRender] = useState([]);
 
-  const handleDestinationSelect = value => {
-    setSelectedDestination(value);
+  const [StateInput, setStateInput] = useState(null);
+  const [BankInput, setBankInput] = useState(null);
+  const [AccountInput, setAccountInput] = useState(null);
+  const [AccountAgeInput, setAccountAgeInput] = useState(null);
+
+  useEffect(() => {
+    if (typ) {
+      setType(typ);
+
+      if (country) onBankCountryChange(country);
+    }
+  }, [typ, country]);
+
+  const handleSelect = value => {
+    setType(value);
   };
 
-  const onDestinationBankCountryChange = value => {
-    setDestinationStateInput(null);
-    setDestinationBankInput(null);
-    setDestinationAccountInput(null);
-    setDestinationAccountAgeInput(null);
+  const onBankCountryChange = value => {
+    setStateInput(null);
+    setBankInput(null);
+    setAccountInput(null);
+    setAccountAgeInput(null);
 
     if (value === 'United States') {
-      setDestinationStatesToRender(us_states);
-      setDestinationBanksToRender(us_banks);
+      setStatesToRender(us_states);
+      setBanksToRender(us_banks);
     } else if (value === 'United Kingdom') {
-      setDestinationStatesToRender(uk_states);
-      setDestinationBanksToRender(uk_banks);
+      setStatesToRender(uk_states);
+      setBanksToRender(uk_banks);
     } else if (value === 'Nigeria') {
-      setDestinationStatesToRender(ng_states);
-      setDestinationBanksToRender(ng_banks);
+      setStatesToRender(ng_states);
+      setBanksToRender(ng_banks);
     }
   };
 
@@ -80,9 +96,10 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 }}
               />
             }
+            disabled={disableSelect}
             placeholder={`select ${mainName}`}
             onChange={value => {
-              handleDestinationSelect(value);
+              handleSelect(value);
             }}
           >
             <Option value="bank fund">bank fund</Option>
@@ -107,13 +124,13 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
         </div>
       </div>
 
-      {(selectedDestination === 'bitcoin' ||
-        selectedDestination === 'ethereum' ||
-        selectedDestination === 'dogecoin' ||
-        selectedDestination === 'litecoin') && (
+      {(type === 'bitcoin' ||
+        type === 'ethereum' ||
+        type === 'dogecoin' ||
+        type === 'litecoin') && (
         <>
           <Form.Item
-            name="destination_wallet_type"
+            name={`${mainName}_wallet_type`}
             rules={[
               {
                 required: true,
@@ -144,7 +161,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
           </Form.Item>
 
           <Form.Item
-            name="destination_exchange"
+            name="_exchange"
             rules={[
               {
                 required: true,
@@ -175,7 +192,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
           </Form.Item>
 
           <Form.Item
-            name="destination_wallet_age"
+            name={`${mainName}_wallet_age`}
             rules={[
               {
                 required: true,
@@ -210,11 +227,11 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
         </>
       )}
 
-      {selectedDestination === 'bank fund' && (
+      {type === 'bank fund' && (
         <>
           <Form.Item style={{ marginBottom: 0 }}>
             <Form.Item
-              name="destination_country"
+              name={`${mainName}_country`}
               style={{ display: 'inline-block', width: '39%' }}
               rules={[
                 {
@@ -233,7 +250,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                   />
                 }
                 placeholder="country"
-                onChange={onDestinationBankCountryChange}
+                onChange={onBankCountryChange}
               >
                 {countries &&
                   countries.map(country => (
@@ -250,6 +267,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 width: '39%',
                 marginLeft: '2%',
               }}
+              name={`${mainName}_state_name`}
               rules={[
                 {
                   required: true,
@@ -267,13 +285,13 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                   />
                 }
                 placeholder="state"
-                value={destinationStateInput}
+                value={StateInput}
                 onChange={value => {
-                  setDestinationStateInput(value);
+                  setStateInput(value);
                 }}
               >
-                {destinationStatesToRender &&
-                  destinationStatesToRender.map(state => (
+                {StatesToRender &&
+                  StatesToRender.map(state => (
                     <Option key={state} value={state}>
                       {state}
                     </Option>
@@ -289,6 +307,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 whitespace: true,
               },
             ]}
+            name={`${mainName}_bank_name`}
             style={{ width: '80%' }}
           >
             <Select
@@ -301,13 +320,13 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 />
               }
               placeholder="bank name"
-              value={destinationBankInput}
+              value={BankInput}
               onChange={value => {
-                setDestinationBankInput(value);
+                setBankInput(value);
               }}
             >
-              {destinationBanksToRender &&
-                destinationBanksToRender.map(bank => (
+              {BanksToRender &&
+                BanksToRender.map(bank => (
                   <Option key={bank} value={bank}>
                     {bank}
                   </Option>
@@ -323,6 +342,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 whitespace: true,
               },
             ]}
+            name={`${mainName}_account_type`}
             style={{ width: '80%' }}
           >
             <Select
@@ -335,9 +355,9 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 />
               }
               placeholder="account type"
-              value={destinationAccountInput}
+              value={AccountInput}
               onChange={value => {
-                setDestinationAccountInput(value);
+                setAccountInput(value);
               }}
             >
               {account_types &&
@@ -357,6 +377,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
               },
             ]}
             style={{ width: '80%' }}
+            name={`${mainName}_account_age`}
           >
             <Select
               suffixIcon={
@@ -368,9 +389,9 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                 />
               }
               placeholder="account age"
-              value={destinationAccountAgeInput}
+              value={AccountAgeInput}
               onChange={value => {
-                setDestinationAccountAgeInput(value);
+                setAccountAgeInput(value);
               }}
             >
               {account_age &&
@@ -387,10 +408,10 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
         </>
       )}
 
-      {selectedDestination === 'giftcard' && (
+      {type === 'giftcard' && (
         <>
           <Form.Item
-            name="destination_card_type"
+            name={`${mainName}_card_type`}
             rules={[
               {
                 required: true,
@@ -421,7 +442,7 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
           </Form.Item>
 
           <Form.Item
-            name="destination_card_brand"
+            name={`${mainName}_card_brand`}
             rules={[
               {
                 required: true,
@@ -453,14 +474,14 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
         </>
       )}
 
-      {selectedDestination !== '' && (
+      {type !== '' && (
         <>
           <Form.Item
-            name="destination_currency"
+            name={`${mainName}_currency`}
             style={{ width: '80%' }}
             rules={[
               {
-                required: true,
+                required: mainName === '' && rate === 1 ? false : true,
                 message: 'please specify currency!',
               },
             ]}
@@ -474,11 +495,11 @@ const DealHeader = ({ title, mainName, tooltipText }) => {
                   }}
                 />
               }
-              // value={destCur}
+              value={cur}
               // initialValue={destCur}
-              // onChange={e => setDestCur(e)}
+              onChange={e => setCur(e)}
               placeholder="currency"
-              // disabled={rate}
+              disabled={rate || false}
             >
               <Option value="usd">USD ($)</Option>
               <Option value="ngn">NGN (₦)</Option>
