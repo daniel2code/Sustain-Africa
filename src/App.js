@@ -57,8 +57,8 @@ function App() {
 
           return userId === cur.receiver && cur.viewed_receiver === 0;
         });
-        console.log(notif);
-        console.log(userId);
+        // console.log(notif);
+        // console.log(userId);
         dispatch(setNotificationCount(notif.length));
       })
       .catch(err => {
@@ -124,8 +124,8 @@ function App() {
               <Route exact path="/wallet" component={Wallet} />
               <Route exact path="/user/:id/profile" component={OtherProfile} />
               <Route exact path="/deal/:id" component={DealPage} />
-              <Route exact path="/discussion" component={DiscussionMenu} />
-              <Route exact path="/discussion/:id" component={Discussion} />
+              <Route exact path="/chat" component={DiscussionMenu} />
+              <Route exact path="/chat/:id" component={Discussion} />
               <Route exact path="/notifications" component={Notification} />
             </Switch>
           ) : (

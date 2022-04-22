@@ -1,17 +1,17 @@
 import { useState } from 'react';
 import './DealModal.scss';
-import { Modal, Form, Input, Row, Col, Button } from 'antd';
+import { Modal, Form, Input, Row, Col, Button, message } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { bearerInstance } from './../../utils/API';
 import { useSelector } from 'react-redux';
 import { curType } from '../../utils/datasource';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
+// import { useHistory } from 'react-router-dom';
 
 const DealModal = ({ modal, close, deal, dealerData }) => {
   const [amount, setAmount] = useState(0);
   const [loading, setLoading] = useState(false);
   const userId = useSelector(state => state?.user?.userData?.id);
-  const history = useHistory();
+  // const history = useHistory();
 
   const submit = values => {
     setLoading(true);
@@ -32,9 +32,11 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
       .post(`/new_notification`, data)
       .then(res => {
         console.log(res);
-        history.push(`/discussion/${deal.d_id}`);
+        // history.push(`/chat/${deal.d_id}`);
       })
-      .catch(err => {})
+      .catch(err => {
+        message.error(err.response?.data?.message);
+      })
       .finally(() => setLoading(false));
   };
 
@@ -157,7 +159,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
               <Row>
                 <Col span={9}>to receive</Col>{' '}
                 <Col span={12}>
-                  <strong>
+                  <strong style={{ fontSize: '16px' }}>
                     {curType(deal?.destination_currency.toLowerCase())}
                     {dealAmount(amount, deal?.rate_structure, deal?.rate)}
                   </strong>

@@ -4,5 +4,5 @@ import './discussion.scss';
 // const { TextArea } = Input;
 
 export default function DiscussionMenu() {
-  return <div>discussion</div>;
+  return <div>chat</div>;
 }
