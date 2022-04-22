@@ -56,31 +56,36 @@ export default function DiscussionMenu() {
         {loading && <Loader />}
         {!loading && (
           <>
-            <div className="msg-head">
-              <Breadcrumb>
-                <Breadcrumb.Item>
-                  <Link to="/">
-                    <HomeOutlined />
-                  </Link>
-                </Breadcrumb.Item>
-                <Breadcrumb.Item>chats ({discussions.length})</Breadcrumb.Item>
-              </Breadcrumb>
+            <Breadcrumb>
+              <Breadcrumb.Item>
+                <Link to="/">
+                  <HomeOutlined />
+                </Link>
+              </Breadcrumb.Item>
+              <Breadcrumb.Item>chats</Breadcrumb.Item>
+            </Breadcrumb>
 
-              <Select
-                style={{ flex: '0 0 160px' }}
-                value={filterValue}
-                suffixIcon={<DownOutlined />}
-                placeholder="filter by..."
-                optionFilterProp="children"
-                onChange={onFilterChange}
-              >
-                <Option value="">clear filter</Option>
-                <Option value="resolved">resolved</Option>
-                <Option value="ongoing">ongoing</Option>
-              </Select>
+            <div className="msg-bar">
+              <div className="msg-bar-left">chats ({discussions.length})</div>
+              <div className="msg-bar-right">
+                <div>
+                  <Select
+                    style={{ flex: '0 0 160px' }}
+                    value={filterValue}
+                    suffixIcon={<DownOutlined />}
+                    placeholder="filter by..."
+                    optionFilterProp="children"
+                    onChange={onFilterChange}
+                  >
+                    <Option value="">clear filter</Option>
+                    <Option value="resolved">resolved</Option>
+                    <Option value="ongoing">ongoing</Option>
+                  </Select>
+                </div>
+              </div>
             </div>
 
-            <p>click on anyone to continue where you left off.</p>
+            {/* <p>click on anyone to continue where you left off.</p> */}
 
             <div className="msg-discussions">
               {discussions.map((cur, i) => (
