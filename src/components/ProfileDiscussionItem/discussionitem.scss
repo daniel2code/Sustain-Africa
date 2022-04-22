@@ -20,10 +20,19 @@
     }
     .status {
       color: white;
-      background-color: tomato;
       padding: 3px 10px;
       border-radius: 30px;
       font-size: 12px;
+    }
+
+    .progress {
+      @extend .status;
+      background-color: #ed1450;
+    }
+
+    .resolved {
+      @extend .status;
+      background-color: #14a014;
     }
   }
 

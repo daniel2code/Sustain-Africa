@@ -1430,7 +1430,7 @@ export default function EditDeal({ match }) {
               <Divider style={{ fontSize: '14px', color: '#999' }}>
                 discussion & linkup
               </Divider>
-              <div className="form-row">
+              {/* <div className="form-row">
                 <Form.Item
                   name="discussion"
                   label="medium"
@@ -1472,7 +1472,7 @@ export default function EditDeal({ match }) {
                     <div className="question-tooltip">?</div>
                   </Tooltip>
                 </div>
-              </div>
+              </div> 
 
               <Form.Item
                 label="discussion detail"
@@ -1491,7 +1491,7 @@ export default function EditDeal({ match }) {
                   placeholder="kindly share details on how discussion will be done."
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
-              </Form.Item>
+              </Form.Item>*/}
 
               <Form.Item
                 label="notes"

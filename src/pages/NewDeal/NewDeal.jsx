@@ -95,7 +95,7 @@ export default function NewDeal() {
   const [destinationAccountInput, setDestinationAccountInput] = useState(null);
   const [destinationAccountAgeInput, setDestinationAccountAgeInput] =
     useState(null);
-  const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
+  // const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
   const [minmax, setMinmax] = useState(false);
   const [rate, setRate] = useState(1);
   // const [curr, setCurr] = useState('usd');
@@ -122,8 +122,10 @@ export default function NewDeal() {
     data.append('remit_rate', values?.rate);
     // data.append('currency', values?.currency);
     data.append('remit_rate_structure', rate ? 'percentage' : 'currency');
-    data.append('discussion_title', values?.discussion);
-    data.append('discussion_details', values?.discussion_detail);
+    // data.append('discussion_title', values?.discussion);
+    // data.append('discussion_details', values?.discussion_detail);
+    data.append('discussion_title', 'any');
+    data.append('discussion_details', 'any');
     data.append('deal_summary', values?.summary);
     data.append('min_score_to_accept', values?.score);
     data.append('s_bank_name', sourceBankInput ? sourceBankInput : '');
@@ -731,7 +733,7 @@ export default function NewDeal() {
             <div className="form-row">
               <Form.Item
                 name="destination"
-                label="will deposit to"
+                label="will remit to"
                 rules={[
                   {
                     required: true,
@@ -1308,7 +1310,7 @@ export default function NewDeal() {
               discussion & linkup
             </Divider>
 
-            <div className="form-row">
+            {/* <div className="form-row">
               <Form.Item
                 name="discussion"
                 label="medium"
@@ -1374,7 +1376,7 @@ export default function NewDeal() {
                   autoSize={{ minRows: 3, maxRows: 5 }}
                 />
               </Form.Item>
-            )}
+            )} */}
 
             <Form.Item
               label="notes"

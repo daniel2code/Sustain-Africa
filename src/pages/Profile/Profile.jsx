@@ -16,6 +16,7 @@ import ProfileDealItem from './../../components/ProfileDealsItem/ProfileDealItem
 import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
 import './profile.scss';
 import useProfile from '../../hooks/useProfile';
+import { bearerInstance } from '../../utils/API';
 
 const { TabPane } = Tabs;
 
@@ -26,6 +27,22 @@ export default function Profile() {
   const userState = useSelector(state => state.user);
   const profileData = useSelector(state => state.data.profile);
   const [dealsCount, setDealsCount] = useState(3);
+  const [loading, setLoading] = useState([]);
+  const [discussions, setDiscussions] = useState([]);
+
+  const getAllChats = () => {
+    setLoading(true);
+
+    bearerInstance
+      .get('/fetch_all_discussions')
+      .then(res => {
+        setDiscussions(res.data.discussion_data);
+      })
+      .catch(err => {
+        message.error(err.response?.data?.message);
+      })
+      .finally(() => setLoading(false));
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -39,9 +56,13 @@ export default function Profile() {
     //eslint-disable-next-line
   }, []);
 
+  useEffect(() => {
+    getAllChats();
+  }, []);
+
   return (
     <div className="profile-container">
-      {!profileData && <Loader />}
+      {!profileData && loading && <Loader />}
 
       {profileData && (
         <div className="profile-wrapper">
@@ -85,13 +106,13 @@ export default function Profile() {
           <Divider
             style={{ fontSize: '14px', color: '#999', marginTop: '30px' }}
           >
-            chats (16)
+            chats ({discussions.length})
           </Divider>
 
           <div className="discussions">
-            <ProfileDiscussionItem key="1" />
-            <ProfileDiscussionItem key="3" />
-            <ProfileDiscussionItem key="2" />
+            {discussions.slice(0, 3).map((cur, i) => (
+              <ProfileDiscussionItem key={i} data={cur} />
+            ))}
           </div>
 
           <Divider
