@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Divider } from 'antd';
 import {
   Form,
+  Divider,
   Input,
   InputNumber,
   Select,
@@ -15,7 +15,6 @@ import {
 import { Link, useHistory } from 'react-router-dom';
 import { HomeOutlined, DownOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
-
 import { bearerInstance } from './../../utils/API';
 import {
   wallet_types,
@@ -36,6 +35,7 @@ import {
 } from './../../utils/datasource';
 import './NewDeal.scss';
 import useDeals from '../../hooks/useDeals';
+import DealHeader from '../../components/DealHeader/DealHeader';
 
 const formItemLayout = {
   labelCol: {
@@ -85,11 +85,6 @@ export default function NewDeal() {
   const [sourceCur, setSourceCur] = useState('usd');
   const [destCur, setDestCur] = useState('usd');
 
-  const [selectedDestination, setSelectedDestination] = useState('');
-  const [destinationStatesToRender, setDestinationStatesToRender] = useState(
-    []
-  );
-  const [destinationBanksToRender, setDestinationBanksToRender] = useState([]);
   const [destinationStateInput, setDestinationStateInput] = useState(null);
   const [destinationBankInput, setDestinationBankInput] = useState(null);
   const [destinationAccountInput, setDestinationAccountInput] = useState(null);
@@ -242,28 +237,6 @@ export default function NewDeal() {
     }
   };
 
-  const handleDestinationSelect = value => {
-    setSelectedDestination(value);
-  };
-
-  const onDestinationBankCountryChange = value => {
-    setDestinationStateInput(null);
-    setDestinationBankInput(null);
-    setDestinationAccountInput(null);
-    setDestinationAccountAgeInput(null);
-
-    if (value === 'United States') {
-      setDestinationStatesToRender(us_states);
-      setDestinationBanksToRender(us_banks);
-    } else if (value === 'United Kingdom') {
-      setDestinationStatesToRender(uk_states);
-      setDestinationBanksToRender(uk_banks);
-    } else if (value === 'Nigeria') {
-      setDestinationStatesToRender(ng_states);
-      setDestinationBanksToRender(ng_banks);
-    }
-  };
-
   return (
     <div className="new-deal-container">
       <div className="new-deal-wrapper">
@@ -296,7 +269,7 @@ export default function NewDeal() {
             onFinish={onFinish}
             scrollToFirstError
           >
-            <div className="form-row">
+            {/* <div className="form-row">
               <Form.Item
                 name="source"
                 label="i am picking"
@@ -728,442 +701,27 @@ export default function NewDeal() {
                   </Select>
                 </Form.Item>
               </>
-            )}
+            )} */}
 
-            <div className="form-row">
-              <Form.Item
-                name="destination"
-                label="will remit to"
-                rules={[
-                  {
-                    required: true,
-                    message: 'please select deal destination!',
-                  },
-                ]}
-              >
-                <Select
-                  style={{
-                    width: 'calc(100% - 30px)',
-                  }}
-                  suffixIcon={
-                    <DownOutlined
-                      style={{
-                        strokeWidth: '50',
-                        color: '#ed1450',
-                      }}
-                    />
-                  }
-                  placeholder="select destination"
-                  onChange={value => {
-                    handleDestinationSelect(value);
-                  }}
-                >
-                  <Option value="bank fund">bank fund</Option>
-                  <Option value="paypal">paypal</Option>
-                  <Option value="cash">cash</Option>
-                  <Option value="skrill">skrill</Option>
-                  <Option value="venmo">venmo</Option>
-                  <Option value="bitcoin">bitcoin</Option>
-                  <Option value="giftcard">giftcard</Option>
-                  <Option value="cashapp">cashapp</Option>
-                  <Option value="moneygram">moneygram</Option>
-                  <Option value="greendot">greendot</Option>
-                  <Option value="ethereum">ethereum</Option>
-                  <Option value="litecoin">litecoin</Option>
-                  <Option value="dogecoin">dogecoin</Option>
-                </Select>
-              </Form.Item>
-              <div className="tooltip-container">
-                <Tooltip
-                  placement="left"
-                  title="select the destination instrument. this is where the fund being bought, sold or swapped will be remitted to. you can select from over 100 instruments."
-                >
-                  <div className="question-tooltip">?</div>
-                </Tooltip>
-              </div>
-            </div>
+            {/* source */}
+            <DealHeader
+              title="i am picking"
+              mainName="source"
+              tooltipText="select the source instrument. 
+              this is where the fund being bought, 
+              sold or swapped originates from. you can
+               select from over 100 instruments"
+            />
 
-            {(selectedDestination === 'bitcoin' ||
-              selectedDestination === 'ethereum' ||
-              selectedDestination === 'dogecoin' ||
-              selectedDestination === 'litecoin') && (
-              <>
-                <Form.Item
-                  name="destination_wallet_type"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select wallet type!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="wallet type"
-                  >
-                    {wallet_types &&
-                      wallet_types.map(wallet => (
-                        <Option key={wallet} value={wallet}>
-                          {wallet}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  name="destination_exchange"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select exchange!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="exchange"
-                  >
-                    {exchanges &&
-                      exchanges.map(exchange => (
-                        <Option key={exchange} value={exchange}>
-                          {exchange}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  name="destination_wallet_age"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select wallet age!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="wallet age"
-                  >
-                    {wallet_age &&
-                      wallet_age.map(age => (
-                        <Option key={age} value={age}>
-                          {age}
-                        </Option>
-                      ))}
-                    <Option key="above 10" value="above 10">
-                      above 10
-                    </Option>
-                  </Select>
-                </Form.Item>
-              </>
-            )}
-
-            {selectedDestination === 'bank fund' && (
-              <>
-                <Form.Item style={{ marginBottom: 0 }}>
-                  <Form.Item
-                    name="destination_country"
-                    style={{ display: 'inline-block', width: '39%' }}
-                    rules={[
-                      {
-                        required: true,
-                        message: 'select bank country!',
-                      },
-                    ]}
-                  >
-                    <Select
-                      suffixIcon={
-                        <DownOutlined
-                          style={{
-                            strokeWidth: '50',
-                            color: '#ed1450',
-                          }}
-                        />
-                      }
-                      placeholder="country"
-                      onChange={onDestinationBankCountryChange}
-                    >
-                      {countries &&
-                        countries.map(country => (
-                          <Option key={country} value={country}>
-                            {country}
-                          </Option>
-                        ))}
-                    </Select>
-                  </Form.Item>
-
-                  <Form.Item
-                    style={{
-                      display: 'inline-block',
-                      width: '39%',
-                      marginLeft: '2%',
-                    }}
-                    rules={[
-                      {
-                        required: true,
-                        message: 'select bank state!',
-                      },
-                    ]}
-                  >
-                    <Select
-                      suffixIcon={
-                        <DownOutlined
-                          style={{
-                            strokeWidth: '50',
-                            color: '#ed1450',
-                          }}
-                        />
-                      }
-                      placeholder="state"
-                      value={destinationStateInput}
-                      onChange={value => {
-                        setDestinationStateInput(value);
-                      }}
-                    >
-                      {destinationStatesToRender &&
-                        destinationStatesToRender.map(state => (
-                          <Option key={state} value={state}>
-                            {state}
-                          </Option>
-                        ))}
-                    </Select>
-                  </Form.Item>
-                </Form.Item>
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select bank name!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="bank name"
-                    value={destinationBankInput}
-                    onChange={value => {
-                      setDestinationBankInput(value);
-                    }}
-                  >
-                    {destinationBanksToRender &&
-                      destinationBanksToRender.map(bank => (
-                        <Option key={bank} value={bank}>
-                          {bank}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select account type!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="account type"
-                    value={destinationAccountInput}
-                    onChange={value => {
-                      setDestinationAccountInput(value);
-                    }}
-                  >
-                    {account_types &&
-                      account_types.map(account => (
-                        <Option key={account} value={account}>
-                          {account}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-                <Form.Item
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select account age!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="account age"
-                    value={destinationAccountAgeInput}
-                    onChange={value => {
-                      setDestinationAccountAgeInput(value);
-                    }}
-                  >
-                    {account_age &&
-                      account_age.map(age => (
-                        <Option key={age} value={age}>
-                          {age}
-                        </Option>
-                      ))}
-                    <Option key="above 10" value="above 10">
-                      above 10
-                    </Option>
-                  </Select>
-                </Form.Item>
-              </>
-            )}
-
-            {selectedDestination === 'giftcard' && (
-              <>
-                <Form.Item
-                  name="destination_card_type"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select giftcard type!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="giftcard type"
-                  >
-                    {card_types &&
-                      card_types.map(card => (
-                        <Option key={card} value={card}>
-                          {card}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-
-                <Form.Item
-                  name="destination_card_brand"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please select giftcard brand!',
-                      whitespace: true,
-                    },
-                  ]}
-                  style={{ width: '80%' }}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    placeholder="giftcard brand"
-                  >
-                    {card_brands &&
-                      card_brands.map(brand => (
-                        <Option key={brand} value={brand}>
-                          {brand}
-                        </Option>
-                      ))}
-                  </Select>
-                </Form.Item>
-              </>
-            )}
-
-            {selectedDestination !== '' && (
-              <>
-                <Form.Item
-                  name="destination_currency"
-                  style={{ width: '80%' }}
-                  rules={[
-                    {
-                      required: true,
-                      message: 'please specify currency!',
-                    },
-                  ]}
-                >
-                  <Select
-                    suffixIcon={
-                      <DownOutlined
-                        style={{
-                          strokeWidth: '50',
-                          color: '#ed1450',
-                        }}
-                      />
-                    }
-                    // value={destCur}
-                    // initialValue={destCur}
-                    onChange={e => setDestCur(e)}
-                    placeholder="currency"
-                    disabled={rate}
-                  >
-                    <Option value="usd">USD ($)</Option>
-                    <Option value="ngn">NGN (₦)</Option>
-                    <Option value="cad">CAD ($)</Option>
-                    <Option value="gbp">GBP (£)</Option>
-                  </Select>
-                </Form.Item>
-              </>
-            )}
+            {/* dest */}
+            <DealHeader
+              title="will remit to"
+              mainName="destination"
+              tooltipText="select the destination instrument.
+               this is where the fund being bought,
+                sold or swapped will be remitted to.
+                 you can select from over 100 instruments."
+            />
 
             <Divider style={{ fontSize: '14px', color: '#999' }}>
               rate structure
