@@ -4,6 +4,7 @@ import { ArrowRightOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { curType } from '../../utils/datasource';
+import { Tag } from 'antd';
 
 const ProfileDiscussionItem = ({ data }) => {
   const history = useHistory();
@@ -21,12 +22,10 @@ const ProfileDiscussionItem = ({ data }) => {
             ? data.merchant_data[0].user_name_front
             : data.dealer_data[0].user_name_front}
         </div>
-
-        {data.status === 'progress' ? (
-          <div className="progress">#inprogress</div>
-        ) : (
-          <div className="resolved">#resolved</div>
-        )}
+        {data.status === 'progress' && <Tag color="blue">in progress</Tag>}
+        {data.status === 'canceled' && <Tag color="red">canceled</Tag>}
+        {data.status === 'completed' && <Tag color="green">completed</Tag>}
+        {data.status === 'dispute' && <Tag color="orange">dispute</Tag>}
       </div>
       <div className="bottom">
         <div className="source-destination">

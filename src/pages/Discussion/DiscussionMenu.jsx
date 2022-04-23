@@ -66,7 +66,9 @@ export default function DiscussionMenu() {
             </Breadcrumb>
 
             <div className="msg-bar">
-              <div className="msg-bar-left">chats ({discussions.length})</div>
+              <div className="msg-bar-left">
+                chats <span>({discussions.length})</span>
+              </div>
               <div className="msg-bar-right">
                 <div>
                   <Select
@@ -93,6 +95,10 @@ export default function DiscussionMenu() {
               ))}
             </div>
           </>
+        )}
+
+        {discussions && discussions.length !== 0 && (
+          <div className="msg-end">looks like you've reached the end</div>
         )}
       </div>
     </div>

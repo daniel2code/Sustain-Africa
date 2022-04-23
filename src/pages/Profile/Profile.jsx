@@ -115,6 +115,21 @@ export default function Profile() {
             ))}
           </div>
 
+          <Button
+            onClick={() => {
+              history.push('/chat');
+            }}
+            type="text"
+            style={{
+              color: '#ed1450',
+              display: 'block',
+              margin: '0 auto',
+              marginTop: '8px',
+            }}
+          >
+            view all
+          </Button>
+
           <Divider
             style={{ fontSize: '14px', color: '#999', marginTop: '30px' }}
           >

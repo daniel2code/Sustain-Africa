@@ -214,6 +214,11 @@
       font-weight: bold;
       margin: auto 0;
       font-size: 24px;
+
+      & span {
+        font-weight: 400;
+        font-size: 16px;
+      }
     }
 
     &-right {
@@ -231,5 +236,13 @@
         }
       }
     }
+  }
+
+  &-end {
+    padding: 20px 0;
+    border-top: 1px solid rgb(238, 238, 238);
+    text-align: center;
+    margin: auto 0;
+    font-size: 12px;
   }
 }
