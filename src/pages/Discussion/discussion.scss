@@ -214,10 +214,13 @@
       font-weight: bold;
       margin: auto 0;
       font-size: 24px;
+      display: flex;
+      align-items: center;
 
       & span {
         font-weight: 400;
         font-size: 16px;
+        margin-left: 5px;
       }
     }
 
