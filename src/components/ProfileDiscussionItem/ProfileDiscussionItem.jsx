@@ -15,7 +15,7 @@ const ProfileDiscussionItem = ({ data }) => {
       className="discussion-item-container"
       onClick={() => history.push(`/chat/${data.id}`)}
     >
-      <div className="bottom">
+      <div className="top">
         <div className="source-destination">
           {data.deal_info[0].source}{' '}
           <ArrowRightOutlined
@@ -26,6 +26,20 @@ const ProfileDiscussionItem = ({ data }) => {
           />{' '}
           {data.deal_info[0].destination}
         </div>
+
+        {data.status === 'progress' && <Tag color="blue">in progress</Tag>}
+        {data.status === 'canceled' && <Tag color="red">canceled</Tag>}
+        {data.status === 'completed' && <Tag color="green">completed</Tag>}
+        {data.status === 'dispute' && <Tag color="orange">dispute</Tag>}
+      </div>
+
+      <div className="bottom">
+        <div className="username-green">
+          <span className="with-indicator">with </span>@
+          {user.id === data.dealer
+            ? data.merchant_data[0].user_name_front
+            : data.dealer_data[0].user_name_front}
+        </div>{' '}
         <div className="info">
           min <span className="bold">{data.deal_info[0].min}</span>{' '}
           <EllipsisOutlined /> max{' '}
@@ -56,18 +70,6 @@ const ProfileDiscussionItem = ({ data }) => {
             </Button>
           </span>
         </div>
-      </div>
-      <div className="top">
-        <div className="username-green">
-          <span className="with-indicator">with </span>@
-          {user.id === data.dealer
-            ? data.merchant_data[0].user_name_front
-            : data.dealer_data[0].user_name_front}
-        </div>
-        {data.status === 'progress' && <Tag color="blue">in progress</Tag>}
-        {data.status === 'canceled' && <Tag color="red">canceled</Tag>}
-        {data.status === 'completed' && <Tag color="green">completed</Tag>}
-        {data.status === 'dispute' && <Tag color="orange">dispute</Tag>}
       </div>
     </div>
   );

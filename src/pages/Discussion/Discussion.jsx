@@ -9,6 +9,7 @@ import React, { useState, useEffect } from 'react';
 // } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { StreamChat } from 'stream-chat';
+import { useLocation } from 'react-router-dom';
 // import { format } from 'timeago.js';
 
 // import Loader from './../../components/Loader/Loader';
@@ -30,6 +31,7 @@ import './discussion.scss';
 
 export default function Discussion() {
   const user = useSelector(state => state?.user?.userData);
+  const location = useLocation();
 
   const [client, setClient] = useState(null);
   const [channel, setChannel] = useState(null);
@@ -38,11 +40,9 @@ export default function Discussion() {
     const res = await axios.get(
       `https://sustain.africa/chat/server.php?create-token=${user.id}`
     );
-
     const { token } = res.data;
 
-    const chatClient = StreamChat.getInstance('twtrsx9dd48k');
-
+    const chatClient = StreamChat.getInstance('2shvqv4hcrbh');
     const clientlog = await chatClient.connectUser(
       {
         id: user.id,
@@ -53,14 +53,12 @@ export default function Discussion() {
 
     console.log(clientlog);
 
-    const chatChannel = chatClient.channel('messaging', 'sustain-test-1', {
-      name: 'sustain test',
-      members: ['test'],
+    const chatChannel = chatClient.channel('messaging', location.pathname.id, {
+      name: location.pathname.id,
+      members: [user.id, 'thesustainproject'],
     });
 
     await chatChannel.watch();
-
-    console.log(chatChannel);
 
     setChannel(chatChannel);
     setClient(chatClient);
@@ -71,7 +69,7 @@ export default function Discussion() {
 
     if (client) return () => client.disconnectUser();
     // eslint-disable-next-line
-  }, []);
+  }, [user.id]);
 
   return (
     <div className="message">

@@ -8,44 +8,29 @@
   &:active {
     opacity: 0.7;
   }
+
   .top {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
-    .with-indicator {
-      color: gray !important;
-      font-weight: normal !important;
-      font-size: 12px !important;
-    }
-    .status {
-      color: white;
-      padding: 3px 10px;
-      border-radius: 30px;
-      font-size: 12px;
-    }
-
-    .progress {
-      @extend .status;
-      background-color: #ed1450;
-    }
-
-    .resolved {
-      @extend .status;
-      background-color: #14a014;
-    }
   }
 
   .bottom {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-bottom: 10px;
+    align-items: center;
+    margin-top: 10px;
 
     .info {
       margin: auto 0 auto 10px;
       color: grey;
       font-size: 12px;
+    }
+    .with-indicator {
+      color: gray !important;
+      font-weight: normal !important;
+      font-size: 12px !important;
     }
   }
 }
