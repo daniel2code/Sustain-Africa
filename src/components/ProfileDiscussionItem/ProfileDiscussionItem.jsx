@@ -4,7 +4,7 @@ import { ArrowRightOutlined, EllipsisOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { curType } from '../../utils/datasource';
-import { Tag } from 'antd';
+import { Tag, Button } from 'antd';
 
 const ProfileDiscussionItem = ({ data }) => {
   const history = useHistory();
@@ -51,6 +51,21 @@ const ProfileDiscussionItem = ({ data }) => {
             {data.deal_info[0].rate_structure === 'percentage'
               ? '%'
               : `/${curType(data.deal_info[0].source_currency)}`}
+          </span>
+          <EllipsisOutlined />
+          <span>
+            <Button
+              onClick={e => {
+                e.stopPropagation();
+                history.push(`/deal/${data.deal_id}`);
+              }}
+              type="text"
+              style={{
+                color: '#ed1450',
+              }}
+            >
+              view deal
+            </Button>
           </span>
         </div>
       </div>
