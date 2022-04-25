@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 // } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { StreamChat } from 'stream-chat';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 // import { format } from 'timeago.js';
 
 // import Loader from './../../components/Loader/Loader';
@@ -31,7 +31,7 @@ import './discussion.scss';
 
 export default function Discussion() {
   const user = useSelector(state => state?.user?.userData);
-  const location = useLocation();
+  const param = useParams();
 
   const [client, setClient] = useState(null);
   const [channel, setChannel] = useState(null);
@@ -53,12 +53,13 @@ export default function Discussion() {
 
     console.log(clientlog);
 
-    const chatChannel = chatClient.channel('messaging', location.pathname.id, {
-      name: location.pathname.id,
-      members: [user.id, 'thesustainproject'],
+    const chatChannel = chatClient.channel('messaging', param.id, {
+      name: param.id,
     });
 
     await chatChannel.watch();
+
+    chatChannel.addMembers([user.id]);
 
     setChannel(chatChannel);
     setClient(chatClient);
@@ -74,7 +75,7 @@ export default function Discussion() {
   return (
     <div className="message">
       <div className="message-wrapper">
-        {!channel && !client ? (
+        {!channel || !client ? (
           <LoadingIndicator />
         ) : (
           <Chat client={client} theme="messaging light">

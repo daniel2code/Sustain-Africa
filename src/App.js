@@ -124,8 +124,8 @@ function App() {
               <Route exact path="/wallet" component={Wallet} />
               <Route exact path="/user/:id/profile" component={OtherProfile} />
               <Route exact path="/deal/:id" component={DealPage} />
-              <Route exact path="/chat" component={DiscussionMenu} />
               <Route exact path="/chat/:id" component={Discussion} />
+              <Route exact path="/chat" component={DiscussionMenu} />
               <Route exact path="/notifications" component={Notification} />
             </Switch>
           ) : (
