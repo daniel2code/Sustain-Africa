@@ -59,6 +59,8 @@ export default function Discussion() {
 
     await chatChannel.watch();
 
+    // console.log(ch);
+
     chatChannel.addMembers([user.id]);
 
     setChannel(chatChannel);

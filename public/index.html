@@ -23,5 +23,29 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
+
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker
+            .register('/service-worker.js')
+            .then(registration => {
+              console.log('registered');
+            });
+        });
+      }
+
+      if ('Notification' in window) {
+        if (Notification.permission !== 'granted') {
+          Notification.requestPermission()
+            .then(res => {
+              console.log('permission granted');
+            })
+            .catch(rej => {
+              Notification.requestPermission();
+            });
+        }
+      }
+    </script>
   </body>
 </html>

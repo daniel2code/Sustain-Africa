@@ -23,10 +23,19 @@
     margin-top: 0px;
     margin-left: 10px;
 
+    @media (max-width: 575px) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
     .info {
       margin: auto 0 auto 10px;
       color: grey;
       font-size: 12px;
+
+      @media (max-width: 575px) {
+        margin: auto 0;
+      }
     }
     .with-indicator {
       color: gray !important;
