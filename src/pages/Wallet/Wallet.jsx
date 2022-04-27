@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Alert, Button, Divider, Breadcrumb, Table, Tooltip, Tag } from 'antd';
+import { Alert, Button, Divider, Breadcrumb, Table, Tag } from 'antd';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import {
   UpOutlined,
   DownOutlined,
@@ -23,9 +22,9 @@ const columns = [
     render: (_, record) => (
       <div
         className="wallet-table-transaction"
-        style={{ opacity: record.confirmations === 0 ? '0.5' : '1' }}
+        // style={{ opacity: record.confirmations === 0 ? '0.5' : '1' }}
       >
-        {record.type === 'incoming' ? (
+        {record.type_short === 'send' ? (
           <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         ) : (
           <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
@@ -50,18 +49,17 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '13px' }}>{record.type}</p>
+          <p style={{ marginBottom: 0, fontSize: '13px' }}>
+            {record.type_short === 'send' ? 'incoming' : 'outgoing'}
+          </p>
           <p style={{ marginBottom: 0, fontSize: '11px' }}>
-            {new Date(record.confirmed || record.received).toLocaleString(
-              'en-us',
-              {
-                month: 'short',
-                day: '2-digit',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-              }
-            )}
+            {new Date(record.tx_created_at).toLocaleString('en-us', {
+              month: 'short',
+              day: '2-digit',
+              year: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
           </p>
         </div>
       </div>
@@ -72,34 +70,34 @@ const columns = [
     dataIndex: 'status',
     key: 'status',
     render: (_, record) => (
-      <Tooltip
-        title={`${
-          record.confirmations < 3 ? record.confirmations : '3'
-        } of 3 confirmations`}
-      >
-        <Tag
-          style={{
-            fontSize: '11px',
-            marginBottom: 0,
-            marginRight: 0,
-            cursor: 'pointer',
-            opacity: record.confirmations === 0 ? '0.5' : '1',
-          }}
-          color={
-            record.confirmations === 0
-              ? 'default'
-              : record.confirmations < 3 && record.confirmations > 0
-              ? 'yellow'
-              : 'green'
-          }
-        >
-          {record.confirmations === 0
-            ? 'detected'
+      // <Tooltip
+      //   title={`${
+      //     record.confirmations < 3 ? record.confirmations : '3'
+      //   } of 3 confirmations`}
+      // >
+      <Tag
+        style={{
+          fontSize: '11px',
+          marginBottom: 0,
+          marginRight: 0,
+          cursor: 'pointer',
+          // opacity: record.confirmations === 0 ? '0.5' : '1',
+        }}
+        color={
+          record.confirmations === 0
+            ? 'default'
             : record.confirmations < 3 && record.confirmations > 0
-            ? 'pending'
-            : 'successful'}
-        </Tag>
-      </Tooltip>
+            ? 'yellow'
+            : 'green'
+        }
+      >
+        {record.confirmations === 0
+          ? 'detected'
+          : record.confirmations < 3 && record.confirmations > 0
+          ? 'pending'
+          : 'successful'}
+      </Tag>
+      // </Tooltip>
     ),
   },
   {
@@ -113,22 +111,22 @@ const columns = [
             marginBottom: 0,
             fontSize: '13px',
             textAlign: 'right',
-            opacity: record.confirmations === 0 ? '0.5' : '1',
+            // opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {record.type === 'incoming' ? '+' : '-'}
-          {Number(record.value_btc.toFixed(7))} BTC
+          {record.type_short === 'send' ? '+' : '-'}
+          {Number(record.value)} BTC
         </p>
         <p
           style={{
             marginBottom: 0,
             fontSize: '11px',
             textAlign: 'right',
-            opacity: record.confirmations === 0 ? '0.5' : '1',
+            // opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {record.type === 'incoming' ? '+' : '-'}
-          {record.value_usd} USD
+          {record.type_short === 'send' ? '+' : '-'}
+          {record.native_value} USD
         </p>
       </>
     ),
@@ -145,16 +143,14 @@ const Wallet = () => {
   const [data, setData] = useState();
   const [view, setView] = useState(6);
   const [userBalance, setUserBalance] = useState();
-  const { wallet_name } = useSelector(state => state.user.userData);
 
   const fetchData = () => {
     setReload(true);
 
     bearerInstance
-      .get(`/wallet_cypher?wallet=1&name=${wallet_name}`)
+      .get(`/wallet?view_wallet=1`)
       .then(res => {
-        setUserBalance(res.data.message);
-        // console.log(res.data.message);
+        setUserBalance(res.data.wallet_data[0]);
 
         return bearerInstance.get('/wallet?prices=1');
       })
@@ -171,26 +167,22 @@ const Wallet = () => {
 
   const loadTransactions = () => {
     bearerInstance
-      .get(`/wallet_cypher?get_transactions=1&wallet_name=${wallet_name}`)
+      .get(`/wallet?list_transactions=1`)
       .then(res => {
-        const data = res.data.message
+        const data = res.data.transaction_data
           .map((cur, i) => {
             return {
               key: i,
               ...cur,
             };
           })
-          .sort((a, b) => {
-            if (a.recieved && b.confirmed)
-              return moment(b.confirmed) - moment(a.recieved);
-            else if (b.recieved && a.confirmed)
-              return moment(b.received) - moment(a.confirmed);
-            else return moment(b.confirmed) - moment(a.confirmed);
-          });
-
+          .sort((a, b) => moment(b.tx_created_at) - moment(a.tx_created_at));
         setData(data);
+
+        // console.log(res.data.transaction_data);
       })
       .catch(err => {
+        console.log(err.response.data);
         console.log('something went wrong');
       });
   };
@@ -216,7 +208,7 @@ const Wallet = () => {
           }}
           close={() => setWalletModal(false)}
           btcPrice={+btcPrice}
-          curBal={+userBalance.balance_btc}
+          curBal={+userBalance.balance}
         />
       )}
 
@@ -284,8 +276,8 @@ const Wallet = () => {
               {/*wallet + send and receive bitcoin */}
               <div className="wallet-coin">
                 <h2>
-                  {userBalance.balance_btc}
-                  {userBalance.balance_btc === 0 && '.00'} BTC
+                  {+userBalance.balance}
+                  {+userBalance.balance === 0 && '.00'} BTC
                 </h2>
                 <p
                   className="wallet-p"

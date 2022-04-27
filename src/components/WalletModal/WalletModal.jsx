@@ -36,15 +36,13 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
       // console.log(wallet_name);
 
       var data = new FormData();
-      data.append('new_address_in_wallet', '1');
-      data.append('bech32', 'false');
-      data.append('wallet_name', wallet_name);
+      data.append('create_address', '1');
 
       bearerInstance
-        .post(`/wallet_cypher`, data)
+        .post(`/wallet`, data)
         .then(res => {
           // console.log(res.data.message);
-          setAddress(res.data.message.address);
+          setAddress(res.data.address);
 
           setAddLoad(false);
         })

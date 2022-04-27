@@ -16,7 +16,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   Channel,
-  ChannelHeader,
+  // ChannelHeader,
   Chat,
   LoadingIndicator,
   MessageInput,
@@ -26,6 +26,9 @@ import {
 } from 'stream-chat-react';
 import 'stream-chat-react/dist/css/index.css';
 import './discussion.scss';
+import { sendNotification } from '../../utils/notification';
+import ChatHeader from '../../components/ChatHeader/ChatHeader';
+import { bearerInstance } from '../../utils/API';
 
 // const { TextArea } = Input;
 
@@ -43,7 +46,7 @@ export default function Discussion() {
     const { token } = res.data;
 
     const chatClient = StreamChat.getInstance('2shvqv4hcrbh');
-    const clientlog = await chatClient.connectUser(
+    /* const clientlog = */ await chatClient.connectUser(
       {
         id: user.id,
         name: user.user_name,
@@ -51,7 +54,7 @@ export default function Discussion() {
       token
     );
 
-    console.log(clientlog);
+    // console.log(clientlog);
 
     const chatChannel = chatClient.channel('messaging', param.id, {
       name: param.id,
@@ -74,6 +77,27 @@ export default function Discussion() {
     // eslint-disable-next-line
   }, [user.id]);
 
+  useEffect(() => {
+    if (channel) {
+      channel.on('message.new', event => {
+        if (event.user.id !== user.id)
+          sendNotification('user', event.message.text, `/chat/${param.id}`);
+      });
+    }
+  }, [channel, user.id, param.id]);
+
+  useEffect(() => {
+    if (param.id)
+      bearerInstance
+        .get(`/fetch_discussion?discussion_id=${param.id}`)
+        .then(res => {
+          console.log(res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+  }, [param.id]);
+
   return (
     <div className="message">
       <div className="message-wrapper">
@@ -83,142 +107,16 @@ export default function Discussion() {
           <Chat client={client} theme="messaging light">
             <Channel channel={channel}>
               <Window>
-                <ChannelHeader />
+                {/* <ChannelHeader /> */}
+                <ChatHeader username={'0'} />
                 <MessageList />
                 <MessageInput />
               </Window>
-              {/* <Thread /> */}
             </Channel>
           </Chat>
         )}
       </div>
     </div>
-
-    // <div className="message-page-container">
-    //   {messages && !loading && chatChannel ? (
-    //     <div className="header-container">
-    //       <div className="header-wrapper">
-    //         <div className="header-title">Buying $50 bank funds from</div>
-    //         <div className="header-main">
-    //           <div className="left" onClick={() => {}}>
-    //             <div className="avatar">
-    //               <Avatar
-    //                 style={{
-    //                   color: '#14a014',
-    //                   backgroundColor: '#a9fca9',
-    //                   fontWeight: '500',
-    //                 }}
-    //               >
-    //                 O
-    //               </Avatar>
-    //             </div>
-    //             <div>
-    //               <div className="username-green">
-    //                 {username} <span style={{ color: '#14a014' }}>&#9679;</span>
-    //               </div>
-    //               <div className="status">waiting to accept..</div>
-    //             </div>
-    //           </div>
-
-    //           <div className="right">
-    //             <div className="like-dislike no-margin-top">
-    //               <span className="like">
-    //                 <LikeOutlined /> 21
-    //               </span>
-    //               <span className="dislike no-margin-right">
-    //                 <DislikeOutlined /> 4
-    //               </span>
-    //             </div>
-    //           </div>
-    //         </div>
-    //         <div className="chat-summary">
-    //           direct chat &#9679; no issues raised
-    //         </div>
-    //       </div>
-    //     </div>
-    //   ) : (
-    //     <Loader />
-    //   )}
-
-    //   {messages && !loading && chatChannel ? (
-    //     <div className="message-content">
-    //       <div className="message-content-container">
-    //         <>
-    //           {messages.map(message => (
-    //             <MessageItem
-    //               key={message?.id}
-    //               message={message}
-    //               username={username}
-    //             />
-    //           ))}
-    //           <div ref={messagesEndRef} />
-    //         </>
-    //       </div>
-    //     </div>
-    //   ) : null}
-
-    //   <div className="message-footer">
-    //     <div className="wrapper">
-    //       <div className="row-one">
-    //         <TextArea
-    //           //autoSize={{minRows: 1, maxRows: 2}}
-    //           placeholder="type a message..."
-    //           value={messageInput}
-    //           onChange={e => {
-    //             setMessageInput(e.target.value);
-    //           }}
-    //           style={{
-    //             borderRadius: '30px',
-    //             marginRight: '10px',
-    //             borderColor: '#ed1450',
-    //             padding: '7px 30px',
-    //           }}
-    //         />
-    //         <Button
-    //           type="primary"
-    //           size="normal"
-    //           onClick={() => {
-    //             handleSendMessage();
-    //           }}
-    //           style={{
-    //             borderRadius: '50%',
-    //             height: '60px',
-    //             marginRight: '10px',
-    //             display: 'flex',
-    //             alignItems: 'center',
-    //             justifyContent: 'center',
-    //           }}
-    //         >
-    //           <SendOutlined
-    //             style={{
-    //               fontSize: '30px',
-    //               display: 'flex',
-    //               alignItems: 'center',
-    //               justifyContent: 'center',
-    //             }}
-    //           />
-    //         </Button>
-    //       </div>
-
-    //       <div className="row-two">
-    //         <div className="left">
-    //           <div className="end">
-    //             end chat <RightOutlined />
-    //           </div>
-    //           <div className="issue">
-    //             raise an issue <RightOutlined />
-    //           </div>
-    //         </div>
-    //         <div className="right">
-    //           <FieldTimeOutlined
-    //             style={{ fontSize: '20px', marginRight: '4px' }}
-    //           />
-    //           5 mins
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
   );
 }
 
@@ -242,3 +140,92 @@ export default function Discussion() {
 //     </div>
 //   );
 // };
+
+//  <div className="message-page-container">
+//       {messages && !loading && chatChannel ? (
+//         <div className="header-container">
+
+//         </div>
+//       ) : (
+//         <Loader />
+//       )}
+
+//       {messages && !loading && chatChannel ? (
+//         <div className="message-content">
+//           <div className="message-content-container">
+//             <>
+//               {messages.map(message => (
+//                 <MessageItem
+//                   key={message?.id}
+//                   message={message}
+//                   username={username}
+//                 />
+//               ))}
+//               <div ref={messagesEndRef} />
+//             </>
+//           </div>
+//         </div>
+//       ) : null}
+
+//       <div className="message-footer">
+//         <div className="wrapper">
+//           <div className="row-one">
+//             <TextArea
+//               //autoSize={{minRows: 1, maxRows: 2}}
+//               placeholder="type a message..."
+//               value={messageInput}
+//               onChange={e => {
+//                 setMessageInput(e.target.value);
+//               }}
+//               style={{
+//                 borderRadius: '30px',
+//                 marginRight: '10px',
+//                 borderColor: '#ed1450',
+//                 padding: '7px 30px',
+//               }}
+//             />
+//             <Button
+//               type="primary"
+//               size="normal"
+//               onClick={() => {
+//                 handleSendMessage();
+//               }}
+//               style={{
+//                 borderRadius: '50%',
+//                 height: '60px',
+//                 marginRight: '10px',
+//                 display: 'flex',
+//                 alignItems: 'center',
+//                 justifyContent: 'center',
+//               }}
+//             >
+//               <SendOutlined
+//                 style={{
+//                   fontSize: '30px',
+//                   display: 'flex',
+//                   alignItems: 'center',
+//                   justifyContent: 'center',
+//                 }}
+//               />
+//             </Button>
+//           </div>
+
+//           <div className="row-two">
+//             <div className="left">
+//               <div className="end">
+//                 end chat <RightOutlined />
+//               </div>
+//               <div className="issue">
+//                 raise an issue <RightOutlined />
+//               </div>
+//             </div>
+//             <div className="right">
+//               <FieldTimeOutlined
+//                 style={{ fontSize: '20px', marginRight: '4px' }}
+//               />
+//               5 mins
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </div>

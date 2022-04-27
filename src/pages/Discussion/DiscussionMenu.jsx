@@ -22,7 +22,7 @@ export default function DiscussionMenu() {
       .get('/fetch_all_discussions')
       .then(res => {
         setDiscussions(res.data.discussion_data);
-        console.log(res.data.discussion_data);
+        // console.log(res.data.discussion_data);
         setDiscussionsFilter(res.data.discussion_data);
       })
       .catch(err => {

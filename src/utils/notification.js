@@ -1,10 +1,13 @@
-export const sendNotification = (amount, sender) => {
+export const sendNotification = (user, msg, link) => {
   const options = {
-    body: `you just got CREDITED with ${amount} by ${sender}`,
+    body: `${user}: ${msg}`,
     // icon: '/iconbig.png',
     lang: 'en-US',
     vibrate: [100],
-    // badge: '/iconbig.png'
+    // badge: '/iconbig.png',
+    data: {
+      link,
+    },
   };
 
   if ('serviceWorker' in navigator) {
