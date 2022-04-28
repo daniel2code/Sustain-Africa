@@ -12,7 +12,6 @@ import {
 import './DealItem.scss';
 import { curType } from '../../utils/datasource';
 import DealModal from '../DealModal/DealModal';
-import generateDealText from '../../utils/dealLogic';
 
 export default function DealItem({ item }) {
   const history = useHistory();
@@ -85,7 +84,45 @@ export default function DealItem({ item }) {
         {/* deal item wrapper  start*/}
         <div className="deal-item-wrapper">
           {/* deal item body start */}
-          <div className="deal-item-row-one">“{generateDealText(item)}”</div>
+          <div className="deal-item-row-one">
+            “{/* bank */}
+            {item?.s_account_age &&
+              item?.s_account_age !== 'Any Age' &&
+              item?.s_bank_name &&
+              `${item?.s_account_age} ${
+                item?.s_account_age !== 'Any Age' ? 'year' : ''
+              }${item?.s_account_age !== 1 ? 's' : ''} old `}
+            {/* wallet */}
+            {item?.s_wallet_age &&
+              item?.s_wallet_age !== 'Any Age' &&
+              item?.s_wallet_type &&
+              `${item?.s_wallet_age} ${
+                item?.s_wallet_age !== 'Any Age' ? 'year' : ''
+              }${item?.s_wallet_age !== 1 ? 's' : ''} old `}
+            {/* bank name */}
+            {item?.s_bank_name &&
+              `${item?.s_bank_name} ${item?.s_account_type} account available in `}
+            {/* {item?.s_wallet_type && `${item?.source} wallet available`} */}
+            {item?.s_state && `${item?.s_state},`}
+            {item?.source !== 'bank fund' &&
+            item?.source !== 'bitcoin' &&
+            item?.source !== 'ethereum' &&
+            item?.source !== 'litecoin' &&
+            item?.source !== 'dogecoin'
+              ? `${item?.source} wallet (${curType(
+                  item.source_currency.toLowerCase()
+                )}) available`
+              : ''}{' '}
+            {item?.s_country && `${item?.s_country},`} to remit to{' '}
+            {item?.destination === 'bank fund'
+              ? 'bank account'
+              : item?.destination}
+            ({curType(item.destination_currency.toLowerCase())}) at {item?.rate}
+            {item?.rate_structure === 'percentage'
+              ? '%'
+              : '/' + curType(item.source_currency.toLowerCase())}
+            ”
+          </div>
           {/* deal item body end */}
 
           {/* deal item body2 start */}
