@@ -13,6 +13,7 @@ import WalletModal from '../../components/WalletModal/WalletModal';
 import { bearerInstance } from '../../utils/API';
 import './Wallet.scss';
 import moment from 'moment';
+import TxModal from '../../components/TxModal/TxModal';
 
 const columns = [
   {
@@ -76,6 +77,7 @@ const columns = [
       //   } of 3 confirmations`}
       // >
       <Tag
+        className="clicker"
         style={{
           fontSize: '11px',
           marginBottom: 0,
@@ -137,6 +139,8 @@ const Wallet = () => {
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
+  const [txModal, setTxModal] = useState(false);
+  const [txData, setTxData] = useState(false);
   const [send, setSend] = useState(false);
   const [sent, setSent] = useState(null);
   const [btcPrice, setBtcPrice] = useState('');
@@ -199,18 +203,18 @@ const Wallet = () => {
 
   return (
     <>
-      {walletModal && (
-        <WalletModal
-          open={walletModal}
-          send={send}
-          sent={val => {
-            setSent(val);
-          }}
-          close={() => setWalletModal(false)}
-          btcPrice={+btcPrice}
-          curBal={+userBalance.balance}
-        />
-      )}
+      <WalletModal
+        open={walletModal}
+        send={send}
+        sent={val => {
+          setSent(val);
+        }}
+        close={() => setWalletModal(false)}
+        btcPrice={+btcPrice}
+        curBal={+userBalance.balance}
+      />
+
+      <TxModal open={txModal} close={() => setTxModal(false)} data={txData} />
 
       <div className="wallet">
         <div className="wallet-wrapper">
@@ -349,7 +353,19 @@ const Wallet = () => {
               <Table
                 className="wallet-table"
                 pagination={false}
-                columns={columns}
+                columns={columns.map((cur, i) => ({
+                  ...cur,
+                  onCell: (data, index) => {
+                    return {
+                      onClick: event => {
+                        if (event.target.className.includes('clicker')) {
+                          setTxModal(true);
+                          setTxData(data);
+                        }
+                      },
+                    };
+                  },
+                }))}
                 dataSource={data?.slice(0, view)}
               />
 

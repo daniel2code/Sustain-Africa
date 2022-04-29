@@ -10,6 +10,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { StreamChat } from 'stream-chat';
 import { useParams } from 'react-router-dom';
+import Loader from '../../components/Loader/Loader';
 // import { format } from 'timeago.js';
 
 // import Loader from './../../components/Loader/Loader';
@@ -18,7 +19,7 @@ import {
   Channel,
   // ChannelHeader,
   Chat,
-  LoadingIndicator,
+  // LoadingIndicator,
   MessageInput,
   MessageList,
   // Thread,
@@ -87,22 +88,25 @@ export default function Discussion() {
   }, [channel, user.id, param.id]);
 
   useEffect(() => {
-    if (param.id)
+    if (param.id) {
+      console.log(param.id);
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
+        // .get(`/wallet_data`)
         .then(res => {
           console.log(res.data);
         })
         .catch(err => {
           console.log(err);
         });
+    }
   }, [param.id]);
 
   return (
     <div className="message">
       <div className="message-wrapper">
         {!channel || !client ? (
-          <LoadingIndicator />
+          <Loader />
         ) : (
           <Chat client={client} theme="messaging light">
             <Channel channel={channel}>

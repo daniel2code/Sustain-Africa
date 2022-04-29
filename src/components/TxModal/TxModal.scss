@@ -1,0 +1,9 @@
+.txmodal {
+  & .ant-modal-footer {
+    display: none;
+  }
+
+  &-body {
+    padding: 20px 0;
+  }
+}

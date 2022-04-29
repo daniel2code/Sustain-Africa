@@ -40,7 +40,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
       prc = amt * rate;
     }
 
-    return prc.toFixed(2);
+    return `${new Intl.NumberFormat('us-en', {}).format(prc)}.00`;
   };
 
   return (
@@ -149,7 +149,12 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
               <Row>
                 <Col span={9}>to remit</Col>{' '}
                 <Col span={12}>
-                  <strong style={{ fontSize: '16px' }}>
+                  <strong
+                    style={{
+                      fontSize: '16px',
+                      borderBottom: '2px dashed #ed1450',
+                    }}
+                  >
                     {curType(deal?.destination_currency.toLowerCase())}
                     {dealAmount(amount, deal?.rate_structure, deal?.rate)}
                   </strong>

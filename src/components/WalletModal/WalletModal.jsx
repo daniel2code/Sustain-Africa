@@ -144,7 +144,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
             color: 'rgb(255,213,0)',
           }}
         >
-          <Send style={{ height: '25px', width: '25px' }} />
+          <Send style={{ height: '20px', width: '20px' }} />
         </div>
 
         {send ? (
