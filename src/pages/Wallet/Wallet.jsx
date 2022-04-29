@@ -140,7 +140,7 @@ const Wallet = () => {
   const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [txModal, setTxModal] = useState(false);
-  const [txData, setTxData] = useState(false);
+  const [txData, setTxData] = useState(null);
   const [send, setSend] = useState(false);
   const [sent, setSent] = useState(null);
   const [btcPrice, setBtcPrice] = useState('');
@@ -203,18 +203,22 @@ const Wallet = () => {
 
   return (
     <>
-      <WalletModal
-        open={walletModal}
-        send={send}
-        sent={val => {
-          setSent(val);
-        }}
-        close={() => setWalletModal(false)}
-        btcPrice={+btcPrice}
-        curBal={+userBalance.balance}
-      />
+      {walletModal && (
+        <WalletModal
+          open={walletModal}
+          send={send}
+          sent={val => {
+            setSent(val);
+          }}
+          close={() => setWalletModal(false)}
+          btcPrice={+btcPrice}
+          curBal={+userBalance.balance}
+        />
+      )}
 
-      <TxModal open={txModal} close={() => setTxModal(false)} data={txData} />
+      {txModal && txData && (
+        <TxModal open={txModal} close={() => setTxModal(false)} data={txData} />
+      )}
 
       <div className="wallet">
         <div className="wallet-wrapper">
@@ -359,8 +363,8 @@ const Wallet = () => {
                     return {
                       onClick: event => {
                         if (event.target.className.includes('clicker')) {
-                          setTxModal(true);
                           setTxData(data);
+                          setTxModal(true);
                         }
                       },
                     };

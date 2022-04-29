@@ -14,7 +14,7 @@ const ChatHeader = ({ username, channel }) => {
       <div className="chatheader-main">
         <div className="left">
           <div className="username-green">
-            {username} <span style={{ color: '#14a014' }}>&#9679;</span>
+            @{username} <span style={{ color: '#14a014' }}>&#9679;</span>
           </div>
 
           <div className="like-dislike no-margin-top">
