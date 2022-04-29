@@ -97,15 +97,13 @@ export default function DiscussionMenu() {
           </>
         )}
 
-        {discussions && discussions.length !== 0 && (
+        {/* {discussions && discussions.length !== 0 && (
           <div className="msg-end">looks like you've reached the end</div>
         )}
 
-        {discussions.length === 0 && (
-          <div className="msg-end">
-            you don't have any discussions. browse deals to start a discussion
-          </div>
-        )}
+        {discussions.length === 0 && ( */}
+        <div className="msg-end">end</div>
+        {/* )} */}
       </div>
     </div>
   );

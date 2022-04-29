@@ -34,13 +34,13 @@ const ProfileDiscussionItem = ({ data }) => {
       </div>
 
       <div className="bottom">
-        <div className="username-green">
+        <span className="username-green">
           <span className="with-indicator">with </span>@
           {user.id === data.dealer
             ? data.merchant_data[0].user_name_front
             : data.dealer_data[0].user_name_front}
-        </div>{' '}
-        <div className="info">
+        </span>{' '}
+        <span className="info">
           min <span className="bold">{data.deal_info[0].min}</span>{' '}
           <EllipsisOutlined /> max{' '}
           <span className="bold">{data.deal_info[0].max}</span>{' '}
@@ -64,12 +64,13 @@ const ProfileDiscussionItem = ({ data }) => {
               type="text"
               style={{
                 color: '#ed1450',
+                padding: '0',
               }}
             >
               view deal
             </Button>
           </span>
-        </div>
+        </span>
       </div>
     </div>
   );
