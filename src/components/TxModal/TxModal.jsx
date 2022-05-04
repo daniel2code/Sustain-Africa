@@ -26,7 +26,19 @@ const TxModal = ({ close, open, data }) => {
         <p>{data.network_hash}</p>
 
         <a target="_blank" rel="noreferrer" href={data.transaction_url}>
-          view on blockchain&#8599;
+          view on blockchain{' '}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16.004 9.414L7.39703 18.021L5.98303 16.607L14.589 8H7.00403V6H18.004V17H16.004V9.414Z"
+              fill="#ed1450"
+            />
+          </svg>
         </a>
       </div>
     </Modal>
