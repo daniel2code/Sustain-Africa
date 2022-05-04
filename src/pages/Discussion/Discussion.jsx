@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 // import { Avatar, Input, Button } from 'antd';
-// import { RightOutlined, SendOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { StreamChat } from 'stream-chat';
 import { useParams } from 'react-router-dom';
@@ -20,7 +19,6 @@ import 'stream-chat-react/dist/css/index.css';
 import './discussion.scss';
 import { sendNotification } from '../../utils/notification';
 import ChatHeader from '../../components/Chat/ChatHeader';
-// import ChatMessage from '../../components/Chat/ChatMessage';
 import { bearerInstance } from '../../utils/API';
 
 // const { TextArea } = Input;
@@ -106,6 +104,12 @@ export default function Discussion() {
     }
   }, [param.id, user.id]);
 
+  // const btn = (
+  //   <button className="message-button">
+  //     <SendOutlined />
+  //   </button>
+  // );
+
   return (
     <div className="message">
       <div className="message-wrapper">
@@ -117,7 +121,6 @@ export default function Discussion() {
               <Window>
                 <ChatHeader username={chatting?.user_name_front} />
                 <MessageList
-                  // Message={ChatMessage}
                   // messages={[
                   //   {
                   //     text: 'Check this bear out https://imgur.com/r/bears/4zmGbMN',
@@ -126,7 +129,13 @@ export default function Discussion() {
                   hideDeletedMessages={true}
                   messageActions={['reply', 'quote']}
                 />
-                <MessageInput />
+                <MessageInput
+                  grow={true}
+                  additionalTextareaProps={{
+                    placeholder: 'type a message...',
+                  }}
+                />
+                {/* <div>this</div> */}
               </Window>
             </Channel>
           </Chat>
