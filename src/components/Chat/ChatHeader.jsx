@@ -1,4 +1,4 @@
-import './ChatHeader.scss';
+import './Chat.scss';
 // import { useChatContext } from 'stream-chat-react';
 import { DislikeOutlined, LikeOutlined } from '@ant-design/icons';
 
