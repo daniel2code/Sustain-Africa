@@ -362,10 +362,10 @@ const Wallet = () => {
                   onCell: (data, index) => {
                     return {
                       onClick: event => {
-                        if (event.target.className.includes('clicker')) {
-                          setTxData(data);
-                          setTxModal(true);
-                        }
+                        // if (event.target.className.includes('clicker')) {
+                        setTxData(data);
+                        setTxModal(true);
+                        // }
                       },
                     };
                   },

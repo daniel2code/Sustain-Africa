@@ -154,7 +154,7 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                   <strong
                     style={{
                       fontSize: '16px',
-                      borderBottom: '2px dashed #ed1450',
+                      borderBottom: '3px #ed1450 double',
                     }}
                   >
                     {curType(deal?.destination_currency.toLowerCase())}

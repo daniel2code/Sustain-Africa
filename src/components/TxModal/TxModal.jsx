@@ -19,7 +19,7 @@ const TxModal = ({ close, open, data }) => {
           })}
         </p>
 
-        <h2>{Number(data.value)}</h2>
+        <h2>{Number(data.value)} BTC</h2>
         <p>~ {data.native_value} usd</p>
 
         <p className="txmodal-hash">hash :</p>
@@ -28,8 +28,8 @@ const TxModal = ({ close, open, data }) => {
         <a target="_blank" rel="noreferrer" href={data.transaction_url}>
           view on blockchain{' '}
           <svg
-            width="24"
-            height="24"
+            width="20"
+            height="20"
             viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
