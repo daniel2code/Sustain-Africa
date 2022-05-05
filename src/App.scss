@@ -70,3 +70,9 @@ body {
     background: #ed145090;
   }
 }
+
+*,
+*::after,
+*::before {
+  font-family: 'Poppins', sans-serif !important;
+}

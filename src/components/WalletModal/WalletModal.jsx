@@ -4,7 +4,7 @@ import { Modal, Alert, Button, Form, Input, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { bearerInstance } from '../../utils/API';
 import { LoadingOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   const [proceed, setProceed] = useState(false);
@@ -28,7 +28,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
       }, 10000);
   }, [proceed]);
 
-  const { wallet_name } = useSelector(state => state.user.userData);
+  // const { wallet_name } = useSelector(state => state.user.userData);
 
   const getAddress = () => {
     if (!send) {
@@ -59,25 +59,22 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   }, []);
 
   const sendBtc = values => {
-    setSendLoad(true);
     console.log(transactionData);
+    setSendLoad(true);
     var data = new FormData();
-    data.append('send_transaction', '1');
-    data.append('tx', JSON.stringify(transactionData.tx));
-    data.append('tosign', JSON.stringify(transactionData.tosign));
-    data.append('signatures', JSON.stringify(transactionData.signatures));
-    data.append('pubkeys', JSON.stringify(transactionData.pubkeys));
+    data.append('send', '1');
+    data.append('tx', JSON.stringify(transactionData));
     data.append('otp_to_verify', values.otp);
 
     bearerInstance
       .post('/wallet_cypher', data)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
 
         sent({
           type: 'success',
           message: 'bitcoin sent!',
-          description: `${transactionData.total_btc} BTC has been successfully sent to ${rcAdd}`,
+          description: `${transactionData.value} BTC has been successfully sent to ${rcAdd}`,
         });
         close();
       })
@@ -96,7 +93,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     data.append('send_otp', '1');
 
     bearerInstance
-      .post('/wallet_cypher?send_otp=1', data)
+      .post('/wallet', data)
       .then(res => {
         message.success('opt has been resent');
       })
@@ -115,19 +112,18 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     setInitErr(false);
 
     const data = new FormData();
-    data.append('new_transaction', '1');
-    data.append('wallet_name', wallet_name);
-    data.append('destination', values.btc_address);
-    data.append('value', `${+values.btc_amount * 100000000}`);
+    data.append('build', '1');
+    data.append('receiver', values.btc_address);
+    data.append('amount', values.btc_amount);
 
     bearerInstance
-      .post('/wallet_cypher', data)
+      .post('/wallet', data)
       .then(res => {
-        setTransactionData(res.data.message);
+        setTransactionData(res.data.tx);
+        // console.log(res.data.tx);
         setProceed(true);
       })
       .catch(err => {
-        console.log(err.response?.data);
         message.error(err.response?.data?.message);
       })
       .finally(() => {
@@ -164,7 +160,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>send amount</h4>
 
                   <h4 style={{ margin: '0' }}>
-                    {Number(transactionData.total_btc.toFixed(7))} btc
+                    {Number(transactionData.value)} btc
                     <br />
                     <span
                       style={{
@@ -172,7 +168,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                         fontWeight: '400',
                       }}
                     >
-                      (≈ {transactionData.total_usd} usd)
+                      (≈ {transactionData.final_value_usd.toFixed(2)} usd)
                     </span>
                   </h4>
                 </div>
@@ -188,7 +184,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>network fee</h4>
 
                   <h4 style={{ margin: '0' }}>
-                    {Number(transactionData.fees_btc.toFixed(7))} btc
+                    {Number(transactionData.estimated_fee)} btc
                     <br />
                     <span
                       style={{
@@ -196,7 +192,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                         fontWeight: '400',
                       }}
                     >
-                      (≈ {transactionData.fees_usd} usd)
+                      (≈ {transactionData.estimated_fee_usd.toFixed(2)} usd)
                     </span>
                   </h4>
                 </div>
@@ -208,8 +204,9 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     marginTop: '20px',
                   }}
                 >
-                  {Number(transactionData.total_btc.toFixed(7))} btc (
-                  {transactionData.total_usd} usd) will be sent to:
+                  {Number(transactionData.value)} btc (
+                  {transactionData.final_value_usd.toFixed(2)} usd) will be sent
+                  to:
                 </p>
                 <h4
                   className="walletModal-p"
@@ -238,9 +235,8 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   }}
                 >
                   {Number(
-                    (
-                      transactionData.total_btc + transactionData.fees_btc
-                    ).toFixed(7)
+                    parseFloat(transactionData.value) +
+                      parseFloat(transactionData.estimated_fee)
                   )}{' '}
                   BTC
                 </p>
@@ -254,10 +250,9 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                 >
                   approx{' '}
                   {Number(
-                    (
-                      transactionData.total_usd + transactionData.fees_usd
-                    ).toFixed(2)
-                  )}{' '}
+                    transactionData.final_value_usd +
+                      transactionData.estimated_fee_usd
+                  ).toFixed(2)}{' '}
                   usd
                 </span>
 

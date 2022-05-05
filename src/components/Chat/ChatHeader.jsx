@@ -31,9 +31,7 @@ const ChatHeader = ({ username, channel }) => {
         <div className="right">
           <div className="chat-summary">waiting to accept..</div>
 
-          <div className="chat-summary">
-            direct chat &#9679; no issues raised
-          </div>
+          <div className="chat-summary">no issues raised</div>
         </div>
       </div>
     </div>
