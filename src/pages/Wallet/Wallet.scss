@@ -22,6 +22,16 @@
     color: #ed1450;
   }
 
+  .ant-table-row {
+    cursor: pointer;
+
+    &:hover {
+      & td {
+        background-color: #eee !important;
+      }
+    }
+  }
+
   &-wrapper {
     width: 95%;
     max-width: 800px;

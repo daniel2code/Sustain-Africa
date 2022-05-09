@@ -19,27 +19,37 @@ const TxModal = ({ close, open, data }) => {
           })}
         </p>
 
-        <h2>{Number(data.value)} BTC</h2>
+        <h2>{Number(data.value)} btc</h2>
         <p>~ {data.native_value} usd</p>
 
-        <p className="txmodal-hash">hash :</p>
-        <p>{data.network_hash}</p>
-
-        <a target="_blank" rel="noreferrer" href={data.transaction_url}>
-          view on blockchain{' '}
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        {data.network_hash && (
+          <>
+            <p className="txmodal-hash">hash :</p>
+            <p>{data.network_hash}</p>
+          </>
+        )}
+        {data.transaction_url && (
+          <a
+            className="txmodal-link"
+            target="_blank"
+            rel="noreferrer"
+            href={data.transaction_url}
           >
-            <path
-              d="M16.004 9.414L7.39703 18.021L5.98303 16.607L14.589 8H7.00403V6H18.004V17H16.004V9.414Z"
-              fill="#ed1450"
-            />
-          </svg>
-        </a>
+            view on blockchain{' '}
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.004 9.414L7.39703 18.021L5.98303 16.607L14.589 8H7.00403V6H18.004V17H16.004V9.414Z"
+                fill="#ed1450"
+              />
+            </svg>
+          </a>
+        )}
       </div>
     </Modal>
   );

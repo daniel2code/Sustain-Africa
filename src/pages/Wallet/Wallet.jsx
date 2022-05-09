@@ -25,7 +25,7 @@ const columns = [
         className="wallet-table-transaction"
         // style={{ opacity: record.confirmations === 0 ? '0.5' : '1' }}
       >
-        {record.type_short === 'send' ? (
+        {record.type === 'receive' ? (
           <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         ) : (
           <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
@@ -51,7 +51,8 @@ const columns = [
         </div>
         <div>
           <p style={{ marginBottom: 0, fontSize: '13px' }}>
-            {record.type_short === 'send' ? 'incoming' : 'outgoing'}
+            {record.type === 'receive' ? 'received' : 'sent'}
+            {record.mode === 'internal' ? '(internal)' : null}
           </p>
           <p style={{ marginBottom: 0, fontSize: '11px' }}>
             {new Date(record.tx_created_at).toLocaleString('en-us', {
@@ -71,11 +72,6 @@ const columns = [
     dataIndex: 'status',
     key: 'status',
     render: (_, record) => (
-      // <Tooltip
-      //   title={`${
-      //     record.confirmations < 3 ? record.confirmations : '3'
-      //   } of 3 confirmations`}
-      // >
       <Tag
         className="clicker"
         style={{
@@ -116,7 +112,6 @@ const columns = [
             // opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {record.type_short === 'send' ? '+' : '-'}
           {Number(record.value)} BTC
         </p>
         <p
@@ -127,7 +122,6 @@ const columns = [
             // opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {record.type_short === 'send' ? '+' : '-'}
           {record.native_value} USD
         </p>
       </>
@@ -183,7 +177,7 @@ const Wallet = () => {
           .sort((a, b) => moment(b.tx_created_at) - moment(a.tx_created_at));
         setData(data);
 
-        // console.log(res.data.transaction_data);
+        console.log(data);
       })
       .catch(err => {
         console.log(err.response.data);

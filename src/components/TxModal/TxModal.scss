@@ -51,11 +51,11 @@
       max-width: 90%;
       color: #14a014;
       margin-bottom: 30px;
-
-      & + a {
-        display: flex;
-        align-items: center;
-      }
     }
+  }
+
+  &-link {
+    display: flex;
+    align-items: center;
   }
 }

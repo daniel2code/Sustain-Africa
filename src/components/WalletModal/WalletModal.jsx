@@ -1,6 +1,6 @@
 import './WalletModal.scss';
 import { ReactComponent as Send } from '../../assets/send.svg';
-import { Modal, Alert, Button, Form, Input, message } from 'antd';
+import { Modal, Alert, Button, Form, Input, message, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { bearerInstance } from '../../utils/API';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -59,7 +59,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   }, []);
 
   const sendBtc = values => {
-    console.log(transactionData);
+    // console.log(JSON.stringify(transactionData));
     setSendLoad(true);
     var data = new FormData();
     data.append('send', '1');
@@ -67,9 +67,9 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     data.append('otp_to_verify', values.otp);
 
     bearerInstance
-      .post('/wallet_cypher', data)
+      .post('/wallet', data)
       .then(res => {
-        // console.log(res.data);
+        console.log(res.data);
 
         sent({
           type: 'success',
@@ -149,12 +149,19 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
 
             {proceed ? (
               <>
+                {transactionData.type !== 'internal' && (
+                  <Tag color="blue">
+                    you are about to send coins to another sustain user. zero
+                    fees apply
+                  </Tag>
+                )}
                 <div
                   style={{
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'flex-start',
                     fontWeight: '600',
+                    marginTop: '5px',
                   }}
                 >
                   <h4 style={{ margin: '0', flex: '0 0 40%' }}>send amount</h4>
@@ -194,6 +201,26 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     >
                       (≈ {transactionData.estimated_fee_usd.toFixed(2)} usd)
                     </span>
+                  </h4>
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'flex-start',
+                    fontWeight: '600',
+                  }}
+                >
+                  <h4 style={{ margin: '0', flex: '0 0 40%' }}>description</h4>
+
+                  <h4
+                    style={{
+                      fontSize: '12px',
+                      fontWeight: '400',
+                      margin: '0',
+                    }}
+                  >
+                    {transactionData.description}
                   </h4>
                 </div>
 
