@@ -51,7 +51,7 @@ const columns = [
         </div>
         <div>
           <p style={{ marginBottom: 0, fontSize: '13px' }}>
-            {record.type === 'receive' ? 'received' : 'sent'}
+            {record.type === 'receive' ? 'received' : 'sent'}{' '}
             {record.mode === 'internal' ? '(internal)' : null}
           </p>
           <p style={{ marginBottom: 0, fontSize: '11px' }}>
