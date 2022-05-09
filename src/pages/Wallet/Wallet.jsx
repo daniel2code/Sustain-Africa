@@ -131,6 +131,7 @@ const columns = [
 
 const Wallet = () => {
   const [loading, setLoading] = useState(true);
+  const [loadingTx, setLoadingTx] = useState(true);
   const [reload, setReload] = useState(false);
   const [walletModal, setWalletModal] = useState(false);
   const [txModal, setTxModal] = useState(false);
@@ -164,6 +165,8 @@ const Wallet = () => {
   };
 
   const loadTransactions = () => {
+    setLoadingTx(true);
+
     bearerInstance
       .get(`/wallet?list_transactions=1`)
       .then(res => {
@@ -182,6 +185,9 @@ const Wallet = () => {
       .catch(err => {
         console.log(err.response.data);
         console.log('something went wrong');
+      })
+      .finally(() => {
+        setLoadingTx(false);
       });
   };
 
@@ -365,6 +371,7 @@ const Wallet = () => {
                   },
                 }))}
                 dataSource={data?.slice(0, view)}
+                loading={loadingTx}
               />
 
               <Button

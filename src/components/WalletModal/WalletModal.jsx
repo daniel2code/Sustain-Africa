@@ -1,6 +1,6 @@
 import './WalletModal.scss';
 import { ReactComponent as Send } from '../../assets/send.svg';
-import { Modal, Alert, Button, Form, Input, message, Tag } from 'antd';
+import { Modal, Alert, Button, Form, Input, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { bearerInstance } from '../../utils/API';
 import { LoadingOutlined } from '@ant-design/icons';
@@ -149,12 +149,18 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
 
             {proceed ? (
               <>
-                {transactionData.type !== 'internal' && (
-                  <Tag color="blue">
-                    you are about to send coins to another sustain user. zero
-                    fees apply
-                  </Tag>
-                )}
+                <Alert
+                  message="warning"
+                  description={
+                    transactionData.type === 'internal'
+                      ? 'you are about to send coins to another sustain user. zero fees apply'
+                      : 'you are sending coins to an address that exists outside the sustain network. fees apply'
+                  }
+                  type="warning"
+                  style={{ marginBottom: '20px' }}
+                  closable
+                  showIcon
+                />
                 <div
                   style={{
                     display: 'flex',
@@ -262,8 +268,10 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                   }}
                 >
                   {Number(
-                    parseFloat(transactionData.value) +
+                    (
+                      parseFloat(transactionData.value) +
                       parseFloat(transactionData.estimated_fee)
+                    ).toFixed(7)
                   )}{' '}
                   BTC
                 </p>

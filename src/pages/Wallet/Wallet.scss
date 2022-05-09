@@ -24,12 +24,6 @@
 
   .ant-table-row {
     cursor: pointer;
-
-    &:hover {
-      & td {
-        background-color: #eee !important;
-      }
-    }
   }
 
   &-wrapper {

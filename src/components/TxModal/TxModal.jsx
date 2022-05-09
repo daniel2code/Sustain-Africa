@@ -7,7 +7,9 @@ const TxModal = ({ close, open, data }) => {
       <div className="txmodal-body">
         <h4>details</h4>
 
-        <h3>{data.type_short === 'send' ? 'recieved' : 'sent out'}</h3>
+        <h3>
+          {data.type === 'receive' ? 'recieved' : 'sent'} ({data.mode})
+        </h3>
         <p>
           {new Date(data.tx_created_at).toLocaleString('en-us', {
             day: 'numeric',
