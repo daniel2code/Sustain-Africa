@@ -26,9 +26,9 @@ const columns = [
         // style={{ opacity: record.confirmations === 0 ? '0.5' : '1' }}
       >
         {record.type === 'receive' ? (
-          <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
-        ) : (
           <DownOutlined style={{ color: '#999', marginRight: '5px' }} />
+        ) : (
+          <UpOutlined style={{ color: '#999', marginRight: '5px' }} />
         )}
         <div
           style={{
@@ -55,13 +55,7 @@ const columns = [
             {record.mode === 'internal' ? '(internal)' : null}
           </p>
           <p style={{ marginBottom: 0, fontSize: '11px' }}>
-            {new Date(record.tx_created_at).toLocaleString('en-us', {
-              month: 'short',
-              day: '2-digit',
-              year: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit',
-            })}
+            {moment(record.tx_created_at).format('LLL')}
           </p>
         </div>
       </div>

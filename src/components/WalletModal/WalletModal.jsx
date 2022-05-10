@@ -150,13 +150,13 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
             {proceed ? (
               <>
                 <Alert
-                  message="warning"
+                  message="info"
                   description={
                     transactionData.type === 'internal'
                       ? 'you are about to send coins to another sustain user. zero fees apply'
                       : 'you are sending coins to an address that exists outside the sustain network. fees apply'
                   }
-                  type="warning"
+                  type="info"
                   style={{ marginBottom: '20px' }}
                   closable
                   showIcon
@@ -221,8 +221,8 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
 
                   <h4
                     style={{
-                      fontSize: '12px',
-                      fontWeight: '400',
+                      // fontSize: '12px',
+                      // fontWeight: '400',
                       margin: '0',
                     }}
                   >
