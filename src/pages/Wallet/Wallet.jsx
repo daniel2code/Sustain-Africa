@@ -50,11 +50,14 @@ const columns = [
           />
         </div>
         <div>
-          <p style={{ marginBottom: 0, fontSize: '13px' }}>
-            {record.type === 'receive' ? 'received' : 'sent'}{' '}
-            {record.mode === 'internal' ? '(internal)' : null}
+          <p style={{ marginBottom: 0, fontSize: '13px', fontWeight: 400 }}>
+            <span style={{ color: '#14a014' }}>
+              {record.type === 'receive' ? 'received' : 'sent'}
+            </span>
+            <br />
+            {record.mode}
           </p>
-          <p style={{ marginBottom: 0, fontSize: '11px' }}>
+          <p style={{ marginBottom: 0, fontSize: '11px', fontWeight: 400 }}>
             {moment(record.tx_created_at).format('LLL')}
           </p>
         </div>

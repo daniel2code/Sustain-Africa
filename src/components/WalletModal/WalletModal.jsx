@@ -21,6 +21,11 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   const [otpView, setOtpView] = useState(false);
   const [sendLoad, setSendLoad] = useState(false);
 
+  const [amountValidate, setAmountValidate] = useState({
+    validateStatus: 'success',
+    errorMsg: null,
+  });
+
   useEffect(() => {
     if (proceed)
       setTimeout(() => {
@@ -129,6 +134,26 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
       .finally(() => {
         setInitLoad(false);
       });
+  };
+
+  const validateAmount = number => {
+    if (+number < curBal && +number > 0) {
+      return {
+        validateStatus: 'success',
+        errorMsg: null,
+      };
+    }
+
+    if (+number <= 0 || number === '')
+      return {
+        validateStatus: 'error',
+        errorMsg: 'Input a valid amount in btc!',
+      };
+
+    return {
+      validateStatus: 'error',
+      errorMsg: 'you don’t have enough coins',
+    };
   };
 
   return (
@@ -411,26 +436,12 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                       display: 'inline-block',
                       width: 'calc(100%)',
                     }}
-                    // validateStatus="error"
-                    // help="help"
+                    validateStatus={amountValidate.validateStatus}
+                    help={amountValidate.errorMsg}
                     rules={[
                       {
                         required: true,
-                        message: '',
-                      },
-                      {
-                        validator: (_, val) => {
-                          if (+val < curBal && +val > 0) {
-                            return Promise.resolve();
-                          }
-
-                          if (+val <= 0 || val === undefined)
-                            return Promise.reject(
-                              'Input a valid amount in btc!'
-                            );
-
-                          return Promise.reject('you don’t have enough coins');
-                        },
+                        message: 'Input a valid amount in btc!',
                       },
                     ]}
                   >
@@ -442,7 +453,10 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                         paddingBottom: '0',
                       }}
                       value={amount}
-                      onChange={e => setAmount(e.target.value)}
+                      onChange={e => {
+                        setAmount(e.target.value);
+                        setAmountValidate(validateAmount(e.target.value));
+                      }}
                       placeholder="0.00000"
                       suffix={
                         <span style={{ fontSize: '12px', color: '#999' }}>

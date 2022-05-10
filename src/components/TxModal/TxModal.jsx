@@ -21,8 +21,8 @@ const TxModal = ({ close, open, data }) => {
           })}
         </p>
 
-        <h2>{Number(data.value)} btc</h2>
-        <p>~ {data.native_value} usd</p>
+        <h2>{Number(data.value)} BTC</h2>
+        <p>~ {data.native_value} USD</p>
 
         {data.network_hash && (
           <>
