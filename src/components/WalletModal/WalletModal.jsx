@@ -111,6 +111,12 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   };
 
   const initializeTransaction = values => {
+    if (values.btc_amount === undefined)
+      return setAmountValidate({
+        validateStatus: 'error',
+        errorMsg: 'Input a valid amount in btc!',
+      });
+
     if (+values.btc_amount <= 0) return setInitErr(true);
 
     setInitLoad(true);
@@ -438,12 +444,6 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
                     }}
                     validateStatus={amountValidate.validateStatus}
                     help={amountValidate.errorMsg}
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Input a valid amount in btc!',
-                      },
-                    ]}
                   >
                     <Input
                       type="number"

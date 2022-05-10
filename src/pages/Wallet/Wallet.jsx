@@ -57,7 +57,9 @@ const columns = [
             <br />
             {record.mode}
           </p>
-          <p style={{ marginBottom: 0, fontSize: '11px', fontWeight: 400 }}>
+          <p
+            style={{ marginBottom: '10px', fontSize: '11px', fontWeight: 400 }}
+          >
             {moment(record.tx_created_at).format('LL')}
             <br />
             {moment(record.tx_created_at).format('LT')}
