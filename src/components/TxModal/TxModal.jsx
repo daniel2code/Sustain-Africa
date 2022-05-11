@@ -1,5 +1,6 @@
 import './TxModal.scss';
 import { Modal } from 'antd';
+import moment from 'moment';
 
 const TxModal = ({ close, open, data }) => {
   return (
@@ -10,16 +11,7 @@ const TxModal = ({ close, open, data }) => {
         <h3>
           {data.type === 'receive' ? 'recieved' : 'sent'} ({data.mode})
         </h3>
-        <p>
-          {new Date(data.tx_created_at).toLocaleString('en-us', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-            hour12: true,
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-        </p>
+        <p>{moment(data.tx_created_at).format('LLL')}</p>
 
         <h2>{Number(data.value)} BTC</h2>
         <p>~ {data.native_value} USD</p>
