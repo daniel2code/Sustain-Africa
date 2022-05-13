@@ -21,9 +21,18 @@
     }
 
     .str-chat__message-simple-status,
-    .str-chat__emojiselect-wrapper,
-    .str-chat__fileupload-wrapper {
+    .str-chat__emojiselect-wrapper {
       display: none;
+    }
+
+    .rfu-file-upload-button {
+      top: 50%;
+      transform: translateY(-50%);
+
+      & span {
+        display: flex;
+        align-items: center;
+      }
     }
 
     .str-chat__send-button {
@@ -50,15 +59,25 @@
         outline: none;
       }
     }
-    .str-chat__input-flat {
-      padding: 10px;
+
+    .str-chat__date-separator {
+      padding: {
+        left: 10px;
+        right: 10px;
+      }
+    }
+
+    &-box {
       position: fixed;
       bottom: 0;
       left: 50%;
       transform: translateX(-50%);
       width: 800px;
       max-width: 100%;
-      // transform: translateX(50%);
+
+      .str-chat__input-flat {
+        padding: 10px;
+      }
     }
     .str-chat__input-flat-wrapper {
       align-items: center;
@@ -102,7 +121,7 @@
 
     .messaging.str-chat .str-chat__list {
       padding: 0 10px;
-      margin-bottom: 57px;
+      margin-bottom: 100px;
     }
 
     .str-chat__message-simple__actions__action {

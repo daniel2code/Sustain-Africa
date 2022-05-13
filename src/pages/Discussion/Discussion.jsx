@@ -129,13 +129,16 @@ export default function Discussion() {
                   hideDeletedMessages={true}
                   messageActions={['reply', 'quote']}
                 />
-                <MessageInput
-                  grow={true}
-                  additionalTextareaProps={{
-                    placeholder: 'type a message...',
-                  }}
-                />
-                {/* <div>this</div> */}
+                <div className="message-wrapper-box">
+                  <MessageInput
+                    grow={true}
+                    additionalTextareaProps={{
+                      placeholder: 'type a message...',
+                    }}
+                  />
+
+                  <div>this</div>
+                </div>
               </Window>
             </Channel>
           </Chat>
