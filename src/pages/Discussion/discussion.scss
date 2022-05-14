@@ -74,11 +74,32 @@
       transform: translateX(-50%);
       width: 800px;
       max-width: 100%;
+      background: #ffffff;
 
       .str-chat__input-flat {
         padding: 10px;
       }
     }
+    &-action {
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      & > div {
+        &:first-child {
+          & button {
+            color: #ed1450;
+            padding: 0 10px;
+
+            &:disabled {
+              color: #999;
+            }
+          }
+        }
+      }
+    }
+
     .str-chat__input-flat-wrapper {
       align-items: center;
     }
@@ -120,8 +141,12 @@
     }
 
     .messaging.str-chat .str-chat__list {
-      padding: 0 10px;
+      padding: 0;
       margin-bottom: 100px;
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
     }
 
     .str-chat__message-simple__actions__action {
