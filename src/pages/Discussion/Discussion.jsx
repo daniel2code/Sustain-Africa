@@ -79,6 +79,14 @@ export default function Discussion() {
 
   useEffect(() => {
     if (channel) {
+      channel.on(event => {
+        if (event.type === 'paid') setPaid(true);
+      });
+    }
+  }, [channel]);
+
+  useEffect(() => {
+    if (channel) {
       channel.on('message.new', event => {
         if (event.user.id !== user.id)
           sendNotification('user', event.message.text, `/chat/${param.id}`);
@@ -128,11 +136,14 @@ export default function Discussion() {
         </>
       ),
       onOk() {
-        return new Promise((resolve, reject) => {
-          setTimeout(() => {
-            setPaid(true);
-            resolve();
-          }, 1000);
+        return new Promise(async (resolve, reject) => {
+          setPaid(true);
+
+          await channel.sendEvent({
+            type: 'paid',
+            text: 'Hey there, long time no see!',
+          });
+          resolve();
         }).catch(() => console.log('Oops errors!'));
       },
       onCancel() {},
