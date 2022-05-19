@@ -137,8 +137,6 @@ export default function Discussion() {
       ),
       onOk() {
         return new Promise(async (resolve, reject) => {
-          setPaid(true);
-
           await channel.sendEvent({
             type: 'paid',
             text: 'Hey there, long time no see!',

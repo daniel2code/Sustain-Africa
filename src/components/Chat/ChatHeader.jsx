@@ -1,6 +1,7 @@
 import './Chat.scss';
 // import { useChatContext } from 'stream-chat-react';
 import { DislikeOutlined, LikeOutlined } from '@ant-design/icons';
+import { Tag } from 'antd';
 
 const ChatHeader = ({ username, channel }) => {
   // const { channel } = useChatContext();
@@ -9,7 +10,9 @@ const ChatHeader = ({ username, channel }) => {
 
   return (
     <div className="chatheader">
-      <div className="chatheader-title">buying $50 bank funds from</div>
+      <div className="chatheader-title">
+        <Tag color="#14a014">stage 1</Tag> buying $50 bank funds from
+      </div>
 
       <div className="chatheader-main">
         <div className="left">
