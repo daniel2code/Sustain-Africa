@@ -196,6 +196,7 @@ export default function Discussion() {
                           display: 'flex',
                           gap: '5px',
                           alignItems: 'center',
+                          fontSize: 12,
                         }}
                       >
                         <ClockCircleOutlined />

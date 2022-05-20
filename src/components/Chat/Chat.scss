@@ -1,15 +1,16 @@
 .chatheader {
   &-title {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     margin-top: 10px;
-    // text-align: center;
     color: #14a014;
-    font-size: 16px;
-    padding: 0 10px;
+    font-size: 14px;
+
+    & span {
+      font-size: 14px;
+    }
   }
 
   &-main {
-    padding: 0 10px;
     padding-bottom: 10px;
 
     .left {
@@ -46,8 +47,7 @@
 
   .chat-summary {
     color: #00000073;
-    // padding: 10px 0;
-    // text-align: right;
     font-weight: 500;
+    font-size: 12px;
   }
 }
