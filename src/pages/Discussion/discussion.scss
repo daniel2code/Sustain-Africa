@@ -2,6 +2,23 @@
   flex-grow: 1;
   overflow: hidden;
 
+  &-check {
+    &:hover .ant-checkbox-inner {
+      border: 1px solid #ed1450;
+    }
+
+    .ant-checkbox-checked {
+      &::after {
+        border: 1px solid #ed1450;
+      }
+
+      .ant-checkbox-inner {
+        background-color: #ed1450;
+        border-color: #ed1450;
+      }
+    }
+  }
+
   &-wrapper {
     width: 95%;
     max-width: 800px;
@@ -82,7 +99,7 @@
       }
     }
     &-action {
-      padding: 0 10px 10px;
+      padding: 0 20px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;

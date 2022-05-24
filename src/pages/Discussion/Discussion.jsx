@@ -17,16 +17,15 @@ import './discussion.scss';
 import { sendNotification } from '../../utils/notification';
 import ChatHeader from '../../components/Chat/ChatHeader';
 import { bearerInstance } from '../../utils/API';
-import { Button, Modal } from 'antd';
+import { Alert, Button, Checkbox, Tag } from 'antd';
 import {
   RightOutlined,
   CheckOutlined,
   ClockCircleOutlined,
-  ExclamationCircleOutlined,
   QuestionOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
-
-const { confirm } = Modal;
+import { confirmModal } from '../../utils/confirm';
 
 export default function Discussion() {
   const user = useSelector(state => state?.user?.userData);
@@ -49,7 +48,7 @@ export default function Discussion() {
     /* const clientlog = */ await chatClient.connectUser(
       {
         id: user.id,
-        name: user.user_name,
+        name: user.user_name_front,
       },
       token
     );
@@ -119,33 +118,58 @@ export default function Discussion() {
   }, [param.id, user.id]);
 
   const handlePaid = () => {
-    confirm({
-      title: (
-        <h3 style={{ fontSize: '16px' }}>
-          have you sent the money to{' '}
-          <span className="username-green">@9a2fo9ns</span>?
-        </h3>
-      ),
-      icon: <ExclamationCircleOutlined />,
-      content: (
-        <>
-          <p>
-            make sure you have sent exactly $50 to @9a2fo9ns’s PayPal Wallet.
-          </p>
-          <p>If you are sure, click “ok” below.</p>
-        </>
-      ),
-      onOk() {
+    confirmModal(
+      <h3 style={{ fontSize: '16px' }}>
+        have you sent the money to{' '}
+        <span className="username-green">@9a2fo9ns</span>?
+      </h3>,
+      <>
+        <p>make sure you have sent exactly $50 to @9a2fo9ns’s PayPal Wallet.</p>
+        <p>If you are sure, click “ok” below.</p>
+      </>,
+      () => {
         return new Promise(async (resolve, reject) => {
           await channel.sendEvent({
             type: 'paid',
-            text: 'Hey there, long time no see!',
           });
           resolve();
         }).catch(() => console.log('Oops errors!'));
-      },
-      onCancel() {},
-    });
+      }
+    );
+  };
+
+  const onChange = e => {
+    console.log(`checked = ${e.target.checked}`);
+  };
+
+  const endChat = () => {
+    confirmModal(
+      <h3 style={{ fontSize: '16px' }}>are you sure?</h3>,
+      <>
+        <Alert
+          type="error"
+          showIcon
+          description="do not end chat if you've already made
+          this payment. for any other issues,
+          click on back and start a dispute."
+        />
+        <Checkbox
+          className="message-check"
+          onChange={onChange}
+          style={{ marginTop: '10px' }}
+        >
+          I confirm that I have not paid and I wish to end chat now
+        </Checkbox>
+      </>,
+      () => {
+        return new Promise(async (resolve, reject) => {
+          await channel.sendEvent({
+            type: 'end-chat',
+          });
+          resolve();
+        }).catch(() => console.log('Oops errors!'));
+      }
+    );
   };
 
   return (
@@ -173,7 +197,7 @@ export default function Discussion() {
 
                     <div className="message-wrapper-action">
                       <div>
-                        <Button disabled={paid} type="text">
+                        <Button disabled={paid} onClick={endChat} type="text">
                           end chat
                           <RightOutlined />
                         </Button>
@@ -197,6 +221,7 @@ export default function Discussion() {
                           gap: '5px',
                           alignItems: 'center',
                           fontSize: 12,
+                          marginRight: 10,
                         }}
                       >
                         <ClockCircleOutlined />
@@ -204,17 +229,23 @@ export default function Discussion() {
                       </div>
                     </div>
 
-                    {paid && (
-                      <p
-                        style={{
-                          color: '#ed1450',
-                          fontWeight: 700,
-                          paddingLeft: '20px',
-                        }}
-                      >
-                        waiting for 9a2fo9ns to confirm your payment...
-                      </p>
-                    )}
+                    <div style={{ opacity: '.5', padding: '0 30px 10px' }}>
+                      {paid ? (
+                        <Tag
+                          icon={<ExclamationCircleOutlined />}
+                          color="default"
+                        >
+                          waiting for 9a2fo9ns to confirm your payment...
+                        </Tag>
+                      ) : (
+                        <Tag
+                          icon={<ExclamationCircleOutlined />}
+                          color="default"
+                        >
+                          ! you haven’t paid yet
+                        </Tag>
+                      )}
+                    </div>
                   </div>
                 </Window>
               </Channel>

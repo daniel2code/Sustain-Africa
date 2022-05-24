@@ -12,3 +12,15 @@ export function showConfirm(title, content, onOk) {
     onCancel() {},
   });
 }
+
+export const confirmModal = (title, content, ok) => {
+  confirm({
+    title,
+    icon: <ExclamationCircleOutlined />,
+    content,
+    onOk() {
+      return ok();
+    },
+    onCancel() {},
+  });
+};
