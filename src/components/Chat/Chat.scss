@@ -1,0 +1,53 @@
+.chatheader {
+  &-title {
+    margin-bottom: 10px;
+    margin-top: 10px;
+    color: #14a014;
+    font-size: 14px;
+
+    & span {
+      font-size: 14px;
+    }
+  }
+
+  &-main {
+    padding-bottom: 10px;
+
+    .left {
+      display: flex;
+      justify-content: space-between;
+
+      .avatar {
+        margin-right: 6px;
+        transform: translateY(4px);
+      }
+      .status {
+        font-size: 13px;
+        color: grey;
+        margin-top: -5px;
+      }
+    }
+
+    .right {
+      display: flex;
+      justify-content: space-between;
+
+      .close {
+        cursor: pointer;
+        color: grey;
+        &:hover {
+          color: #ed1450;
+        }
+        &:active {
+          opacity: 0.7;
+        }
+      }
+    }
+  }
+
+  .chat-summary {
+    color: #00000073;
+    font-weight: 500;
+    font-size: 12px;
+  }
+}

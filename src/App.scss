@@ -22,6 +22,19 @@ body {
   height: 100%;
 }
 
+.layout {
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+
+  &-body {
+    overflow-y: auto;
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+  }
+}
+
 .ant-input {
   line-height: 2.1;
 }
@@ -56,4 +69,10 @@ body {
   &:hover {
     background: #ed145090;
   }
+}
+
+*,
+*::after,
+*::before {
+  font-family: 'Poppins', sans-serif !important;
 }

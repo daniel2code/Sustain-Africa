@@ -1,6 +1,6 @@
 .notification {
   width: 100%;
-  margin-top: 80px;
+  margin-top: 5px;
 
   &-wrapper {
     width: 95%;
@@ -23,6 +23,7 @@
     background-color: #fff2f6;
     padding: 10px 15px;
     margin-bottom: 20px;
+    cursor: pointer;
 
     &-disabled {
       border-color: #dddddd;
@@ -66,7 +67,12 @@
     }
   }
 
-  &-disabled {
+  &-pink {
+    font-weight: 700;
+    color: #ed1450;
+  }
+
+  &- &-disabled {
     background: #dddddd;
     border-color: #dddddd;
     cursor: not-allowed;

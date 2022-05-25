@@ -1,6 +1,6 @@
 .new-deal-container {
   width: 100%;
-  margin-top: 65px;
+  margin-top: 5px;
 
   .new-deal-wrapper {
     width: 95%;
@@ -90,14 +90,6 @@
 
         &:focus {
           box-shadow: none;
-        }
-      }
-
-      .ant-radio-inner {
-        &::after {
-          top: 50%;
-          left: 50%;
-          transform: scale(1) translate(-50%, -50%);
         }
       }
 

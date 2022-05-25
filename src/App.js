@@ -16,11 +16,12 @@ import Profile from './pages/Profile/Profile';
 import OtherProfile from './pages/Profile/OtherProfile';
 import DealPage from './pages/DealPage/DealPage';
 import EditDeal from './pages/EditDeal/EditDeal';
-import Message from './pages/Message/Message';
+import Discussion from './pages/Discussion/Discussion';
 import { bearerInstance } from './utils/API';
 import Notification from './pages/Notification/Notifiaction';
 import { setNotificationCount } from './redux/user/user.actions';
 import Wallet from './pages/Wallet/Wallet';
+import DiscussionMenu from './pages/Discussion/DiscussionMenu';
 
 function App() {
   useEffect(() => {
@@ -56,8 +57,8 @@ function App() {
 
           return userId === cur.receiver && cur.viewed_receiver === 0;
         });
-        console.log(notif);
-        console.log(userId);
+        // console.log(notif);
+        // console.log(userId);
         dispatch(setNotificationCount(notif.length));
       })
       .catch(err => {
@@ -109,25 +110,28 @@ function App() {
     <div className="App">
       <Layout className="layout">
         <Navbar />
-        {!hasError ? (
-          <Switch>
-            <Route exact path="/" component={DealsList} />
-            <Route exact path="/new-deal" component={NewDeal} />
-            <Route exact path="/edit-deal/:id" component={EditDeal} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/verify-email" component={VerifyEmail} />
-            <Route exact path="/add-phone" component={VerifyPhone} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/wallet" component={Wallet} />
-            <Route exact path="/user/:id/profile" component={OtherProfile} />
-            <Route exact path="/deal/:id" component={DealPage} />
-            <Route exact path="/message/:id" component={Message} />
-            <Route exact path="/notifications" component={Notification} />
-          </Switch>
-        ) : (
-          <ErrorBoundary />
-        )}
+        <div className="layout-body">
+          {!hasError ? (
+            <Switch>
+              <Route exact path="/" component={DealsList} />
+              <Route exact path="/new-deal" component={NewDeal} />
+              <Route exact path="/edit-deal/:id" component={EditDeal} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/verify-email" component={VerifyEmail} />
+              <Route exact path="/add-phone" component={VerifyPhone} />
+              <Route exact path="/profile" component={Profile} />
+              <Route exact path="/wallet" component={Wallet} />
+              <Route exact path="/user/:id/profile" component={OtherProfile} />
+              <Route exact path="/deal/:id" component={DealPage} />
+              <Route exact path="/chat/:id" component={Discussion} />
+              <Route exact path="/chat" component={DiscussionMenu} />
+              <Route exact path="/notifications" component={Notification} />
+            </Switch>
+          ) : (
+            <ErrorBoundary />
+          )}
+        </div>
       </Layout>
     </div>
   );
