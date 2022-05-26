@@ -264,6 +264,7 @@ export default function Discussion() {
                       </Tag>
                     </div>
                   </div>
+
                   </div>
                 </Window>
               </Channel>
