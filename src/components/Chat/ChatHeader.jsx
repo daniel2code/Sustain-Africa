@@ -1,7 +1,6 @@
 import './Chat.scss';
 // import { useChatContext } from 'stream-chat-react';
 import { DislikeOutlined, LikeOutlined } from '@ant-design/icons';
-import { Tag } from 'antd';
 
 const ChatHeader = ({ username }) => {
   // const { channel } = useChatContext();
