@@ -65,7 +65,7 @@
         height: 20px;
         display: block;
         margin: auto;
-        width: 20px;
+        margin-left: 12px;
 
         & path {
           fill: #ffffff !important;
@@ -95,7 +95,7 @@
       background: #ffffff;
 
       .str-chat__input-flat {
-        padding: 0 10px;
+        padding: 0 0;
       }
     }
     &-action {
@@ -109,7 +109,7 @@
           & button {
             color: #ed1450;
             padding: 0 10px;
-            font-size: 12px;
+            font-size: 14px;
 
             &:disabled {
               color: #999;
@@ -126,12 +126,12 @@
     .str-chat__input-flat .str-chat__textarea > textarea {
       background: #ffffff;
       border-radius: 30px;
-      padding: 10px;
+      padding: 12px 10px 10px 15px;
       display: block;
       margin: 0;
       box-shadow: 0 0 0 2.5px #ed1450;
       min-height: 40px;
-      font-size: 12px;
+      font-size: 14px;
 
       &:focus {
         outline: none;
@@ -161,7 +161,7 @@
     }
 
     .messaging.str-chat .str-chat__list {
-      padding: 0;
+      padding: 0 10px 0 10px;
       margin-bottom: 100px;
 
       &::-webkit-scrollbar {
@@ -177,7 +177,7 @@
 
     .str-chat__message-text-inner.str-chat__message-simple-text-inner {
       padding: 5px 10px;
-      font-size: 12px;
+      font-size: 14px;
       color: #484848;
     }
 

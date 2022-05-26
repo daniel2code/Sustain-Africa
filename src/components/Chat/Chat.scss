@@ -17,6 +17,52 @@
       display: flex;
       justify-content: space-between;
 
+      .like-dislike-chat {
+        font-size: 18px;
+        margin-top: 5px;
+
+        .like {
+          color: rgb(20, 160, 20);
+          margin-right: 18px;
+          font-weight: bold;
+
+          .anticon {
+            transform: translateY(-1px);
+          }
+        }
+
+        .dislike {
+          color: #ed1450;
+          margin-right: 18px;
+          font-weight: bold;
+          &.add-margin-right {
+            margin-right: 25px;
+          }
+          &.no-margin-right {
+            margin-right: 0;
+          }
+          .anticon {
+            transform: translateY(1px);
+          }
+        }
+
+        .score {
+          color: grey;
+          font-weight: bold;
+        }
+
+        .anticon {
+          margin-right: unset;
+        }
+      }
+
+      .name {
+        color: rgb(20, 160, 20);
+        font-size: 18px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
       .avatar {
         margin-right: 6px;
         transform: translateY(4px);

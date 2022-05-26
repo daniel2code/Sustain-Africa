@@ -128,7 +128,7 @@ export default function Discussion() {
         <p>If you are sure, click “ok” below.</p>
       </>,
       () => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
           await channel.sendEvent({
             type: 'paid',
           });
@@ -158,11 +158,11 @@ export default function Discussion() {
           onChange={onChange}
           style={{ marginTop: '10px' }}
         >
-          I confirm that I have not paid and I wish to end chat now
+          i confirm that I have not paid and I wish to end chat now
         </Checkbox>
       </>,
       () => {
-        return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve) => {
           await channel.sendEvent({
             type: 'end-chat',
           });
@@ -214,14 +214,12 @@ export default function Discussion() {
                       </div>
 
                       <div
-                        type="text"
                         style={{
                           color: '#999',
                           display: 'flex',
                           gap: '5px',
                           alignItems: 'center',
-                          fontSize: 12,
-                          marginRight: 10,
+                          fontSize: 14
                         }}
                       >
                         <ClockCircleOutlined />
@@ -233,16 +231,18 @@ export default function Discussion() {
                       {paid ? (
                         <Tag
                           icon={<ExclamationCircleOutlined />}
-                          color="default"
+                          color="success"
+                          style={{ fontSize: '14px'}}
                         >
                           waiting for 9a2fo9ns to confirm your payment...
                         </Tag>
                       ) : (
                         <Tag
                           icon={<ExclamationCircleOutlined />}
-                          color="default"
+                          color="success"
+                          style={{ fontSize: '14px'}}
                         >
-                          ! you haven’t paid yet
+                          you haven’t paid yet
                         </Tag>
                       )}
                     </div>

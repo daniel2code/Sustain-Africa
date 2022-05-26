@@ -3,7 +3,7 @@ import './Chat.scss';
 import { DislikeOutlined, LikeOutlined } from '@ant-design/icons';
 import { Tag } from 'antd';
 
-const ChatHeader = ({ username, channel }) => {
+const ChatHeader = ({ username }) => {
   // const { channel } = useChatContext();
 
   // const { data } = channel;
@@ -11,16 +11,16 @@ const ChatHeader = ({ username, channel }) => {
   return (
     <div className="chatheader">
       <div className="chatheader-title">
-        <Tag color="#14a014">stage 1</Tag> buying $50 bank funds from
+        <span className="ant-tag ant-tag-success">stage 1</span>buying $50 bank funds from
       </div>
 
       <div className="chatheader-main">
         <div className="left">
-          <div className="username-green">
+          <div className="name">
             @{username} <span style={{ color: '#14a014' }}>&#9679;</span>
           </div>
 
-          <div className="like-dislike no-margin-top">
+          <div className="like-dislike-chat no-margin-top">
             <span className="like">
               <LikeOutlined /> 21
             </span>
