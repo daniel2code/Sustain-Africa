@@ -222,6 +222,7 @@ export default function Discussion() {
                           fontSize: 14
                         }}
                       >
+
                         <ClockCircleOutlined />&nbsp;30 mins
                       </div>
                     </div>
