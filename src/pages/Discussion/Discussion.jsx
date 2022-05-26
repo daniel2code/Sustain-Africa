@@ -227,7 +227,8 @@ export default function Discussion() {
                       </div>
                     </div>
 
-                    <div style={{ opacity: '.5', padding: '0 30px 10px' }}>
+                    <div className='actions-wrapper-section'>
+                    <div style={{ opacity: '.5'}}>
                       {paid ? (
                         <Tag
                           icon={<ExclamationCircleOutlined />}
@@ -246,6 +247,23 @@ export default function Discussion() {
                         </Tag>
                       )}
                     </div>
+
+                    <div
+                        style={{
+                          display: 'flex',
+                          fontSize: 14,
+                          opacity: '.5'
+                        }}
+                    >
+                      <Tag
+                          icon={<ExclamationCircleOutlined />}
+                          color="default"
+                          style={{ fontSize: '14px', margin: 0}}
+                      >
+                        instructions
+                      </Tag>
+                    </div>
+                  </div>
                   </div>
                 </Window>
               </Channel>
