@@ -55,7 +55,7 @@ const columns = [
               {record.type === 'receive' ? 'received' : 'sent'}
             </span>
             <br />
-            {record.mode === 'internal' ? '#internal#' : ''}
+            {record.mode === 'internal' ? '#internal' : ''}
           </p>
           <p style={{ marginBottom: '10px', fontSize: '11px' }}>
             {moment(record.tx_created_at).format('LL')}

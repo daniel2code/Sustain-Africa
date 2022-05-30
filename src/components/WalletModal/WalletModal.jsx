@@ -113,7 +113,7 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
     if (values.btc_amount === undefined)
       return setAmountValidate({
         validateStatus: 'error',
-        errorMsg: 'Input a valid amount in btc!',
+        errorMsg: 'input a valid amount in btc!',
       });
 
     if (+values.btc_amount <= 0) return setInitErr(true);
