@@ -10,12 +10,10 @@
   &-box {
     display: flex;
     align-items: flex-start;
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding: 15px;
 
     &-left {
       flex: 1;
-      padding-right: 20px;
 
       & h3 {
         margin-top: 10px;

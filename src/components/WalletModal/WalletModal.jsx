@@ -1,5 +1,4 @@
 import './WalletModal.scss';
-import { ReactComponent as Send } from '../../assets/send.svg';
 import { Modal, Alert, Button, Form, Input, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { bearerInstance } from '../../utils/API';
@@ -165,14 +164,6 @@ const WalletModal = ({ send, close, open, sent, btcPrice, curBal }) => {
   return (
     <Modal onCancel={close} visible={open} className="walletModal">
       <div className="walletModal-box">
-        <div
-          className={send ? '' : 'walletModal-recieve-icon'}
-          style={{
-            color: 'rgb(255,213,0)',
-          }}
-        >
-          <Send style={{ height: '20px', width: '20px' }} />
-        </div>
 
         {send ? (
           <div className="walletModal-send walletModal-box-left">
