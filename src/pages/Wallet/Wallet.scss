@@ -65,10 +65,17 @@
 
     & h2 {
       margin: 0;
-      color: #14a014;
       font-weight: 700;
       font-size: 20px;
       cursor: default;
+    }
+
+    & .header-color-positive {
+      color: #14a014;
+    }
+
+    & .header-color-negative {
+      color: #ed1450;
     }
 
     &-btn {

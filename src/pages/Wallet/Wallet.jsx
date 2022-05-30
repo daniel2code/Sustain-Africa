@@ -55,7 +55,7 @@ const columns = [
               {record.type === 'receive' ? 'received' : 'sent'}
             </span>
             <br />
-            {record.mode}
+            {record.mode === 'internal' ? '#internal#' : ''}
           </p>
           <p style={{ marginBottom: '10px', fontSize: '11px' }}>
             {moment(record.tx_created_at).format('LL')}
@@ -111,7 +111,7 @@ const columns = [
             // opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {Number(record.value)} BTC
+            {record.type === 'receive' ? ('+') : ('-')}{Number(record.value)} BTC
         </p>
         <p
           style={{
@@ -121,7 +121,7 @@ const columns = [
             // opacity: record.confirmations === 0 ? '0.5' : '1',
           }}
         >
-          {record.native_value} USD
+            {record.type === 'receive' ? ('+') : ('-')}{record.native_value} USD
         </p>
       </>
     ),
@@ -282,7 +282,7 @@ const Wallet = () => {
 
               {/*wallet + send and receive bitcoin */}
               <div className="wallet-coin">
-                <h2>
+                <h2 className={userBalance.balance < 0 ? 'header-color-negative' : 'header-color-positive'}>
                   {+userBalance.balance}
                   {+userBalance.balance === 0 && '.00'} BTC
                 </h2>
@@ -294,7 +294,7 @@ const Wallet = () => {
                   {new Intl.NumberFormat('en-us').format(
                     userBalance.balance_usd
                   )}
-                  {userBalance.balance_usd === 0 && '.00'} usd
+                  {userBalance.balance_usd === 0 && '.00'} USD
                   {userBalance.balance_usd === 0 && (
                     <Button
                       type="text"
