@@ -9,7 +9,7 @@ const TxModal = ({ close, open, data }) => {
         <h4>details</h4>
 
         <h3>
-          {data.type === 'receive' ? 'received' : 'sent'} {data.mode === 'internal' ? '#internal' : ''}
+          {data.type === 'receive' ? 'received' : 'sent'} {data.mode === 'internal' ? 'internal **' : ''}
         </h3>
         <p>{moment(data.tx_created_at).format('LLL')}</p>
 
