@@ -1,54 +1,54 @@
-import React, { useEffect } from 'react';
-import './App.scss';
-import { Layout, message } from 'antd';
-import { Route, Switch, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import "./App.scss";
+import { Layout, message } from "antd";
+import { Route, Switch, useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 
-import Navbar from './components/Navbar/Navbar';
-import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary.jsx';
-import DealsList from './pages/DealsList/DealsList';
-import NewDeal from './pages/NewDeal/NewDeal';
-import Register from './pages/Authentication/Register';
-import Login from './pages/Authentication/Login';
-import VerifyEmail from './pages/Authentication/VerifyEmail';
-import VerifyPhone from './pages/Authentication/VerifyPhone';
-import Profile from './pages/Profile/Profile';
-import OtherProfile from './pages/Profile/OtherProfile';
-import DealPage from './pages/DealPage/DealPage';
-import EditDeal from './pages/EditDeal/EditDeal';
-import Discussion from './pages/Discussion/Discussion';
-import { bearerInstance } from './utils/API';
-import Notification from './pages/Notification/Notifiaction';
-import { setNotificationCount } from './redux/user/user.actions';
-import Wallet from './pages/Wallet/Wallet';
-import DiscussionMenu from './pages/Discussion/DiscussionMenu';
+import Navbar from "./components/Navbar/Navbar";
+import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
+import DealsList from "./pages/DealsList/DealsList";
+import NewDeal from "./pages/NewDeal/NewDeal";
+import Register from "./pages/Authentication/Register";
+import Login from "./pages/Authentication/Login";
+import VerifyEmail from "./pages/Authentication/VerifyEmail";
+import VerifyPhone from "./pages/Authentication/VerifyPhone";
+import Profile from "./pages/Profile/Profile";
+import OtherProfile from "./pages/Profile/OtherProfile";
+import DealPage from "./pages/DealPage/DealPage";
+import EditDeal from "./pages/EditDeal/EditDeal";
+import Discussion from "./pages/Discussion/Discussion";
+import { bearerInstance } from "./utils/API";
+import Notification from "./pages/Notification/Notifiaction";
+import { setNotificationCount } from "./redux/user/user.actions";
+import Wallet from "./pages/Wallet/Wallet";
+import DiscussionMenu from "./pages/Discussion/DiscussionMenu";
 
 function App() {
   useEffect(() => {
-    if (userState?.userData?.is_email_verified === '0') {
-      history.push('/verify-email');
+    if (userState?.userData?.is_email_verified === "0") {
+      history.push("/verify-email");
     }
     //eslint-disable-next-line
   }, []);
 
-  const userState = useSelector(state => state.user);
-  const hasError = useSelector(state => state.data.hasError);
+  const userState = useSelector((state) => state.user);
+  const hasError = useSelector((state) => state.data.hasError);
   const history = useHistory();
   const dispatch = useDispatch();
-  const userId = useSelector(state => state?.user?.userData?.id);
+  const userId = useSelector((state) => state?.user?.userData?.id);
 
   useEffect(() => {
     bearerInstance
-      .get('/check_token')
-      .then(res => {
-        if (res.data.message === 'token valid')
-          return bearerInstance.get('/fetch_all_notifications');
+      .get("/check_token")
+      .then((res) => {
+        if (res.data.message === "token valid")
+          return bearerInstance.get("/fetch_all_notifications");
       })
-      .then(res => {
+      .then((res) => {
         // to be kept
-        const notif = res.data.notification_data.filter(cur => {
+        const notif = res.data.notification_data.filter((cur) => {
           if (userId === cur.sender)
-            if (cur.type === 'd_r')
+            if (cur.type === "d_r")
               return (
                 userId === cur.sender &&
                 cur.viewed_sender === 0 &&
@@ -61,17 +61,17 @@ function App() {
         // console.log(userId);
         dispatch(setNotificationCount(notif.length));
       })
-      .catch(err => {
-        console.log('not authenticated');
+      .catch((err) => {
+        console.log("not authenticated");
       });
   }, [userId, dispatch]);
 
   const logout = () => {
-    dispatch({ type: 'DESTROY_SESSION' });
+    dispatch({ type: "DESTROY_SESSION" });
     localStorage.clear();
     sessionStorage.clear();
     setTimeout(() => {
-      window.location.assign('/login');
+      window.location.assign("/login");
     }, 500);
   };
 
@@ -82,20 +82,20 @@ function App() {
       }
       return config;
     },
-    err => {
+    (err) => {
       console.log(err);
       return Promise.reject(err);
     }
   );
 
   bearerInstance.interceptors.response.use(
-    response => {
+    (response) => {
       return response;
     },
 
     function (error) {
       if (error?.response?.status === 500) {
-        return message.warning('Server is down, please try later!');
+        return message.warning("Server is down, please try later!");
       }
 
       if (error?.response?.status === 401) {
