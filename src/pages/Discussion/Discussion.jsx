@@ -1,35 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { StreamChat } from 'stream-chat';
-import { useParams } from 'react-router-dom';
-import Loader from '../../components/Loader/Loader';
+import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { StreamChat } from "stream-chat";
+import { useParams } from "react-router-dom";
+import Loader from "../../components/Loader/Loader";
 // import { format } from 'timeago.js';
-import axios from 'axios';
+import axios from "axios";
 import {
   Channel,
   Chat,
   MessageInput,
   MessageList,
   Window,
-} from 'stream-chat-react';
-import 'stream-chat-react/dist/css/index.css';
-import './discussion.scss';
-import { sendNotification } from '../../utils/notification';
-import ChatHeader from '../../components/Chat/ChatHeader';
-import { bearerInstance } from '../../utils/API';
-import { Alert, Button, Checkbox, Tag } from 'antd';
+} from "stream-chat-react";
+import "stream-chat-react/dist/css/index.css";
+import "./discussion.scss";
+import { sendNotification } from "../../utils/notification";
+import ChatHeader from "../../components/Chat/ChatHeader";
+import { bearerInstance } from "../../utils/API";
+import { Alert, Button, Checkbox, Tag } from "antd";
 import {
   RightOutlined,
   CheckOutlined,
   ClockCircleOutlined,
   QuestionOutlined,
   ExclamationCircleOutlined,
-} from '@ant-design/icons';
-import { confirmModal } from '../../utils/confirm';
+} from "@ant-design/icons";
+import { confirmModal } from "../../utils/confirm";
 
 export default function Discussion() {
-  const user = useSelector(state => state?.user?.userData);
+  const user = useSelector((state) => state?.user?.userData);
   const param = useParams();
+  const [tab, setTab] = useState("chats");
 
   const [client, setClient] = useState(null);
   const [channel, setChannel] = useState(null);
@@ -44,7 +45,7 @@ export default function Discussion() {
     );
     const { token } = res.data;
 
-    const chatClient = StreamChat.getInstance('2shvqv4hcrbh');
+    const chatClient = StreamChat.getInstance("2shvqv4hcrbh");
     /* const clientlog = */ await chatClient.connectUser(
       {
         id: user.id,
@@ -55,7 +56,7 @@ export default function Discussion() {
 
     // console.log(clientlog);
 
-    const chatChannel = chatClient.channel('messaging', param.id, {
+    const chatChannel = chatClient.channel("messaging", param.id, {
       name: param.id,
     });
 
@@ -78,17 +79,17 @@ export default function Discussion() {
 
   useEffect(() => {
     if (channel) {
-      channel.on(event => {
-        if (event.type === 'paid') setPaid(true);
+      channel.on((event) => {
+        if (event.type === "paid") setPaid(true);
       });
     }
   }, [channel]);
 
   useEffect(() => {
     if (channel) {
-      channel.on('message.new', event => {
+      channel.on("message.new", (event) => {
         if (event.user.id !== user.id)
-          sendNotification('user', event.message.text, `/chat/${param.id}`);
+          sendNotification("user", event.message.text, `/chat/${param.id}`);
       });
     }
   }, [channel, user.id, param.id]);
@@ -99,7 +100,7 @@ export default function Discussion() {
       setLoading(true);
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
-        .then(res => {
+        .then((res) => {
           console.log(res.data);
 
           console.log(res.data.deal_data[0].dealer_id, user.id);
@@ -110,7 +111,7 @@ export default function Discussion() {
 
           setLoading(false);
         })
-        .catch(err => {
+        .catch((err) => {
           setLoading(false);
           console.log(err);
         });
@@ -119,8 +120,8 @@ export default function Discussion() {
 
   const handlePaid = () => {
     confirmModal(
-      <h3 style={{ fontSize: '16px' }}>
-        have you sent the money to{' '}
+      <h3 style={{ fontSize: "16px" }}>
+        have you sent the money to{" "}
         <span className="username-green">@9a2fo9ns</span>?
       </h3>,
       <>
@@ -130,21 +131,21 @@ export default function Discussion() {
       () => {
         return new Promise(async (resolve) => {
           await channel.sendEvent({
-            type: 'paid',
+            type: "paid",
           });
           resolve();
-        }).catch(() => console.log('Oops errors!'));
+        }).catch(() => console.log("Oops errors!"));
       }
     );
   };
 
-  const onChange = e => {
+  const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
   };
 
   const endChat = () => {
     confirmModal(
-      <h3 style={{ fontSize: '16px' }}>are you sure?</h3>,
+      <h3 style={{ fontSize: "16px" }}>are you sure?</h3>,
       <>
         <Alert
           type="error"
@@ -156,7 +157,7 @@ export default function Discussion() {
         <Checkbox
           className="message-check"
           onChange={onChange}
-          style={{ marginTop: '10px' }}
+          style={{ marginTop: "10px" }}
         >
           i confirm that I have not paid and I wish to end chat now
         </Checkbox>
@@ -164,10 +165,10 @@ export default function Discussion() {
       () => {
         return new Promise(async (resolve) => {
           await channel.sendEvent({
-            type: 'end-chat',
+            type: "end-chat",
           });
           resolve();
-        }).catch(() => console.log('Oops errors!'));
+        }).catch(() => console.log("Oops errors!"));
       }
     );
   };
@@ -182,89 +183,106 @@ export default function Discussion() {
             <Chat client={client} theme="messaging light">
               <Channel channel={channel}>
                 <Window>
-                  <ChatHeader username={chatting?.user_name_front} />
-                  <MessageList
-                    hideDeletedMessages={true}
-                    messageActions={['reply', 'quote']}
-                  />
-                  <div className="message-wrapper-box">
-                    <MessageInput
-                      grow={true}
-                      additionalTextareaProps={{
-                        placeholder: 'type a message...',
-                      }}
-                    />
+                  {tab === "chats" && (
+                    <>
+                      <ChatHeader username={chatting?.user_name_front} />
+                      <MessageList
+                        hideDeletedMessages={true}
+                        messageActions={["reply", "quote"]}
+                      />
+                    </>
+                  )}
 
-                    <div className="message-wrapper-action">
-                      <div>
-                        <Button disabled={paid} onClick={endChat} type="text">
-                          end chat
-                          <RightOutlined />
-                        </Button>
+                  {tab === "instructions" && (
+                    <div style={{ height: "80vh", backgroundColor: "red" }}>
+                      <h2>Instuctons</h2>
+                    </div>
+                  )}
+                  <div className="message-wrapper-box">
+                    {tab === "chats" && (
+                      <MessageInput
+                        grow={true}
+                        additionalTextareaProps={{
+                          placeholder: "type a message...",
+                        }}
+                      />
+                    )}
+
+                    {tab === "chats" && (
+                      <div className="message-wrapper-action">
+                        <div>
+                          <Button disabled={paid} onClick={endChat} type="text">
+                            end chat
+                            <RightOutlined />
+                          </Button>
+                          {paid ? (
+                            <Button type="text" onClick={() => {}}>
+                              <QuestionOutlined />
+                              raise issue
+                            </Button>
+                          ) : (
+                            <Button type="text" onClick={handlePaid}>
+                              <CheckOutlined />i have paid
+                            </Button>
+                          )}
+                        </div>
+
+                        <div
+                          style={{
+                            color: "#999",
+                            display: "flex",
+                            gap: "5px",
+                            alignItems: "center",
+                            fontSize: 14,
+                          }}
+                        >
+                          <ClockCircleOutlined />
+                          &nbsp;30 mins
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="actions-wrapper-section">
+                      <div
+                        style={{ opacity: ".5" }}
+                        onClick={() => setTab("chats")}
+                      >
                         {paid ? (
-                          <Button type="text" onClick={() => {}}>
-                            <QuestionOutlined />
-                            raise issue
-                          </Button>
+                          <Tag
+                            icon={<ExclamationCircleOutlined />}
+                            color="success"
+                            style={{ fontSize: "14px" }}
+                          >
+                            waiting for 9a2fo9ns to confirm your payment...
+                          </Tag>
                         ) : (
-                          <Button type="text" onClick={handlePaid}>
-                            <CheckOutlined />i have paid
-                          </Button>
+                          <Tag
+                            icon={<ExclamationCircleOutlined />}
+                            color="success"
+                            style={{ fontSize: "14px" }}
+                          >
+                            you haven’t paid yet
+                          </Tag>
                         )}
                       </div>
 
                       <div
                         style={{
-                          color: '#999',
-                          display: 'flex',
-                          gap: '5px',
-                          alignItems: 'center',
-                          fontSize: 14
-                        }}
-                      >
-
-                        <ClockCircleOutlined />&nbsp;30 mins
-                      </div>
-                    </div>
-
-                    <div className='actions-wrapper-section'>
-                    <div style={{ opacity: '.5'}}>
-                      {paid ? (
-                        <Tag
-                          icon={<ExclamationCircleOutlined />}
-                          color="success"
-                          style={{ fontSize: '14px'}}
-                        >
-                          waiting for 9a2fo9ns to confirm your payment...
-                        </Tag>
-                      ) : (
-                        <Tag
-                          icon={<ExclamationCircleOutlined />}
-                          color="success"
-                          style={{ fontSize: '14px'}}
-                        >
-                          you haven’t paid yet
-                        </Tag>
-                      )}
-                    </div>
-
-                    <div
-                        style={{
-                          display: 'flex',
+                          display: "flex",
                           fontSize: 14,
-                          opacity: '.5'
+                          opacity: ".5",
                         }}
-                    >
-                      <Tag
+                        onClick={() => setTab("instructions")}
+                      >
+                        <Tag
                           icon={<ExclamationCircleOutlined />}
                           color="default"
-                          style={{ fontSize: '14px', margin: 0}}
-                      >
-                        instructions
-                      </Tag>
+                          style={{ fontSize: "14px", margin: 0 }}
+                        >
+                          instructions
+                        </Tag>
+                      </div>
                     </div>
-                  </div>
-
                   </div>
                 </Window>
               </Channel>
