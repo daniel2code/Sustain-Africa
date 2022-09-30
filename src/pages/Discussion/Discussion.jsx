@@ -37,6 +37,8 @@ export default function Discussion() {
 
   const [chatting, setChatting] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [merchant, setMerchantId] = useState(null);
+  const [merchantDetails, setMerchantDetails] = useState(null);
   const [paid, setPaid] = useState(false);
 
   const init = async () => {
@@ -53,8 +55,6 @@ export default function Discussion() {
       },
       token
     );
-
-    // console.log(clientlog);
 
     const chatChannel = chatClient.channel("messaging", param.id, {
       name: param.id,
@@ -101,7 +101,8 @@ export default function Discussion() {
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
         .then((res) => {
-          console.log(res.data);
+          console.log(res.data?.merchant_data[0]?.id);
+          setMerchantId(res.data?.merchant_data[0]?.id);
 
           console.log(res.data.deal_data[0].dealer_id, user.id);
 
@@ -118,11 +119,29 @@ export default function Discussion() {
     }
   }, [param.id, user.id]);
 
+  console.log(chatting);
+
+  useEffect(() => {
+    if (merchant) {
+      bearerInstance
+        .get(`/profile?id=${merchant}`)
+        .then((res) => {
+          console.log(res.data);
+          setMerchantDetails(res.data)
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [merchant]);
+
+  console.log(merchantDetails?.profile_data[0]?.user_name)
+
   const handlePaid = () => {
     confirmModal(
       <h3 style={{ fontSize: "16px" }}>
         have you sent the money to{" "}
-        <span className="username-green">@9a2fo9ns</span>?
+        <span className="username-green">@{merchantDetails?.profile_data[0]?.user_name}</span>?
       </h3>,
       <>
         <p>make sure you have sent exactly $50 to @9a2fo9ns’s PayPal Wallet.</p>
@@ -185,7 +204,7 @@ export default function Discussion() {
                 <Window>
                   {tab === "chats" && (
                     <>
-                      <ChatHeader username={chatting?.user_name_front} />
+                      <ChatHeader username={merchantDetails?.profile_data[0]?.user_name}  />
                       <MessageList
                         hideDeletedMessages={true}
                         messageActions={["reply", "quote"]}
@@ -194,8 +213,23 @@ export default function Discussion() {
                   )}
 
                   {tab === "instructions" && (
-                    <div style={{ height: "80vh", backgroundColor: "red" }}>
-                      <h2>Instuctons</h2>
+                    <div className="instuctions-box">
+                      <h2 className="instruction-title">Instructions</h2>
+                      <p>
+                        <b className="bold-text">Stage 1:</b> You are now buying
+                        $500 worth of btc with Cashapp.
+                      </p>
+                      <ul>
+                        <li className="list-text">
+                          Wait for the user to provide his Cashapp wallet.
+                        </li>
+                        <li className="list-text">
+                          Make a payment of $500 into the user‘s Cashapp wallet”
+                        </li>
+                        <li className="list-text">
+                          Click on I Have Paid when done”.
+                        </li>
+                      </ul>
                     </div>
                   )}
                   <div className="message-wrapper-box">
