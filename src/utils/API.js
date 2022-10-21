@@ -15,3 +15,11 @@ export const bearerInstance = axios.create({
     'Content-Type': 'application/x-www-form-urlencoded',
   },
 });
+
+export const bearerInstanceWithToken = axios.create({
+  baseURL: 'https://sustain.africa/factory',
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/x-www-form-urlencoded',
+  },
+});

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Tabs, message, Divider, Breadcrumb } from "antd";
+import { Tabs, message, Divider, Breadcrumb, Tag } from "antd";
 import { Link } from "react-router-dom";
 
 import {
@@ -49,15 +49,22 @@ export default function OtherProfile({ match }) {
         <div className="profile-wrapper">
           <Breadcrumb>
             <Breadcrumb.Item>
-              <Link to="/"><HomeOutlined /></Link>
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              {otherProfile?.profile_data[0]?.user_name_front}
+              {otherProfile?.profile_data[0]?.user_name}
             </Breadcrumb.Item>
           </Breadcrumb>
           <div className="user-info">
             <div className="username">
-              {otherProfile?.profile_data[0]?.user_name_front}
+              {otherProfile?.profile_data[0]?.user_name}
+              <Tag style={{marginLeft: "5px", height: "18px"}}  >
+                <span className="user-id">
+                  {otherProfile?.profile_data[0]?.user_name_front}
+                </span>
+              </Tag>
             </div>
             <div className="rate">
               profile score{" "}
@@ -82,7 +89,7 @@ export default function OtherProfile({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
           >
-            {`${otherProfile?.profile_data[0]?.user_name_front}'s deals (${otherProfile?.total_deals_count})`}
+            {`${otherProfile?.profile_data[0]?.user_name}'s deals (${otherProfile?.total_deals_count})`}
           </Divider>
 
           {otherProfile?.deals_data.length > 0 ? (
@@ -113,7 +120,7 @@ export default function OtherProfile({ match }) {
           <Divider
             style={{ fontSize: "14px", color: "#999", marginTop: "30px" }}
           >
-            {`reviews for ${otherProfile?.profile_data[0]?.user_name_front} (${otherProfile?.profile_data[0]?.total_reviews})`}
+            {`reviews for ${otherProfile?.profile_data[0]?.user_name} (${otherProfile?.profile_data[0]?.total_reviews})`}
           </Divider>
 
           <div className="reviews">

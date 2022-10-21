@@ -63,7 +63,7 @@ export default function DealItem({ item }) {
           }}
         >
           <div>
-            <div className="username-green">@{item?.user_name_front} </div>
+            <div className="username-green">@{item?.user_name} </div>
             <div>
               <div className="score-green">
                 score <span style={{ fontWeight: 600 }}>{item?.a_score}</span>{' '}

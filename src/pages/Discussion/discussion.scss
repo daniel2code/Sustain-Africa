@@ -77,7 +77,6 @@
       }
     }
 
-
     .str-chat__date-separator {
       padding: 10px;
 
@@ -125,14 +124,15 @@
     }
 
     .str-chat__input-flat .str-chat__textarea > textarea {
-      background: #ffffff;
+      background: rgb(247, 247, 247, 0.7);
       border-radius: 30px;
       padding: 12px 10px 10px 15px;
       display: block;
       margin: 0;
-      box-shadow: 0 0 0 2px #ed1450;
+      box-shadow: 0 0 0 2px #00000019;
       min-height: 40px;
       font-size: 14px;
+      outline: none;
 
       &:focus {
         outline: none;
@@ -190,25 +190,26 @@
 
     .str-chat__message--me.str-chat__message-simple--me {
       .str-chat__message-text-inner.str-chat__message-simple-text-inner {
-        background-color: #7fdff8;
+        background-color: #fb4570 ;
+        color: white;
       }
     }
   }
 }
 
 .actions {
-
   &-wrapper {
-    width: 95%;
+    width: 100%;
     max-width: 800px;
     margin: 0 auto;
     background-color: white;
 
     &-section {
-      padding: 0 20px 10px;
+      padding: 10px 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-top: 5px;
     }
   }
 }
@@ -228,6 +229,15 @@
   &-discussions {
   }
 
+  &-bar-left span {
+    border-radius: 10px;
+    font-size: 13px;
+    background-color: #14a014;
+    color: white;
+    padding: 0px 6px;
+    margin-left: 5px;
+  }
+
   &-bar {
     margin-bottom: 20px;
     display: flex;
@@ -242,12 +252,12 @@
       display: flex;
       align-items: center;
 
-      & span {
-        font-weight: 400;
-        font-size: 16px;
-        margin-left: 5px;
-        margin-top: 4px;
-      }
+      // & span {
+      //   font-weight: 400;
+      //   font-size: 16px;
+      //   margin-left: 5px;
+      //   margin-top: 4px;
+      // }
     }
 
     &-right {
@@ -276,17 +286,26 @@
   }
 }
 
-.instructions-box{
-  padding: 20px;
+.instructions-box {
+  padding: 300px;
 }
 
-.instruction-title{
-  font-weight: 400;
+.instructions-wrap{
+  padding: 20px;
+  width: 100%;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+margin-top: 15px;
+}
+
+.instruction-title {
+  font-weight: 700;
   font-size: 20px;
   margin-top: 10px;
   text-decoration: underline;
+  color: #14a014;
+
 }
 
-.list-text{
+.list-text {
   margin: 15px 0px;
 }

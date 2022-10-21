@@ -131,6 +131,11 @@
   &:active {
     opacity: 0.7;
   }
+
+  :first-child{
+    font-size: 13px;
+    color: grey;
+  }
 }
 
 .username-red {
@@ -144,9 +149,10 @@
   height: 22px;
   font-size: 12px;
   color: white;
-  background-color: #a8a8a8;
+  background-color: #a9fca9;
   padding: 2px 10px;
   border-radius: 10px;
+  color: #14a014;
 }
 
 .source-destination-rate {
@@ -172,6 +178,10 @@
 
 .bold {
   font-weight: 600;
+}
+
+.rate-text{
+  margin-left: 5px;
 }
 
 .like-dislike {

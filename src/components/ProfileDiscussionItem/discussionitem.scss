@@ -1,5 +1,5 @@
 .discussion-item-container {
-  padding: 15px 0;
+  padding: 15px 10px 11px 10px;
   border-bottom: 1px solid #eeeeee;
   cursor: pointer;
   &:last-child {
@@ -9,18 +9,31 @@
     opacity: 0.7;
   }
 
+  &:hover {
+    background-color: #14a01407;
+    transition: all 0.7s;
+  }
+
   .top {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
   }
 
+  .top-item {
+    display: flex;
+    grid-column-gap: 15px;
+  }
+
+  .arrow-icon {
+    display: none;
+  }
+
   .bottom {
-    margin-top: 0px;
-    margin-left: 10px;
+    margin-top: -3px;
 
     .info {
-      margin: auto 0 auto 10px;
+      // margin: auto 0 auto 10px;
       color: grey;
       font-size: 12px;
     }
@@ -28,6 +41,34 @@
       color: gray !important;
       font-weight: normal !important;
       font-size: 12px !important;
+    }
+  }
+
+  @media screen and (max-width: 500px) {
+    .bottom {
+      display: flex;
+    }
+
+    .top-item {
+      flex-direction: column;
+    }
+
+    .source-destination {
+      display: none;
+    }
+
+    .arrow-icon {
+      display: flex;
+      margin-left: 15px;
+      color: #ed1450;
+    }
+
+    .username-green {
+      font-size: 14px;
+    }
+
+    .view-btn {
+      display: none;
     }
   }
 }

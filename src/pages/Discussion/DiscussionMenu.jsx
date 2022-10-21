@@ -18,6 +18,8 @@ export default function DiscussionMenu() {
   const getAllChats = () => {
     setLoading(true);
 
+    console.log(discussions)
+
     bearerInstance
       .get('/fetch_all_discussions')
       .then(res => {
@@ -67,7 +69,7 @@ export default function DiscussionMenu() {
 
             <div className="msg-bar">
               <div className="msg-bar-left">
-                chats <span>({discussions.length})</span>
+                chats <span>{discussions.length}</span>
               </div>
               <div className="msg-bar-right">
                 <div>
@@ -102,7 +104,7 @@ export default function DiscussionMenu() {
         )}
 
         {discussions.length === 0 && ( */}
-        <div className="msg-end">end</div>
+        <div className="msg-end" />
         {/* )} */}
       </div>
     </div>

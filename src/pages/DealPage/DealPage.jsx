@@ -82,7 +82,7 @@ export default function DealPage({ match }) {
                       : `/user/${deal?.dealer_id}/profile`
                   }
                 >
-                  {dealerData?.user_name_front}
+                  {dealerData?.user_name}
                 </Link>
               </Breadcrumb.Item>
               <Breadcrumb.Item>deal</Breadcrumb.Item>
@@ -112,7 +112,7 @@ export default function DealPage({ match }) {
               </div>*/}
                 <div>
                   <div className="username-green">
-                    @{dealerData?.user_name_front}{' '}
+                    @{dealerData?.user_name}{' '}
                   </div>
                   <div>
                     <div className="score-green">
@@ -378,7 +378,7 @@ export default function DealPage({ match }) {
             <Divider
               style={{ fontSize: '14px', color: '#999', marginTop: '60px' }}
             >
-              reviews for @{dealerData?.user_name_front} (
+              reviews for @{dealerData?.user_name} (
               {dealerData?.total_reviews})
             </Divider>
 

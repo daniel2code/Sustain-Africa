@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { StreamChat } from "stream-chat";
 import { useParams } from "react-router-dom";
@@ -17,15 +17,21 @@ import "./discussion.scss";
 import { sendNotification } from "../../utils/notification";
 import ChatHeader from "../../components/Chat/ChatHeader";
 import { bearerInstance } from "../../utils/API";
-import { Alert, Button, Checkbox, Tag } from "antd";
+import { Alert, Button, Checkbox, Tag, Space } from "antd";
 import {
   RightOutlined,
   CheckOutlined,
   ClockCircleOutlined,
   QuestionOutlined,
   ExclamationCircleOutlined,
+  MessageOutlined,
 } from "@ant-design/icons";
-import { confirmModal } from "../../utils/confirm";
+import {
+  confirmModal,
+  successMessage,
+  errorMessage,
+} from "../../utils/confirm";
+import Countdown from "react-countdown";
 
 export default function Discussion() {
   const user = useSelector((state) => state?.user?.userData);
@@ -40,6 +46,13 @@ export default function Discussion() {
   const [merchant, setMerchantId] = useState(null);
   const [merchantDetails, setMerchantDetails] = useState(null);
   const [paid, setPaid] = useState(false);
+  const [disableBtn, setDisableBtn] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(
+    "An error occured, please try again"
+  );
+
+  const successRef = useRef();
+  const errorRef = useRef();
 
   const init = async () => {
     const res = await axios.get(
@@ -58,11 +71,23 @@ export default function Discussion() {
 
     const chatChannel = chatClient.channel("messaging", param.id, {
       name: param.id,
+      members: [
+        `${merchantDetails?.profile_data[0]?.user_name}`,
+        `${user.user_name}`,
+      ],
+      color: "green",
     });
 
-    await chatChannel.watch();
+    await chatChannel.watch({ presence: true });
 
-    // console.log(ch);
+    // const channels = client.channel("messaging", param.id, {
+    //   members: [merchantDetails?.profile_data[0]?.user_name],
+    //   color: "green",
+    // });
+
+    // const state = await channels.watch({ presence: true });
+
+    console.log(chatChannel.data);
 
     chatChannel.addMembers([user.id]);
 
@@ -119,15 +144,13 @@ export default function Discussion() {
     }
   }, [param.id, user.id]);
 
-  console.log(chatting);
-
   useEffect(() => {
     if (merchant) {
       bearerInstance
         .get(`/profile?id=${merchant}`)
         .then((res) => {
           console.log(res.data);
-          setMerchantDetails(res.data)
+          setMerchantDetails(res.data);
         })
         .catch((err) => {
           console.log(err);
@@ -135,13 +158,14 @@ export default function Discussion() {
     }
   }, [merchant]);
 
-  console.log(merchantDetails?.profile_data[0]?.user_name)
-
   const handlePaid = () => {
     confirmModal(
       <h3 style={{ fontSize: "16px" }}>
         have you sent the money to{" "}
-        <span className="username-green">@{merchantDetails?.profile_data[0]?.user_name}</span>?
+        <span className="username-green">
+          @{merchantDetails?.profile_data[0]?.user_name}
+        </span>
+        ?
       </h3>,
       <>
         <p>make sure you have sent exactly $50 to @9a2fo9ns’s PayPal Wallet.</p>
@@ -160,6 +184,7 @@ export default function Discussion() {
 
   const onChange = (e) => {
     console.log(`checked = ${e.target.checked}`);
+    e && setDisableBtn(e.target.checked);
   };
 
   const endChat = () => {
@@ -181,20 +206,59 @@ export default function Discussion() {
           i confirm that I have not paid and I wish to end chat now
         </Checkbox>
       </>,
-      () => {
-        return new Promise(async (resolve) => {
+      async () => {
+        try {
           await channel.sendEvent({
             type: "end-chat",
           });
-          resolve();
-        }).catch(() => console.log("Oops errors!"));
-      }
+          let data = await bearerInstance.post("/end_discussion", {
+            discussion_id: param.id,
+          });
+          successRef.current.click();
+
+          console.log(data);
+        } catch (err) {
+          setErrorMsg(err.response.data.message);
+          errorRef.current.click();
+          console.log("error", err.response.data.message);
+        }
+      },
+      disableBtn
     );
+  };
+
+  const Completionist = () => <span>Time up, trade cancelled</span>;
+
+  // Renderer callback with condition
+  const renderer = ({ hours, minutes, seconds, completed }) => {
+    if (completed) {
+      // Render a complete state
+      return <Completionist />;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          0{hours}:{minutes}:{seconds}
+        </span>
+      );
+    }
   };
 
   return (
     <>
       <div className="message">
+        <button
+          onClick={() =>
+            successMessage(merchantDetails?.profile_data[0]?.user_name)
+          }
+          ref={successRef}
+          style={{ display: "none" }}
+        />
+        <button
+          onClick={() => errorMessage(errorMsg)}
+          ref={errorRef}
+          style={{ display: "none" }}
+        />
         <div className="message-wrapper">
           {!channel || !client || loading ? (
             <Loader />
@@ -204,32 +268,99 @@ export default function Discussion() {
                 <Window>
                   {tab === "chats" && (
                     <>
-                      <ChatHeader username={merchantDetails?.profile_data[0]?.user_name}  />
+                      <ChatHeader
+                        username={merchantDetails?.profile_data[0]?.user_name}
+                        dislikes={
+                          merchantDetails?.profile_data[0]
+                            ?.total_negative_reviews
+                        }
+                        likes={
+                          merchantDetails?.profile_data[0]
+                            ?.total_positive_reviews
+                        }
+                        status={merchantDetails?.status}
+                      />
                       <MessageList
                         hideDeletedMessages={true}
                         messageActions={["reply", "quote"]}
+                        additionalMessageInputProps={{}}
                       />
                     </>
                   )}
 
                   {tab === "instructions" && (
                     <div className="instuctions-box">
-                      <h2 className="instruction-title">Instructions</h2>
-                      <p>
-                        <b className="bold-text">Stage 1:</b> You are now buying
-                        $500 worth of btc with Cashapp.
-                      </p>
-                      <ul>
-                        <li className="list-text">
-                          Wait for the user to provide his Cashapp wallet.
-                        </li>
-                        <li className="list-text">
-                          Make a payment of $500 into the user‘s Cashapp wallet”
-                        </li>
-                        <li className="list-text">
-                          Click on I Have Paid when done”.
-                        </li>
-                      </ul>
+                      {tab === "instructions" && (
+                        <div onClick={() => setTab("chats")}>
+                          {paid ? (
+                            <Alert
+                              message="Notice"
+                              description="waiting for 9a2fo9ns to confirm your payment..."
+                              type="success"
+                              style={{
+                                marginBottom: "20px",
+                                marginTop: "10px",
+                              }}
+                              closable
+                              showIcon
+                            />
+                          ) : (
+                            <Alert
+                              message="Notice"
+                              description="you haven’t paid yet"
+                              type="success"
+                              style={{ marginBottom: "20px" }}
+                              closable
+                              showIcon
+                            />
+                          )}
+                        </div>
+                      )}
+
+                      <h2 className="instruction-title">instructions</h2>
+
+                      <div className="instructions-wrap">
+                        <p>
+                          <b className="bold-text">
+                            Stage 1: You are now buying $500 worth of btc with
+                            Cashapp.
+                          </b>
+                        </p>
+                        <p></p>
+                        <ul>
+                          <li className="list-text">
+                            Wait for the user to provide his Cashapp wallet.
+                          </li>
+                          <li className="list-text">
+                            Make a payment of $500 into the user‘s Cashapp
+                            wallet”
+                          </li>
+                          <li className="list-text">
+                            Click on I Have Paid when done”.
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="instructions-wrap">
+                        <p>
+                          <b className="bold-text">
+                            Stage 2: You are now buying $500 worth of btc with
+                            Cashapp.
+                          </b>
+                        </p>
+                        <p></p>
+                        <ul>
+                          <li className="list-text">
+                            Wait for the user to provide his Cashapp wallet.
+                          </li>
+                          <li className="list-text">
+                            Make a payment of $500 into the user‘s Cashapp
+                            wallet”
+                          </li>
+                          <li className="list-text">
+                            Click on I Have Paid when done”.
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   )}
                   <div className="message-wrapper-box">
@@ -271,50 +402,61 @@ export default function Discussion() {
                           }}
                         >
                           <ClockCircleOutlined />
-                          &nbsp;30 mins
+                          &nbsp;
+                          <Countdown
+                            date={Date.now() + 1800000}
+                            renderer={renderer}
+                          />
                         </div>
                       </div>
                     )}
 
                     <div className="actions-wrapper-section">
                       <div
-                        style={{ opacity: ".5" }}
+                        style={{ opacity: "1", width: "46%" }}
                         onClick={() => setTab("chats")}
                       >
-                        {paid ? (
-                          <Tag
-                            icon={<ExclamationCircleOutlined />}
-                            color="success"
-                            style={{ fontSize: "14px" }}
-                          >
-                            waiting for 9a2fo9ns to confirm your payment...
-                          </Tag>
-                        ) : (
-                          <Tag
-                            icon={<ExclamationCircleOutlined />}
-                            color="success"
-                            style={{ fontSize: "14px" }}
-                          >
-                            you haven’t paid yet
-                          </Tag>
-                        )}
+                        <Button
+                          icon={<MessageOutlined />}
+                          // color="success"
+                          style={{
+                            fontSize: "14px",
+                            backgroundColor: tab === "chats" && "#fb4570",
+                            color: tab === "chats" && "white",
+                            padding: "3px 5px",
+                            width: "100%",
+                            height: "40px",
+                            textAlign: "center",
+                          }}
+                        >
+                          chats
+                        </Button>
                       </div>
 
                       <div
                         style={{
                           display: "flex",
                           fontSize: 14,
-                          opacity: ".5",
+                          opacity: "1",
+                          width: "46%",
                         }}
                         onClick={() => setTab("instructions")}
                       >
-                        <Tag
+                        <Button
                           icon={<ExclamationCircleOutlined />}
-                          color="default"
-                          style={{ fontSize: "14px", margin: 0 }}
+                          style={{
+                            fontSize: "14px",
+                            backgroundColor:
+                              tab === "instructions" && "#fb4570",
+                            color: tab === "instructions" && "white",
+                            padding: "3px 5px",
+                            width: "100%",
+                            height: "40px",
+                            textAlign: "center",
+                          }}
                         >
                           instructions
-                        </Tag>
+                        </Button>
                       </div>
                     </div>
                   </div>
