@@ -82,7 +82,7 @@ export default function Profile() {
           </div>
           <div className="user-info">
             <div className="username">
-              {profileData?.profile_data[0]?.user_name_front}
+              {profileData?.profile_data[0]?.user_name  }
             </div>
             <div className="rate">
               profile score <span>{profileData?.profile_data[0]?.a_score}</span>{' '}

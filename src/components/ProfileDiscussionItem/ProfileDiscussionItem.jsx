@@ -10,12 +10,12 @@ const ProfileDiscussionItem = ({ data }) => {
   const history = useHistory();
   const user = useSelector((state) => state?.user?.userData);
 
-  console.log(data);
+  console.log(data?.deal_id);
 
   return (
     <div
       className="discussion-item-container"
-      onClick={() => history.push(`/chat/${data?.id}`)}
+      onClick={() => history.push(`/chat/${data?.deal_id}`)}
     >
       <div className="top">
         <div className="top-item">
@@ -53,7 +53,6 @@ const ProfileDiscussionItem = ({ data }) => {
           min <span className="bold">{data.deal_info[0]?.min}</span>
           <EllipsisOutlined /> max
           <span className="bold"> {data.deal_info[0]?.max}</span>
-          
           <EllipsisOutlined /> rate
           <span className="rate-text">
             {data.deal_info[0]?.rate_structure === "percentage"

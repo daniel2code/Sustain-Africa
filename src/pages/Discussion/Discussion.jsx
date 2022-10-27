@@ -16,7 +16,7 @@ import "stream-chat-react/dist/css/index.css";
 import "./discussion.scss";
 import { sendNotification } from "../../utils/notification";
 import ChatHeader from "../../components/Chat/ChatHeader";
-import { bearerInstance } from "../../utils/API";
+import { bearerInstance, bearerInstanceWithToken } from "../../utils/API";
 import { Alert, Button, Checkbox, Tag, Space } from "antd";
 import {
   RightOutlined,
@@ -32,6 +32,7 @@ import {
   errorMessage,
 } from "../../utils/confirm";
 import Countdown from "react-countdown";
+import storage from "redux-persist/lib/storage";
 
 export default function Discussion() {
   const user = useSelector((state) => state?.user?.userData);
@@ -60,22 +61,20 @@ export default function Discussion() {
     );
     const { token } = res.data;
 
+    const userData = {
+      id: user?.id,
+      name: user?.user_name_front,
+    };
+
     const chatClient = StreamChat.getInstance("2shvqv4hcrbh");
-    /* const clientlog = */ await chatClient.connectUser(
-      {
-        id: user.id,
-        name: user.user_name_front,
-      },
-      token
-    );
+    const clientlog = await chatClient.connectUser(userData, token);
+
+    console.log(clientlog);
 
     const chatChannel = chatClient.channel("messaging", param.id, {
       name: param.id,
-      members: [
-        `${merchantDetails?.profile_data[0]?.user_name}`,
-        `${user.user_name}`,
-      ],
-      color: "green",
+      // members: [user?.id, `${merchantDetails?.profile_data[0]?.user_name}`],
+      // color: "green",
     });
 
     await chatChannel.watch({ presence: true });
@@ -121,7 +120,6 @@ export default function Discussion() {
 
   useEffect(() => {
     if (param.id) {
-      console.log(user.id);
       setLoading(true);
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
@@ -187,6 +185,8 @@ export default function Discussion() {
     e && setDisableBtn(e.target.checked);
   };
 
+  console.log(param.id);
+
   const endChat = () => {
     confirmModal(
       <h3 style={{ fontSize: "16px" }}>are you sure?</h3>,
@@ -211,12 +211,13 @@ export default function Discussion() {
           await channel.sendEvent({
             type: "end-chat",
           });
-          let data = await bearerInstance.post("/end_discussion", {
-            discussion_id: param.id,
-          });
+          let data = await bearerInstanceWithToken(user.token).post(
+            "/end_discussion",
+            {
+              discussion_id: param.id,
+            }
+          );
           successRef.current.click();
-
-          console.log(data);
         } catch (err) {
           setErrorMsg(err.response.data.message);
           errorRef.current.click();
