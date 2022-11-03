@@ -13,16 +13,20 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
   // const userId = useSelector(state => state?.user?.userData?.id);
   const history = useHistory();
 
+  console.log(+deal?.rate * amount)
+
   const submit = values => {
     setLoading(true);
     const data = new FormData();
     data.append('deal_id', deal.d_id);
+    data.append('destination_value', +deal?.rate * amount);
+    data.append('source_value', amount);
 
     bearerInstance
       .post('/new_discussion', data)
       .then(res => {
-        console.log(res);
-        history.push(`/chat/${res.data.id}`);
+        console.log(res?.data?.id);
+        history.push(`/chat/${res?.data?.id}`);
       })
       .catch(err => {
         message.error(err.response?.data?.message);
@@ -70,14 +74,14 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
               marginBottom: '10px',
             }}
           >
-            start a discussion with{' '}
+            start a discussion with
             <span
               style={{
                 marginLeft: '5px',
               }}
               className="username-green"
             >
-              @{dealerData?.user_name_front}
+              @{dealerData?.user_name}
             </span>
             ?
           </div>

@@ -30,6 +30,7 @@
     "sass": "^1.45.1",
     "stream-chat": "^6.5.0",
     "stream-chat-react": "^8.1.0",
+    "styled-components": "^5.3.6",
     "timeago.js": "^4.0.2",
     "web-vitals": "^1.0.1"
   },

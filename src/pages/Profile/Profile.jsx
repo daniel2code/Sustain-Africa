@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Tabs, Button, message, Divider, Breadcrumb } from 'antd';
+import { Tabs, Button, message, Divider, Breadcrumb, Tag } from 'antd';
 import { Link, useHistory } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
@@ -83,6 +83,11 @@ export default function Profile() {
           <div className="user-info">
             <div className="username">
               {profileData?.profile_data[0]?.user_name  }
+              <Tag style={{marginLeft: "5px", height: "18px"}}  >
+                <span className="user-id">
+                  {profileData?.profile_data[0]?.user_name_front}
+                </span>
+              </Tag>
             </div>
             <div className="rate">
               profile score <span>{profileData?.profile_data[0]?.a_score}</span>{' '}

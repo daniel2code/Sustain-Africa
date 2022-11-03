@@ -28,12 +28,13 @@ export const confirmModal = (title, content, ok, checked) => {
   });
 };
 
-export const successMessage = (name) => {
-  let secondsToGo = 5;
+export const successMessage = (name, onOk) => {
+  let secondsToGo = 10;
 
   const modal = Modal.success({
-    title: "end chat",
-    content: `you have successfully ended your chat with ${name}.`,
+    title: "end discussion",
+    content: `You successfully ended your discussion with ${name}. You can always restart a discussion on this deal at a later time.`,
+    onOk: onOk,
   });
 
   setTimeout(() => {

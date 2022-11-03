@@ -92,6 +92,7 @@ export default function DealItem({ item }) {
               `${item?.s_account_age} ${
                 item?.s_account_age !== 'Any Age' ? 'year' : ''
               }${item?.s_account_age !== 1 ? 's' : ''} old `}
+
             {/* wallet */}
             {item?.s_wallet_age &&
               item?.s_wallet_age !== 'Any Age' &&
@@ -99,6 +100,7 @@ export default function DealItem({ item }) {
               `${item?.s_wallet_age} ${
                 item?.s_wallet_age !== 'Any Age' ? 'year' : ''
               }${item?.s_wallet_age !== 1 ? 's' : ''} old `}
+              
             {/* bank name */}
             {item?.s_bank_name &&
               `${item?.s_bank_name} ${item?.s_account_type} account available in `}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { StreamChat } from "stream-chat";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import Loader from "../../components/Loader/Loader";
 // import { format } from 'timeago.js';
 import axios from "axios";
@@ -37,6 +37,7 @@ import storage from "redux-persist/lib/storage";
 export default function Discussion() {
   const user = useSelector((state) => state?.user?.userData);
   const param = useParams();
+  const history = useHistory();
   const [tab, setTab] = useState("chats");
 
   const [client, setClient] = useState(null);
@@ -46,6 +47,8 @@ export default function Discussion() {
   const [loading, setLoading] = useState(false);
   const [merchant, setMerchantId] = useState(null);
   const [merchantDetails, setMerchantDetails] = useState(null);
+  const [discussionDetails, setDiscussionDetails] = useState(null);
+  const [profileData, setProfileData] = useState(null);
   const [paid, setPaid] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
   const [errorMsg, setErrorMsg] = useState(
@@ -67,9 +70,7 @@ export default function Discussion() {
     };
 
     const chatClient = StreamChat.getInstance("2shvqv4hcrbh");
-    const clientlog = await chatClient.connectUser(userData, token);
-
-    console.log(clientlog);
+    await chatClient.connectUser(userData, token);
 
     const chatChannel = chatClient.channel("messaging", param.id, {
       name: param.id,
@@ -79,14 +80,14 @@ export default function Discussion() {
 
     await chatChannel.watch({ presence: true });
 
+    console.log(Object.keys(chatChannel.state.members).length)
+
     // const channels = client.channel("messaging", param.id, {
     //   members: [merchantDetails?.profile_data[0]?.user_name],
     //   color: "green",
     // });
 
     // const state = await channels.watch({ presence: true });
-
-    console.log(chatChannel.data);
 
     chatChannel.addMembers([user.id]);
 
@@ -118,16 +119,17 @@ export default function Discussion() {
     }
   }, [channel, user.id, param.id]);
 
+
   useEffect(() => {
     if (param.id) {
       setLoading(true);
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
         .then((res) => {
-          console.log(res.data?.merchant_data[0]?.id);
           setMerchantId(res.data?.merchant_data[0]?.id);
+          setDiscussionDetails(res.data.discussion_data[0]);
+          setProfileData(res.data?.deal_data[0]);
 
-          console.log(res.data.deal_data[0].dealer_id, user.id);
 
           if (res.data.deal_data[0].dealer_id === user.id)
             setChatting(res.data.merchant_data[0]);
@@ -185,8 +187,6 @@ export default function Discussion() {
     e && setDisableBtn(e.target.checked);
   };
 
-  console.log(param.id);
-
   const endChat = () => {
     confirmModal(
       <h3 style={{ fontSize: "16px" }}>are you sure?</h3>,
@@ -207,17 +207,21 @@ export default function Discussion() {
         </Checkbox>
       </>,
       async () => {
+        let formData = new FormData();
+        formData.append("discussion_id", param.id);
+        // const payload = { discussion_id: param.id };
         try {
           await channel.sendEvent({
             type: "end-chat",
           });
-          let data = await bearerInstanceWithToken(user.token).post(
+          await bearerInstanceWithToken(user.token).post(
             "/end_discussion",
-            {
-              discussion_id: param.id,
-            }
+            formData
           );
           successRef.current.click();
+          setTimeout(() => {
+            history.push(`/chat`);
+          }, 10000);
         } catch (err) {
           setErrorMsg(err.response.data.message);
           errorRef.current.click();
@@ -245,12 +249,19 @@ export default function Discussion() {
     }
   };
 
+  const handleRedirect = () => {
+    history.push(`/chat`);
+  };
+
   return (
     <>
       <div className="message">
         <button
           onClick={() =>
-            successMessage(merchantDetails?.profile_data[0]?.user_name)
+            successMessage(
+              merchantDetails?.profile_data[0]?.user_name,
+              handleRedirect
+            )
           }
           ref={successRef}
           style={{ display: "none" }}
@@ -280,6 +291,9 @@ export default function Discussion() {
                             ?.total_positive_reviews
                         }
                         status={merchantDetails?.status}
+                        discussionData={discussionDetails}
+                        profileData={profileData}
+                        channel={channel}
                       />
                       <MessageList
                         hideDeletedMessages={true}

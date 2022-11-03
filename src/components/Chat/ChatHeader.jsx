@@ -1,24 +1,52 @@
 import "./Chat.scss";
 // import { useChatContext } from 'stream-chat-react';
+import { useSelector } from "react-redux";
 import { DislikeOutlined, LikeOutlined } from "@ant-design/icons";
 
-const ChatHeader = ({ username, likes, dislikes, status }) => {
+const ChatHeader = ({
+  username,
+  likes,
+  dislikes,
+  status,
+  discussionData,
+  profileData,
+  channel,
+}) => {
   // const { channel } = useChatContext();
-
-  // const { data } = channel;
+  const user = useSelector((state) => state?.user?.userData);
 
   return (
     <div className="chatheader">
       <div className="chatheader-title">
-        <span className="ant-tag ant-tag-success">stage 1</span>buying $50 bank
-        funds from
+        <span className="ant-tag ant-tag-success">
+          stage {discussionData?.stage}
+        </span>
+        {profileData?.dealer_user_name === user.user_name
+          ? "selling"
+          : "buying "}
+        {discussionData?.source_currency === "usd"
+          ? "$"
+          : discussionData?.source_currency === "ngn"
+          ? "₦"
+          : "$"}
+        {discussionData?.source_value} of {discussionData.source}
+        {profileData?.dealer_user_name === user.user_name
+          ? ` to ${username}`
+          : ` from ${username} `}
       </div>
 
       <div className="chatheader-main">
         <div className="left">
           <div className="name">
-            @{username}{" "}
-            <span style={{ color: status === true ? "#14a014" : "gray" }}>
+            @{username} {}
+            <span
+              style={{
+                color:
+                  Object.keys(channel.state.members).length === 2
+                    ? "#14a014"
+                    : "gray",
+              }}
+            >
               &#9679;
             </span>
           </div>
