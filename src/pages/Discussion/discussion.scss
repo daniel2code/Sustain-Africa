@@ -190,7 +190,7 @@
 
     .str-chat__message--me.str-chat__message-simple--me {
       .str-chat__message-text-inner.str-chat__message-simple-text-inner {
-        background-color: #fb4570 ;
+        background-color: #fb4570;
         color: white;
       }
     }
@@ -290,11 +290,30 @@
   padding: 300px;
 }
 
-.instructions-wrap{
-  padding: 20px;
+.instructions-wrap {
+  padding: 2px 20px;
+  border-radius: 5px;
   width: 100%;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-margin-top: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  grid-column-gap: 15px;
+}
+
+.instructions-wrap-two {
+  padding: 0px 20px;
+  border-radius: 5px;
+  width: 60%;
+  margin-left: 15px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  min-height: 35px;
+  grid-column-gap: 15px;
 }
 
 .instruction-title {
@@ -303,9 +322,13 @@ margin-top: 15px;
   margin-top: 10px;
   text-decoration: underline;
   color: #14a014;
-
 }
 
 .list-text {
-  margin: 15px 0px;
+  margin: 7px 0px;
+  color: #999999;
+}
+
+.message-box {
+  margin-top: 10px;
 }

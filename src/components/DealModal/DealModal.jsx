@@ -18,13 +18,13 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
   const submit = values => {
     setLoading(true);
     const data = new FormData();
-    data.append('deal_id', deal.d_id);
+    data.append('deal_id', deal?.d_id);
     data.append('destination_value', +deal?.rate * amount);
     data.append('source_value', amount);
 
     bearerInstance
       .post('/new_discussion', data)
-      .then(res => {
+      .then(res => {  
         console.log(res?.data?.id);
         history.push(`/chat/${res?.data?.id}`);
       })

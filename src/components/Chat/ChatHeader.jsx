@@ -2,6 +2,7 @@ import "./Chat.scss";
 // import { useChatContext } from 'stream-chat-react';
 import { useSelector } from "react-redux";
 import { DislikeOutlined, LikeOutlined } from "@ant-design/icons";
+import { Tooltip } from "antd";
 
 const ChatHeader = ({
   username,
@@ -11,9 +12,14 @@ const ChatHeader = ({
   discussionData,
   profileData,
   channel,
+  location,
 }) => {
   // const { channel } = useChatContext();
   const user = useSelector((state) => state?.user?.userData);
+
+  let obj = Object.values(channel.state.members);
+
+  console.log(obj)
 
   return (
     <div className="chatheader">
@@ -22,7 +28,7 @@ const ChatHeader = ({
           stage {discussionData?.stage}
         </span>
         {profileData?.dealer_user_name === user.user_name
-          ? "selling"
+          ? " selling "
           : "buying "}
         {discussionData?.source_currency === "usd"
           ? "$"
@@ -30,25 +36,33 @@ const ChatHeader = ({
           ? "₦"
           : "$"}
         {discussionData?.source_value} of {discussionData.source}
-        {profileData?.dealer_user_name === user.user_name
-          ? ` to ${username}`
-          : ` from ${username} `}
+        {profileData?.dealer_user_name === user.user_name ? ` to` : ` from`}
       </div>
 
       <div className="chatheader-main">
         <div className="left">
           <div className="name">
-            @{username} {}
-            <span
-              style={{
-                color:
-                  Object.keys(channel.state.members).length === 2
-                    ? "#14a014"
-                    : "gray",
-              }}
+          {user.id === location?.dealer
+              ? location?.merchant_data[0]?.user_name
+              : location?.dealer_data[0]?.user_name}
+            {/* @{obj[1]?.user?.name || username} {} */}
+            <Tooltip
+              placement="topRight"
+              title={
+                obj[1] && obj[1]?.user?.online === true ? "Online" : "Offline"
+              }
             >
-              &#9679;
-            </span>
+              <span
+                style={{
+                  color:
+                    obj[1] && obj[1]?.user?.online === true
+                      ? "#14a014"
+                      : "#dedede",
+                }}
+              >
+                &#9679;
+              </span>
+            </Tooltip>
           </div>
 
           <div className="like-dislike-chat no-margin-top">

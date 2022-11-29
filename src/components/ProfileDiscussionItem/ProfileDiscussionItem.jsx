@@ -1,6 +1,10 @@
 import React from "react";
 import "./discussionitem.scss";
-import { ArrowRightOutlined, EllipsisOutlined } from "@ant-design/icons";
+import {
+  ArrowRightOutlined,
+  DatabaseFilled,
+  EllipsisOutlined,
+} from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { curType } from "../../utils/datasource";
@@ -15,7 +19,9 @@ const ProfileDiscussionItem = ({ data }) => {
   return (
     <div
       className="discussion-item-container"
-      onClick={() => history.push(`/chat/${data?.id}`)}
+      onClick={() =>
+        history.push({ pathname: `/chat/${data?.id}`, state: data })
+      }
     >
       <div className="top">
         <div className="top-item">
@@ -53,7 +59,6 @@ const ProfileDiscussionItem = ({ data }) => {
           min <span className="bold">{data.deal_info[0]?.min}</span>
           <EllipsisOutlined /> max
           <span className="bold"> {data.deal_info[0]?.max}</span>
-          
           <EllipsisOutlined /> rate
           <span className="rate-text">
             {data.deal_info[0]?.rate_structure === "percentage"

@@ -96,7 +96,7 @@ const NotificationCard = ({ data }) => {
         <>
           reject a discussion request from{' '}
           <span className="username-green">
-            @{data.sender_details[0].user_name_front}
+            @{data.sender_details[0].user_name}
           </span>
           ?
         </>
@@ -130,7 +130,7 @@ const NotificationCard = ({ data }) => {
         <>
           start a discussion with{' '}
           <span className="username-green">
-            @{data.sender_details[0].user_name_front}
+            @{data.sender_details[0].user_name}
           </span>
           ?
         </>
@@ -188,7 +188,7 @@ const NotificationCard = ({ data }) => {
                 to={`/user/${data.sender}/profile`}
                 className="notification-link username-green"
               >
-                @{data.sender_details[0].user_name_front}
+                @{data.sender_details[0].user_name}
               </Link>{' '}
               {data.accepted || data.rejected
                 ? ' discussion request regarding his '
@@ -220,7 +220,7 @@ const NotificationCard = ({ data }) => {
                 to={`/user/${data.receiver}/profile`}
                 className="notification-link username-green"
               >
-                @{data.receiver_details[0].user_name_front}
+                @{data.receiver_details[0].user_name}
               </Link>{' '}
               {data.rejected ? dealWriteUp['d_r_r'] : null}
               {data.accepted ? dealWriteUp['d_r_a'] : null}
