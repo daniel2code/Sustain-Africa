@@ -28,11 +28,11 @@ export const confirmModal = (title, content, ok, checked) => {
   });
 };
 
-export const successMessage = (msg, onOk) => {
+export const successMessage = (msg, onOk, title) => {
   let secondsToGo = 10;
 
   const modal = Modal.success({
-    title: "end discussion",
+    title: title || "end discussion",
     content: msg,
     onOk: onOk || null,
   });

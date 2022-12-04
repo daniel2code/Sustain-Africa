@@ -22,6 +22,7 @@ import Notification from "./pages/Notification/Notifiaction";
 import { setNotificationCount } from "./redux/user/user.actions";
 import Wallet from "./pages/Wallet/Wallet";
 import DiscussionMenu from "./pages/Discussion/DiscussionMenu";
+import Instructions from "./pages/Instructions/instructons";
 
 function App() {
   useEffect(() => {
@@ -127,6 +128,7 @@ function App() {
               <Route exact path="/chat/:id" component={Discussion} />
               <Route exact path="/chat" component={DiscussionMenu} />
               <Route exact path="/notifications" component={Notification} />
+              <Route exact path="/instructions" component={Instructions} />
             </Switch>
           ) : (
             <ErrorBoundary />

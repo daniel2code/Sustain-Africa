@@ -17,7 +17,7 @@ import "./discussion.scss";
 import { sendNotification } from "../../utils/notification";
 import ChatHeader from "../../components/Chat/ChatHeader";
 import { bearerInstance, bearerInstanceWithToken } from "../../utils/API";
-import { Alert, Button, Checkbox, Tag, Space, Tooltip } from "antd";
+import { Alert, Button, Checkbox, Tooltip } from "antd";
 import {
   RightOutlined,
   CheckOutlined,
@@ -33,8 +33,8 @@ import {
   errorMessage,
 } from "../../utils/confirm";
 import Countdown from "react-countdown";
-import storage from "redux-persist/lib/storage";
-import Item from "antd/lib/list/Item";
+// import storage from "redux-persist/lib/storage";
+// import Item from "antd/lib/list/Item";
 
 export default function Discussion() {
   const user = useSelector((state) => state?.user?.userData);
@@ -70,13 +70,30 @@ export default function Discussion() {
   const [discussionTimer, setDiscussionTimer] = useState(null);
   const [timeStand, setTimeStand] = useState(null);
   const [timerStatus, setTimerStatus] = useState("first");
+  const [stageTwo, setStageTwo] = useState(true);
+  const [isChatEnded, setIsChatEnded] = useState(false);
 
   const successRef = useRef();
+  const seenPaymentRef = useRef(null);
+  const sentPaymentRef = useRef();
   const timerRef = useRef();
   const errorRef = useRef();
   const paidSuccessRef = useRef();
+  const endChatRef = useRef();
 
   let checkMerchant = profileData?.dealer_user_name === user.user_name;
+  let t = 1;
+
+  const [checkToggleBtn, setCheckToggleBtn] = useState(false);
+
+  console.log(checkMerchant);
+
+  // initialize ref
+  useEffect(() => {
+    const elem = seenPaymentRef.current;
+    const elem1 = endChatRef.current;
+    const elem3 = sentPaymentRef.current;
+  }, []);
 
   const init = async () => {
     const res = await axios.get(
@@ -100,12 +117,26 @@ export default function Discussion() {
 
     await chatChannel.watch({ presence: true });
 
-    await chatChannel.on((event) => {
+    chatChannel.on((event) => {
       if (event?.type === "paid_request") {
         setCheckPaidBtn(true);
         setTimerStatus("second");
-        console.log(checkPaidBtn);
       } else if (event?.type === "raiseIssue") setCheckRaiseIssue(true);
+      else if (event?.type === "end-chat") {
+        setIsChatEnded(true);
+        endChatRef.current.click();
+      } else if (event?.type === "seen-payment") {
+        if (!checkMerchant) {
+          seenPaymentRef.current.click();
+          setTimeout(() => {
+            window.location.reload(false);
+          }, 3000);
+        }
+      } else if (event?.type === "sent-payment") {
+        if (checkMerchant) {
+          sentPaymentRef.current.click();
+        }
+      }
     });
 
     // const channels = client.channel("messaging", param.id, {
@@ -145,6 +176,20 @@ export default function Discussion() {
 
   //   return sec + min + hour;
   // };
+
+  // useEffect(() => {
+  //   const fireEndChat = async () => {
+  //     if (channel) {
+  //       await channel.sendEvent({
+  //         type: "end-chat",
+  //       });
+  //     }
+  //   };
+
+  //   fireEndChat();
+  // }, []);
+
+  console.log(discussionDetails);
 
   useEffect(() => {
     if (timerStatus === "second") {
@@ -201,7 +246,6 @@ export default function Discussion() {
         type: "raiseIssues",
         text: "Hey there, long time no see!",
       });
-      console.log(channel);
     };
 
     userLoggin();
@@ -267,15 +311,6 @@ export default function Discussion() {
         </p>
         <p>If you are sure, click “ok” below.</p>
       </>,
-      // () => {
-      //   return new Promise(async (resolve) => {
-      //     await channel.sendEvent({
-      //       type: "paid",
-      //     });
-      //     resolve();
-      //   }).catch(() => console.log("Oops errors!"));
-      // }
-
       async () => {
         let formData = new FormData();
         formData.append("discussion_id", param.id);
@@ -285,6 +320,7 @@ export default function Discussion() {
           });
           await bearerInstanceWithToken(user.token).post("/paid", formData);
           await handleCheckPaid();
+          await fireSentPayment();
           setTimerStatus("second");
           paidSuccessRef.current.click();
         } catch (err) {
@@ -306,22 +342,25 @@ export default function Discussion() {
     formData.append("discussion_id", param.id);
     // const payload = { discussion_id: param.id };
     try {
-      await channel.sendEvent({
-        type: "end-chat",
-      });
+      // await channel.sendEvent({
+      //   type: "end-chat",
+      // });
       await bearerInstanceWithToken(user.token).post(
         "/end_discussion",
         formData
       );
-      actionRef.current.click();
-      localStorage.removeItem("end_first_date");
+      actionRef && actionRef.current.click();
       setTimeout(() => {
         history.push(`/chat`);
       }, 10000);
     } catch (err) {
-      setErrorMsg(err.response.data.message);
-      errorRef.current.click();
-      console.log("error", err.response.data.message);
+      if (err?.response?.status === 400) {
+        actionRef.current.click();
+        setErrorMsg(err?.response?.data?.message);
+      } else {
+        setErrorMsg(err?.response?.data?.message);
+        errorRef.current.click();
+      }
     }
   };
 
@@ -399,28 +438,26 @@ export default function Discussion() {
       <>
         <p>ensure you have seen payment before proceeding</p>
       </>,
-      // async () => {
-      //   let formData = new FormData();
-      //   formData.append("discussion_id", param.id);
-      //   // const payload = { discussion_id: param.id };
-      //   try {
-      //     await channel.sendEvent({
-      //       type: "end-chat",
-      //     });
-      //     await bearerInstanceWithToken(user.token).post(
-      //       "/end_discussion",
-      //       formData
-      //     );
-      //     successRef.current.click();
-      //     setTimeout(() => {
-      //       history.push(`/chat`);
-      //     }, 10000);
-      //   } catch (err) {
-      //     setErrorMsg(err.response.data.message);
-      //     errorRef.current.click();
-      //     console.log("error", err.response.data.message);
-      //   }
-      // },
+      async () => {
+        let formData = new FormData();
+        formData.append("discussion_id", param.id);
+        // const payload = { discussion_id: param.id };
+        try {
+          // await channel.sendEvent({
+          //   type: "end-chat",
+          // });
+          await bearerInstanceWithToken(user.token).post("/seen", formData);
+          // successRef.current.click();
+          fireSeenPayment();
+          setTimeout(() => {
+            history.push(`/chat`);
+          }, 5000);
+        } catch (err) {
+          setErrorMsg(err.response.data.message);
+          errorRef.current.click();
+          console.log("error", err.response.data.message);
+        }
+      },
       disableBtn
     );
   };
@@ -434,11 +471,24 @@ export default function Discussion() {
     });
   };
 
+  const fireEndChat = async () => {
+    if (channel) {
+      await channel.sendEvent({
+        type: "end-chat",
+      });
+    }
+  };
+
   // Renderer callback with condition
   const firstRenderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a complete state
-      handleEndChat(timerRef);
+      if (!isChatEnded) {
+        handleEndChat();
+      }
+      fireEndChat();
+
+      // handleEndTimer();
       return <Completionist />;
     } else {
       // Render a countdown
@@ -483,18 +533,44 @@ export default function Discussion() {
   //  ;
   // }, []);
 
-
   const handleCheckPaid = async () => {
     await channel.sendEvent({
       type: "paid_request",
       text: "Hey there, long time no see!",
     });
+  };
 
+  // const handleEndTimer = async () => {
+  //   await channel.sendEvent({
+  //     type: "end_timer",
+  //     text: "End Timer request",
+  //   });
+  // };
+
+  // function fires event if merchant clicks on seen payment
+  const fireSeenPayment = async () => {
+    if (channel) {
+      await channel.sendEvent({
+        type: "seen-payment",
+      });
+    }
+
+    setStageTwo(true);
+  };
+
+  // function fires event if dealer has made payment
+  const fireSentPayment = async () => {
+    if (channel) {
+      await channel.sendEvent({
+        type: "sent-payment",
+      });
+    }
   };
 
   return (
     <>
       <div className="message">
+        {/* Modals triggered using useRef */}
         <button
           onClick={() =>
             successMessage(
@@ -508,11 +584,40 @@ export default function Discussion() {
 
         <button
           onClick={() =>
+            !checkMerchant
+              ? successMessage(
+                  `${merchantDetails?.profile_data[0]?.user_name} has seen your payment`,
+                  null,
+                  "payment confirmation"
+                )
+              : null
+          }
+          ref={seenPaymentRef}
+          style={{ display: "none" }}
+        />
+
+        <button
+          onClick={() =>
+            checkMerchant
+              ? successMessage(
+                  `${profileData?.dealer_user_name} has made payment, kindly confirm`,
+                  null,
+                  "check payment"
+                )
+              : null
+          }
+          ref={sentPaymentRef}
+          style={{ display: "none" }}
+        />
+
+        <button
+          onClick={() =>
             successMessage(
-              "Your chat ended due to inactivity, you can restart the discussion"
+              "Your chat ended due to inactivity, you can restart the discussion",
+              handleRedirect
             )
           }
-          ref={timerRef}
+          ref={endChatRef}
           style={{ display: "none" }}
         />
 
@@ -536,180 +641,132 @@ export default function Discussion() {
             <Chat client={client} theme="messaging light">
               <Channel channel={channel}>
                 <Window>
-                  {tab === "chats" && (
-                    <>
-                      <ChatHeader
-                        username={merchantDetails?.profile_data[0]?.user_name}
-                        dislikes={
-                          merchantDetails?.profile_data[0]
-                            ?.total_negative_reviews
-                        }
-                        likes={
-                          merchantDetails?.profile_data[0]
-                            ?.total_positive_reviews
-                        }
-                        status={merchantDetails?.status}
-                        discussionData={discussionDetails}
-                        profileData={profileData}
-                        channel={channel}
-                        location={location.state}
-                      />
-                      <MessageList
-                        hideDeletedMessages={true}
-                        messageActions={["reply", "quote"]}
-                        additionalMessageInputProps={{}}
-                      />
-                    </>
-                  )}
+                  <>
+                    <ChatHeader
+                      username={merchantDetails?.profile_data[0]?.user_name}
+                      dislikes={
+                        merchantDetails?.profile_data[0]?.total_negative_reviews
+                      }
+                      likes={
+                        merchantDetails?.profile_data[0]?.total_positive_reviews
+                      }
+                      status={merchantDetails?.status}
+                      discussionData={discussionDetails}
+                      profileData={profileData}
+                      channel={channel}
+                      location={location.state}
+                    />
+                    <MessageList
+                      hideDeletedMessages={true}
+                      messageActions={["reply", "quote"]}
+                      additionalMessageInputProps={{}}
+                    />
+                  </>
 
-                  {tab === "instructions" && (
-                    <div className="instuctions-box">
-                      {tab === "instructions" && (
-                        <div onClick={() => setTab("chats")}>
-                          {paid ? (
-                            <Alert
-                              message="Notice"
-                              description="waiting for 9a2fo9ns to confirm your payment..."
-                              type="success"
-                              style={{
-                                marginBottom: "20px",
-                                marginTop: "10px",
-                              }}
-                              closable
-                              showIcon
-                            />
-                          ) : (
-                            <Alert
-                              message="Notice"
-                              description="you haven’t paid yet"
-                              type="success"
-                              style={{ marginBottom: "20px" }}
-                              closable
-                              showIcon
-                            />
-                          )}
-                        </div>
-                      )}
-
-                      <h2 className="instruction-title">instructions</h2>
-                      <p>
-                        <b className="bold-text">
-                          Stage 1: You are now buying $500 worth of btc with
-                          Cashapp.
-                        </b>
-                      </p>
-                      <div className="instructions-wrap">
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                          spin={true}
-                        />
-                        <p className="list-text">
-                          Wait for the user to provide his Cashapp wallet.
-                        </p>
-                      </div>
-
-                      <div className="instructions-wrap">
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                          spin={true}
-                        />
-                        <p className="list-text">
-                          Wait for the user to provide his Cashapp wallet.
-                        </p>
-                      </div>
-
-                      <div className="instructions-wrap">
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                          spin={true}
-                        />
-                        <p className="list-text">
-                          Make a payment of $500 into the user‘s Cashapp wallet
-                        </p>
-                      </div>
-
-                      <div className="instructions-wrap">
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                          spin={true}
-                        />
-                        <p className="list-text">
-                          Click on I Have Paid when done.
-                        </p>
-                      </div>
-
-                      <p style={{ margin: "30px 0px" }}>
-                        <b className="bold-text">
-                          Stage 2: You are now buying $500 worth of btc with
-                          Cashapp.
-                        </b>
-                      </p>
-
-                      <div className="instructions-wrap">
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                          spin={true}
-                        />
-                        <p className="list-text">
-                          Click on I Have Paid when done.
-                        </p>
-                      </div>
-
-                      <div className="instructions-wrap">
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                          spin={true}
-                        />
-                        <p className="list-text">
-                          Click on I Have Paid when done.
-                        </p>
-                      </div>
-                    </div>
-                  )}
                   <div className="message-wrapper-box">
-                    {tab === "chats" && (
-                      <div className="message-box">
-                        <MessageInput
-                          grow={true}
-                          additionalTextareaProps={{
-                            placeholder: "type a message...",
+                    <div className="message-box">
+                      <MessageInput
+                        grow={true}
+                        additionalTextareaProps={{
+                          placeholder: "type a message...",
+                        }}
+                      />
+                    </div>
+
+                    <div className="message-wrapper-action">
+                      {discussionDetails?.status === "canceled" ? (
+                        ""
+                      ) : (
+                        <div
+                          style={{
+                            display:
+                              discussionDetails?.merchant_seen === 0
+                                ? "flex"
+                                : "none",
                           }}
-                        />
-                      </div>
-                    )}
-
-                    {tab === "chats" && (
-                      <div className="message-wrapper-action">
-                        {discussionDetails.status === "canceled" ? (
-                          ""
-                        ) : (
-                          <div>
-                            {!checkMerchant ? (
-                              <>
-                                <Button
-                                  disabled={
-                                    !checkPaidBtn &&
-                                    discussionDetails?.dealer_paid === 0
-                                      ? false
-                                      : checkPaidBtn ||
-                                        discussionDetails?.dealer_paid === 1
-                                      ? true
-                                      : null
-                                  }
-                                  onClick={endChat}
-                                  type="text"
-                                >
-                                  end chat
-                                  <RightOutlined />
-                                </Button>
-
-                                {!checkPaidBtn &&
-                                discussionDetails?.dealer_paid === 0 ? (
-                                  <Button type="text" onClick={handlePaid}>
-                                    <CheckOutlined />i have paid
+                        >
+                          {/* initial button render, on stage one */}
+                          {discussionDetails?.merchant_seen === 0 && (
+                            <div>
+                              {!checkMerchant ? (
+                                <>
+                                  <Button
+                                    disabled={
+                                      !checkPaidBtn &&
+                                      discussionDetails?.dealer_paid === 0
+                                        ? false
+                                        : checkPaidBtn ||
+                                          discussionDetails?.dealer_paid === 1
+                                        ? true
+                                        : null
+                                    }
+                                    onClick={endChat}
+                                    type="text"
+                                  >
+                                    end chat
+                                    <RightOutlined />
                                   </Button>
-                                ) : checkPaidBtn ||
-                                  discussionDetails?.dealer_paid === 1 ? (
+
+                                  {!checkPaidBtn &&
+                                  discussionDetails?.dealer_paid === 0 ? (
+                                    <Button type="text" onClick={handlePaid}>
+                                      <CheckOutlined />i have paid
+                                    </Button>
+                                  ) : checkPaidBtn ||
+                                    discussionDetails?.dealer_paid === 1 ? (
+                                    <Button
+                                      type="text"
+                                      onClick={raiseIssues}
+                                      disabled={
+                                        raiseTimerIssue ||
+                                        JSON.parse(
+                                          localStorage.getItem("checkIssue")
+                                        ) === true
+                                          ? false
+                                          : true
+                                      }
+                                    >
+                                      <QuestionOutlined />
+                                      raise issue
+                                    </Button>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  <Button
+                                    disabled={
+                                      !checkPaidBtn &&
+                                      discussionDetails?.dealer_paid === 0
+                                        ? false
+                                        : checkPaidBtn ||
+                                          discussionDetails?.dealer_paid === 1
+                                        ? true
+                                        : null
+                                    }
+                                    onClick={endChat}
+                                    type="text"
+                                  >
+                                    end chat
+                                    <RightOutlined />
+                                  </Button>
+
+                                  <Button
+                                    type="text"
+                                    disabled={
+                                      discussionDetails?.dealer_paid === 0
+                                        ? true
+                                        : discussionDetails?.dealer_paid === 1
+                                        ? false
+                                        : null
+                                    }
+                                    onClick={seenPayment}
+                                  >
+                                    <CheckOutlined />
+                                    seen payment
+                                  </Button>
+
                                   <Button
                                     type="text"
                                     onClick={raiseIssues}
@@ -725,101 +782,163 @@ export default function Discussion() {
                                     <QuestionOutlined />
                                     raise issue
                                   </Button>
-                                ) : (
-                                  ""
-                                )}
-                              </>
-                            ) : (
-                              <>
-                                <Button
-                                  disabled={
-                                    !checkPaidBtn &&
-                                    discussionDetails?.dealer_paid === 0
-                                      ? false
-                                      : checkPaidBtn ||
-                                        discussionDetails?.dealer_paid === 1
-                                      ? true
-                                      : null
-                                  }
-                                  onClick={endChat}
-                                  type="text"
-                                >
-                                  end chat
-                                  <RightOutlined />
-                                </Button>
+                                </>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
 
-                                <Button
-                                  type="text"
-                                  disabled={
-                                    !checkPaidBtn &&
-                                    discussionDetails?.dealer_paid === 0
-                                      ? true
-                                      : checkPaidBtn ||
-                                        discussionDetails?.dealer_paid === 1
-                                      ? false
-                                      : null
-                                  }
-                                  onClick={seenPayment}
-                                >
-                                  <CheckOutlined />
-                                  seen payment
-                                </Button>
+                      {discussionDetails?.status === "canceled" ? (
+                        ""
+                      ) : (
+                        <div
+                          style={{
+                            display:
+                              discussionDetails?.merchant_seen === 1
+                                ? "flex"
+                                : "none",
+                          }}
+                        >
+                          {discussionDetails?.merchant_seen === 1 && (
+                            <div>
+                              {checkMerchant ? (
+                                <>
+                                  <Button
+                                    disabled={
+                                      !checkPaidBtn &&
+                                      discussionDetails?.dealer_paid === 0
+                                        ? false
+                                        : checkPaidBtn ||
+                                          discussionDetails?.dealer_paid === 1
+                                        ? true
+                                        : null
+                                    }
+                                    onClick={endChat}
+                                    type="text"
+                                  >
+                                    end chat
+                                    <RightOutlined />
+                                  </Button>
 
-                                <Button
-                                  type="text"
-                                  onClick={raiseIssues}
-                                  disabled={
-                                    raiseTimerIssue ||
-                                    JSON.parse(
-                                      localStorage.getItem("checkIssue")
-                                    ) === true
-                                      ? false
-                                      : true
-                                  }
-                                >
-                                  <QuestionOutlined />
-                                  raise issue
-                                </Button>
-                              </>
-                            )}
-                          </div>
-                        )}
+                                  {!checkPaidBtn &&
+                                  discussionDetails?.merchant_paid === 0 ? (
+                                    <Button type="text" onClick={handlePaid}>
+                                      <CheckOutlined />i have paid
+                                    </Button>
+                                  ) : checkPaidBtn ||
+                                    discussionDetails?.merchant_paid === 1 ? (
+                                    <Button
+                                      type="text"
+                                      onClick={raiseIssues}
+                                      disabled={
+                                        raiseTimerIssue ||
+                                        JSON.parse(
+                                          localStorage.getItem("checkIssue")
+                                        ) === true
+                                          ? false
+                                          : true
+                                      }
+                                    >
+                                      <QuestionOutlined />
+                                      raise issue
+                                    </Button>
+                                  ) : (
+                                    ""
+                                  )}
+                                </>
+                              ) : (
+                                <>
+                                  <Button
+                                    disabled={
+                                      !checkPaidBtn &&
+                                      discussionDetails?.dealer_paid === 0
+                                        ? false
+                                        : checkPaidBtn ||
+                                          discussionDetails?.dealer_paid === 1
+                                        ? true
+                                        : null
+                                    }
+                                    onClick={endChat}
+                                    type="text"
+                                  >
+                                    end chat
+                                    <RightOutlined />
+                                  </Button>
 
-                        {/* Hide the timer if the discussion has been cancelled */}
-                        {discussionDetails.status === "canceled" ? (
-                          ""
-                        ) : (
-                          <div
-                            style={{
-                              color: "#999",
-                              display: "flex",
-                              gap: "5px",
-                              alignItems: "center",
-                              fontSize: 14,
-                            }}
+                                  <Button
+                                    type="text"
+                                    disabled={
+                                      discussionDetails?.merchant_paid === 0
+                                        ? true
+                                        : checkPaidBtn ||
+                                          discussionDetails?.merchant_paid === 1
+                                        ? false
+                                        : null
+                                    }
+                                    onClick={seenPayment}
+                                  >
+                                    <CheckOutlined />
+                                    seen payment
+                                  </Button>
+
+                                  <Button
+                                    type="text"
+                                    onClick={raiseIssues}
+                                    disabled={
+                                      raiseTimerIssue ||
+                                      JSON.parse(
+                                        localStorage.getItem("checkIssue")
+                                      ) === true
+                                        ? false
+                                        : true
+                                    }
+                                  >
+                                    <QuestionOutlined />
+                                    raise issue
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      )}
+
+                      {/* Hide the timer if the discussion has been cancelled */}
+                      {discussionDetails.status === "canceled" ? (
+                        ""
+                      ) : (
+                        <div
+                          style={{
+                            color: "#999",
+                            display: "flex",
+                            gap: "5px",
+                            alignItems: "center",
+                            fontSize: 14,
+                          }}
+                        >
+                          <ClockCircleOutlined />
+                          &nbsp;
+                          <Tooltip
+                            placement="topRight"
+                            title={
+                              discussionTimer?.interval === 7200
+                                ? "you will be able to raise an issue after time is up"
+                                : ""
+                            }
                           >
-                            <ClockCircleOutlined />
-                            &nbsp;
-                            <Tooltip
-                              placement="topRight"
-                              title={
-                                discussionTimer?.interval === 7200
-                                  ? "you will be able to raise an issue after time is up"
-                                  : ""
-                              }
-                            >
-                              <>
-                                <Countdown
-                                  date={Date.now() + timeStand}
-                                  renderer={
-                                    discussionTimer?.interval === 1800
-                                      ? firstRenderer
-                                      : secondRenderer
-                                  }
-                                />
-                              </>
-                            </Tooltip>
-                            {/* ) : checkPaidBtn === true ||
+                            <>
+                              <Countdown
+                                date={Date.now() + timeStand}
+                                renderer={
+                                  discussionTimer?.interval === 1800
+                                    ? firstRenderer
+                                    : secondRenderer
+                                }
+                              />
+                            </>
+                          </Tooltip>
+                          {/* ) : checkPaidBtn === true ||
                               discussionDetails?.dealer_paid === 1 ? (
                               <Tooltip
                                 placement="topRight"
@@ -859,9 +978,9 @@ export default function Discussion() {
                               </Tooltip>
                             ) : (
                               "" */}
-                            {/* ) */}
-                            {/* } */}
-                            {/* {checkPaidBtn ||
+                          {/* ) */}
+                          {/* } */}
+                          {/* {checkPaidBtn ||
                           discussionDetails?.dealer_paid === 1 ? (
                             (
                               <>
@@ -933,34 +1052,40 @@ export default function Discussion() {
                               ) : null}
                             </Tooltip>
                           ) : null} */}
-                          </div>
-                        )}
-                      </div>
-                    )}
+                        </div>
+                      )}
+                    </div>
 
-                    {!checkMerchant && (
-                      <div
-                        className="instructions-wrap-two"
-                        style={{ marginBottom: "15px" }}
-                      >
-                        <ExclamationCircleOutlined
-                          style={{ color: "#14a014" }}
-                        />
-                        {discussionDetails.status === "canceled" ? (
-                          <p className="list-text">chat ended</p>
-                        ) : (
-                          <p className="list-text">
-                            {checkRaiseIssue 
-                              ? `${merchantDetails?.profile_data[0]?.user_name} has refused to confirm your payment. you can enter into a dispute by clicking on “raise an issue”.
+                    {/* Hide section when the conversation gets to stage 2 */}
+                    {discussionDetails?.stage === "2" ? (
+                      ""
+                    ) : (
+                      <div>
+                        {!checkMerchant && (
+                          <div
+                            className="instructions-wrap-two"
+                            style={{ marginBottom: "15px" }}
+                          >
+                            <ExclamationCircleOutlined
+                              style={{ color: "#14a014" }}
+                            />
+                            {discussionDetails.status === "canceled" ? (
+                              <p className="list-text">chat ended</p>
+                            ) : (
+                              <p className="list-text">
+                                {checkRaiseIssue
+                                  ? `${merchantDetails?.profile_data[0]?.user_name} has refused to confirm your payment. you can enter into a dispute by clicking on “raise an issue”.
                           `
-                              : !checkPaidBtn &&
-                                discussionDetails?.dealer_paid === 0
-                              ? "you have not paid yet"
-                              : checkPaidBtn ||
-                                discussionDetails?.dealer_paid === 1
-                              ? `Waiting for ${merchantDetails?.profile_data[0]?.user_name} to confirm your payment`
-                              : ""}
-                          </p>
+                                  : !checkPaidBtn &&
+                                    discussionDetails?.dealer_paid === 0
+                                  ? "you have not paid yet"
+                                  : checkPaidBtn ||
+                                    discussionDetails?.dealer_paid === 1
+                                  ? `Waiting for ${merchantDetails?.profile_data[0]?.user_name} to confirm your payment`
+                                  : ""}
+                              </p>
+                            )}
+                          </div>
                         )}
                       </div>
                     )}
@@ -994,7 +1119,7 @@ export default function Discussion() {
                           opacity: "1",
                           width: "46%",
                         }}
-                        onClick={() => setTab("instructions")}
+                        onClick={() => history.push("/instructions")}
                       >
                         <Button
                           icon={<ExclamationCircleOutlined />}

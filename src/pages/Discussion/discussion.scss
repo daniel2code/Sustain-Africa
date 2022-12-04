@@ -286,8 +286,13 @@
   }
 }
 
-.instructions-box {
-  padding: 300px;
+.instructions-box-two {
+  min-height: calc(100vh - 75px);
+  width: 100%;
+  // padding: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .instructions-wrap {
