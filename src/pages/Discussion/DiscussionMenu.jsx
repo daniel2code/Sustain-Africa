@@ -37,6 +37,8 @@ export default function DiscussionMenu() {
     getAllChats();
   }, []);
 
+  console.log(discussions)
+
   const onFilterChange = value => {
     const filt = [...discussionsFilter];
 

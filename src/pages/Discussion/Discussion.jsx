@@ -48,9 +48,11 @@ export default function Discussion() {
 
   const [chatting, setChatting] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [discussionData, setDiscussionData]=useState(null)
   const [merchant, setMerchantId] = useState(null);
   const [merchantDetails, setMerchantDetails] = useState(null);
   const [discussionDetails, setDiscussionDetails] = useState(null);
+  const [filteredDiscussion, setFilteredDiscussion] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [paid, setPaid] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
@@ -72,17 +74,18 @@ export default function Discussion() {
   const [timerStatus, setTimerStatus] = useState("first");
   const [stageTwo, setStageTwo] = useState(true);
   const [isChatEnded, setIsChatEnded] = useState(false);
+  const [receipt] = useState(true);
 
   const successRef = useRef();
   const seenPaymentRef = useRef(null);
   const sentPaymentRef = useRef();
+  const raiseIssueRef = useRef();
   const timerRef = useRef();
   const errorRef = useRef();
   const paidSuccessRef = useRef();
   const endChatRef = useRef();
 
   let checkMerchant = profileData?.dealer_user_name === user.user_name;
-  let t = 1;
 
   const [checkToggleBtn, setCheckToggleBtn] = useState(false);
 
@@ -91,8 +94,9 @@ export default function Discussion() {
   // initialize ref
   useEffect(() => {
     const elem = seenPaymentRef.current;
-    const elem1 = endChatRef.current;
     const elem3 = sentPaymentRef.current;
+    const elem1 = endChatRef.current;
+    const elem2 = raiseIssueRef.current;
   }, []);
 
   const init = async () => {
@@ -117,24 +121,31 @@ export default function Discussion() {
 
     await chatChannel.watch({ presence: true });
 
+    // custom event that fires when a particular event occurs
+
     chatChannel.on((event) => {
       if (event?.type === "paid_request") {
         setCheckPaidBtn(true);
         setTimerStatus("second");
-      } else if (event?.type === "raiseIssue") setCheckRaiseIssue(true);
-      else if (event?.type === "end-chat") {
+        // if (checkMerchant) {
+        sentPaymentRef && sentPaymentRef.current.click();
+        // }
+      } else if (event?.type === "raiseIssue") {
+        setCheckRaiseIssue(true);
+        raiseIssueRef && raiseIssueRef.current.click();
+      } else if (event?.type === "end-chat") {
         setIsChatEnded(true);
         endChatRef.current.click();
       } else if (event?.type === "seen-payment") {
         if (!checkMerchant) {
-          seenPaymentRef.current.click();
+          seenPaymentRef && seenPaymentRef.current.click();
           setTimeout(() => {
-            window.location.reload(false);
+            // if (discussionDetails?.stage === "1") {
+            window.location.reload(false);      
+            // } else if (discussionDetails?.stage === "2") {
+            //   history.push("/chat");
+            // }
           }, 3000);
-        }
-      } else if (event?.type === "sent-payment") {
-        if (checkMerchant) {
-          sentPaymentRef.current.click();
         }
       }
     });
@@ -151,6 +162,13 @@ export default function Discussion() {
     setChannel(chatChannel);
     setClient(chatClient);
   };
+
+  console.log(location?.state);
+
+  // function formats numbers
+  function currencyFormat(num) {
+    return +num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+  }
 
   // const formatDateToSeconds = (time) => {
   //   let check = time && time.slice(11);
@@ -189,7 +207,28 @@ export default function Discussion() {
   //   fireEndChat();
   // }, []);
 
-  console.log(discussionDetails);
+  // fetch all discusion and filter a conversation, render the data on the UI
+  useEffect(() => {
+    const getAllChats = () => {
+      bearerInstance
+        .get("/fetch_all_discussions")
+        .then((res) => {
+          console.log(res?.data?.discussion_data);
+
+          const getDiscussion = res?.data?.discussion_data.find(
+            (item) => item?.id === discussionDetails?.id
+          );
+
+          setFilteredDiscussion(getDiscussion);
+        })
+        .catch((err) => {
+          // message.error(err.response?.data?.message);
+        })
+        .finally(() => setLoading(false));
+    };
+
+    getAllChats();
+  }, [discussionDetails]);
 
   useEffect(() => {
     if (timerStatus === "second") {
@@ -251,12 +290,14 @@ export default function Discussion() {
     userLoggin();
   }, [channel]);
 
+
   useEffect(() => {
     if (param.id) {
       setLoading(true);
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
         .then((res) => {
+          setDiscussionData(res.data)
           setMerchantId(res.data?.merchant_data[0]?.id);
           setDiscussionDetails(res.data.discussion_data[0]);
           setProfileData(res.data?.deal_data[0]);
@@ -294,33 +335,50 @@ export default function Discussion() {
       <h3 style={{ fontSize: "16px" }}>
         have you sent the money to{" "}
         <span className="username-green">
-          @{merchantDetails?.profile_data[0]?.user_name}
+          {discussionDetails?.stage === "1"
+            ? `@${merchantDetails?.profile_data[0]?.user_name}`
+            : `${profileData?.dealer_user_name}`}
         </span>
         ?
       </h3>,
+      // render different modal message on stage 1 and stage 2
       <>
-        <p>
-          make sure you have sent exactly{" "}
-          {discussionDetails?.source_currency === "usd"
-            ? "$"
-            : discussionDetails?.source_currency === "ngn"
-            ? "₦"
-            : "$"}
-          {discussionDetails?.source_value} to {profileData?.dealer_user_name}’s{" "}
-          {discussionDetails?.source}.
-        </p>
+        {discussionDetails?.stage === "1" ? (
+          <p>
+            make sure you have sent exactly{" "}
+            {discussionDetails?.source_currency === "usd"
+              ? "$"
+              : discussionDetails?.source_currency === "ngn"
+              ? "₦"
+              : "$"}
+            {currencyFormat(discussionDetails?.source_value)} to{" "}
+            {merchantDetails?.profile_data[0]?.user_name}
+            ’s {discussionDetails?.source}.
+          </p>
+        ) : (
+          <p>
+            make sure you have sent exactly{" "}
+            {discussionDetails?.destination_currency === "usd"
+              ? "₦"
+              : discussionDetails?.destination_currency === "ngn"
+              ? "₦"
+              : "$"}
+            {discussionDetails?.destination_value} to{" "}
+            {profileData?.dealer_user_name}
+            ’s {currencyFormat(discussionDetails?.destination)}.
+          </p>
+        )}
         <p>If you are sure, click “ok” below.</p>
       </>,
       async () => {
         let formData = new FormData();
         formData.append("discussion_id", param.id);
         try {
-          await channel.sendEvent({
-            type: "paid",
-          });
+          // await channel.sendEvent({
+          //   type: "paid",
+          // });
           await bearerInstanceWithToken(user.token).post("/paid", formData);
           await handleCheckPaid();
-          await fireSentPayment();
           setTimerStatus("second");
           paidSuccessRef.current.click();
         } catch (err) {
@@ -446,7 +504,11 @@ export default function Discussion() {
           // await channel.sendEvent({
           //   type: "end-chat",
           // });
-          await bearerInstanceWithToken(user.token).post("/seen", formData);
+          await bearerInstanceWithToken(user.token).post(
+            discussionDetails?.stage === "1" ? "/seen" : "/finish_discussion",
+            formData
+          );
+
           // successRef.current.click();
           fireSeenPayment();
           setTimeout(() => {
@@ -558,13 +620,12 @@ export default function Discussion() {
     setStageTwo(true);
   };
 
-  // function fires event if dealer has made payment
-  const fireSentPayment = async () => {
-    if (channel) {
-      await channel.sendEvent({
-        type: "sent-payment",
-      });
-    }
+  const handleInitiateFileUpload = () => {
+    successMessage(
+      `${merchantDetails?.profile_data[0]?.user_name} wants you to provide a payment slip, please upload and send your payment receipt.`,
+      null,
+      "upload payment receipt"
+    );
   };
 
   return (
@@ -583,30 +644,83 @@ export default function Discussion() {
         />
 
         <button
-          onClick={() =>
-            !checkMerchant
-              ? successMessage(
-                  `${merchantDetails?.profile_data[0]?.user_name} has seen your payment`,
-                  null,
-                  "payment confirmation"
-                )
-              : null
-          }
+          onClick={() => {
+            if (discussionDetails?.stage === "1") {
+              return !checkMerchant
+                ? successMessage(
+                    `${merchantDetails?.profile_data[0]?.user_name} has seen your payment of of $${discussionDetails?.source_value}`,
+                    null,
+                    "payment confirmation"
+                  )
+                : null;
+            } else {
+              return checkMerchant
+                ? successMessage(
+                    `${location?.state?.dealer_data[0]?.user_name} has seen your payment of ₦${discussionDetails?.destination_value}`,
+                    null,
+                    "payment confirmation"
+                  )
+                : null;
+            }
+          }}
           ref={seenPaymentRef}
           style={{ display: "none" }}
         />
 
         <button
-          onClick={() =>
-            checkMerchant
-              ? successMessage(
-                  `${profileData?.dealer_user_name} has made payment, kindly confirm`,
-                  null,
-                  "check payment"
-                )
-              : null
-          }
+          onClick={() => {
+            if (discussionDetails?.stage === "1") {
+              return checkMerchant
+                ? successMessage(
+                    // `${profileData?.dealer_user_name} has made payment, kindly confirm`,
+                    `${
+                      location?.state?.dealer_data[0]?.user_name
+                    } just made a payment of $${currencyFormat(
+                      discussionDetails?.source_value
+                    )} into your ${
+                      discussionDetails?.source
+                    }. Click on “seen payment” button below to confirm that you have seen the payment. Do not click on the button if you have not seen the payment, to avoid fund loss.`,
+                    null,
+                    "check payment"
+                  )
+                : null;
+            } else {
+              return !checkMerchant
+                ? successMessage(
+                    // `${profileData?.dealer_user_name} has made payment, kindly confirm`,
+                    `${
+                      merchantDetails?.profile_data[0]?.user_name
+                    } just made a payment of ₦${currencyFormat(
+                      discussionDetails?.destination_value
+                    )} into your ${
+                      discussionDetails?.destination
+                    }. Click on “seen payment” button below to confirm that you have seen the payment. Do not click on the button if you have not seen the payment, to avoid fund loss.`,
+                    null,
+                    "check payment"
+                  )
+                : null;
+            }
+          }}
           ref={sentPaymentRef}
+          style={{ display: "none" }}
+        />
+
+        {/* Modal fires when no response */}
+        <button
+          onClick={() =>
+            successMessage(
+              `${
+                location?.state?.dealer_data[0]?.user_name
+              } failed to make a payment of $${currencyFormat(
+                discussionDetails?.source_value
+              )} into your ${
+                discussionDetails?.source
+              }. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.[user1] or [user2] failed to make a payment of $500 into your PayPal. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.`,
+              null,
+              "raise issue"
+            )
+          }
+          ref={raiseIssueRef}
           style={{ display: "none" }}
         />
 
@@ -629,7 +743,10 @@ export default function Discussion() {
 
         <button
           onClick={() =>
-            successPaidMessage(merchantDetails?.profile_data[0]?.user_name)
+            successPaidMessage(
+              merchantDetails?.profile_data[0]?.user_name,
+              () => handleInitiateFileUpload()
+            )
           }
           ref={paidSuccessRef}
           style={{ display: "none" }}
@@ -654,7 +771,7 @@ export default function Discussion() {
                       discussionData={discussionDetails}
                       profileData={profileData}
                       channel={channel}
-                      location={location.state}
+                      location={discussionData}
                     />
                     <MessageList
                       hideDeletedMessages={true}

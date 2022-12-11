@@ -55,10 +55,10 @@ const ChatHeader = ({
             ? "buying "
             : "selling "}
           {discussionData?.destination_currency === "usd"
-            ? "$"
+            ? "₦"
             : discussionData?.destination_currency === "ngn"
             ? "₦"
-            : "$"}
+            : "₦"}
           {currencyFormat(discussionData?.destination_value)} of{" "}
           {discussionData.destination}
           {profileData?.dealer_user_name === user.user_name ? ` from` : ` to`}
@@ -68,7 +68,7 @@ const ChatHeader = ({
       <div className="chatheader-main">
         <div className="left">
           <div className="name">
-            {user.id === location?.dealer
+            {user.id === location?.discussion_data[0]?.dealer
               ? location?.merchant_data[0]?.user_name
               : location?.dealer_data[0]?.user_name}
             {/* @{obj[1]?.user?.name || username} {} */}

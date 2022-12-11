@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Form,
   Divider,
@@ -10,15 +10,16 @@ import {
   Breadcrumb,
   Radio,
   Alert,
-} from 'antd';
-import { Link, useHistory } from 'react-router-dom';
-import { HomeOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
-import { bearerInstance } from './../../utils/API';
-import { curType } from './../../utils/datasource';
-import './NewDeal.scss';
-import useDeals from '../../hooks/useDeals';
-import DealHeader from '../../components/DealHeader/DealHeader';
+} from "antd";
+import { Link, useHistory } from "react-router-dom";
+import { HomeOutlined } from "@ant-design/icons";
+import { Checkbox } from "antd";
+import { useSelector } from "react-redux";
+import { bearerInstance } from "./../../utils/API";
+import { curType } from "./../../utils/datasource";
+import "./NewDeal.scss";
+import useDeals from "../../hooks/useDeals";
+import DealHeader from "../../components/DealHeader/DealHeader";
 
 const formItemLayout = {
   labelCol: {
@@ -46,26 +47,31 @@ export default function NewDeal() {
     window.scrollTo(0, 0);
 
     if (!userState?.userData) {
-      history.push('/login');
-      message.warning('please login to continue');
+      history.push("/login");
+      message.warning("please login to continue");
     }
     //eslint-disable-next-line
   }, []);
   const { fetchDeals } = useDeals();
   const [form] = Form.useForm();
   const history = useHistory();
-  const userState = useSelector(state => state.user);
+  const userState = useSelector((state) => state.user);
   const [buttonLoading, setButtonLoading] = useState(false);
 
-  const [sourceCur, setSourceCur] = useState('usd');
-  const [destCur, setDestCur] = useState('usd');
+  const [sourceCur, setSourceCur] = useState("usd");
+  const [destCur, setDestCur] = useState("usd");
 
   // const [showDiscussionDetail, setShowDiscussionDetail] = useState(false);
   const [minmax, setMinmax] = useState(false);
   const [rate, setRate] = useState(1);
+  const [receipt, setReceipt] = useState(true);
   // const [curr, setCurr] = useState('usd');
 
-  const onFinish = values => {
+  const handleChangeReceipt = (e) => {
+    setReceipt(e.target.checked);
+  };
+
+  const onFinish = (values) => {
     // console.log(values);
     // console.log(curr);
     setButtonLoading(true);
@@ -78,110 +84,111 @@ export default function NewDeal() {
     }
 
     const data = new FormData();
-    data.append('source', values?.source);
-    data.append('source_currency', values?.source_currency);
-    data.append('destination', values?.destination);
-    data.append('destination_currency', values?.destination_currency);
-    data.append('range_min', values?.min);
-    data.append('range_max', values?.max);
-    data.append('remit_rate', values?.rate);
+    data.append("source", values?.source);
+    data.append("source_currency", values?.source_currency);
+    data.append("destination", values?.destination);
+    data.append("destination_currency", values?.destination_currency);
+    data.append("range_min", values?.min);
+    data.append("range_max", values?.max);
+    data.append("remit_rate", values?.rate);
+    data.append("receipt_required", receipt ? 1 : 0);
     // data.append('currency', values?.currency);
-    data.append('remit_rate_structure', rate ? 'percentage' : 'currency');
+    data.append("remit_rate_structure", rate ? "percentage" : "currency");
     // data.append('discussion_title', values?.discussion);
     // data.append('discussion_details', values?.discussion_detail);
-    data.append('discussion_title', 'any');
-    data.append('discussion_details', 'any');
-    data.append('deal_summary', values?.summary);
-    data.append('min_score_to_accept', values?.score);
+    data.append("discussion_title", "any");
+    data.append("discussion_details", "any");
+    data.append("deal_summary", values?.summary);
+    data.append("min_score_to_accept", values?.score);
     data.append(
-      's_bank_name',
-      values?.source_bank_name ? values?.source_bank_name : ''
+      "s_bank_name",
+      values?.source_bank_name ? values?.source_bank_name : ""
     );
     data.append(
-      's_account_type',
-      values?.source_account_type ? values?.source_account_type : ''
+      "s_account_type",
+      values?.source_account_type ? values?.source_account_type : ""
     );
     data.append(
-      's_account_age',
-      values?.source_account_age ? values?.source_account_age : ''
+      "s_account_age",
+      values?.source_account_age ? values?.source_account_age : ""
     );
     data.append(
-      's_account_country',
-      values?.source_country ? values?.source_country : ''
+      "s_account_country",
+      values?.source_country ? values?.source_country : ""
     );
     data.append(
-      's_account_state',
-      values?.source_state_name ? values?.source_state_name : ''
+      "s_account_state",
+      values?.source_state_name ? values?.source_state_name : ""
     );
     data.append(
-      's_wallet_type',
-      values?.source_wallet_type ? values?.source_wallet_type : ''
+      "s_wallet_type",
+      values?.source_wallet_type ? values?.source_wallet_type : ""
     );
     data.append(
-      's_wallet_age',
-      values?.source_wallet_age ? values?.source_wallet_age : ''
+      "s_wallet_age",
+      values?.source_wallet_age ? values?.source_wallet_age : ""
     );
     data.append(
-      's_exchange',
-      values?.source_exchange ? values?.source_exchange : ''
+      "s_exchange",
+      values?.source_exchange ? values?.source_exchange : ""
     );
     data.append(
-      's_card_type',
-      values?.source_card_type ? values?.source_card_type : ''
+      "s_card_type",
+      values?.source_card_type ? values?.source_card_type : ""
     );
     data.append(
-      's_card_brand',
-      values?.source_card_brand ? values?.source_card_brand : ''
+      "s_card_brand",
+      values?.source_card_brand ? values?.source_card_brand : ""
     );
     data.append(
-      'd_bank_name',
-      values?.destination_bank_name ? values?.destination_bank_name : ''
+      "d_bank_name",
+      values?.destination_bank_name ? values?.destination_bank_name : ""
     );
     data.append(
-      'd_account_type',
-      values?.destination_account_type ? values?.destination_account_type : ''
+      "d_account_type",
+      values?.destination_account_type ? values?.destination_account_type : ""
     );
     data.append(
-      'd_account_age',
-      values?.destination_account_age ? values?.destination_account_age : ''
+      "d_account_age",
+      values?.destination_account_age ? values?.destination_account_age : ""
     );
     data.append(
-      'd_account_country',
-      values?.destination_country ? values?.destination_country : ''
+      "d_account_country",
+      values?.destination_country ? values?.destination_country : ""
     );
     data.append(
-      'd_account_state',
-      values?.destination_state_name ? values?.destination_state_name : ''
+      "d_account_state",
+      values?.destination_state_name ? values?.destination_state_name : ""
     );
     data.append(
-      'd_wallet_type',
-      values?.destination_wallet_type ? values?.destination_wallet_type : ''
+      "d_wallet_type",
+      values?.destination_wallet_type ? values?.destination_wallet_type : ""
     );
     data.append(
-      'd_wallet_age',
-      values?.destination_wallet_age ? values?.destination_wallet_age : ''
+      "d_wallet_age",
+      values?.destination_wallet_age ? values?.destination_wallet_age : ""
     );
     data.append(
-      'd_exchange',
-      values?.destination_exchange ? values?.destination_exchange : ''
+      "d_exchange",
+      values?.destination_exchange ? values?.destination_exchange : ""
     );
     data.append(
-      'd_card_type',
-      values?.destination_card_type ? values?.destination_card_type : ''
+      "d_card_type",
+      values?.destination_card_type ? values?.destination_card_type : ""
     );
     data.append(
-      'd_card_brand',
-      values?.destination_card_brand ? values?.destination_card_brand : ''
+      "d_card_brand",
+      values?.destination_card_brand ? values?.destination_card_brand : ""
     );
 
     bearerInstance
-      .post('/new_deal', data)
+      .post("/new_deal", data)
       .then(function (response) {
         setButtonLoading(false);
         if (response?.data?.status) {
           fetchDeals();
           message.success(response?.data?.message);
-          history.push('/');
+          history.push("/");
         } else {
           message.error(response?.data?.message);
         }
@@ -235,7 +242,7 @@ export default function NewDeal() {
               sold or swapped originates from. you can
                select from over 100 instruments"
               cur={sourceCur}
-              setCur={val => setSourceCur(val)}
+              setCur={(val) => setSourceCur(val)}
               // rate={rate}
             />
 
@@ -248,11 +255,11 @@ export default function NewDeal() {
                 sold or swapped will be remitted to.
                  you can select from over 100 instruments."
               cur={destCur}
-              setCur={val => setDestCur(val)}
+              setCur={(val) => setDestCur(val)}
               rate={rate}
             />
 
-            <Divider style={{ fontSize: '14px', color: '#999' }}>
+            <Divider style={{ fontSize: "14px", color: "#999" }}>
               rate structure
             </Divider>
 
@@ -260,7 +267,7 @@ export default function NewDeal() {
               <Radio.Group name="remit_rate_structure" defaultValue={rate}>
                 <Radio
                   className="ant-radio"
-                  onChange={e => {
+                  onChange={(e) => {
                     if (e.target.checked) setRate(1);
                   }}
                   value={1}
@@ -270,7 +277,7 @@ export default function NewDeal() {
 
                 <Radio
                   className="ant-radio"
-                  onChange={e => {
+                  onChange={(e) => {
                     if (e.target.checked) setRate(0);
                   }}
                   value={0}
@@ -280,7 +287,7 @@ export default function NewDeal() {
               </Radio.Group>
             </Form.Item>
 
-            <Divider style={{ fontSize: '14px', color: '#999' }}>
+            <Divider style={{ fontSize: "14px", color: "#999" }}>
               range & rate
             </Divider>
 
@@ -288,35 +295,35 @@ export default function NewDeal() {
               <Form.Item style={{ marginBottom: 0 }}>
                 <Form.Item
                   name="rate"
-                  label={`rate (${rate ? '%' : 'per ' + curType(sourceCur)})`}
+                  label={`rate (${rate ? "%" : "per " + curType(sourceCur)})`}
                   style={{
-                    display: 'inline-block',
-                    width: 'calc(100% - 30px)',
+                    display: "inline-block",
+                    width: "calc(100% - 30px)",
                     // marginLeft: '2%',
                   }}
                   rules={[
                     {
                       required: true,
-                      message: 'input rate!',
+                      message: "input rate!",
                     },
                   ]}
                 >
                   <Input
                     type="number"
                     style={{
-                      width: '100%',
-                      paddingTop: '0',
-                      paddingBottom: '0',
+                      width: "100%",
+                      paddingTop: "0",
+                      paddingBottom: "0",
                     }}
                     placeholder="0"
                     suffix={
-                      <span style={{ fontSize: '14px', color: '#999' }}>
-                        {rate ? '%' : '/' + curType(sourceCur)}
+                      <span style={{ fontSize: "14px", color: "#999" }}>
+                        {rate ? "%" : "/" + curType(sourceCur)}
                       </span>
                     }
                     prefix={
-                      <span style={{ fontSize: '14px', color: '#999' }}>
-                        {rate ? '' : curType(destCur)}
+                      <span style={{ fontSize: "14px", color: "#999" }}>
+                        {rate ? "" : curType(destCur)}
                       </span>
                     }
                   />
@@ -329,7 +336,7 @@ export default function NewDeal() {
                 >
                   <div
                     className="question-tooltip"
-                    style={{ marginTop: '40px' }}
+                    style={{ marginTop: "40px" }}
                   >
                     ?
                   </div>
@@ -337,25 +344,25 @@ export default function NewDeal() {
               </div>
             </div>
 
-            <Form.Item style={{ marginBottom: 0, width: 'calc(100% - 30px)' }}>
+            <Form.Item style={{ marginBottom: 0, width: "calc(100% - 30px)" }}>
               <Form.Item
                 label="min."
                 name="min"
                 rules={[
                   {
                     required: true,
-                    message: 'input min!',
+                    message: "input min!",
                   },
                 ]}
-                style={{ display: 'inline-block', width: '49%' }}
+                style={{ display: "inline-block", width: "49%" }}
               >
                 <InputNumber
                   placeholder="min. amount"
-                  style={{ width: '100%' }}
-                  formatter={value =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  style={{ width: "100%" }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 />
               </Form.Item>
               <Form.Item
@@ -364,22 +371,22 @@ export default function NewDeal() {
                 rules={[
                   {
                     required: true,
-                    message: 'input max!',
+                    message: "input max!",
                   },
                 ]}
                 style={{
-                  display: 'inline-block',
-                  width: '49%',
-                  marginLeft: '2%',
+                  display: "inline-block",
+                  width: "49%",
+                  marginLeft: "2%",
                 }}
               >
                 <InputNumber
                   placeholder="max. amount"
-                  style={{ width: '100%' }}
-                  formatter={value =>
-                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                  style={{ width: "100%" }}
+                  formatter={(value) =>
+                    `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                   }
-                  parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                  parser={(value) => value.replace(/\$\s?|(,*)/g, "")}
                 />
               </Form.Item>
               {minmax && (
@@ -393,7 +400,7 @@ export default function NewDeal() {
               )}
             </Form.Item>
 
-            <Divider style={{ fontSize: '14px', color: '#999' }}>
+            <Divider style={{ fontSize: "14px", color: "#999" }}>
               discussion & linkup
             </Divider>
 
@@ -471,13 +478,13 @@ export default function NewDeal() {
               rules={[
                 {
                   required: true,
-                  message: 'please provide notes!',
+                  message: "please provide notes!",
                 },
               ]}
             >
               <TextArea
                 style={{
-                  width: 'calc(100% - 30px)',
+                  width: "calc(100% - 30px)",
                 }}
                 placeholder="please provide more information regarding this deal, like the range and remittance rate. summarise the details of your offer in simple terms. please try to be as concise as possible."
                 autoSize={{ minRows: 4, maxRows: 7 }}
@@ -491,13 +498,13 @@ export default function NewDeal() {
                 rules={[
                   {
                     required: true,
-                    message: 'input min score!',
+                    message: "input min score!",
                   },
                 ]}
               >
                 <InputNumber
                   style={{
-                    width: 'calc(100% - 30px)',
+                    width: "calc(100% - 30px)",
                   }}
                   min={1}
                   max={5}
@@ -515,9 +522,30 @@ export default function NewDeal() {
               </div>
             </div>
 
+            <Form.Item style={{ marginTop: "20px" }}>
+              <div className="form-row-sec">
+                <Checkbox
+                  checked={receipt}
+                  name="receipt_required"
+                  onChange={handleChangeReceipt}
+                >
+                  receipt required
+                </Checkbox>
+
+                <div className="tooltip-container">
+                  <Tooltip
+                    placement="left"
+                    title="check the box to make uploading payment slips mandatory for this deal. Uncheck to remove this requirement"
+                  >
+                    <div className="question-tooltip">?</div>
+                  </Tooltip>
+                </div>
+              </div>
+            </Form.Item>
+
             <Form.Item>
               <Button
-                style={{ marginTop: '10px' }}
+                style={{ marginTop: "10px" }}
                 loading={buttonLoading}
                 type="primary"
                 htmlType="submit"

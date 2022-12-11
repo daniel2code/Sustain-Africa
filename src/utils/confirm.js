@@ -39,7 +39,7 @@ export const successMessage = (msg, onOk, title) => {
 
   setTimeout(() => {
     clearInterval();
-    modal.destroy();
+    // modal.destroy();
   }, secondsToGo * 1000);
 };
 
@@ -53,7 +53,7 @@ export const errorMessage = (error) => {
 
   setTimeout(() => {
     clearInterval();
-    modal.destroy();
+    // modal.destroy();
   }, secondsToGo * 1000);
 };
 
@@ -62,12 +62,12 @@ export const successPaidMessage = (name, onOk) => {
 
   const modal = Modal.success({
     title: "payment",
-    content: `You have made payment to ${name}. let the dealer confirm and release funds`,
+    content: `You have made payment to ${name}. let the merchant confirm and release funds`,
     onOk: onOk,
   });
 
   setTimeout(() => {
     clearInterval();
-    modal.destroy();
+    // modal.destroy();
   }, secondsToGo * 1000);
 };

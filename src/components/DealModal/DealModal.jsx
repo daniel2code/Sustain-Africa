@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import './DealModal.scss';
-import { Modal, Form, Input, Row, Col, Button, message } from 'antd';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { bearerInstance } from './../../utils/API';
+import { useState } from "react";
+import "./DealModal.scss";
+import { Modal, Form, Input, Row, Col, Button, message } from "antd";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { bearerInstance } from "./../../utils/API";
 // import { useSelector } from 'react-redux';
-import { curType } from '../../utils/datasource';
-import { useHistory } from 'react-router-dom';
+import { curType } from "../../utils/datasource";
+import { useHistory } from "react-router-dom";
 
 const DealModal = ({ modal, close, deal, dealerData }) => {
   const [amount, setAmount] = useState(0);
@@ -13,22 +13,21 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
   // const userId = useSelector(state => state?.user?.userData?.id);
   const history = useHistory();
 
-  console.log(+deal?.rate * amount)
 
-  const submit = values => {
+  const submit = (values) => {
     setLoading(true);
     const data = new FormData();
-    data.append('deal_id', deal?.d_id);
-    data.append('destination_value', +deal?.rate * amount);
-    data.append('source_value', amount);
+    data.append("deal_id", deal?.d_id);
+    data.append("destination_value", +deal?.rate * amount);
+    data.append("source_value", amount);
 
     bearerInstance
-      .post('/new_discussion', data)
-      .then(res => {  
-        console.log(res?.data?.id);
+      .post("/new_discussion", data)
+      .then((res) => {
+        console.log(res?.data);
         history.push(`/chat/${res?.data?.id}`);
       })
-      .catch(err => {
+      .catch((err) => {
         message.error(err.response?.data?.message);
       })
       .finally(() => setLoading(false));
@@ -37,14 +36,14 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
   const dealAmount = (amt, structure, rate) => {
     let prc;
 
-    if (structure === 'percentage') {
+    if (structure === "percentage") {
       const ratePercent = rate / 100;
       prc = amt - amt * ratePercent;
     } else {
       prc = amt * rate;
     }
 
-    return `${new Intl.NumberFormat('us-en', {}).format(prc)}.00`;
+    return `${new Intl.NumberFormat("us-en", {}).format(prc)}.00`;
   };
 
   return (
@@ -55,29 +54,29 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
       cancelText="cancel"
       width={400}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-start' }}>
+      <div style={{ display: "flex", alignItems: "flex-start" }}>
         <div
           style={{
-            fontSize: '25px',
-            color: '#faad14',
-            marginRight: '15px',
-            marginLeft: '5px',
+            fontSize: "25px",
+            color: "#faad14",
+            marginRight: "15px",
+            marginLeft: "5px",
           }}
         >
           <ExclamationCircleOutlined />
         </div>
-        <div style={{ flex: '1' }}>
+        <div style={{ flex: "1" }}>
           <div
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginBottom: '10px',
+              display: "flex",
+              alignItems: "center",
+              marginBottom: "10px",
             }}
           >
             start a discussion with
             <span
               style={{
-                marginLeft: '5px',
+                marginLeft: "5px",
               }}
               className="username-green"
             >
@@ -101,11 +100,11 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
             <Row>
               <Col span={9}>rate</Col>
               <Col span={9}>
-                {deal?.rate_structure !== 'percentage' &&
+                {deal?.rate_structure !== "percentage" &&
                   `${curType(deal?.destination_currency)}`}
                 {deal?.rate}
-                {deal?.rate_structure === 'percentage'
-                  ? '%'
+                {deal?.rate_structure === "percentage"
+                  ? "%"
                   : `/${curType(deal?.source_currency)}`}
               </Col>
             </Row>
@@ -120,11 +119,11 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                 rules={[
                   {
                     validator: (_, val) => {
-                      if (val === '')
-                        return Promise.reject('please input amount');
+                      if (val === "")
+                        return Promise.reject("please input amount");
 
                       if (+val <= 0)
-                        return Promise.reject('please input a valid amount');
+                        return Promise.reject("please input a valid amount");
 
                       if (+val < deal.min)
                         return Promise.reject(`minmum is ${deal.min}`);
@@ -137,16 +136,16 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                   },
                 ]}
                 style={{
-                  textAlign: 'left',
-                  marginTop: '5px',
-                  flexWrap: 'unset',
+                  textAlign: "left",
+                  marginTop: "5px",
+                  flexWrap: "unset",
                 }}
               >
                 <Input
                   type="number"
-                  style={{ borderColor: '#ed1450', display: 'inline-block' }}
+                  style={{ borderColor: "#ed1450", display: "inline-block" }}
                   placeholder="enter amount..."
-                  onChange={e => setAmount(e.target.value)}
+                  onChange={(e) => setAmount(e.target.value)}
                 />
               </Form.Item>
 
@@ -157,8 +156,8 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                 <Col span={12}>
                   <strong
                     style={{
-                      fontSize: '16px',
-                      borderBottom: '3px #ed1450 double',
+                      fontSize: "16px",
+                      borderBottom: "3px #ed1450 double",
                     }}
                   >
                     {curType(deal?.destination_currency.toLowerCase())}
@@ -169,12 +168,12 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
 
               <div
                 style={{
-                  display: 'flex',
-                  justifyContent: 'flex-end',
-                  marginTop: '10px',
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  marginTop: "10px",
                 }}
               >
-                <Button style={{ marginRight: '10px' }} onClick={close}>
+                <Button style={{ marginRight: "10px" }} onClick={close}>
                   cancel
                 </Button>
 

@@ -46,6 +46,11 @@
         }
       }
 
+      .ant-checkbox-checked .ant-checkbox-inner {
+        background-color: #ed1450;
+        border-color: #ed1450;
+    }
+
       .ant-form-item-label > label {
         font-size: 14px;
         color: #5e5e5e;
@@ -128,6 +133,11 @@
 
     .ant-form-item {
       margin-bottom: 15px;
+    }
+
+    .form-row-sec{
+      display: flex;
+      grid-column-gap: 10px;
     }
   }
 }

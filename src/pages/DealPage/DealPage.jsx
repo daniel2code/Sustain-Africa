@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import { Tooltip, message, Divider, Breadcrumb } from 'antd';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Tooltip, message, Divider, Breadcrumb } from "antd";
+import { Link, useHistory } from "react-router-dom";
 
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from "react-redux";
 import {
   LikeOutlined,
   DislikeOutlined,
   EllipsisOutlined,
   ArrowRightOutlined,
   HomeOutlined,
-} from '@ant-design/icons';
-import Loader from './../../components/Loader/Loader';
-import { instance } from './../../utils/API';
-import './deal-page.scss';
-import ProfileReviewsItem from '../../components/ProfileReviewsItem/ProfileReviewItem';
-import { setHasError } from '../../redux/data/data.actions';
-import { format } from 'timeago.js';
-import { curType } from '../../utils/datasource';
-import DealModal from '../../components/DealModal/DealModal';
+} from "@ant-design/icons";
+import Loader from "./../../components/Loader/Loader";
+import { instance } from "./../../utils/API";
+import "./deal-page.scss";
+import ProfileReviewsItem from "../../components/ProfileReviewsItem/ProfileReviewItem";
+import { setHasError } from "../../redux/data/data.actions";
+import { format } from "timeago.js";
+import { curType } from "../../utils/datasource";
+import DealModal from "../../components/DealModal/DealModal";
 
 //const { confirm } = Modal;
 
@@ -26,7 +26,7 @@ export default function DealPage({ match }) {
   const history = useHistory();
   const [deal, setDeal] = useState(null);
   const [dealerData, setDealerData] = useState(null);
-  const userId = useSelector(state => state?.user?.userData?.id);
+  const userId = useSelector((state) => state?.user?.userData?.id);
 
   const [modal, setModal] = useState(false);
 
@@ -78,7 +78,7 @@ export default function DealPage({ match }) {
                 <Link
                   to={
                     userId && deal?.dealer_id === userId
-                      ? '/profile'
+                      ? "/profile"
                       : `/user/${deal?.dealer_id}/profile`
                   }
                 >
@@ -112,16 +112,25 @@ export default function DealPage({ match }) {
               </div>*/}
                 <div>
                   <div className="username-green">
-                    @{dealerData?.user_name}{' '}
+                    @{dealerData?.user_name}{" "}
                   </div>
                   <div>
                     <div className="score-green">
-                      score{' '}
+                      score{" "}
                       <span style={{ fontWeight: 600 }}>
                         {dealerData?.a_score}
-                      </span>{' '}
-                      <EllipsisOutlined /> status{' '}
+                      </span>{" "}
+                      <EllipsisOutlined /> status{" "}
                       <span style={{ fontWeight: 600 }}>online</span>
+                      {dealerData?.receipt_required && (
+                        <>
+                          {" "}
+                          <EllipsisOutlined />{" "}
+                          <span style={{ fontWeight: 600 }}>
+                            receipt required
+                          </span>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -131,14 +140,14 @@ export default function DealPage({ match }) {
                 title={`i am picking ${deal?.source} and will remit to ${deal?.destination}`}
               >
                 <div className="source-destination">
-                  {deal?.source}{' '}
+                  {deal?.source}{" "}
                   <ArrowRightOutlined
                     style={{
-                      strokeWidth: '50',
-                      stroke: 'white',
+                      strokeWidth: "50",
+                      stroke: "white",
                     }}
-                  />{' '}
-                  {deal?.destination}{' '}
+                  />{" "}
+                  {deal?.destination}{" "}
                 </div>
               </Tooltip>
             </div>
@@ -148,160 +157,160 @@ export default function DealPage({ match }) {
                 <div className="deal-item-row-one">
                   “
                   {deal?.s_account_age &&
-                    deal?.s_account_age !== 'Any Age' &&
+                    deal?.s_account_age !== "Any Age" &&
                     deal?.s_bank_name &&
                     `${deal?.s_account_age} ${
-                      deal?.s_account_age !== 'Any Age' ? 'year' : ''
-                    }${deal?.s_account_age !== 1 ? 's' : ''} old `}
+                      deal?.s_account_age !== "Any Age" ? "year" : ""
+                    }${deal?.s_account_age !== 1 ? "s" : ""} old `}
                   {deal?.s_wallet_age &&
-                    deal?.s_wallet_age !== 'Any Age' &&
+                    deal?.s_wallet_age !== "Any Age" &&
                     deal?.s_wallet_type &&
                     `${deal?.s_wallet_age} ${
-                      deal?.s_wallet_age !== 'Any Age' ? 'year' : ''
-                    }${deal?.s_wallet_age !== 1 ? 's' : ''} old `}
+                      deal?.s_wallet_age !== "Any Age" ? "year" : ""
+                    }${deal?.s_wallet_age !== 1 ? "s" : ""} old `}
                   {deal?.s_bank_name &&
                     `${deal?.s_bank_name} ${deal?.s_account_type} account available in `}
                   {/* {deal?.s_wallet_type && `${deal?.source} wallet available`} */}
                   {deal?.s_state && `${deal?.s_state},`}
-                  {deal?.source !== 'bank fund' &&
-                  deal?.source !== 'bitcoin' &&
-                  deal?.source !== 'ethereum' &&
-                  deal?.source !== 'litecoin' &&
-                  deal?.source !== 'dogecoin'
+                  {deal?.source !== "bank fund" &&
+                  deal?.source !== "bitcoin" &&
+                  deal?.source !== "ethereum" &&
+                  deal?.source !== "litecoin" &&
+                  deal?.source !== "dogecoin"
                     ? `${deal?.source} wallet (${curType(
                         deal.source_currency.toLowerCase()
                       )}) available`
-                    : ''}{' '}
-                  {deal?.s_country && `${deal?.s_country},`} to remit to{' '}
-                  {deal?.destination === 'bank fund'
-                    ? 'bank account'
-                    : deal?.destination}{' '}
+                    : ""}{" "}
+                  {deal?.s_country && `${deal?.s_country},`} to remit to{" "}
+                  {deal?.destination === "bank fund"
+                    ? "bank account"
+                    : deal?.destination}{" "}
                   at {deal?.rate}
-                  {deal?.rate_structure === 'percentage'
-                    ? '%'
-                    : '/' + curType(deal.source_currency.toLowerCase())}
+                  {deal?.rate_structure === "percentage"
+                    ? "%"
+                    : "/" + curType(deal.source_currency.toLowerCase())}
                   ”
                 </div>
 
                 <div className="deal-item-row-two">
                   {deal?.s_bank_name && (
                     <>
-                      {' '}
-                      bank name{' '}
-                      <span className="bold">{deal?.s_bank_name}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      bank name{" "}
+                      <span className="bold">{deal?.s_bank_name}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_account_type && (
                     <>
-                      {' '}
-                      account type{' '}
-                      <span className="bold">{deal?.s_account_type}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      account type{" "}
+                      <span className="bold">{deal?.s_account_type}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_account_age && deal?.s_account_age !== 0 ? (
                     <>
-                      {' '}
-                      account age{' '}
+                      {" "}
+                      account age{" "}
                       <span className="bold">
                         {deal?.s_account_age} years old
-                      </span>{' '}
-                      <EllipsisOutlined />{' '}
+                      </span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   ) : null}
                   {deal?.s_card_brand && (
                     <>
-                      {' '}
-                      card brand{' '}
-                      <span className="bold">{deal?.s_card_brand}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      card brand{" "}
+                      <span className="bold">{deal?.s_card_brand}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_card_type && (
                     <>
-                      {' '}
-                      card type{' '}
-                      <span className="bold">{deal?.s_card_type}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      card type{" "}
+                      <span className="bold">{deal?.s_card_type}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_exchange && (
                     <>
-                      {' '}
+                      {" "}
                       exchange <span className="bold">
                         {deal?.s_exchange}
-                      </span>{' '}
-                      <EllipsisOutlined />{' '}
+                      </span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_wallet_type && (
                     <>
-                      {' '}
-                      wallet type{' '}
-                      <span className="bold">{deal?.s_wallet_type}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      wallet type{" "}
+                      <span className="bold">{deal?.s_wallet_type}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.min && (
                     <>
-                      {' '}
-                      min{' '}
-                      <span className="bold">{`${deal?.min.toLocaleString()} ${deal?.destination_currency?.toUpperCase()}`}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      min{" "}
+                      <span className="bold">{`${deal?.min.toLocaleString()} ${deal?.destination_currency?.toUpperCase()}`}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.max && (
                     <>
-                      {' '}
-                      max{' '}
-                      <span className="bold">{`${deal?.max.toLocaleString()} ${deal?.destination_currency?.toUpperCase()}`}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      max{" "}
+                      <span className="bold">{`${deal?.max.toLocaleString()} ${deal?.destination_currency?.toUpperCase()}`}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.rate && (
                     <>
-                      {' '}
-                      rate{' '}
+                      {" "}
+                      rate{" "}
                       <span className="bold">
                         {deal?.rate}
-                        {deal?.rate_structure === 'percentage'
-                          ? '%'
-                          : '/' + curType(deal.source_currency.toLowerCase())}
-                      </span>{' '}
-                      <EllipsisOutlined />{' '}
+                        {deal?.rate_structure === "percentage"
+                          ? "%"
+                          : "/" + curType(deal.source_currency.toLowerCase())}
+                      </span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_state && (
                     <>
-                      {' '}
+                      {" "}
                       bank state <span className="bold">
                         {deal?.s_state}
-                      </span>{' '}
-                      <EllipsisOutlined />{' '}
+                      </span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.s_country && (
                     <>
-                      {' '}
-                      bank country{' '}
-                      <span className="bold">{deal?.s_country}</span>{' '}
-                      <EllipsisOutlined />{' '}
+                      {" "}
+                      bank country{" "}
+                      <span className="bold">{deal?.s_country}</span>{" "}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.discussion && (
                     <>
-                      {' '}
-                      discussion{' '}
+                      {" "}
+                      discussion{" "}
                       <Tooltip placement="top" title={deal?.discussion_details}>
-                        <span className="discussion">{deal?.discussion}</span>{' '}
+                        <span className="discussion">{deal?.discussion}</span>{" "}
                       </Tooltip>
-                      <EllipsisOutlined />{' '}
+                      <EllipsisOutlined />{" "}
                     </>
                   )}
                   {deal?.deal_summary && (
                     <>
-                      {' '}
+                      {" "}
                       <Tooltip placement="top" title={deal?.deal_summary}>
                         <span className="discussion">other notes</span>
                       </Tooltip>
@@ -310,24 +319,24 @@ export default function DealPage({ match }) {
                 </div>
 
                 <div className="deal-item-row-three">
-                  <span>{deal?.d_last_updated_at ? 'updated' : ''}</span>{' '}
+                  <span>{deal?.d_last_updated_at ? "updated" : ""}</span>{" "}
                   {format(
                     deal?.d_last_updated_at
                       ? deal?.d_last_updated_at
                       : deal?.d_created_at
-                  )}{' '}
+                  )}{" "}
                   <Tooltip
                     placement="top"
                     title={
-                      'user posted this deal from this location and will probably arrange a meetup there if necessary.'
+                      "user posted this deal from this location and will probably arrange a meetup there if necessary."
                     }
                   >
-                    {' '}
-                    ·{' '}
+                    {" "}
+                    ·{" "}
                     <span className="location">
                       {dealerData?.user_location}
                     </span>
-                  </Tooltip>{' '}
+                  </Tooltip>{" "}
                 </div>
 
                 <div className="deal-item-row-four">
@@ -348,11 +357,11 @@ export default function DealPage({ match }) {
                       }
                     }}
                   >
-                    {deal?.dealer_id === userId ? 'edit' : 'review'}
+                    {deal?.dealer_id === userId ? "edit" : "review"}
                   </div>
                   <div
                     className={`grey-button-nobg ${
-                      deal?.dealer_id === userId ? 'no-margin-right' : ''
+                      deal?.dealer_id === userId ? "no-margin-right" : ""
                     }`}
                   >
                     share
@@ -362,8 +371,8 @@ export default function DealPage({ match }) {
                       className="green-button"
                       onClick={() => {
                         if (!userId) {
-                          message.error('you must login to continue');
-                          history.push('/login');
+                          message.error("you must login to continue");
+                          history.push("/login");
                         }
                         setModal(true);
                       }}
@@ -376,10 +385,9 @@ export default function DealPage({ match }) {
             </div>
 
             <Divider
-              style={{ fontSize: '14px', color: '#999', marginTop: '60px' }}
+              style={{ fontSize: "14px", color: "#999", marginTop: "60px" }}
             >
-              reviews for @{dealerData?.user_name} (
-              {dealerData?.total_reviews})
+              reviews for @{dealerData?.user_name} ({dealerData?.total_reviews})
             </Divider>
 
             <div className="deal-reviews">
