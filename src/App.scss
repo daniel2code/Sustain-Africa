@@ -76,3 +76,11 @@ body {
 *::before {
   font-family: 'Poppins', sans-serif !important;
 }
+
+
+.ant-upload-list {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}

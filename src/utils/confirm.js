@@ -1,5 +1,5 @@
-import { Modal } from "antd";
-import { ExclamationCircleOutlined } from "@ant-design/icons";
+import { Modal, Upload } from "antd";
+import { ExclamationCircleOutlined, PlusOutlined } from "@ant-design/icons";
 
 const { confirm } = Modal;
 
@@ -70,4 +70,32 @@ export const successPaidMessage = (name, onOk) => {
     clearInterval();
     // modal.destroy();
   }, secondsToGo * 1000);
+};
+
+export const uploadModal = (func) => {
+  const modal = Modal.success({
+    title: "upload payment receipt",
+    content: (
+      <div onClick={func} >
+        <Upload
+          name="avatar"
+          listType="picture-card"
+          className="avatar-uploader"
+        
+        >
+          <div>
+            <PlusOutlined />
+            <div
+              style={{
+                marginTop: 8,
+              }}
+            >
+              Upload
+            </div>
+          </div>
+        </Upload>
+      </div>
+    ),
+    onOk: func,
+  });
 };

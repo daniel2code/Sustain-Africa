@@ -31,6 +31,7 @@ import {
   successMessage,
   successPaidMessage,
   errorMessage,
+  uploadModal,
 } from "../../utils/confirm";
 import Countdown from "react-countdown";
 // import storage from "redux-persist/lib/storage";
@@ -492,7 +493,7 @@ export default function Discussion() {
 
           // successRef.current.click();
           fireSeenPayment();
-        
+
           if (discussionDetails?.stage === "2") {
             handleFinishDiscussion();
           }
@@ -533,7 +534,7 @@ export default function Discussion() {
 
       if (discussionDetails?.stage === "1") {
         if (!isChatEnded) {
-          handleEndChat(successRef);
+          handleEndChat(endChatRef);
         } else {
           fireEndChat();
         }
@@ -616,14 +617,13 @@ export default function Discussion() {
     setStageTwo(true);
   };
 
+  const openFS = () => {
+    document.getElementsByClassName("rfu-file-input")[0].click();
+  };
+
   // function fire modal, to encourage user to provide a payment slip
   const handleInitiateFileUpload = () => {
-    successMessage(
-      `${merchantDetails?.profile_data[0]?.user_name} wants you to provide a payment slip, please upload and send your payment receipt.`,
-      // initiate the file upload input once the button has been clicked
-      () => document.getElementsByClassName("rfu-file-input")[0].click(),
-      "upload payment receipt"
-    );
+    uploadModal(openFS);
   };
 
   // function fires modal encouraging the merchant to confirm receipt before releasing funds
