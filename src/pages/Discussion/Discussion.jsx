@@ -48,11 +48,10 @@ export default function Discussion() {
 
   const [chatting, setChatting] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [discussionData, setDiscussionData]=useState(null)
+  const [discussionData, setDiscussionData] = useState(null);
   const [merchant, setMerchantId] = useState(null);
   const [merchantDetails, setMerchantDetails] = useState(null);
   const [discussionDetails, setDiscussionDetails] = useState(null);
-  const [filteredDiscussion, setFilteredDiscussion] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [paid, setPaid] = useState(false);
   const [disableBtn, setDisableBtn] = useState(false);
@@ -141,12 +140,16 @@ export default function Discussion() {
           seenPaymentRef && seenPaymentRef.current.click();
           setTimeout(() => {
             // if (discussionDetails?.stage === "1") {
-            window.location.reload(false);      
+            window.location.reload(false);
             // } else if (discussionDetails?.stage === "2") {
             //   history.push("/chat");
             // }
-          }, 3000);
+          }, 4000);
         }
+      } else if (event?.type === "finish_discussion") {
+        setTimeout(() => {
+          history.push("/chat");
+        }, 3500);
       }
     });
 
@@ -163,11 +166,9 @@ export default function Discussion() {
     setClient(chatClient);
   };
 
-  console.log(location?.state);
-
   // function formats numbers
   function currencyFormat(num) {
-    return +num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
+    return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
 
   // const formatDateToSeconds = (time) => {
@@ -206,29 +207,10 @@ export default function Discussion() {
 
   //   fireEndChat();
   // }, []);
-
-  // fetch all discusion and filter a conversation, render the data on the UI
   useEffect(() => {
-    const getAllChats = () => {
-      bearerInstance
-        .get("/fetch_all_discussions")
-        .then((res) => {
-          console.log(res?.data?.discussion_data);
-
-          const getDiscussion = res?.data?.discussion_data.find(
-            (item) => item?.id === discussionDetails?.id
-          );
-
-          setFilteredDiscussion(getDiscussion);
-        })
-        .catch((err) => {
-          // message.error(err.response?.data?.message);
-        })
-        .finally(() => setLoading(false));
-    };
-
-    getAllChats();
-  }, [discussionDetails]);
+    // console.log(document.getElementsByClassName("rfu-file-input")[0]);
+    //   document.getElementsByClassName("rfu-file-input")[0].click();
+  }, []);
 
   useEffect(() => {
     if (timerStatus === "second") {
@@ -290,14 +272,13 @@ export default function Discussion() {
     userLoggin();
   }, [channel]);
 
-
   useEffect(() => {
     if (param.id) {
       setLoading(true);
       bearerInstance
         .get(`/fetch_discussion?discussion_id=${param.id}`)
         .then((res) => {
-          setDiscussionData(res.data)
+          setDiscussionData(res.data);
           setMerchantId(res.data?.merchant_data[0]?.id);
           setDiscussionDetails(res.data.discussion_data[0]);
           setProfileData(res.data?.deal_data[0]);
@@ -337,7 +318,7 @@ export default function Discussion() {
         <span className="username-green">
           {discussionDetails?.stage === "1"
             ? `@${merchantDetails?.profile_data[0]?.user_name}`
-            : `${profileData?.dealer_user_name}`}
+            : `${discussionData?.dealer_data[0]?.user_name}`}
         </span>
         ?
       </h3>,
@@ -363,9 +344,9 @@ export default function Discussion() {
               : discussionDetails?.destination_currency === "ngn"
               ? "₦"
               : "$"}
-            {discussionDetails?.destination_value} to{" "}
-            {profileData?.dealer_user_name}
-            ’s {currencyFormat(discussionDetails?.destination)}.
+            {currencyFormat(discussionDetails?.destination_value)} to{" "}
+            {discussionData?.dealer_data[0]?.user_name}
+            ’s {discussionDetails?.destination}.
           </p>
         )}
         <p>If you are sure, click “ok” below.</p>
@@ -511,6 +492,10 @@ export default function Discussion() {
 
           // successRef.current.click();
           fireSeenPayment();
+        
+          if (discussionDetails?.stage === "2") {
+            handleFinishDiscussion();
+          }
           setTimeout(() => {
             history.push(`/chat`);
           }, 5000);
@@ -545,10 +530,17 @@ export default function Discussion() {
   const firstRenderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
       // Render a complete state
-      if (!isChatEnded) {
-        handleEndChat();
+
+      if (discussionDetails?.stage === "1") {
+        if (!isChatEnded) {
+          handleEndChat(successRef);
+        } else {
+          fireEndChat();
+        }
+      } else {
+        raiseIssue();
+        setTimerIssue(true);
       }
-      fireEndChat();
 
       // handleEndTimer();
       return <Completionist />;
@@ -564,8 +556,13 @@ export default function Discussion() {
 
   const secondRenderer = ({ hours, minutes, seconds, completed }) => {
     if (completed) {
-      raiseIssue();
-      setTimerIssue(true);
+      if (discussionDetails?.stage === "1") {
+        raiseIssue();
+        setTimerIssue(true);
+      } else {
+        return;
+      }
+
       // localStorage.setItem("checkIssue", true);
       // Render a complete state
       return <Completionist />;
@@ -602,12 +599,11 @@ export default function Discussion() {
     });
   };
 
-  // const handleEndTimer = async () => {
-  //   await channel.sendEvent({
-  //     type: "end_timer",
-  //     text: "End Timer request",
-  //   });
-  // };
+  const handleFinishDiscussion = async () => {
+    await channel.sendEvent({
+      type: "finish_discussion",
+    });
+  };
 
   // function fires event if merchant clicks on seen payment
   const fireSeenPayment = async () => {
@@ -620,11 +616,22 @@ export default function Discussion() {
     setStageTwo(true);
   };
 
+  // function fire modal, to encourage user to provide a payment slip
   const handleInitiateFileUpload = () => {
     successMessage(
       `${merchantDetails?.profile_data[0]?.user_name} wants you to provide a payment slip, please upload and send your payment receipt.`,
-      null,
+      // initiate the file upload input once the button has been clicked
+      () => document.getElementsByClassName("rfu-file-input")[0].click(),
       "upload payment receipt"
+    );
+  };
+
+  // function fires modal encouraging the merchant to confirm receipt before releasing funds
+  const handleConfirmReceiptPayment = () => {
+    successMessage(
+      `Ensure  ${discussionData?.dealer_data[0]?.user_name} provides a proof of payment(receipt) before proceeding to funds release.`,
+      null,
+      "confirm receipt"
     );
   };
 
@@ -656,7 +663,7 @@ export default function Discussion() {
             } else {
               return checkMerchant
                 ? successMessage(
-                    `${location?.state?.dealer_data[0]?.user_name} has seen your payment of ₦${discussionDetails?.destination_value}`,
+                    `${discussionData?.dealer_data[0]?.user_name} has seen your payment of ₦${discussionDetails?.destination_value}`,
                     null,
                     "payment confirmation"
                   )
@@ -674,13 +681,13 @@ export default function Discussion() {
                 ? successMessage(
                     // `${profileData?.dealer_user_name} has made payment, kindly confirm`,
                     `${
-                      location?.state?.dealer_data[0]?.user_name
+                      discussionData?.dealer_data[0]?.user_name
                     } just made a payment of $${currencyFormat(
                       discussionDetails?.source_value
                     )} into your ${
                       discussionDetails?.source
                     }. Click on “seen payment” button below to confirm that you have seen the payment. Do not click on the button if you have not seen the payment, to avoid fund loss.`,
-                    null,
+                    () => handleConfirmReceiptPayment(),
                     "check payment"
                   )
                 : null;
@@ -710,7 +717,7 @@ export default function Discussion() {
           onClick={() =>
             successMessage(
               `${
-                location?.state?.dealer_data[0]?.user_name
+                discussionData?.dealer_data[0]?.user_name
               } failed to make a payment of $${currencyFormat(
                 discussionDetails?.source_value
               )} into your ${
@@ -751,6 +758,7 @@ export default function Discussion() {
           ref={paidSuccessRef}
           style={{ display: "none" }}
         />
+
         <div className="message-wrapper">
           {!channel || !client || loading ? (
             <Loader />
@@ -786,6 +794,14 @@ export default function Discussion() {
                         grow={true}
                         additionalTextareaProps={{
                           placeholder: "type a message...",
+                        }}
+                        disabled={
+                          discussionDetails?.status === "canceled"
+                            ? true
+                            : false
+                        }
+                        doFileUploadRequest={() => {
+                          console.log("uploadedddddddddddddddddd");
                         }}
                       />
                     </div>
