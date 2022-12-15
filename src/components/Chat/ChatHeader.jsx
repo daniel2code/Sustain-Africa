@@ -41,7 +41,7 @@ const ChatHeader = ({
             : discussionData?.source_currency === "ngn"
             ? "₦"
             : "$"}
-          {discussionData?.source_value} of {discussionData.source}
+          {discussionData?.source_value} with {discussionData.source}
           {profileData?.dealer_user_name === user.user_name ? ` to` : ` from`}
         </div>
       )}
@@ -59,7 +59,7 @@ const ChatHeader = ({
             : discussionData?.destination_currency === "ngn"
             ? "₦"
             : "₦"}
-          {currencyFormat(discussionData?.destination_value)} of{" "}
+          {currencyFormat(discussionData?.destination_value)} with{" "}
           {discussionData.destination}
           {profileData?.dealer_user_name === user.user_name ? ` from` : ` to`}
         </div>

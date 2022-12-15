@@ -74,9 +74,11 @@ export default function DealItem({ item }) {
                 <EllipsisOutlined /> reviews{" "}
                 <span className="bold">{item?.total_reviews}</span>{" "}
                 <EllipsisOutlined /> status{" "}
-                <span className="status">online</span>
-                <EllipsisOutlined /> receipt_required{" "}
-                <span className="bold">{item?.receipt_required}</span>{" "}
+                <span className="status">online</span>{" "}
+                <EllipsisOutlined />{" "}
+                <span className="bold">
+                  {item?.receipt_required ? "receipt required " : ""}
+                </span>{" "}
               </div>
             </div>
           </div>

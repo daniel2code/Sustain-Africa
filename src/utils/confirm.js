@@ -72,16 +72,16 @@ export const successPaidMessage = (name, onOk) => {
   }, secondsToGo * 1000);
 };
 
-export const uploadModal = (func) => {
+export const uploadModal = (func, uploadImg) => {
   const modal = Modal.success({
     title: "upload payment receipt",
     content: (
-      <div onClick={func} >
+      <div onClick={func}>
         <Upload
           name="avatar"
           listType="picture-card"
           className="avatar-uploader"
-        
+          // disabled={true}
         >
           <div>
             <PlusOutlined />
@@ -96,6 +96,6 @@ export const uploadModal = (func) => {
         </Upload>
       </div>
     ),
-    onOk: func,
+    onOk: uploadImg,
   });
 };

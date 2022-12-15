@@ -11,6 +11,7 @@ import {
   MessageInput,
   MessageList,
   Window,
+  Message,
 } from "stream-chat-react";
 import "stream-chat-react/dist/css/index.css";
 import "./discussion.scss";
@@ -63,6 +64,7 @@ export default function Discussion() {
   const [checkPaidBtn, setCheckPaidBtn] = useState(false);
   const [checkSeenFund, setCheckSeenFund] = useState(true);
   const [checkRaiseIssue, setCheckRaiseIssue] = useState(false);
+  const [isReceiptUploaded, setIsReceiptUploaded] = useState(false);
   const [timer, setTimer] = useState(
     { date: Date.now(), delay: 1800000 } //60 seconds
   );
@@ -136,6 +138,7 @@ export default function Discussion() {
       } else if (event?.type === "end-chat") {
         setIsChatEnded(true);
         endChatRef.current.click();
+        window.location.reload(false);
       } else if (event?.type === "seen-payment") {
         if (!checkMerchant) {
           seenPaymentRef && seenPaymentRef.current.click();
@@ -161,56 +164,61 @@ export default function Discussion() {
 
     // const state = await channels.watch({ presence: true });
 
+    const getMsg = JSON.parse(
+      localStorage.getItem(`isMessageFired${discussionDetails?.deal_id}`)
+    );
+
+    console.log(getMsg);
+
     chatChannel.addMembers([user.id]);
+
+    // const newMember = {
+    //   user_id: "rj3it4u385495i3jfkemfkm",
+    //   name: "Admin",
+    // };
+
+    // Add the new member to the channel
+    // chatChannel.addMembers([newMember]);
+    const message = {
+      text: "This is the stage one of your transaction, please check the instructions tab below for more details",
+      user: { user_id: user?.id, id: user?.id }, // Set the user property to the user's ID
+    };
+
+    if (getMsg !== true) {
+      // Send the message to the channel
+      chatChannel.sendMessage(message);
+      const setMsg = localStorage.setItem(
+        `isMessageFired${discussionDetails?.deal_id}`,
+        JSON.stringify(true)
+      );
+    }
+
+    // const fireCustomMessage = checkMerchant
+    //   ? chatChannel.sendMessage({
+    //       text: "You have entered the stage one of the transaction",
+    //     })
+    //   : null;
 
     setChannel(chatChannel);
     setClient(chatClient);
   };
+
+  console.log(discussionDetails?.deal_id);
+  console.log(user?.id);
 
   // function formats numbers
   function currencyFormat(num) {
     return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
 
-  // const formatDateToSeconds = (time) => {
-  //   let check = time && time.slice(11);
-
-  //   let hour = time && check.slice(0, 2);
-  //   let min = time && check.slice(3, 5);
-  //   let sec = time && check.slice(6, 8);
-
-  //   // Calculate time
-  //   let calSec = 1000 * +sec;
-  //   let calMin = 1000 * 60 * +min;
-  //   let calHour = 1000 * 60 * 60 * (+hour + 1);
-
-  //   return calSec + calMin + calHour;
-  // };
-
-  // const formatClientDateToSec = () => {
-  //   let today = new Date();
-
-  //   let sec = 1000 * today.getSeconds();
-  //   let min = 1000 * 60 * today.getMinutes();
-  //   let hour = 1000 * 60 * 60 * today.getHours();
-
-  //   return sec + min + hour;
-  // };
-
-  // useEffect(() => {
-  //   const fireEndChat = async () => {
-  //     if (channel) {
-  //       await channel.sendEvent({
-  //         type: "end-chat",
-  //       });
-  //     }
-  //   };
-
-  //   fireEndChat();
-  // }, []);
   useEffect(() => {
-    // console.log(document.getElementsByClassName("rfu-file-input")[0]);
-    //   document.getElementsByClassName("rfu-file-input")[0].click();
+    console.log(document.getElementsByClassName("rta__textarea"));
+    document.getElementsByClassName("rta__textarea").value =
+      "Stage 1 begining make sure you solve it";
+
+    setTimeout(() => {
+      // document.getElementsByClassName("rfu-file-input")[0].click();
+    }, 1000);
   }, []);
 
   useEffect(() => {
@@ -390,6 +398,7 @@ export default function Discussion() {
         formData
       );
       actionRef && actionRef.current.click();
+      localStorage.removeItem(`isMessageFired${discussionDetails?.deal_id}`);
       setTimeout(() => {
         history.push(`/chat`);
       }, 10000);
@@ -604,6 +613,8 @@ export default function Discussion() {
     await channel.sendEvent({
       type: "finish_discussion",
     });
+
+    localStorage.removeItem(`isMessageFired${discussionDetails?.deal_id}`);
   };
 
   // function fires event if merchant clicks on seen payment
@@ -618,12 +629,27 @@ export default function Discussion() {
   };
 
   const openFS = () => {
+    setIsReceiptUploaded(true);
     document.getElementsByClassName("rfu-file-input")[0].click();
+  };
+
+  // function helps upload selected image to the chat
+  const uploadImg = () => {
+    if (isReceiptUploaded) {
+      // document.getElementsByClassName("rfu-file-input")[0].click();
+      // setTimeout(() => {
+      return document
+        .getElementsByClassName("str-chat__send-button")[0]
+        .click();
+      // });
+    } else {
+      return null;
+    }
   };
 
   // function fire modal, to encourage user to provide a payment slip
   const handleInitiateFileUpload = () => {
-    uploadModal(openFS);
+    uploadModal(openFS, uploadImg);
   };
 
   // function fires modal encouraging the merchant to confirm receipt before releasing funds
@@ -639,6 +665,7 @@ export default function Discussion() {
     <>
       <div className="message">
         {/* Modals triggered using useRef */}
+
         <button
           onClick={() =>
             successMessage(
@@ -785,6 +812,25 @@ export default function Discussion() {
                       hideDeletedMessages={true}
                       messageActions={["reply", "quote"]}
                       additionalMessageInputProps={{}}
+                      // Message={
+                      //   (message) => {
+                      //     if(discussionDetails?.stage === "2"){
+                      //       return (
+
+                      //     <div>
+                      //       <p>This is the custom message, are you cleared?</p>
+                      //     </div>
+                      //       )
+                      //     }else {
+                      //       return null
+                      //     }
+                      //   }
+                      //   // message.message.silent ? (
+                      //   //   <SilentMessageComponent {...message} />
+                      //   // ) : (
+                      //   //   <MessageSimple {...message} />
+                      //   // )
+                      // }
                     />
                   </>
 
@@ -796,13 +842,11 @@ export default function Discussion() {
                           placeholder: "type a message...",
                         }}
                         disabled={
-                          discussionDetails?.status === "canceled"
+                          discussionDetails?.status === "canceled" ||
+                          discussionDetails?.status === "completed"
                             ? true
                             : false
                         }
-                        doFileUploadRequest={() => {
-                          console.log("uploadedddddddddddddddddd");
-                        }}
                       />
                     </div>
 
