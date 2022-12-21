@@ -121,6 +121,8 @@ export default function Discussion() {
       // color: "green",
     });
 
+    chatChannel.addMembers([user.id]);
+
     await chatChannel.watch({ presence: true });
 
     // custom event that fires when a particular event occurs
@@ -157,54 +159,39 @@ export default function Discussion() {
       }
     });
 
-    // const channels = client.channel("messaging", param.id, {
-    //   members: [merchantDetails?.profile_data[0]?.user_name],
-    //   color: "green",
-    // });
-
-    // const state = await channels.watch({ presence: true });
-
-    const getMsg = JSON.parse(
-      localStorage.getItem(`isMessageFired${discussionDetails?.deal_id}`)
-    );
-
-    console.log(getMsg);
-
     chatChannel.addMembers([user.id]);
 
-    // const newMember = {
-    //   user_id: "rj3it4u385495i3jfkemfkm",
-    //   name: "Admin",
-    // };
-
-    // Add the new member to the channel
-    // chatChannel.addMembers([newMember]);
     const message = {
       text: "This is the stage one of your transaction, please check the instructions tab below for more details",
       user: { user_id: user?.id, id: user?.id }, // Set the user property to the user's ID
+      visible: false,
     };
 
-    if (getMsg !== true) {
-      // Send the message to the channel
-      chatChannel.sendMessage(message);
-      const setMsg = localStorage.setItem(
-        `isMessageFired${discussionDetails?.deal_id}`,
-        JSON.stringify(true)
-      );
+    // if (checkMerchant ) {
+    if (discussionDetails?.custom_msg === 0) {
+      chatChannel
+        .sendMessage(message)
+        .then((res) => {
+          let formData = new FormData();
+          formData.append("discussion_id", param.id);
+          formData.append("custom_msg", 1);
+          bearerInstanceWithToken(user.token).post(
+            `/update_discussion?discussion_id=${param.id}&custom_msg=${1}`,
+            formData
+          );
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-
-    // const fireCustomMessage = checkMerchant
-    //   ? chatChannel.sendMessage({
-    //       text: "You have entered the stage one of the transaction",
-    //     })
-    //   : null;
+    // }
 
     setChannel(chatChannel);
     setClient(chatClient);
   };
 
-  console.log(discussionDetails?.deal_id);
-  console.log(user?.id);
+  console.log(discussionDetails);
+  console.log(channel);
 
   // function formats numbers
   function currencyFormat(num) {
@@ -251,7 +238,7 @@ export default function Discussion() {
 
     if (client) return () => client.disconnectUser();
     // eslint-disable-next-line
-  }, [user.id]);
+  }, [user.id, discussionDetails, profileData]);
 
   useEffect(() => {
     if (channel) {
@@ -1296,7 +1283,16 @@ export default function Discussion() {
                           opacity: "1",
                           width: "46%",
                         }}
-                        onClick={() => history.push("/instructions")}
+                        onClick={() =>
+                          history.push({
+                            pathname: "/instructions",
+                            state: {
+                              discussionDetails: discussionDetails,
+                              checkMerchant: checkMerchant,
+                              discussionData: discussionData,
+                            },
+                          })
+                        }
                       >
                         <Button
                           icon={<ExclamationCircleOutlined />}
