@@ -81,7 +81,7 @@ export const uploadModal = (func, uploadImg) => {
           name="avatar"
           listType="picture-card"
           className="avatar-uploader"
-          // disabled={true}
+          disabled={true}
         >
           <div>
             <PlusOutlined />

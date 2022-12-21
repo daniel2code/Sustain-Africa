@@ -91,8 +91,6 @@ export default function Discussion() {
 
   const [checkToggleBtn, setCheckToggleBtn] = useState(false);
 
-  console.log(checkMerchant);
-
   // initialize ref
   useEffect(() => {
     const elem = seenPaymentRef.current;
@@ -100,6 +98,31 @@ export default function Discussion() {
     const elem1 = endChatRef.current;
     const elem2 = raiseIssueRef.current;
   }, []);
+
+  useEffect(() => {
+    if (param.id) {
+      setLoading(true);
+      bearerInstance
+        .get(`/fetch_discussion?discussion_id=${param.id}`)
+        .then((res) => {
+          setDiscussionData(res.data);
+          setMerchantId(res.data?.merchant_data[0]?.id);
+          setDiscussionDetails(res.data.discussion_data[0]);
+          setProfileData(res.data?.deal_data[0]);
+          setDiscussionTimer(res.data?.timer);
+
+          if (res.data.deal_data[0].dealer_id === user.id)
+            setChatting(res.data.merchant_data[0]);
+          else setChatting(res.data.dealer_data[0]);
+
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+          console.log(err);
+        });
+    }
+  }, [param.id, user.id]);
 
   const init = async () => {
     const res = await axios.get(
@@ -131,9 +154,9 @@ export default function Discussion() {
       if (event?.type === "paid_request") {
         setCheckPaidBtn(true);
         setTimerStatus("second");
-        // if (checkMerchant) {
-        sentPaymentRef && sentPaymentRef.current.click();
-        // }
+        if (checkMerchant) {
+          sentPaymentRef && sentPaymentRef.current.click();
+        }
       } else if (event?.type === "raiseIssue") {
         setCheckRaiseIssue(true);
         raiseIssueRef && raiseIssueRef.current.click();
@@ -159,32 +182,30 @@ export default function Discussion() {
       }
     });
 
-    chatChannel.addMembers([user.id]);
-
     const message = {
-      text: "This is the stage one of your transaction, please check the instructions tab below for more details",
+      text: "This is the stage one of your transaction, please check the instructions tab below for instructions",
       user: { user_id: user?.id, id: user?.id }, // Set the user property to the user's ID
       visible: false,
     };
 
-    // if (checkMerchant ) {
     if (discussionDetails?.custom_msg === 0) {
-      chatChannel
-        .sendMessage(message)
-        .then((res) => {
-          let formData = new FormData();
-          formData.append("discussion_id", param.id);
-          formData.append("custom_msg", 1);
-          bearerInstanceWithToken(user.token).post(
-            `/update_discussion?discussion_id=${param.id}&custom_msg=${1}`,
-            formData
-          );
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      if (checkMerchant) {
+        chatChannel
+          .sendMessage(message)
+          .then((res) => {
+            let formData = new FormData();
+            formData.append("discussion_id", param.id);
+            formData.append("custom_msg", 1);
+            bearerInstanceWithToken(user.token).post(
+              `/update_discussion?discussion_id=${param.id}&custom_msg=${1}`,
+              formData
+            );
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
     }
-    // }
 
     setChannel(chatChannel);
     setClient(chatClient);
@@ -197,16 +218,6 @@ export default function Discussion() {
   function currencyFormat(num) {
     return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
-
-  useEffect(() => {
-    console.log(document.getElementsByClassName("rta__textarea"));
-    document.getElementsByClassName("rta__textarea").value =
-      "Stage 1 begining make sure you solve it";
-
-    setTimeout(() => {
-      // document.getElementsByClassName("rfu-file-input")[0].click();
-    }, 1000);
-  }, []);
 
   useEffect(() => {
     if (timerStatus === "second") {
@@ -236,9 +247,9 @@ export default function Discussion() {
   useEffect(() => {
     init();
 
-    if (client) return () => client.disconnectUser();
+    // if (client) return () => client.disconnectUser();
     // eslint-disable-next-line
-  }, [user.id, discussionDetails, profileData]);
+  }, [user.id, profileData]);
 
   useEffect(() => {
     if (channel) {
@@ -267,31 +278,6 @@ export default function Discussion() {
 
     userLoggin();
   }, [channel]);
-
-  useEffect(() => {
-    if (param.id) {
-      setLoading(true);
-      bearerInstance
-        .get(`/fetch_discussion?discussion_id=${param.id}`)
-        .then((res) => {
-          setDiscussionData(res.data);
-          setMerchantId(res.data?.merchant_data[0]?.id);
-          setDiscussionDetails(res.data.discussion_data[0]);
-          setProfileData(res.data?.deal_data[0]);
-          setDiscussionTimer(res.data?.timer);
-
-          if (res.data.deal_data[0].dealer_id === user.id)
-            setChatting(res.data.merchant_data[0]);
-          else setChatting(res.data.dealer_data[0]);
-
-          setLoading(false);
-        })
-        .catch((err) => {
-          setLoading(false);
-          console.log(err);
-        });
-    }
-  }, [param.id, user.id]);
 
   useEffect(() => {
     if (merchant) {
@@ -622,16 +608,14 @@ export default function Discussion() {
 
   // function helps upload selected image to the chat
   const uploadImg = () => {
-    if (isReceiptUploaded) {
-      // document.getElementsByClassName("rfu-file-input")[0].click();
-      // setTimeout(() => {
-      return document
-        .getElementsByClassName("str-chat__send-button")[0]
-        .click();
-      // });
-    } else {
-      return null;
-    }
+    // if (isReceiptUploaded) {
+    // document.getElementsByClassName("rfu-file-input")[0].click();
+    // setTimeout(() => {
+    document.getElementsByClassName("str-chat__send-button")[0].click();
+    // });
+    // } else {
+    //   return null;
+    // }
   };
 
   // function fire modal, to encourage user to provide a payment slip
