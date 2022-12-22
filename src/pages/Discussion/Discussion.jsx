@@ -93,10 +93,12 @@ export default function Discussion() {
 
   // initialize ref
   useEffect(() => {
-    const elem = seenPaymentRef.current;
-    const elem3 = sentPaymentRef.current;
-    const elem1 = endChatRef.current;
-    const elem2 = raiseIssueRef.current;
+    let elem = seenPaymentRef.current;
+    let elem3 = sentPaymentRef.current;
+    let elem1 = endChatRef.current;
+    let elem2 = raiseIssueRef.current;
+    let elem4 = paidSuccessRef.current;
+    let elem5 = errorRef.current;
   }, []);
 
   useEffect(() => {
@@ -154,9 +156,9 @@ export default function Discussion() {
       if (event?.type === "paid_request") {
         setCheckPaidBtn(true);
         setTimerStatus("second");
-        if (checkMerchant) {
-          sentPaymentRef && sentPaymentRef.current.click();
-        }
+        // if (checkMerchant) {
+        sentPaymentRef && sentPaymentRef.current.click();
+        // }
       } else if (event?.type === "raiseIssue") {
         setCheckRaiseIssue(true);
         raiseIssueRef && raiseIssueRef.current.click();
@@ -185,7 +187,7 @@ export default function Discussion() {
     const message = {
       text: "This is the stage one of your transaction, please check the instructions tab below for instructions",
       user: { user_id: user?.id, id: user?.id }, // Set the user property to the user's ID
-      visible: false,
+      hidden: true,
     };
 
     if (discussionDetails?.custom_msg === 0) {
