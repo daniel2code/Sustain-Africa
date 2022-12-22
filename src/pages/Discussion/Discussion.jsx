@@ -191,7 +191,7 @@ export default function Discussion() {
     };
 
     if (discussionDetails?.custom_msg === 0) {
-      if (checkMerchant) {
+      if (!checkMerchant) {
         chatChannel
           .sendMessage(message)
           .then((res) => {
