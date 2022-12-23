@@ -99,3 +99,14 @@ export const uploadModal = (func, uploadImg) => {
     onOk: uploadImg,
   });
 };
+
+export const chatIntroModal = (msg, onOk, disabled) => {
+
+  const modal = Modal.info({
+    title: "transaction instruction",
+    content: msg,
+    onOk: onOk || null,
+    okButtonProps: { disabled: false },
+    
+  });
+};

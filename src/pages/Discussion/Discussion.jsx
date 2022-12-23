@@ -11,14 +11,13 @@ import {
   MessageInput,
   MessageList,
   Window,
-  Message,
 } from "stream-chat-react";
 import "stream-chat-react/dist/css/index.css";
 import "./discussion.scss";
 import { sendNotification } from "../../utils/notification";
 import ChatHeader from "../../components/Chat/ChatHeader";
 import { bearerInstance, bearerInstanceWithToken } from "../../utils/API";
-import { Alert, Button, Checkbox, Tooltip } from "antd";
+import { Alert, Button, Checkbox, Tooltip, Modal } from "antd";
 import {
   RightOutlined,
   CheckOutlined,
@@ -33,6 +32,7 @@ import {
   successPaidMessage,
   errorMessage,
   uploadModal,
+  chatIntroModal,
 } from "../../utils/confirm";
 import Countdown from "react-countdown";
 // import storage from "redux-persist/lib/storage";
@@ -77,6 +77,8 @@ export default function Discussion() {
   const [stageTwo, setStageTwo] = useState(true);
   const [isChatEnded, setIsChatEnded] = useState(false);
   const [receipt] = useState(true);
+  const [readInstructions, setReadInstructions] = useState(false);
+  const [checked, setChecked] = useState(true);
 
   const successRef = useRef();
   const seenPaymentRef = useRef(null);
@@ -86,6 +88,7 @@ export default function Discussion() {
   const errorRef = useRef();
   const paidSuccessRef = useRef();
   const endChatRef = useRef();
+  const msgRef = useRef();
 
   let checkMerchant = profileData?.dealer_user_name === user.user_name;
 
@@ -99,6 +102,7 @@ export default function Discussion() {
     let elem2 = raiseIssueRef.current;
     let elem4 = paidSuccessRef.current;
     let elem5 = errorRef.current;
+    let elem6 = msgRef.current;
   }, []);
 
   useEffect(() => {
@@ -220,6 +224,193 @@ export default function Discussion() {
   function currencyFormat(num) {
     return num.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
   }
+
+  function confirmReadInstructions() {
+    if (discussionDetails?.custom_msg === 0) {
+      // if (readInstructions === false) {
+      let formData = new FormData();
+      formData.append("discussion_id", param.id);
+      formData.append("custom_msg", 1);
+      bearerInstanceWithToken(user.token).post(
+        `/update_discussion?discussion_id=${param.id}&custom_msg=${1}`,
+        formData
+      );
+      // }
+    }
+  }
+
+  const onChangeCheckbox = (e) => {
+    setReadInstructions(e.target.checked);
+  };
+
+
+  useEffect(() => {
+    if (discussionDetails?.custom_msg === 0) {
+      if (channel) {
+        // const modal = Modal.info({
+        //   title: "transaction instruction",
+        //   content: (
+        //     <>
+        //       {!checkMerchant ? (
+        //         <div>
+        //           <p>
+        //             {`to buy $600 worth of btc from ${merchantDetails?.profile_data[0]?.user_name} using paypal as a payment
+        //         method.`}
+        //           </p>
+
+        //           <p>
+        //             <b>please follow the steps below:</b>
+        //           </p>
+
+        //           <p>{`1. wait for ${merchantDetails?.profile_data[0]?.user_name} to provide his paypal details`}</p>
+        //           <p>
+        //             2. send the exact amount of $600 to his provided paypal
+        //             details
+        //           </p>
+        //           <p>
+        //             3. once sent, click on "i have paid" button below to confirm
+        //             you have sent it.
+        //           </p>
+        //           <p>4. upload a payment slip if required.</p>
+        //           <p>
+        //             {`5. wait for ${merchantDetails?.profile_data[0]?.user_name} to confirm that they have received the
+        //         payment.`}
+        //           </p>
+
+        //           <Checkbox
+        //             className="message-check"
+        //             // checked={checked}
+        //             onChange={onChangeCheckbox}
+        //           >
+        //             ensure you understand the instructions before proceeding.
+        //           </Checkbox>
+
+        //           <div>
+        //             <input
+        //               type="checkbox"
+        //               // checked={checked}
+        //               onChange={(e)=>console.log(e.target.checked)}
+        //             />
+        //           </div>
+        //         </div>
+        //       ) : (
+        //         <div>
+        //           <p>
+        //             {` to sell $600 worth of btc to ${discussionData?.dealer_data[0]?.user_name} using paypal as a payment
+        //         method.`}
+        //           </p>
+        //           <p>
+        //             <b>please follow the steps below:</b>
+        //           </p>
+        //           <p>{`1. provide your paypal details to ${discussionData?.dealer_data[0]?.user_name} and stay active`}</p>
+        //           <p>{`2. wait for ${discussionData?.dealer_data[0]?.user_name} to send the $600 to your paypal`}</p>
+        //           <p>
+        //             3. once you have received the complete amount, click on
+        //             "seen payment" button below
+        //           </p>
+        //           <p>
+        //             4. only click on "seen payment" when you are sure you have
+        //             received the full amount. DO NOT CLICK ON IT IF YOU HAVEN'T
+        //             RECEIVED THE FULL PAYMENT. if you have any issues, you can
+        //             raise a dispute after 2 hours.
+        //           </p>
+
+        //           {/* <Checkbox
+        //         className="message-check"
+        //         checked={readInstructions ? false : true}
+        //         onChange={onChangeCheckbox}
+        //       >
+        //         ensure you understand the instructions before proceeding.
+        //       </Checkbox> */}
+
+        //           <div>
+        //             <input
+        //               type="checkbox"
+        //               checked={checked}
+        //               onChange={onChangeCheckbox}
+        //             />
+        //           </div>
+        //         </div>
+        //       )}
+        //     </>
+        //   ),
+        //   onOk: confirmReadInstructions,
+        //   okButtonProps: { disabled: checked },
+        // });
+
+        chatIntroModal(
+          <>
+            {!checkMerchant ? (
+              <div>
+                <p>
+                  {`to buy $600 worth of btc from ${merchantDetails?.profile_data[0]?.user_name} using paypal as a payment
+                  method.`}
+                </p>
+
+                <p>
+                  <b>please follow the steps below:</b>
+                </p>
+
+                <p>{`1. wait for ${merchantDetails?.profile_data[0]?.user_name} to provide his paypal details`}</p>
+                <p>
+                  2. send the exact amount of $600 to his provided paypal
+                  details
+                </p>
+                <p>
+                  3. once sent, click on "i have paid" button below to confirm
+                  you have sent it.
+                </p>
+                <p>4. upload a payment slip if required.</p>
+                <p>
+                  {`5. wait for ${merchantDetails?.profile_data[0]?.user_name} to confirm that they have received the
+                  payment.`}
+                </p>
+
+                <Checkbox
+                  className="message-check"
+                  // checked={checked}
+                  onChange={onChangeCheckbox}
+                >
+                  ensure you understand the instructions before proceeding.
+                </Checkbox>
+              </div>
+            ) : (
+              <div>
+                <p>
+                  {` to sell $600 worth of btc to ${discussionData?.dealer_data[0]?.user_name} using paypal as a payment
+                  method.`}
+                </p>
+                <p>
+                  <b>please follow the steps below:</b>
+                </p>
+                <p>{`1. provide your paypal details to ${discussionData?.dealer_data[0]?.user_name} and stay active`}</p>
+                <p>{`2. wait for ${discussionData?.dealer_data[0]?.user_name} to send the $600 to your paypal`}</p>
+                <p>
+                  3. once you have received the complete amount, click on "seen
+                  payment" button below
+                </p>
+                <p>
+                  4. only click on "seen payment" when you are sure you have
+                  received the full amount. DO NOT CLICK ON IT IF YOU HAVEN'T
+                  RECEIVED THE FULL PAYMENT. if you have any issues, you can
+                  raise a dispute after 2 hours.
+                </p>
+
+                <Checkbox
+                  className="message-check"
+                  onChange={onChangeCheckbox}
+                >
+                  ensure you understand the instructions before proceeding.
+                </Checkbox>
+              </div>
+            )}
+          </>,
+          confirmReadInstructions,
+          readInstructions
+        );
+      }
+    }
+  }, [channel]);
 
   useEffect(() => {
     if (timerStatus === "second") {
