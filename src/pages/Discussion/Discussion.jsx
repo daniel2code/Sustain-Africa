@@ -189,7 +189,7 @@ export default function Discussion() {
     });
 
     const message = {
-      text: "This is the stage one of your transaction, please check the instructions tab below for instructions",
+      text: "this is the stage one of your transaction, please check the instructions tab below for instructions",
       user: { user_id: user?.id, id: user?.id }, // Set the user property to the user's ID
       hidden: true,
     };
@@ -243,104 +243,16 @@ export default function Discussion() {
     setReadInstructions(e.target.checked);
   };
 
-
   useEffect(() => {
+    // Render custom default message for stage one of the transacton
+
+    let checkStage = discussionDetails?.stage === "1" ? !checkMerchant : checkMerchant
+
     if (discussionDetails?.custom_msg === 0) {
       if (channel) {
-        // const modal = Modal.info({
-        //   title: "transaction instruction",
-        //   content: (
-        //     <>
-        //       {!checkMerchant ? (
-        //         <div>
-        //           <p>
-        //             {`to buy $600 worth of btc from ${merchantDetails?.profile_data[0]?.user_name} using paypal as a payment
-        //         method.`}
-        //           </p>
-
-        //           <p>
-        //             <b>please follow the steps below:</b>
-        //           </p>
-
-        //           <p>{`1. wait for ${merchantDetails?.profile_data[0]?.user_name} to provide his paypal details`}</p>
-        //           <p>
-        //             2. send the exact amount of $600 to his provided paypal
-        //             details
-        //           </p>
-        //           <p>
-        //             3. once sent, click on "i have paid" button below to confirm
-        //             you have sent it.
-        //           </p>
-        //           <p>4. upload a payment slip if required.</p>
-        //           <p>
-        //             {`5. wait for ${merchantDetails?.profile_data[0]?.user_name} to confirm that they have received the
-        //         payment.`}
-        //           </p>
-
-        //           <Checkbox
-        //             className="message-check"
-        //             // checked={checked}
-        //             onChange={onChangeCheckbox}
-        //           >
-        //             ensure you understand the instructions before proceeding.
-        //           </Checkbox>
-
-        //           <div>
-        //             <input
-        //               type="checkbox"
-        //               // checked={checked}
-        //               onChange={(e)=>console.log(e.target.checked)}
-        //             />
-        //           </div>
-        //         </div>
-        //       ) : (
-        //         <div>
-        //           <p>
-        //             {` to sell $600 worth of btc to ${discussionData?.dealer_data[0]?.user_name} using paypal as a payment
-        //         method.`}
-        //           </p>
-        //           <p>
-        //             <b>please follow the steps below:</b>
-        //           </p>
-        //           <p>{`1. provide your paypal details to ${discussionData?.dealer_data[0]?.user_name} and stay active`}</p>
-        //           <p>{`2. wait for ${discussionData?.dealer_data[0]?.user_name} to send the $600 to your paypal`}</p>
-        //           <p>
-        //             3. once you have received the complete amount, click on
-        //             "seen payment" button below
-        //           </p>
-        //           <p>
-        //             4. only click on "seen payment" when you are sure you have
-        //             received the full amount. DO NOT CLICK ON IT IF YOU HAVEN'T
-        //             RECEIVED THE FULL PAYMENT. if you have any issues, you can
-        //             raise a dispute after 2 hours.
-        //           </p>
-
-        //           {/* <Checkbox
-        //         className="message-check"
-        //         checked={readInstructions ? false : true}
-        //         onChange={onChangeCheckbox}
-        //       >
-        //         ensure you understand the instructions before proceeding.
-        //       </Checkbox> */}
-
-        //           <div>
-        //             <input
-        //               type="checkbox"
-        //               checked={checked}
-        //               onChange={onChangeCheckbox}
-        //             />
-        //           </div>
-        //         </div>
-        //       )}
-        //     </>
-        //   ),
-        //   onOk: confirmReadInstructions,
-        //   okButtonProps: { disabled: checked },
-        // });
-
         chatIntroModal(
           <>
-            {!checkMerchant ? (
+            {checkStage ? (
               <div>
                 <p>
                   {`to buy $600 worth of btc from ${merchantDetails?.profile_data[0]?.user_name} using paypal as a payment
@@ -396,10 +308,7 @@ export default function Discussion() {
                   raise a dispute after 2 hours.
                 </p>
 
-                <Checkbox
-                  className="message-check"
-                  onChange={onChangeCheckbox}
-                >
+                <Checkbox className="message-check" onChange={onChangeCheckbox}>
                   ensure you understand the instructions before proceeding.
                 </Checkbox>
               </div>
@@ -1279,120 +1188,6 @@ export default function Discussion() {
                               />
                             </>
                           </Tooltip>
-                          {/* ) : checkPaidBtn === true ||
-                              discussionDetails?.dealer_paid === 1 ? (
-                              <Tooltip
-                                placement="topRight"
-                                title="you will be able to raise an
-                            issue after time is up"
-                              >
-                                <div>
-                                  <Countdown
-                                    date={secondTimer.date + secondTimer.delay}
-                                    renderer={secondRenderer}
-                                    // onStart={() => {
-                                    //   //Save the end date
-                                    //   if (
-                                    //     localStorage.getItem(
-                                    //       "end_second_date"
-                                    //     ) == null
-                                    //   )
-                                    //     localStorage.setItem(
-                                    //       "end_second_date",
-                                    //       JSON.stringify(
-                                    //         secondTimer.date + secondTimer.delay
-                                    //       )
-                                    //     );
-                                    // }}
-                                    onComplete={() => {
-                                      // if (
-                                      //   localStorage.getItem(
-                                      //     "end_second_date"
-                                      //   ) != null
-                                      // )
-                                      //   localStorage.removeItem(
-                                      //     "end_second_date"
-                                      //   );
-                                    }}
-                                  />
-                                </div>
-                              </Tooltip>
-                            ) : (
-                              "" */}
-                          {/* ) */}
-                          {/* } */}
-                          {/* {checkPaidBtn ||
-                          discussionDetails?.dealer_paid === 1 ? (
-                            (
-                              <>
-
-                                <Countdown
-                                  date={timer.date + timer.delay}
-                                  renderer={firstRenderer}
-                                  onStart={() => {
-                                    //Save the end date
-                                    if (
-                                      localStorage.getItem("end_first_date") ==
-                                      null
-                                    )
-                                      localStorage.setItem(
-                                        "end_first_date",
-                                        JSON.stringify(timer.date + timer.delay)
-                                      );
-                                  }}
-                                  onComplete={() => {
-                                    if (
-                                      localStorage.getItem("end_first_date") !=
-                                      null
-                                    )
-                                      localStorage.removeItem("end_first_date");
-                                  }}
-                                />
-                              </>
-                            )
-
-
-                            <Tooltip
-                              placement="topRight"
-                              title="you will be able to raise an
-                            issue after time is up"
-                            >
-                              {(checkMerchant &&
-                                discussionDetails?.dealer_paid === 1) ||
-                              checkPaidBtn === true ? (
-                                <div>
-                                  <Countdown
-                                    date={timer.date + timer.delay}
-                                    renderer={thirdRenderer}
-                                    onStart={() => {
-                                      //Save the end date
-                                      if (
-                                        localStorage.getItem(
-                                          "end_first_date"
-                                        ) == null
-                                      )
-                                        localStorage.setItem(
-                                          "end_first_date",
-                                          JSON.stringify(
-                                            timer.date + timer.delay
-                                          )
-                                        );
-                                    }}
-                                    onComplete={() => {
-                                      if (
-                                        localStorage.getItem(
-                                          "end_first_date"
-                                        ) != null
-                                      )
-                                        localStorage.removeItem(
-                                          "end_first_date"
-                                        );
-                                    }}
-                                  />
-                                </div>
-                              ) : null}
-                            </Tooltip>
-                          ) : null} */}
                         </div>
                       )}
                     </div>
