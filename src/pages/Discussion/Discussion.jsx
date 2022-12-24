@@ -138,7 +138,7 @@ export default function Discussion() {
 
     const userData = {
       id: user?.id,
-      name: user?.user_name_front,
+      name: user?.user_name,
     };
 
     const chatClient = StreamChat.getInstance("2shvqv4hcrbh");
@@ -248,7 +248,7 @@ export default function Discussion() {
 
     let checkStage = discussionDetails?.stage === "1" ? !checkMerchant : checkMerchant
 
-    if (discussionDetails?.custom_msg === 0) {
+    // if (discussionDetails?.custom_msg === 0) {
       if (channel) {
         chatIntroModal(
           <>
@@ -318,7 +318,7 @@ export default function Discussion() {
           readInstructions
         );
       }
-    }
+    // }
   }, [channel]);
 
   useEffect(() => {
