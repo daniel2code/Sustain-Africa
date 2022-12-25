@@ -246,16 +246,38 @@ export default function Discussion() {
   useEffect(() => {
     // Render custom default message for stage one of the transacton
 
-    let checkStage = discussionDetails?.stage === "1" ? !checkMerchant : checkMerchant
+    let checkStage =
+      discussionDetails?.stage === "1" ? !checkMerchant : checkMerchant;
+    let stage = discussionDetails?.stage === "1";
+
+    console.log(discussionDetails?.status);
 
     // if (discussionDetails?.custom_msg === 0) {
+    if (
+      discussionDetails?.status !== "canceled" &&
+      discussionDetails?.status !== "completed"
+    ) {
       if (channel) {
         chatIntroModal(
           <>
             {checkStage ? (
               <div>
                 <p>
-                  {`to buy $600 worth of btc from ${merchantDetails?.profile_data[0]?.user_name} using paypal as a payment
+                  {`to buy ${
+                    stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}`
+                      : `₦${currencyFormat(
+                          discussionDetails?.destination_value
+                        )}`
+                  } worth of btc from ${
+                    stage
+                      ? merchantDetails?.profile_data[0]?.user_name
+                      : discussionData?.dealer_data[0]?.user_name
+                  } using ${
+                    stage
+                      ? discussionDetails?.source
+                      : discussionDetails?.destination
+                  } as a payment
                   method.`}
                 </p>
 
@@ -263,10 +285,29 @@ export default function Discussion() {
                   <b>please follow the steps below:</b>
                 </p>
 
-                <p>{`1. wait for ${merchantDetails?.profile_data[0]?.user_name} to provide his paypal details`}</p>
+                <p>{`1. wait for ${
+                  stage
+                    ? merchantDetails?.profile_data[0]?.user_name
+                    : discussionData?.dealer_data[0]?.user_name
+                } to provide his ${
+                  stage
+                    ? discussionDetails?.source
+                    : discussionDetails?.destination
+                } details`}</p>
                 <p>
-                  2. send the exact amount of $600 to his provided paypal
-                  details
+                  {`2. send the exact amount of ${
+                    stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}`
+                      : `₦${currencyFormat(
+                          discussionDetails?.destination_value
+                        )}`
+                  }
+                 to his provided ${
+                   stage
+                     ? discussionDetails?.source
+                     : discussionDetails?.destination
+                 }
+                  details`}
                 </p>
                 <p>
                   3. once sent, click on "i have paid" button below to confirm
@@ -274,7 +315,11 @@ export default function Discussion() {
                 </p>
                 <p>4. upload a payment slip if required.</p>
                 <p>
-                  {`5. wait for ${merchantDetails?.profile_data[0]?.user_name} to confirm that they have received the
+                  {`5. wait for ${
+                    stage
+                      ? merchantDetails?.profile_data[0]?.user_name
+                      : discussionData?.dealer_data[0]?.user_name
+                  } to confirm that they have received the
                   payment.`}
                 </p>
 
@@ -289,14 +334,46 @@ export default function Discussion() {
             ) : (
               <div>
                 <p>
-                  {` to sell $600 worth of btc to ${discussionData?.dealer_data[0]?.user_name} using paypal as a payment
+                  {` to sell ${
+                    stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}`
+                      : `₦${currencyFormat(
+                          discussionDetails?.destination_value
+                        )}`
+                  }
+                 worth of btc to ${
+                   stage
+                     ? discussionData?.dealer_data[0]?.user_name
+                     : merchantDetails?.profile_data[0]?.user_name
+                 } using ${discussionDetails?.source} as a payment
                   method.`}
                 </p>
                 <p>
                   <b>please follow the steps below:</b>
                 </p>
-                <p>{`1. provide your paypal details to ${discussionData?.dealer_data[0]?.user_name} and stay active`}</p>
-                <p>{`2. wait for ${discussionData?.dealer_data[0]?.user_name} to send the $600 to your paypal`}</p>
+                <p>{`1. provide your ${
+                  stage
+                    ? discussionDetails?.source
+                    : discussionDetails?.destination
+                } details to ${
+                  stage
+                    ? discussionData?.dealer_data[0]?.user_name
+                    : merchantDetails?.profile_data[0]?.user_name
+                } and stay active`}</p>
+                <p>{`2. wait for ${
+                  stage
+                    ? discussionData?.dealer_data[0]?.user_name
+                    : merchantDetails?.profile_data[0]?.user_name
+                } to send the ${
+                  stage
+                    ? `$${currencyFormat(discussionDetails?.source_value)}`
+                    : `₦${currencyFormat(discussionDetails?.destination_value)}`
+                }
+               to your ${
+                 stage
+                   ? discussionDetails?.source
+                   : discussionDetails?.destination
+               }`}</p>
                 <p>
                   3. once you have received the complete amount, click on "seen
                   payment" button below
@@ -318,6 +395,10 @@ export default function Discussion() {
           readInstructions
         );
       }
+    } else {
+      return false;
+    }
+
     // }
   }, [channel]);
 
@@ -1039,7 +1120,8 @@ export default function Discussion() {
                         </div>
                       )}
 
-                      {discussionDetails?.status === "canceled" ? (
+                      {discussionDetails?.status === "canceled" ||
+                      discussionDetails?.status === "completed" ? (
                         ""
                       ) : (
                         <div
@@ -1155,7 +1237,8 @@ export default function Discussion() {
                       )}
 
                       {/* Hide the timer if the discussion has been cancelled */}
-                      {discussionDetails.status === "canceled" ? (
+                      {discussionDetails.status === "canceled" ||
+                      discussionDetails?.status === "completed" ? (
                         ""
                       ) : (
                         <div
