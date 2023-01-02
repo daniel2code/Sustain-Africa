@@ -8,6 +8,7 @@ import { ReactComponent as EmptyImage } from './../../assets/empty.svg';
 import { useDispatch } from 'react-redux';
 import { setNotificationCount } from './../../redux/user/user.actions';
 import moment from 'moment';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 export default function Notification() {
   const [notifications, setNotification] = useState();
@@ -57,6 +58,8 @@ export default function Notification() {
         setLoading(false);
       });
   }, [userId]);
+
+  console.log(notifications)
 
   //  d_r - discussion request - only reciever sees this
   //  n_r - new review - only reciever see this

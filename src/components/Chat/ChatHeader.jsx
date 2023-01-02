@@ -19,7 +19,7 @@ const ChatHeader = ({
 
   let obj = Object.values(channel.state.members);
 
-  console.log(discussionData);
+  console.log(user);
 
   // function formats numbers
   function currencyFormat(num) {
@@ -67,15 +67,18 @@ const ChatHeader = ({
 
       <div className="chatheader-main">
         <div className="left">
-          <div className="name">
-            {user.id === location?.discussion_data[0]?.dealer
-              ? location?.merchant_data[0]?.user_name
-              : location?.dealer_data[0]?.user_name}
-            {/* @{obj[1]?.user?.name || username} {} */}
+          <div>
+            <div className="name">
+              {user.id === location?.discussion_data[0]?.dealer
+                ? location?.merchant_data[0]?.user_name
+                : location?.dealer_data[0]?.user_name}
+              {/* @{obj[1]?.user?.name || username} {} */}
+            </div>
+
             <Tooltip
               placement="topRight"
               title={
-                obj[1] && obj[1]?.user?.online === true ? "Online" : "Offline"
+                obj[1] && obj[1]?.user?.online === true ? "online" : "away"
               }
             >
               <span
@@ -84,9 +87,12 @@ const ChatHeader = ({
                     obj[1] && obj[1]?.user?.online === true
                       ? "#14a014"
                       : "#dedede",
+                  fontSize: "10px",
+                  fontWeight: "600",
+                  marginBottom: "10px",
                 }}
               >
-                &#9679;
+                {obj[1] && obj[1]?.user?.online === true ? "online" : "away"}
               </span>
             </Tooltip>
           </div>

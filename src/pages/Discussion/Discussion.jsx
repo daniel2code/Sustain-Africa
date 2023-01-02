@@ -17,7 +17,8 @@ import "./discussion.scss";
 import { sendNotification } from "../../utils/notification";
 import ChatHeader from "../../components/Chat/ChatHeader";
 import { bearerInstance, bearerInstanceWithToken } from "../../utils/API";
-import { Alert, Button, Checkbox, Tooltip, Modal } from "antd";
+import { formatSourceText } from "../../utils/formatSourceText"
+import { Alert, Button, Checkbox, Tooltip } from "antd";
 import {
   RightOutlined,
   CheckOutlined,
@@ -169,13 +170,13 @@ export default function Discussion() {
       } else if (event?.type === "end-chat") {
         setIsChatEnded(true);
         endChatRef.current.click();
-        window.location.reload(false);
+        window.location.reload(true);
       } else if (event?.type === "seen-payment") {
         if (!checkMerchant) {
           seenPaymentRef && seenPaymentRef.current.click();
           setTimeout(() => {
             // if (discussionDetails?.stage === "1") {
-            window.location.reload(false);
+            window.location.reload(true);
             // } else if (discussionDetails?.stage === "2") {
             //   history.push("/chat");
             // }
@@ -243,14 +244,13 @@ export default function Discussion() {
     setReadInstructions(e.target.checked);
   };
 
+  let stage = discussionDetails?.stage === "1";
+
   useEffect(() => {
     // Render custom default message for stage one of the transacton
 
     let checkStage =
       discussionDetails?.stage === "1" ? !checkMerchant : checkMerchant;
-    let stage = discussionDetails?.stage === "1";
-
-    console.log(discussionDetails?.status);
 
     // if (discussionDetails?.custom_msg === 0) {
     if (
@@ -262,6 +262,17 @@ export default function Discussion() {
           <>
             {checkStage ? (
               <div>
+                <p>
+                  <b>
+                    {stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}
+                    `
+                      : `₦${currencyFormat(
+                          discussionDetails?.destination_value
+                        )}`}
+                    worth of btc is now in the escrow{" "}
+                  </b>
+                </p>
                 <p>
                   {`to buy ${
                     stage
@@ -334,6 +345,17 @@ export default function Discussion() {
             ) : (
               <div>
                 <p>
+                  <b>
+                    {stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}
+                    `
+                      : `₦${currencyFormat(
+                          discussionDetails?.destination_value
+                        )}`}
+                    worth of btc is now in the escrow{" "}
+                  </b>
+                </p>
+                <p>
                   {` to sell ${
                     stage
                       ? `$${currencyFormat(discussionDetails?.source_value)}`
@@ -392,7 +414,8 @@ export default function Discussion() {
             )}
           </>,
           confirmReadInstructions,
-          readInstructions
+          readInstructions,
+          discussionDetails?.stage
         );
       }
     } else {
@@ -639,9 +662,20 @@ export default function Discussion() {
 
   const seenPayment = () => {
     confirmModal(
-      <h3 style={{ fontSize: "16px" }}>have you seen payment.</h3>,
+      <h3 style={{ fontSize: "16px" }}>have you seen payment?</h3>,
       <>
-        <p>ensure you have seen payment before proceeding</p>
+        <p>
+          ensure you have seen payment of{" "}
+          {stage
+            ? `$${currencyFormat(discussionDetails?.source_value)}
+                    `
+            : `₦${currencyFormat(discussionDetails?.destination_value)}`}{" "}
+          before proceeding
+        </p>
+        <p>
+          if you haven't seen the full payment or if there's any issue, please
+          go back and wait for 2 hours to start a dispute.
+        </p>
       </>,
       async () => {
         let formData = new FormData();
@@ -811,7 +845,11 @@ export default function Discussion() {
     successMessage(
       `Ensure  ${discussionData?.dealer_data[0]?.user_name} provides a proof of payment(receipt) before proceeding to funds release.`,
       null,
-      "confirm receipt"
+      `confirm receipt from ${
+        discussionDetails?.stage === "1"
+          ? discussionData?.dealer_data[0]?.user_name
+          : merchantDetails?.profile_data[0]?.user_name
+      }`
     );
   };
 
@@ -865,9 +903,8 @@ export default function Discussion() {
                       discussionData?.dealer_data[0]?.user_name
                     } just made a payment of $${currencyFormat(
                       discussionDetails?.source_value
-                    )} into your ${
-                      discussionDetails?.source
-                    }. Click on “seen payment” button below to confirm that you have seen the payment. Do not click on the button if you have not seen the payment, to avoid fund loss.`,
+                    )} into your ${formatSourceText(discussionDetails?.source)}.\ 
+                    click on “seen payment” button below to confirm that you have seen the payment. do not click on the button if you have not seen the payment, to avoid fund loss.`,
                     () => handleConfirmReceiptPayment(),
                     "check payment"
                   )
@@ -880,11 +917,14 @@ export default function Discussion() {
                       merchantDetails?.profile_data[0]?.user_name
                     } just made a payment of ₦${currencyFormat(
                       discussionDetails?.destination_value
-                    )} into your ${
-                      discussionDetails?.destination
-                    }. Click on “seen payment” button below to confirm that you have seen the payment. Do not click on the button if you have not seen the payment, to avoid fund loss.`,
+                    )} into your ${formatSourceText(discussionDetails?.destination)}.\
+                     click on “seen payment” button below to confirm that you have seen the payment. do not click on the button if you have not seen the payment, to avoid fund loss.`,
                     null,
-                    "check payment"
+                    `check payment from @${
+                      discussionDetails?.stage === "1"
+                        ? discussionData?.dealer_data[0]?.user_name
+                        : merchantDetails?.profile_data[0]?.user_name
+                    }`
                   )
                 : null;
             }
@@ -893,7 +933,7 @@ export default function Discussion() {
           style={{ display: "none" }}
         />
 
-        {/* Modal fires when no response */}
+        {/* Modal fires when user didn't make a payment */}
         <button
           onClick={() =>
             successMessage(
@@ -902,7 +942,7 @@ export default function Discussion() {
               } failed to make a payment of $${currencyFormat(
                 discussionDetails?.source_value
               )} into your ${
-                discussionDetails?.source
+                formatSourceText(discussionDetails?.source)
               }. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.[user1] or [user2] failed to make a payment of $500 into your PayPal. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.`,
               null,
               "raise issue"
@@ -966,25 +1006,6 @@ export default function Discussion() {
                       hideDeletedMessages={true}
                       messageActions={["reply", "quote"]}
                       additionalMessageInputProps={{}}
-                      // Message={
-                      //   (message) => {
-                      //     if(discussionDetails?.stage === "2"){
-                      //       return (
-
-                      //     <div>
-                      //       <p>This is the custom message, are you cleared?</p>
-                      //     </div>
-                      //       )
-                      //     }else {
-                      //       return null
-                      //     }
-                      //   }
-                      //   // message.message.silent ? (
-                      //   //   <SilentMessageComponent {...message} />
-                      //   // ) : (
-                      //   //   <MessageSimple {...message} />
-                      //   // )
-                      // }
                     />
                   </>
 
@@ -1306,6 +1327,19 @@ export default function Discussion() {
                             )}
                           </div>
                         )}
+                      </div>
+                    )}
+
+                    {discussionDetails?.status === "completed" && (
+                      <div
+                        className="instructions-wrap-two"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <ExclamationCircleOutlined
+                          style={{ color: "#14a014" }}
+                        />
+
+                        <p className="list-text">Discussion completed</p>
                       </div>
                     )}
 

@@ -17,7 +17,7 @@ import OtherProfile from "./pages/Profile/OtherProfile";
 import DealPage from "./pages/DealPage/DealPage";
 import EditDeal from "./pages/EditDeal/EditDeal";
 import Discussion from "./pages/Discussion/Discussion";
-import { bearerInstance } from "./utils/API";
+import { bearerInstance, bearerInstanceWithToken } from "./utils/API";
 import Notification from "./pages/Notification/Notifiaction";
 import { setNotificationCount } from "./redux/user/user.actions";
 import Wallet from "./pages/Wallet/Wallet";
@@ -25,6 +25,44 @@ import DiscussionMenu from "./pages/Discussion/DiscussionMenu";
 import Instructions from "./pages/Instructions/instructons";
 
 function App() {
+  const userState = useSelector((state) => state.user);
+  const user = useSelector((state) => state?.user?.userData);
+  const hasError = useSelector((state) => state.data.hasError);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const userId = useSelector((state) => state?.user?.userData?.id);
+
+  const updateUserStatus = (status) => {
+    const formdata = new FormData();
+    formdata.append("update_type", "user_status");
+    formdata.append("update_value", status);
+
+    bearerInstanceWithToken(user.token)
+      .post(`/edit_profile?update_type=user_status&update_value=${status}`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  // Confirm user when they want to exit the app
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("unload", updateUserStatus(0));
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("unload", updateUserStatus(0));
+    };
+  }, []);
+
   useEffect(() => {
     if (userState?.userData?.is_email_verified === "0") {
       history.push("/verify-email");
@@ -32,11 +70,10 @@ function App() {
     //eslint-disable-next-line
   }, []);
 
-  const userState = useSelector((state) => state.user);
-  const hasError = useSelector((state) => state.data.hasError);
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const userId = useSelector((state) => state?.user?.userData?.id);
+  useEffect(() => {
+    // Sets the online status of user when they login
+    updateUserStatus(1);
+  }, []);
 
   useEffect(() => {
     bearerInstance
@@ -74,6 +111,7 @@ function App() {
     setTimeout(() => {
       window.location.assign("/login");
     }, 500);
+    updateUserStatus(0);
   };
 
   bearerInstance.interceptors.request.use(
