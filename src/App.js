@@ -48,20 +48,20 @@ function App() {
   };
 
   // Confirm user when they want to exit the app
-  useEffect(() => {
-    const handleBeforeUnload = (event) => {
-      event.preventDefault();
-      event.returnValue = "";
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event) => {
+  //     event.preventDefault();
+  //     event.returnValue = "";
+  //   };
 
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("unload", updateUserStatus(0));
+  //   window.addEventListener("beforeunload", handleBeforeUnload);
+  //   window.addEventListener("unload", updateUserStatus(0));
 
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("unload", updateUserStatus(0));
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("beforeunload", handleBeforeUnload);
+  //     window.removeEventListener("unload", updateUserStatus(0));
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (userState?.userData?.is_email_verified === "0") {

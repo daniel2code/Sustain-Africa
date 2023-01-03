@@ -1,12 +1,12 @@
-import { useState, useMemo, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { format, register } from 'timeago.js';
-import locale from '../../utils/timeagoLocale';
-import { /* message, Tooltip,*/ Modal /* Avatar  */ } from 'antd';
-import { bearerInstance } from '../../utils/API';
-import { useHistory } from 'react-router-dom';
-import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { useState, useMemo, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { format, register } from "timeago.js";
+import locale from "../../utils/timeagoLocale";
+import { /* message, Tooltip,*/ Modal /* Avatar  */ } from "antd";
+import { bearerInstance } from "../../utils/API";
+import { useHistory } from "react-router-dom";
+import { ExclamationCircleOutlined } from "@ant-design/icons";
 // import { showConfirm } from '../../utils/confirm';
 
 const { confirm } = Modal;
@@ -18,10 +18,10 @@ const { confirm } = Modal;
 //  c_r - connection request
 //  c_a - connection request accepted
 
-register('sus-AF', locale);
+register("sus-AF", locale);
 
 const NotificationCard = ({ data }) => {
-  const user = useSelector(state => state.user.userData);
+  const user = useSelector((state) => state.user.userData);
   // const [isModalVisible, setIsModalVisible] = useState(false);
   const [view, setView] = useState(false);
   const [stamp, setStamp] = useState();
@@ -29,6 +29,8 @@ const NotificationCard = ({ data }) => {
   const [accepted, setAccepted] = useState(false);
 
   const router = useHistory();
+
+  console.log(data?.deal_data[0]);
 
   useEffect(() => {
     if (user.id === data.sender) setStamp(data.created_at);
@@ -61,31 +63,31 @@ const NotificationCard = ({ data }) => {
 
   const dealWriteUp = useMemo(() => {
     return {
-      d_r: 'wants to discuss with you regarding your ',
-      d_r_r: 'rejected your discussion request regarding his ',
-      d_r_a: 'accepted your discussion request regarding his ',
-      n_r: 'dropped a review on your ',
-      c_r: 'sent you a request to connect',
-      c_a: 'accepted your request to connect. Take note of the terms ',
+      d_r: "wants to discuss with you regarding your ",
+      d_r_r: "rejected your discussion request regarding his ",
+      d_r_a: "accepted your discussion request regarding his ",
+      n_r: "dropped a review on your ",
+      c_r: "sent you a request to connect",
+      c_a: "accepted your request to connect. Take note of the terms ",
     };
   }, []);
 
   const viewed = () => {
     const notData = new FormData();
-    notData.append('notification_id', data.id);
-    notData.append('viewed', '1');
-    notData.append('accepted', '');
-    notData.append('rejected', '');
-    notData.append('reviewed', '');
+    notData.append("notification_id", data.id);
+    notData.append("viewed", "1");
+    notData.append("accepted", "");
+    notData.append("rejected", "");
+    notData.append("reviewed", "");
 
     if (!view)
       bearerInstance
         .post(`/update_notification`, notData)
-        .then(res => {
+        .then((res) => {
           setView(true);
-          console.log('came here');
+          console.log("came here");
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
   };
@@ -94,7 +96,7 @@ const NotificationCard = ({ data }) => {
     confirm({
       title: (
         <>
-          reject a discussion request from{' '}
+          reject a discussion request from{" "}
           <span className="username-green">
             @{data.sender_details[0].user_name}
           </span>
@@ -102,23 +104,23 @@ const NotificationCard = ({ data }) => {
         </>
       ),
       icon: <ExclamationCircleOutlined />,
-      content: 'Are you sure you want to reject this discussion request?',
+      content: "Are you sure you want to reject this discussion request?",
       onOk() {
         return new Promise((resolve, reject) => {
           const notData = new FormData();
-          notData.append('notification_id', data.id);
-          notData.append('viewed', '');
-          notData.append('accepted', '');
-          notData.append('rejected', '1');
-          notData.append('reviewed', '');
+          notData.append("notification_id", data.id);
+          notData.append("viewed", "");
+          notData.append("accepted", "");
+          notData.append("rejected", "1");
+          notData.append("reviewed", "");
 
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
-          .then(res => {
+          .then((res) => {
             setRejected(true);
-            router.push('/notifications');
+            router.push("/notifications");
           })
-          .catch(() => console.log('Oops errors!'));
+          .catch(() => console.log("Oops errors!"));
       },
       onCancel() {},
     });
@@ -128,7 +130,7 @@ const NotificationCard = ({ data }) => {
     confirm({
       title: (
         <>
-          start a discussion with{' '}
+          start a discussion with{" "}
           <span className="username-green">
             @{data.sender_details[0].user_name}
           </span>
@@ -137,28 +139,33 @@ const NotificationCard = ({ data }) => {
       ),
       icon: <ExclamationCircleOutlined />,
       content: (
-        <div>
-          <div>source: {}</div>
-          <div>destination: {}</div>
-          <div>rate: {}%</div>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          <p style={{ width: "47%" }}>picking: </p>
+          <p style={{ width: "47%" }}>{data?.deal_data[0]?.source}</p>
+
+          <p style={{ width: "47%" }}>to remit to: </p>
+          <p style={{ width: "47%" }}>{data?.deal_data[0]?.destination}</p>
+
+          <p style={{ width: "47%" }}>rate: </p>
+          <p style={{ width: "47%" }}>{data?.deal_data[0]?.rate}</p>
         </div>
       ),
       onOk() {
         return new Promise((resolve, reject) => {
           const notData = new FormData();
-          notData.append('notification_id', data.id);
-          notData.append('viewed', '');
-          notData.append('accepted', '1');
-          notData.append('rejected', '');
-          notData.append('reviewed', '');
+          notData.append("notification_id", data.id);
+          notData.append("viewed", "");
+          notData.append("accepted", "1");
+          notData.append("rejected", "");
+          notData.append("reviewed", "");
 
           resolve(bearerInstance.post(`/update_notification`, notData));
         })
-          .then(res => {
+          .then((res) => {
             setAccepted(true);
-            router.replace('/chat');
+            router.replace("/chat");
           })
-          .catch(() => console.log('Oops errors!'));
+          .catch(() => console.log("Oops errors!"));
       },
       onCancel() {},
     });
@@ -168,32 +175,32 @@ const NotificationCard = ({ data }) => {
     <>
       <div
         className={`notification-card${
-          view ? ' notification-card-disabled' : ''
+          view ? " notification-card-disabled" : ""
         }`}
         onClick={viewed}
       >
-        {data.type === 'd_r' && user.id === data.receiver && (
+        {data.type === "d_r" && user.id === data.receiver && (
           <div>
             <p
               style={{
-                marginBottom: data.accepted || data.rejected ? 0 : '1em',
+                marginBottom: data.accepted || data.rejected ? 0 : "1em",
               }}
             >
               {data.accepted
-                ? 'you accepted '
+                ? "you accepted "
                 : data.rejected
-                ? 'you rejected '
+                ? "you rejected "
                 : null}
               <Link
                 to={`/user/${data.sender}/profile`}
                 className="notification-link username-green"
               >
                 @{data.sender_details[0].user_name}
-              </Link>{' '}
+              </Link>{" "}
               {data.accepted || data.rejected
-                ? ' discussion request regarding his '
+                ? " discussion request regarding his "
                 : dealWriteUp[data.type]}
-              {data.type === 'c_r' || data.type === 'c_a' ? null : (
+              {data.type === "c_r" || data.type === "c_a" ? null : (
                 <Link
                   to={`/deal/${data.deal_id}`}
                   className="notification-link username-green"
@@ -201,7 +208,7 @@ const NotificationCard = ({ data }) => {
                   deal
                 </Link>
               )}
-              {data.type === 'c_a' && (
+              {data.type === "c_a" && (
                 <Link
                   to={`/terms`}
                   className="notification-link username-green"
@@ -213,7 +220,7 @@ const NotificationCard = ({ data }) => {
           </div>
         )}
 
-        {data.type === 'd_r' && user.id === data.sender ? (
+        {data.type === "d_r" && user.id === data.sender ? (
           <div>
             <p style={{ marginBottom: 0 }}>
               <Link
@@ -221,9 +228,9 @@ const NotificationCard = ({ data }) => {
                 className="notification-link username-green"
               >
                 @{data.receiver_details[0].user_name}
-              </Link>{' '}
-              {data.rejected ? dealWriteUp['d_r_r'] : null}
-              {data.accepted ? dealWriteUp['d_r_a'] : null}
+              </Link>{" "}
+              {data.rejected ? dealWriteUp["d_r_r"] : null}
+              {data.accepted ? dealWriteUp["d_r_a"] : null}
               <Link
                 to={`/deal/${data.deal_id}`}
                 className="notification-link username-green"
@@ -234,16 +241,16 @@ const NotificationCard = ({ data }) => {
           </div>
         ) : null}
 
-        {data.type === 'w_in' && (
+        {data.type === "w_in" && (
           <div>
             <p>
               <span className="notification-pink">
                 {Number(parseFloat(data.amount).toFixed(7))}
-              </span>{' '}
-              btc was deposited into your sustain wallet at address{' '}
+              </span>{" "}
+              btc was deposited into your sustain wallet at address{" "}
               <span
                 className="notification-pink"
-                style={{ wordWrap: 'break-word' }}
+                style={{ wordWrap: "break-word" }}
               >
                 {data.address}
               </span>
@@ -251,19 +258,19 @@ const NotificationCard = ({ data }) => {
           </div>
         )}
 
-        <div style={{ display: 'flex' }}>
-          {((data.type === 'd_r' &&
+        <div style={{ display: "flex" }}>
+          {((data.type === "d_r" &&
             data.receiver === user.id &&
             (data.accepted === 0 || accepted) &&
             (data.rejected === 0 || rejected)) ||
-            data.type === 'c_r') && (
-            <div style={{ display: 'flex', marginBottom: '5px' }}>
+            data.type === "c_r") && (
+            <div style={{ display: "flex", marginBottom: "5px" }}>
               <button
-                style={{ marginRight: '10px' }}
+                style={{ marginRight: "10px" }}
                 className={`notification-card-btn notification-card-btn-pink${
                   data.accepted || data.rejected || accepted || rejected
-                    ? ' notification-disabled'
-                    : ''
+                    ? " notification-disabled"
+                    : ""
                 }`}
                 // disabled when the deal is
                 disabled={
@@ -271,14 +278,14 @@ const NotificationCard = ({ data }) => {
                 }
                 onClick={showAcceptConfirm}
               >
-                {data.accepted === 1 || accepted ? 'accepted' : 'accept'}
+                {data.accepted === 1 || accepted ? "accepted" : "accept"}
               </button>
 
               <button
                 className={`notification-card-btn notification-card-btn-out${
                   data.accepted || data.rejected || accepted || rejected
-                    ? ' notification-disabled-rej'
-                    : ''
+                    ? " notification-disabled-rej"
+                    : ""
                 }`}
                 // disabled when the deal is
                 disabled={
@@ -286,16 +293,16 @@ const NotificationCard = ({ data }) => {
                 }
                 onClick={showPromiseConfirm}
               >
-                {data.rejected === 1 || rejected ? 'rejected' : 'reject'}
+                {data.rejected === 1 || rejected ? "rejected" : "reject"}
               </button>
             </div>
           )}
 
-          {data.type === 'd_c' && (
-            <div style={{ display: 'flex', marginBottom: '5px' }}>
+          {data.type === "d_c" && (
+            <div style={{ display: "flex", marginBottom: "5px" }}>
               <button
                 className={`notification-card-btn notification-card-btn-pink${
-                  data.accepted || data.rejected ? '' : ''
+                  data.accepted || data.rejected ? "" : ""
                 }`}
                 // disabled when the deal is
                 disabled={!(data.accepted || data.rejected)}
@@ -307,13 +314,13 @@ const NotificationCard = ({ data }) => {
 
           <span
             style={{
-              fontSize: '11px',
-              color: 'rgb(153, 153, 153)',
-              alignSelf: 'flex-end',
-              marginLeft: 'auto',
+              fontSize: "11px",
+              color: "rgb(153, 153, 153)",
+              alignSelf: "flex-end",
+              marginLeft: "auto",
             }}
           >
-            {format(stamp, 'sus-AF')}
+            {format(stamp, "sus-AF")}
           </span>
         </div>
       </div>
