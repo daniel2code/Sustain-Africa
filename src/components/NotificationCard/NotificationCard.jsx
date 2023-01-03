@@ -30,8 +30,6 @@ const NotificationCard = ({ data }) => {
 
   const router = useHistory();
 
-  console.log(data?.deal_data[0]);
-
   useEffect(() => {
     if (user.id === data.sender) setStamp(data.created_at);
     else if (user.id === data.receiver) {
@@ -163,7 +161,7 @@ const NotificationCard = ({ data }) => {
         })
           .then((res) => {
             setAccepted(true);
-            router.replace("/chat");
+            router.replace(`/chat/${data?.discussion_id}`);
           })
           .catch(() => console.log("Oops errors!"));
       },
