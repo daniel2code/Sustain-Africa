@@ -72,7 +72,7 @@ function App() {
 
   useEffect(() => {
     // Sets the online status of user when they login
-    updateUserStatus(1);
+    // updateUserStatus(1);
   }, []);
 
   useEffect(() => {
@@ -111,7 +111,7 @@ function App() {
     setTimeout(() => {
       window.location.assign("/login");
     }, 500);
-    updateUserStatus(0);
+    // updateUserStatus(0);
   };
 
   bearerInstance.interceptors.request.use(
