@@ -13,7 +13,6 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
   // const userId = useSelector(state => state?.user?.userData?.id);
   const history = useHistory();
 
-
   const submit = (values) => {
     setLoading(true);
     const data = new FormData();
@@ -91,12 +90,14 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                 {deal?.source} ({curType(deal?.source_currency)})
               </Col>
             </Row>
+            <br />
             <Row>
               <Col span={9}>to remit to</Col>
               <Col span={9}>
                 {deal?.destination} ({curType(deal?.destination_currency)})
               </Col>
             </Row>
+            <br />
             <Row>
               <Col span={9}>rate</Col>
               <Col span={9}>
@@ -108,6 +109,8 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                   : `/${curType(deal?.source_currency)}`}
               </Col>
             </Row>
+
+            <br />
 
             <Form onFinish={submit}>
               <Form.Item

@@ -23,6 +23,9 @@ import { setNotificationCount } from "./redux/user/user.actions";
 import Wallet from "./pages/Wallet/Wallet";
 import DiscussionMenu from "./pages/Discussion/DiscussionMenu";
 import Instructions from "./pages/Instructions/instructons";
+import AdminLogin from "./pages/Admin/Login/adminLogin";
+import AdminChat from "./pages/Admin/Chat/adminChat";
+import AdminHome from "./pages/Admin/Home/ahminHome";
 
 function App() {
   const userState = useSelector((state) => state.user);
@@ -167,6 +170,9 @@ function App() {
               <Route exact path="/chat" component={DiscussionMenu} />
               <Route exact path="/notifications" component={Notification} />
               <Route exact path="/instructions" component={Instructions} />
+              <Route exact path="/admin" component={AdminLogin} />
+              <Route exact path="/home" component={AdminHome} />
+              <Route exact path="/admin-chat" component={AdminChat} />
             </Switch>
           ) : (
             <ErrorBoundary />

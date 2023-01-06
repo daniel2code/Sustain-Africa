@@ -18,7 +18,7 @@ export default function DealItem({ item }) {
   const userIdState = useSelector((state) => state?.user?.userData?.id);
   const [modal, setModal] = useState(false);
 
-  console.log(item?.receipt_required);
+  console.log(item?.user_status);
 
   return (
     <>
@@ -64,6 +64,12 @@ export default function DealItem({ item }) {
         >
           <div>
             <div className="username-green">@{item?.user_name} </div>
+            <span
+              className="status"
+              style={{ color: item?.user_status === 1 ? "#14a014" : "#dedede" }}
+            >
+              {item?.user_status === 1 ? "online" : "away"}
+            </span>
             <div>
               <div className="score-green">
                 score <span style={{ fontWeight: 600 }}>{item?.a_score}</span>{" "}
@@ -73,8 +79,6 @@ export default function DealItem({ item }) {
                 <span className="bold">{item?.total_deals_not_closed}</span>{" "}
                 <EllipsisOutlined /> reviews{" "}
                 <span className="bold">{item?.total_reviews}</span>{" "}
-                <EllipsisOutlined /> status{" "}
-                <span className="status">online</span>{" "}
                 <EllipsisOutlined />{" "}
                 <span className="bold">
                   {item?.receipt_required ? "receipt required " : ""}
