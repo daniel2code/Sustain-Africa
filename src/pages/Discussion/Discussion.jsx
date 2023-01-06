@@ -17,7 +17,7 @@ import "./discussion.scss";
 import { sendNotification } from "../../utils/notification";
 import ChatHeader from "../../components/Chat/ChatHeader";
 import { bearerInstance, bearerInstanceWithToken } from "../../utils/API";
-import { formatSourceText } from "../../utils/formatSourceText"
+import { formatSourceText } from "../../utils/formatSourceText";
 import { Alert, Button, Checkbox, Tooltip } from "antd";
 import {
   RightOutlined,
@@ -190,7 +190,7 @@ export default function Discussion() {
     });
 
     const message = {
-      text: "this is the stage one of your transaction, please check the instructions tab below for instructions",
+      text: "this transaction is divided into two stages. this is the stage one of your transaction, please check the instructions tab below for instructions",
       user: { user_id: user?.id, id: user?.id }, // Set the user property to the user's ID
       hidden: true,
     };
@@ -262,17 +262,21 @@ export default function Discussion() {
           <>
             {checkStage ? (
               <div>
-                <p>
-                  <b>
-                    {stage
-                      ? `$${currencyFormat(discussionDetails?.source_value)}
-                    `
+                <Alert
+                  message="Notice"
+                  description={`${
+                    stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}`
                       : `₦${currencyFormat(
                           discussionDetails?.destination_value
-                        )}`}
-                    worth of btc is now in the escrow{" "}
-                  </b>
-                </p>
+                        )}`
+                  }  worth of btc is now in the escrow`}
+                  type="success"
+                  closable
+                  showIcon
+                  style={{ marginBottom: "13px" }}
+                />
+
                 <p>
                   {`to buy ${
                     stage
@@ -344,17 +348,20 @@ export default function Discussion() {
               </div>
             ) : (
               <div>
-                <p>
-                  <b>
-                    {stage
-                      ? `$${currencyFormat(discussionDetails?.source_value)}
-                    `
+                <Alert
+                  message="Notice"
+                  description={`${
+                    stage
+                      ? `$${currencyFormat(discussionDetails?.source_value)}`
                       : `₦${currencyFormat(
                           discussionDetails?.destination_value
-                        )}`}
-                    worth of btc is now in the escrow{" "}
-                  </b>
-                </p>
+                        )}`
+                  }  worth of btc is now in the escrow`}
+                  type="success"
+                  closable
+                  showIcon
+                  style={{ marginBottom: "" }}
+                />
                 <p>
                   {` to sell ${
                     stage
@@ -903,7 +910,9 @@ export default function Discussion() {
                       discussionData?.dealer_data[0]?.user_name
                     } just made a payment of $${currencyFormat(
                       discussionDetails?.source_value
-                    )} into your ${formatSourceText(discussionDetails?.source)}.\ 
+                    )} into your ${formatSourceText(
+                      discussionDetails?.source
+                    )}.\ 
                     click on “seen payment” button below to confirm that you have seen the payment. do not click on the button if you have not seen the payment, to avoid fund loss.`,
                     () => handleConfirmReceiptPayment(),
                     "check payment"
@@ -917,7 +926,9 @@ export default function Discussion() {
                       merchantDetails?.profile_data[0]?.user_name
                     } just made a payment of ₦${currencyFormat(
                       discussionDetails?.destination_value
-                    )} into your ${formatSourceText(discussionDetails?.destination)}.\
+                    )} into your ${formatSourceText(
+                      discussionDetails?.destination
+                    )}.\
                      click on “seen payment” button below to confirm that you have seen the payment. do not click on the button if you have not seen the payment, to avoid fund loss.`,
                     null,
                     `check payment from @${
@@ -941,9 +952,9 @@ export default function Discussion() {
                 discussionData?.dealer_data[0]?.user_name
               } failed to make a payment of $${currencyFormat(
                 discussionDetails?.source_value
-              )} into your ${
-                formatSourceText(discussionDetails?.source)
-              }. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.[user1] or [user2] failed to make a payment of $500 into your PayPal. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.`,
+              )} into your ${formatSourceText(
+                discussionDetails?.source
+              )}. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.[user1] or [user2] failed to make a payment of $500 into your PayPal. Click on “raise an issue” button to start a dispute. A moderator will be available to resolve this incident.`,
               null,
               "raise issue"
             )

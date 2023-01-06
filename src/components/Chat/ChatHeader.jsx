@@ -80,6 +80,7 @@ const ChatHeader = ({
               title={
                 obj[1] && obj[1]?.user?.online === true ? "online" : "away"
               }
+              style={{margin: "0px"}}
             >
               <span
                 style={{
@@ -87,7 +88,7 @@ const ChatHeader = ({
                     obj[1] && obj[1]?.user?.online === true
                       ? "#14a014"
                       : "#dedede",
-                  fontSize: "10px",
+                  fontSize: "14px",
                   fontWeight: "600",
                   marginBottom: "10px",
                 }}

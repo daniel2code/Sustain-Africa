@@ -78,7 +78,7 @@ export const uploadModal = (func, uploadImg) => {
     title: "upload payment receipt",
     content: (
       <div onClick={func}>
-        <p>please upload your payment proof.</p>
+        <p>please upload a proof of payment</p>
         <p>image must be less than 2mb</p>
         <Upload
           name="avatar"
