@@ -137,15 +137,17 @@ const NotificationCard = ({ data }) => {
       ),
       icon: <ExclamationCircleOutlined />,
       content: (
-        <div style={{ display: "flex", flexWrap: "wrap" }}>
-          <p style={{ width: "47%" }}>picking: </p>
-          <p style={{ width: "47%" }}>{data?.deal_data[0]?.source}</p>
+        <div style={{ display: "flex", flexWrap: "wrap", marginTop: "15px" }}>
+          <p className="notification-text">picking: </p>
+          <p className="notification-text">{data?.deal_data[0]?.source}($)</p>
 
-          <p style={{ width: "47%" }}>to remit to: </p>
-          <p style={{ width: "47%" }}>{data?.deal_data[0]?.destination}</p>
+          <p className="notification-text">to remit to: </p>
+          <p className="notification-text">
+            {data?.deal_data[0]?.destination}($)
+          </p>
 
-          <p style={{ width: "47%" }}>rate: </p>
-          <p style={{ width: "47%" }}>{data?.deal_data[0]?.rate}</p>
+          <p className="notification-text">rate: </p>
+          <p className="notification-text">{data?.deal_data[0]?.rate}/$</p>
         </div>
       ),
       onOk() {

@@ -16,3 +16,8 @@ code {
   line-height: 0px;
   padding: 0px 3.5px !important;
 }
+
+.notification-text{
+  width: 47%;
+  line-height: 12px;
+}

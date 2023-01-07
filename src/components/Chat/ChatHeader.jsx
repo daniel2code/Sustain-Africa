@@ -88,7 +88,7 @@ const ChatHeader = ({
                     obj[1] && obj[1]?.user?.online === true
                       ? "#14a014"
                       : "#dedede",
-                  fontSize: "14px",
+                  fontSize: "12px",
                   fontWeight: "600",
                   marginBottom: "10px",
                 }}

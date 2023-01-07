@@ -995,7 +995,7 @@ export default function Discussion() {
           {!channel || !client || loading ? (
             <Loader />
           ) : (
-            <Chat client={client} theme="messaging light">
+            <Chat client={client} theme="messaging light" >
               <Channel channel={channel}>
                 <Window>
                   <>
@@ -1017,6 +1017,7 @@ export default function Discussion() {
                       hideDeletedMessages={true}
                       messageActions={["reply", "quote"]}
                       additionalMessageInputProps={{}}
+                      
                     />
                   </>
 

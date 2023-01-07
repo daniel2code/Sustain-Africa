@@ -90,14 +90,14 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                 {deal?.source} ({curType(deal?.source_currency)})
               </Col>
             </Row>
-            <br />
+        
             <Row>
               <Col span={9}>to remit to</Col>
               <Col span={9}>
                 {deal?.destination} ({curType(deal?.destination_currency)})
               </Col>
             </Row>
-            <br />
+           
             <Row>
               <Col span={9}>rate</Col>
               <Col span={9}>
@@ -109,8 +109,6 @@ const DealModal = ({ modal, close, deal, dealerData }) => {
                   : `/${curType(deal?.source_currency)}`}
               </Col>
             </Row>
-
-            <br />
 
             <Form onFinish={submit}>
               <Form.Item
